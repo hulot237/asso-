@@ -2,34 +2,31 @@ import 'dart:convert';
 import 'dart:developer';
 // import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
-import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class DetailTournoiCourantRepository {
   final dio = Dio();
+  final codeTournoiDefaul = AppCubitStorage().state.codeTournois;
+
+
   Future<Map<String, dynamic>> DetailTournoiCourant() async {
     try {
-      // Récupérer le token du bloc hydraté
-      // final token = AuthCubit().state.token;
       log("response1");
 
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/tournois/1hcfu2rdn/show',
+        '${Variables.LienAIP}/api/v1/tournois/$codeTournoiDefaul/show',
         // data: {
         //   // "urlcodes": Variables().urlcodes,
         // },
       );
 
       final Map<String, dynamic> dataJson = response.data["data"];
-      // final List<dynamic> dataJson = response.data["data"];
-      // print("dataJsozzzzzzzzzzzzz      ${response.data["data"]["userGroups"].runtimeType}");
-      // print("dataJsonsssssssssddddedxex      ${dataJson}");
 
-      // final List<UserGroupModel> groups = dataJson
-      //     .map<UserGroupModel>(
-      //       (json) => UserGroupModel.fromJson(json),
-      //     )
-      //     .toList();
+
+      print("dataJsozzzzzzzzzzzzzT      ${response.data["data"]["tournois"]["seance"]}");
+
+
 
       log('Okay AllUserGroupOfUser rep');
       return dataJson;

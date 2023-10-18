@@ -50,6 +50,7 @@ dependencies:
   # buil_runner: ^2.3.2
   json_annotation: ^4.8.0
   easy_localization: ^3.0.3
+  url_launcher: ^6.0.3
   
 
 

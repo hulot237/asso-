@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 String formatMontantFrancais(double montant) {
   // Utilise la fonction 'toStringAsFixed' pour formater le montant avec deux décimales
   String montantString = montant.toStringAsFixed(2);
@@ -16,4 +18,19 @@ String formatMontantFrancais(double montant) {
   String montantFormate = partieEntiere;
 
   return montantFormate;
+}
+
+String formatDate(String dateString) {
+  final inputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+  final outputFormat = DateFormat("dd/MM/yyyy");
+  final date = inputFormat.parse(dateString);
+  return outputFormat.format(date);
+}
+
+
+String formatTime(String dateTimeString) {
+  final inputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+  final outputFormat = DateFormat("HH:mm");
+  final dateTime = inputFormat.parse(dateTimeString);
+  return outputFormat.format(dateTime);
 }

@@ -1,19 +1,26 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/detailRencontrePage.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WidgetRencontreCard extends StatefulWidget {
   WidgetRencontreCard({
     super.key,
-    required this.nomRecepteurRencontre,
+    required this.prenomRecepteurRencontre,
     required this.identifiantRencontre,
     required this.isActiveRencontre,
     required this.descriptionRencontre,
     required this.lieuRencontre,
     required this.dateRencontre,
     required this.heureRencontre,
+    required this.nomRecepteurRencontre,
+    required this.photoProfilRecepteur,
+    required this.codeSeance,
   });
 
+  String prenomRecepteurRencontre;
   String nomRecepteurRencontre;
   String identifiantRencontre;
   int isActiveRencontre;
@@ -21,16 +28,35 @@ class WidgetRencontreCard extends StatefulWidget {
   String lieuRencontre;
   String dateRencontre;
   String heureRencontre;
+  String photoProfilRecepteur;
+  String codeSeance;
 
   @override
   State<WidgetRencontreCard> createState() => _WidgetRencontreCardState();
 }
 
+
 class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
+  Future<void> handleDefaultSeance(codeSeance) async {
+    final detailSeance = await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
+
+    if (detailSeance != null) {
+      print(
+          "objectttttttttttttttttttttttttt  ${detailSeance}");
+      print(
+          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  ${context.read<SeanceCubit>().state.detailSeance}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    
     return GestureDetector(
       onTap: () {
+        handleDefaultSeance(widget.codeSeance);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -42,6 +68,8 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
               isActiveRencontre: widget.isActiveRencontre,
               lieuRencontre: widget.lieuRencontre,
               nomRecepteurRencontre: widget.nomRecepteurRencontre,
+              prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
+              photoProfilRecepteur: widget.photoProfilRecepteur,
             ),
           ),
         );
@@ -52,11 +80,12 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
         // margin: EdgeInsets.only(left: 7, right: 7, top: 5),
         decoration: BoxDecoration(
           // border: Border.all(width: 0.5, color: Colors.black26),
-          color: Colors.white,
+         color: widget.isActiveRencontre==1? Colors.white : Color.fromARGB(12, 0, 0, 0),
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
+          
             BoxShadow(
-              color: const Color.fromARGB(110, 117, 117, 117),
+              color: widget.isActiveRencontre==1? Color.fromARGB(110, 117, 117, 117) : Color.fromARGB(0, 117, 117, 117)  ,
               spreadRadius: 0.2,
               blurRadius: 0.2,
             ),
@@ -96,7 +125,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: Image.network(
-                                    "https://img.freepik.com/free-photo/portrait-handsome-man-orange-background_23-2149020009.jpg?size=626&ext=jpg&ga=GA1.1.852592464.1694512378&semt=ais",
+                                    "${Variables.LienAIP}${widget.photoProfilRecepteur}",
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -114,7 +143,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                           2.3,
                                       // margin: EdgeInsets.only(bottom: 5),
                                       child: Text(
-                                        widget.nomRecepteurRencontre,
+                                        "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}",
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                         style: TextStyle(
@@ -162,6 +191,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                             ],
                           ),
                         ),
+                        widget.isActiveRencontre==1?
                         Container(
                           decoration: BoxDecoration(
                             color: Color.fromARGB(48, 76, 175, 79),
@@ -173,6 +203,19 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                             style: TextStyle(
                               fontSize: 9,
                               color: const Color.fromARGB(255, 20, 153, 25),
+                            ),
+                          ),
+                        ):Container(
+                          // decoration: BoxDecoration(
+                          //   color: Color.fromARGB(48, 76, 175, 79),
+                          //   borderRadius: BorderRadius.circular(4),
+                          // ),
+                          padding: EdgeInsets.all(2),
+                          child: Text(
+                            "Terminé",
+                            style: TextStyle(
+                              fontSize: 9,
+                              color: Colors.red,
                             ),
                           ),
                         )

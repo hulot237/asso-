@@ -1,4 +1,3 @@
-import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:flutter/material.dart';
 
 class widgetListAssCard extends StatefulWidget {

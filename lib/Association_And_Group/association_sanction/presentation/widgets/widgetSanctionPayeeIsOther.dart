@@ -35,7 +35,7 @@ class _WidgetSanctionPayeeIsOtherState extends State<WidgetSanctionPayeeIsOther>
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
-            Container(
+            Expanded(
               child: Column(
                 children: [
                   Container(
@@ -66,6 +66,7 @@ class _WidgetSanctionPayeeIsOtherState extends State<WidgetSanctionPayeeIsOther>
                                 Container(
                                   child: Text(
                                     "${widget.motifSanction}",
+                                    maxLines: 2,
                                     overflow: TextOverflow.clip,
                                     style: TextStyle(
                                         fontSize: 14,

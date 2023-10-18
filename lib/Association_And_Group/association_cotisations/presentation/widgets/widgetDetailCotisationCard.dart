@@ -13,7 +13,7 @@ class widgetDetailCotisationCard extends StatefulWidget {
     required this.contributionOneUser,
     required this.nbreParticipant,
     required this.nbreParticipantCotisationOK,
-    required this.montantSanctionCollectee, 
+    // required this.montantSanctionCollectee, 
     required this.isActive,
   });
   int montantCotisations;
@@ -24,7 +24,7 @@ class widgetDetailCotisationCard extends StatefulWidget {
   String contributionOneUser;
   int nbreParticipant;
   int nbreParticipantCotisationOK;
-  String montantSanctionCollectee;
+  // String montantSanctionCollectee;
   int isActive;
 
 
@@ -38,16 +38,6 @@ class _widgetDetailCotisationCardState
   @override
   Widget build(BuildContext context) {
     return Container(
-      // decoration: BoxDecoration(
-      //   color: Color.fromARGB(255, 255, 255, 255),
-      //   borderRadius: BorderRadius.circular(7),
-      //   boxShadow: [
-      //     BoxShadow(
-      //         color: Color.fromARGB(69, 0, 0, 0),
-      //         spreadRadius: 1,
-      //         blurRadius: 5),
-      //   ],
-      // ),
 
 
             decoration: BoxDecoration(
@@ -96,7 +86,7 @@ class _widgetDetailCotisationCardState
                       ),
                       GestureDetector(
                         onTap: () {
-                              Modal().showModalActionPayement(context);
+                              Modal().showModalActionPayement(context, "zz");
                             },
                         child: widget.isActive == 1? Container(
                            padding: EdgeInsets.only(left: 8, right: 8, top:5, bottom: 5 ),
@@ -273,7 +263,7 @@ class _widgetDetailCotisationCardState
                     children: [
                       GestureDetector(
                         onTap: () {
-                              Modal().showModalPersonSanctionner(context);
+                              Modal().showModalPersonSanctionner(context, []);
                             },
                         child: Container(
                           margin: EdgeInsets.only(bottom: 3),
@@ -291,7 +281,7 @@ class _widgetDetailCotisationCardState
                               ),
                               Container(
                                 child: Text(
-                                  "${formatMontantFrancais(double.parse(widget.montantSanctionCollectee))} FCFA",
+                                  "${formatMontantFrancais(double.parse("122"))} FCFA",
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
                                       fontSize: 11,

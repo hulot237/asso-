@@ -1,4 +1,5 @@
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
@@ -8,9 +9,10 @@ import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Modal {
-  void showBottomSheetListAss(context, List<UserGroupModel>? listAllAss) {
+  void showBottomSheetListAss(context, List? listAllAss) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -126,11 +128,10 @@ class Modal {
                         ),
                         margin: EdgeInsets.all(5),
                         child: Text(
-                          'Tournoi #${currentItemAssociationList["matricule"]}',
+                          'Tournoi #${currentItemAssociationList["reference"]}',
                           style: TextStyle(
-                            color: Color.fromARGB(164, 20, 45, 99),
-                            fontWeight: FontWeight.w800
-                          ),
+                              color: Color.fromARGB(164, 20, 45, 99),
+                              fontWeight: FontWeight.w800),
                         ),
                       ),
                     );
@@ -496,7 +497,7 @@ class Modal {
     );
   }
 
-  void showModalPersonSanctionner(context) {
+  void showModalPersonSanctionner(context, var listSanction) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -523,11 +524,20 @@ class Modal {
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: 15,
+                  itemCount: listSanction.length,
                   itemBuilder: (context, index) {
+                    final itemLListSanction = listSanction[index];
+
+                    print("@@@@@@@@@@@@@ ${itemLListSanction}");
                     return Container(
                         margin: EdgeInsets.only(left: 5, right: 5),
-                        child: WidgetPersonSanctionner());
+                        child: WidgetPersonSanctionner(
+                          motif: itemLListSanction["motif"],
+                          nom: itemLListSanction["membre"]["first_name"] ==null? "" : itemLListSanction["membre"]["first_name"],
+                          outilSanction: itemLListSanction["amount"].toString() =="null"? itemLListSanction["libelle"] : formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()) ),
+                          photoProfil: itemLListSanction["membre"]["photo_profil"],
+                          prenom: itemLListSanction["membre"]["last_name"] ==null? "" : itemLListSanction["membre"]["last_name"],
+                        ));
                   },
                 ),
               )
@@ -547,7 +557,8 @@ class Modal {
     );
   }
 
-  void showModalPersonPresent(context, tabController) {
+  void showModalPersonPresent(
+      context, tabController, var listAbs, var listPrsent) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -594,7 +605,7 @@ class Modal {
                           ),
                           Container(
                             child: Text(
-                              "(10)",
+                              "(${listPrsent.length})",
                               style: TextStyle(fontSize: 10),
                             ),
                           )
@@ -609,7 +620,7 @@ class Modal {
                           ),
                           Container(
                             child: Text(
-                              "(2)",
+                              "(${listAbs.length})",
                               style: TextStyle(fontSize: 10),
                             ),
                           )
@@ -641,22 +652,48 @@ class Modal {
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0),
-                          itemCount: 10,
+                          itemCount: listPrsent.length,
                           itemBuilder: (context, index) {
+                            final currentListPrsent = listPrsent[index];
                             return Container(
                               padding: EdgeInsets.all(5),
-                              child: widgetListPresenceCard(),
+                              child: widgetListPresenceCard(
+                                imageProfil:
+                                    currentListPrsent["photo_profil"] == "null"
+                                        ? ""
+                                        : currentListPrsent['photo_profil'],
+                                nom: currentListPrsent['first_name'] == "null"
+                                    ? ""
+                                    : currentListPrsent['first_name'],
+                                prenom: currentListPrsent['last_name'] == "null"
+                                    ? ""
+                                    : currentListPrsent['last_name'],
+                                presence: '1',
+                              ),
                             );
                           },
                         ),
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0),
-                          itemCount: 2,
+                          itemCount: listAbs.length,
                           itemBuilder: (context, index) {
+                            final currentListAbs = listAbs[index];
                             return Container(
                               padding: EdgeInsets.all(5),
-                              child: widgetListPresenceCard(),
+                              child: widgetListPresenceCard(
+                                imageProfil:
+                                    currentListAbs["photo_profil"] == null
+                                        ? ""
+                                        : currentListAbs['photo_profil'],
+                                nom: currentListAbs['first_name'] == null
+                                    ? " "
+                                    : currentListAbs['first_name'],
+                                prenom: currentListAbs['last_name'] == null
+                                    ? " "
+                                    : currentListAbs['last_name'],
+                                presence: '0',
+                              ),
                             );
                           },
                         ),
@@ -760,7 +797,7 @@ class Modal {
     );
   }
 
-  void showModalActionPayement(context) {
+  void showModalActionPayement(context, lienDePaiement) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -791,27 +828,37 @@ class Modal {
 
           child: Column(
             children: [
-              Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(7),
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(bottom: 11),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(0, 162, 255, 1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Text(
-                  "Payer vous même",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+              GestureDetector(
+                onTap: () async {
+                  final url = lienDePaiement;
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Impossible d\'ouvrir le lien $url';
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(7),
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.only(bottom: 11),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(0, 162, 255, 1),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Text(
+                    "Payer vous même",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  Share.share('Hello, check out this amazing article!');
+                  Share.share(lienDePaiement);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -843,10 +890,20 @@ class Modal {
 }
 
 class widgetListPresenceCard extends StatelessWidget {
-  const widgetListPresenceCard({
+  widgetListPresenceCard({
+    required this.nom,
+    required this.prenom,
+    required this.presence,
+    required this.imageProfil,
     super.key,
   });
+  String nom;
 
+  String prenom;
+
+  String presence;
+
+  String imageProfil;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -868,7 +925,7 @@ class widgetListPresenceCard extends StatelessWidget {
               width: 25,
               height: 25,
               child: Image.network(
-                "https://img.freepik.com/photos-gratuite/heureux-jeune-homme-portant-casquette-aide-ordinateur-portable_171337-17897.jpg?size=626&ext=jpg&uid=R103146264&ga=GA1.2.852592464.1694512378&semt=ais",
+                "${Variables.LienAIP}${imageProfil}",
                 fit: BoxFit.cover,
               ),
             ),
@@ -878,7 +935,7 @@ class widgetListPresenceCard extends StatelessWidget {
               margin: EdgeInsets.only(left: 10),
               child: Container(
                 child: Text(
-                  "KENGNE DJOUSSE Hulot ",
+                  "${nom} ${prenom}",
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     fontSize: 13,
@@ -889,13 +946,23 @@ class widgetListPresenceCard extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-              padding: EdgeInsets.all(3),
-              child: Icon(
-                Icons.check,
-                color: Color.fromARGB(255, 0, 126, 4),
-                size: 14,
-              )),
+          presence == "0"
+              ? Container(
+                  padding: EdgeInsets.all(3),
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    size: 14,
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.all(3),
+                  child: Icon(
+                    Icons.check,
+                    color: Color.fromARGB(255, 0, 126, 4),
+                    size: 14,
+                  ),
+                ),
         ],
       ),
     );
@@ -903,9 +970,19 @@ class widgetListPresenceCard extends StatelessWidget {
 }
 
 class WidgetPersonSanctionner extends StatelessWidget {
-  const WidgetPersonSanctionner({
+  WidgetPersonSanctionner({
+    required this.photoProfil,
+    required this.nom,
+    required this.prenom,
+    required this.outilSanction,
+    required this.motif,
     super.key,
   });
+  String photoProfil;
+  String nom;
+  String prenom;
+  String outilSanction;
+  String motif;
 
   @override
   Widget build(BuildContext context) {
@@ -932,7 +1009,7 @@ class WidgetPersonSanctionner extends StatelessWidget {
                 width: 40,
                 height: 40,
                 child: Image.network(
-                  "https://img.freepik.com/photos-gratuite/heureux-jeune-homme-portant-casquette-aide-ordinateur-portable_171337-17897.jpg?size=626&ext=jpg&uid=R103146264&ga=GA1.2.852592464.1694512378&semt=ais",
+                  '${Variables.LienAIP}${photoProfil}',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -947,7 +1024,7 @@ class WidgetPersonSanctionner extends StatelessWidget {
                   children: [
                     Container(
                       child: Text(
-                        "KENGNE DJOUSSE Hulot",
+                        "${nom} ${prenom}",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                           fontSize: 15,
@@ -959,7 +1036,7 @@ class WidgetPersonSanctionner extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(top: 3),
                       child: Text(
-                        "Bavardage durant la seance du 1er",
+                        "${motif}",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                             fontSize: 12,
@@ -972,7 +1049,7 @@ class WidgetPersonSanctionner extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            "Un casier de petite Guinness",
+                            "${outilSanction}",
                             overflow: TextOverflow.clip,
                             style: TextStyle(
                               fontSize: 12,

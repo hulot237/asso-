@@ -1,8 +1,31 @@
-// import 'dart:convert';
-// import 'dart:developer';
-// import 'package:http/http.dart' as http;
-// import 'package:integration_part_one/authentication/business_logic/auth_cubit.dart';
-// import 'package:integration_part_one/delivery/data/delivery_model.dart';
+import 'dart:developer';
+import 'package:dio/dio.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
+
+class CompteRepository {
+  final dio = Dio();
+// http://192.168.1.110:3333/api/v1/cotisation/1hcul26gv/show
+
+  Future<List<dynamic>> AllCompteAss(codeAssociation) async {
+    try {
+    print("zzzeeezzzzz $codeAssociation");
+      log("response AllCotisationOfAss");
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/compte/$codeAssociation',
+      );
+      print("dataJszzz~~~~~~~~~~zzzzzzzzzzzz      ${response.data["data"]}");
+
+      final List<dynamic> dataJson = response.data["data"];
+      // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
+      log('Okay AllCotisationOfAss rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur AllCotisationOfAss rep');
+      print(e);
+      return [];
+    }
+  }
+}
 
 // class DeliveryRepository {
 //   Future<List<DeliveryModel>?> AllLivraisonOfUserPending() async {

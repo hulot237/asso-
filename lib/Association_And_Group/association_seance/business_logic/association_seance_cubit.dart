@@ -1,25 +1,19 @@
-import 'package:faroty_association_1/Association_And_Group/association/business_logic/delivery_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association/data/association_repository.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/association_tournoi_repository.dart';
-import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
-import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-// import 'package:integration_part_one/proposition/business_logic/proposition_state.dart';
-// import 'package:integration_part_one/proposition/data/proposition_repository.dart';
 
-class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
-  DetailTournoiCourantCubit()
+class SeanceCubit extends Cubit<SeanceState> {
+  SeanceCubit()
       : super(
-          DetailTournoiCourantState(
-            detailtournoiCourant: {},
+          SeanceState(
+            detailSeance: {},
           ),
         );
 
-  Future<bool> detailTournoiCourantCubit() async {
+  Future<bool> detailSeanceCubit(codeSeance) async {
     try {
       final data =
-          await DetailTournoiCourantRepository().DetailTournoiCourant();
+          await SeanceRepository().DetailSeance(codeSeance);
 
       if (data != null) {
         // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
@@ -28,16 +22,16 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
 
         emit(
           state.copyWith(
-            detailtournoicourant: data,
+            detailseance: data,
           ),
         );
 
-        print("detailtournoicourant Cubit ok");
+        print("DetailSeance Cubit ok");
         return true;
       } else {
         emit(
           state.copyWith(
-            detailtournoicourant: {},
+            detailseance: {},
           ),
         );
         return false;
@@ -45,7 +39,7 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
     } catch (e) {
       emit(
         state.copyWith(
-          detailtournoicourant: {},
+          detailseance: {},
         ),
       );
       return true;

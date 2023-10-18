@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -27,7 +30,7 @@ Future<void> main() async {
       saveLocale: true,
       path: "assets/languages",
     ),
-  ); 
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -43,11 +46,23 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => DetailTournoiCourantCubit(),
         ),
-
-
+        BlocProvider(
+          create: (context) => SeanceCubit(),
+        ),
         BlocProvider(
           create: (context) => AppCubitStorage(),
         ),
+        BlocProvider(
+          create: (context) => CotisationCubit(),
+        ),  
+        BlocProvider(
+          create: (context) => AuthCubit(),
+        ),  
+        BlocProvider(
+          create: (context) => CompteCubit(),
+        ),    
+         
+        
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,

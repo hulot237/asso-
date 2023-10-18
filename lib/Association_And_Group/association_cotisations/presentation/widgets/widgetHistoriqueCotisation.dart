@@ -1,8 +1,21 @@
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:flutter/material.dart';
 
 class WidgetHistoriqueCotisation extends StatefulWidget {
-  const WidgetHistoriqueCotisation({super.key});
+
+  WidgetHistoriqueCotisation({super.key, required this.photoProfil, required this.is_versement_finished,required this.montantVersee, required this.matricule, required this.nom, required this.prenom, required this.montantTotalAVerser,});
+  String matricule;
+  
+  String montantVersee;
+  
+  String nom;
+  
+  String prenom;
+  
+  String photoProfil;
+  String montantTotalAVerser;
+  int is_versement_finished;
 
   @override
   State<WidgetHistoriqueCotisation> createState() =>
@@ -39,7 +52,7 @@ class _WidgetHistoriqueCotisationState
                           color: Colors.lightBlue,
                           borderRadius: BorderRadius.circular(50)),
                       child: Image.network(
-                        "https://img.freepik.com/photos-gratuite/hotesse-air-coup-moyen-posant_23-2150312701.jpg?size=626&ext=jpg&ga=GA1.1.852592464.1694512378&semt=ais",
+                        "${Variables.LienAIP}${widget.photoProfil}",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -53,7 +66,7 @@ class _WidgetHistoriqueCotisationState
                         Container(
                           margin: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            "KENGNE DJOUSSE Hulot",
+                            "${widget.nom} ${widget.prenom}",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 14,
@@ -61,8 +74,9 @@ class _WidgetHistoriqueCotisationState
                                 color: Color.fromRGBO(20, 45, 99, 1),),
                           ),
                         ),
+                        
                         Container(
-                          child: Text("JUI23",style: TextStyle(
+                          child: Text("${widget.matricule}",style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w800,
                                 color: Color.fromRGBO(20, 45, 99, 0.349),),),
@@ -73,32 +87,35 @@ class _WidgetHistoriqueCotisationState
                 ],
               ),
             ),
+
+
+            if(widget.montantTotalAVerser == widget.montantVersee && widget.montantVersee=="0" && widget.is_versement_finished==0)
             Container(
               child: Row(
                 children: [
                   Container(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(bottom: 15),
+                          // margin: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            "${formatMontantFrancais(5000)} FCFA",
+                            "${formatMontantFrancais(double.parse("${widget.montantVersee}") )} FCFA",
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w800,
-                                color: Colors.green),
+                                color: Colors.red),
                           ),
                         ),
-                        Container(
-                          child: Text(
-                            "20/03/2023",
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w800,
-                                color: Color.fromRGBO(20, 45, 99, 0.349),),
-                          ),
-                        )
+                        // Container(
+                        //   child: Text(
+                        //     "20/03/2023",
+                        //     style: TextStyle(
+                        //         fontSize: 10,
+                        //         fontWeight: FontWeight.w800,
+                        //         color: Color.fromRGBO(20, 45, 99, 0.349),),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -107,7 +124,103 @@ class _WidgetHistoriqueCotisationState
                     margin: EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Color.fromARGB(40, 76, 175, 79),
+                      color: Color.fromARGB(40, 175, 76, 76),
+                    ),
+                    child: Icon(
+                      Icons.done,
+                      color: Colors.red,
+                      size: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            if(int.parse(widget.montantTotalAVerser)  >= int.parse(widget.montantVersee) && widget.montantVersee!="0" && widget.is_versement_finished==0)
+            Container(
+              child: Row(
+                children: [
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          // margin: EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            "${formatMontantFrancais(double.parse("${widget.montantVersee}") )} FCFA",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.orange),
+                          ),
+                        ),
+                        // Container(
+                        //   child: Text(
+                        //     "20/03/2023",
+                        //     style: TextStyle(
+                        //         fontSize: 10,
+                        //         fontWeight: FontWeight.w800,
+                        //         color: Color.fromRGBO(20, 45, 99, 0.349),),
+                        //   ),
+                        // )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(1),
+                    margin: EdgeInsets.only(left: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Color.fromARGB(40, 175, 76, 76),
+                    ),
+                    child: Icon(
+                      Icons.done,
+                      color: Colors.orange,
+                      size: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+
+
+            if(widget.is_versement_finished==1)
+            Container(
+              child: Row(
+                children: [
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          // margin: EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            "${formatMontantFrancais(double.parse("${widget.montantVersee}") )} FCFA",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.green),
+                          ),
+                        ),
+                        // Container(
+                        //   child: Text(
+                        //     "20/03/2023",
+                        //     style: TextStyle(
+                        //         fontSize: 10,
+                        //         fontWeight: FontWeight.w800,
+                        //         color: Color.fromRGBO(20, 45, 99, 0.349),),
+                        //   ),
+                        // )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(1),
+                    margin: EdgeInsets.only(left: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Color.fromARGB(40, 83, 175, 76),
                     ),
                     child: Icon(
                       Icons.done,

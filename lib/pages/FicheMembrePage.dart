@@ -1,4 +1,8 @@
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -10,6 +14,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
+    final currentDetailUser = context.read<AuthCubit>().state.detailUser;
     return Scaffold(
       backgroundColor: Color(0xFFEFEFEF),
       body: Padding(
@@ -45,7 +50,7 @@ class _AccountPageState extends State<AccountPage> {
                             width: 70,
                             height: 70,
                             child: Image.network(
-                              "https://img.freepik.com/photos-gratuite/confiant-entrepreneur-regardant-camera-bras-croises-souriant_1098-18840.jpg?size=626&ext=jpg&ga=GA1.1.852592464.1694512378&semt=ais",
+                              "${Variables.LienAIP}${currentDetailUser!["current_membre"]["photo_profil"]}",
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -58,7 +63,7 @@ class _AccountPageState extends State<AccountPage> {
                               padding:
                                   EdgeInsets.only(left: 5, right: 5, top: 5),
                               child: Text(
-                                "KENGNE DJOUSSE Hulot",
+                                "${currentDetailUser["current_membre"]["first_name"] == null ? "" : currentDetailUser["current_membre"]["first_name"]} ${currentDetailUser["current_membre"]["last_name"] == null ? "" : currentDetailUser["current_membre"]["lastt_name"]}",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 15,
@@ -88,10 +93,10 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                             ),
                             Text(
-                              "Membre",
+                              "${currentDetailUser["current_membre"]["type"] == "2" ? "Fondateur" : currentDetailUser["current_membre"]["type"] == "3" ? "Membre" : "Super Admin"}",
                               style: TextStyle(
                                 fontSize: 10,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 color: Colors.green,
                               ),
                             )
@@ -108,10 +113,10 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                             ),
                             Text(
-                              "ERI21",
+                              "${currentDetailUser["current_membre"]["matricule"]}",
                               style: TextStyle(
                                 fontSize: 10,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 color: Colors.green,
                               ),
                             )
@@ -127,14 +132,46 @@ class _AccountPageState extends State<AccountPage> {
                                 color: const Color.fromARGB(127, 255, 255, 255),
                               ),
                             ),
-                            Text(
-                              "Payé",
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.green,
-                              ),
-                            )
+                            currentDetailUser["current_membre"]
+                                        ["is_inscription_payed"] ==
+                                    1
+                                ? Text(
+                                    "Payé",
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.green,
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: () async {
+                                      final url = currentDetailUser["current_membre"]["inscription_pay_link"];
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      } else {
+                                        throw 'Impossible d\'ouvrir le lien $url';
+                                      }
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Non payé",
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        Container(
+                                            margin: EdgeInsets.only(left: 2),
+                                            child: Icon(
+                                              Icons.open_in_new,
+                                              color: Colors.red,
+                                              size: 10,
+                                            ))
+                                      ],
+                                    ),
+                                  )
                           ],
                         ),
                       ],
@@ -213,7 +250,7 @@ class _AccountPageState extends State<AccountPage> {
                                               ),
                                               Container(
                                                 child: Text(
-                                                  "kengnedjoussehulot@gmail.com",
+                                                  currentDetailUser["current_membre"]["email"]==null? "" : currentDetailUser["current_membre"]["email"],
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
@@ -261,7 +298,8 @@ class _AccountPageState extends State<AccountPage> {
                                               ),
                                               Container(
                                                 child: Text(
-                                                  "680474835",
+                                                  
+                                                  "${currentDetailUser["current_membre"]["first_phone"] }",
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
@@ -359,10 +397,14 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             child: ListView.builder(
                               padding: EdgeInsets.all(0),
-                              itemCount: 3,
+                              itemCount: currentDetailUser["current_membre"]["beneficiary"].length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
+                                final itemCurrentDetailUser = currentDetailUser["current_membre"]["beneficiary"][index];
+                                // print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${currentDetailUser["current_membre"]["beneficiary"]}");
+                                if (currentDetailUser["current_membre"]["beneficiary"].length!=0) {
+                                  
                                 return Container(
                                   decoration: BoxDecoration(
                                     border: Border(
@@ -391,7 +433,7 @@ class _AccountPageState extends State<AccountPage> {
                                                     bottom: 20,
                                                   ),
                                                   child: Icon(
-                                                    Icons.email_outlined,
+                                                    Icons.person,
                                                     color: Color.fromARGB(
                                                       255,
                                                       20,
@@ -421,7 +463,7 @@ class _AccountPageState extends State<AccountPage> {
                                                     ),
                                                     Container(
                                                       child: Text(
-                                                        "kengnedjoussehulot",
+                                                        "${itemCurrentDetailUser["first_name"]==null? "" : itemCurrentDetailUser["first_name"]} ${itemCurrentDetailUser["last_name"]==null? "" : itemCurrentDetailUser["last_name"]}",
                                                         style: TextStyle(
                                                             color:
                                                                 Color.fromARGB(
@@ -481,7 +523,7 @@ class _AccountPageState extends State<AccountPage> {
                                                     ),
                                                     Container(
                                                       child: Text(
-                                                        "680474835",
+                                                        "${itemCurrentDetailUser["first_phone"]}",
                                                         style: TextStyle(
                                                             color:
                                                                 Color.fromARGB(
@@ -504,6 +546,7 @@ class _AccountPageState extends State<AccountPage> {
                                     ],
                                   ),
                                 );
+                                }
                               },
                             ),
                           )

@@ -1,5 +1,32 @@
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'package:dio/dio.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
+
+class AuthRepository {
+  final dio = Dio();
+
+  Future<Map<String, dynamic>> UserDetail(userCode) async {
+    try {
+      print("zzzeeezzzzz $userCode");
+      log("response DetailCotisation");
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/membre/$userCode/show',
+      );
+      print("dataJszzz=======++++++      ${response.data["data"]}");
+
+      final Map<String, dynamic> dataJson = response.data["data"];
+      // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
+      log('Okay DetailCotisation rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur DetailCotisation rep');
+      print(e);
+      return {};
+    }
+  }
+}
+
+  
 
 // class AuthRepository  {
 //   Future<Map<String, dynamic>?> login(String email, String password) async {

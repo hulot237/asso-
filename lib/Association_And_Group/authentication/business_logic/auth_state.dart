@@ -1,38 +1,27 @@
-// import 'package:equatable/equatable.dart';
-// import 'package:integration_part_two/authentication/data/deliverer_model.dart';
+import 'package:equatable/equatable.dart';
 
-// class AuthState extends Equatable {
-//   final bool isAuthenticated;
-//   final String? token;
-//   final DelivererModel? currentUser;
+class AuthState extends Equatable {
+  final Map<String, dynamic>? detailUser;
 
-//   AuthState({required this.isAuthenticated, this.token, this.currentUser});
+  AuthState({
+    this.detailUser,
+  });
 
-//   @override
-//   List<Object?> get props => [isAuthenticated, token];
+  @override
+  List<Object?> get props => [
+        detailUser,
+      ];
 
-//   AuthState copyWith(
-//       {bool? isAuthenticated, String? token, DelivererModel? currentUser}) {
-//     return AuthState(
-//       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
-//       token: token ?? this.token,
-//       currentUser: currentUser,
-//     );
-//   }
+  AuthState copyWith({
+    // List<UserGroupCourantModel>? userGroupDefault,
+    Map<String, dynamic>? detailuser,
+  }) {
+    return AuthState(
+      detailUser: detailuser,
+    );
+  }
 
-//   factory AuthState.fromJson(Map<String, dynamic> json) {
-//     return AuthState(
-//       isAuthenticated: json['isAuthenticated'],
-//       token: json['token'],
-//       currentUser: json['user'],
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'isAuthenticated': isAuthenticated,
-//       'token': token,
-//       'currentUser': currentUser!.toJson()
-//     };
-//   }
-// }
+  factory AuthState.fromJson(Map<String, dynamic> json) {
+    return AuthState(detailUser: json['detailUser']);
+  }
+}

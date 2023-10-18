@@ -4,7 +4,6 @@ import 'package:faroty_association_1/pages/FicheMembrePage.dart';
 import 'package:faroty_association_1/pages/paramsAppPage.dart';
 import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
 import 'package:faroty_association_1/pages/proposAidePage.dart';
-import 'package:faroty_association_1/widget/WidgetActionAppBArChangeAss.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,15 +15,19 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  bool _customIconHelp = false;
+  // bool _customIconHelp = false;
 
   Map<String, dynamic>? get currentInfoAssociationCourant {
     return context.read<UserGroupCubit>().state.userGroupDefault;
   }
+
   @override
   Widget build(BuildContext context) {
     //  Map<String, dynamic>? currentInfoAssociationCourant = context.read<UserGroupCubit>().state.userGroupDefault;
-
+    setState(() {
+      print(
+          "zzzzzzzzzzzzzzzzzzzzzzzededededeecec ${currentInfoAssociationCourant!["tournois"]}");
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -183,7 +186,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             child: Row(
                               children: [
                                 Container(
-                                  child: Icon(Icons.phone_android_outlined, color: Colors.blue),
+                                  child: Icon(Icons.phone_android_outlined,
+                                      color: Colors.blue),
                                   margin: EdgeInsets.only(right: 10),
                                 ),
                                 Text(
@@ -208,7 +212,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       // context.read<ServiceCubit>().state.currentService!.id;
                       Modal().showBottomSheetListTournoi(
                         context,
-                        currentInfoAssociationCourant!['associationTournoi'],
+                        currentInfoAssociationCourant!["tournois"],
                       );
                     },
                     child: Container(
@@ -232,7 +236,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             child: Row(
                               children: [
                                 Container(
-                                  child: Icon(Icons.ads_click_outlined, color: Colors.red),
+                                  child: Icon(Icons.ads_click_outlined,
+                                      color: Colors.red),
                                   margin: EdgeInsets.only(right: 10),
                                 ),
                                 Text(
@@ -246,14 +251,17 @@ class _SettingScreenState extends State<SettingScreen> {
                               ],
                             ),
                           ),
-                          Text(
-                            "Tournoi #01",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Color.fromARGB(125, 20, 45, 99),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          for (var item
+                              in currentInfoAssociationCourant!["tournois"])
+                            if (item["is_default"] == 1)
+                              Text(
+                                'Tournoi #${item["reference"]}',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color.fromARGB(125, 20, 45, 99),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                           Icon(Icons.arrow_right,
                               color: Color.fromARGB(255, 20, 45, 99), size: 12),
                         ],
@@ -264,9 +272,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     onTap: () {
                       // context.read<ServiceCubit>().state.currentService!.id;
                       Modal().showBottomSheetListAss(
-                        context,
-                        context.read<UserGroupCubit>().state.userGroup,
-                      );
+                          context, 
+                          context.read<UserGroupCubit>().state.userGroup
+                          );
                     },
                     child: Container(
                       padding: EdgeInsets.only(

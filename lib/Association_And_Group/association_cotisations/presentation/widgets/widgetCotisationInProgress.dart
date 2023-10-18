@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WidgetCotisationInProgress extends StatefulWidget {
    WidgetCotisationInProgress({    super.key,
@@ -17,6 +19,7 @@ class WidgetCotisationInProgress extends StatefulWidget {
     required this.montantSanctionCollectee,
     required this.isActive,
     required this.montantMin,
+    required this.codeCotisation,
   });
   int montantCotisations;
   String motifCotisations;
@@ -29,6 +32,7 @@ class WidgetCotisationInProgress extends StatefulWidget {
   String montantSanctionCollectee;
   int isActive;
   String montantMin;
+  String codeCotisation;
 
   @override
   State<WidgetCotisationInProgress> createState() =>
@@ -37,10 +41,28 @@ class WidgetCotisationInProgress extends StatefulWidget {
 
 class _WidgetCotisationInProgressState
     extends State<WidgetCotisationInProgress> {
+
+        Future<void> handleDetailCotisation(codeCotisation) async {
+    // final detailTournoiCourant = await context
+    //     .read<DetailTournoiCourantCubit>()
+    //     .detailTournoiCourantCubit();
+    final detailCotisation =
+        await context.read<CotisationCubit>().detailCotisationCubit(codeCotisation);
+
+    if (detailCotisation != null) {
+      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
+      print(
+          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationCubit>().state.detailCotisation}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+                handleDetailCotisation(widget.codeCotisation);
+        print("ééééééééééééééééééééééééééééééé");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -49,7 +71,7 @@ class _WidgetCotisationInProgressState
               dateCotisation: widget.dateCotisation,
               heureCotisation: widget.heureCotisation,
               montantCotisations: widget.montantCotisations,
-              montantSanctionCollectee: widget.montantSanctionCollectee,
+              // montantSanctionCollectee: widget.montantSanctionCollectee,
               motifCotisations: widget.motifCotisations,
               nbreParticipant: widget.nbreParticipant,
               nbreParticipantCotisationOK: widget.nbreParticipantCotisationOK,
@@ -119,7 +141,7 @@ class _WidgetCotisationInProgressState
                         ),
                         GestureDetector(
                           onTap: () {
-                              Modal().showModalActionPayement(context);
+                              Modal().showModalActionPayement(context, "zz");
                             },
                           child: Container(
                              padding: EdgeInsets.only(left: 8, right: 8, top:5, bottom: 5 ),

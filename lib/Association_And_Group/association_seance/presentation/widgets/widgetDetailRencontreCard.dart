@@ -1,27 +1,33 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class widgetDetailRencontreCard extends StatefulWidget {
   widgetDetailRencontreCard({
     super.key,
     required this.nomRecepteurRencontre,
+    required this.prenomRecepteurRencontre,
     required this.identifiantRencontre,
     required this.isActiveRencontre,
     required this.descriptionRencontre,
     required this.lieuRencontre,
     required this.dateRencontre,
     required this.heureRencontre,
+    required this.nbrPresence,
   });
 
   String nomRecepteurRencontre;
+  String prenomRecepteurRencontre;
   String identifiantRencontre;
   int isActiveRencontre;
   String descriptionRencontre;
   String lieuRencontre;
   String dateRencontre;
   String heureRencontre;
+  String nbrPresence;
 
   @override
   State<widgetDetailRencontreCard> createState() =>
@@ -33,6 +39,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
   @override
   Widget build(BuildContext context) {
     final TabController _tabController2 = TabController(length: 2, vsync: this);
+    final currentDetailSeanceSanction = context.read<SeanceCubit>().state.detailSeance!["sanctions"];
 
     return Container(
       decoration: BoxDecoration(
@@ -79,7 +86,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                       ),
                                     ),
                                     Container(
-                                      child: Text( 
+                                      child: Text(
                                         " ${widget.identifiantRencontre}",
                                         style: TextStyle(
                                           fontSize: 16,
@@ -95,30 +102,39 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           ),
                         ),
                       ),
-                      Container(
-                        height: 25,
-                        width: 50,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            padding: EdgeInsets.all(1),
-                            backgroundColor: Color.fromARGB(43, 0, 212, 7),
-                          ),
-                          onPressed: () {
-                            null;
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              "En cours",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10),
-                            ),
-                          ),
-                        ),
-                      )
+                      widget.isActiveRencontre == 1
+                          ? Container(
+                              padding: EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(43, 0, 212, 7),
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                child: Text(
+                                  "En cours",
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ),
+                            )
+                          : Container(
+                              padding: EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(24, 212, 0, 0),
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                child: Text(
+                                  "Terminé",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ),
+                            )
                     ],
                   ),
                 ),
@@ -139,7 +155,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                       Container(
                         margin: EdgeInsets.only(top: 3),
                         child: Text(
-                          widget.nomRecepteurRencontre,
+                          "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}",
                           style: TextStyle(
                               fontSize: 12,
                               overflow: TextOverflow.ellipsis,
@@ -244,7 +260,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            Modal().showModalPersonSanctionner(context);
+                            Modal().showModalPersonSanctionner(context, currentDetailSeanceSanction);
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -266,7 +282,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 ),
                                 Container(
                                   child: Text(
-                                    "12",
+                                    "${currentDetailSeanceSanction.length}",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w800,
@@ -282,7 +298,16 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                         child: GestureDetector(
                           onTap: () {
                             Modal().showModalPersonPresent(
-                                context, _tabController2);
+                                context,
+                                _tabController2,
+                                context
+                                    .read<SeanceCubit>()
+                                    .state
+                                    .detailSeance!["abs"],
+                                context
+                                    .read<SeanceCubit>()
+                                    .state
+                                    .detailSeance!["presents"]);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -301,7 +326,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 Container(
                                   margin: EdgeInsets.only(bottom: 3),
                                   child: Text(
-                                    "Presents",
+                                    "Présence",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w800,
@@ -312,7 +337,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 ),
                                 Container(
                                   child: Text(
-                                    "12",
+                                    widget.nbrPresence,
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w800,

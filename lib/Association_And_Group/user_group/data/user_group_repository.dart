@@ -48,11 +48,6 @@ class UserGroupRepository {
 
       final Map<String, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-
-      // print("dataJson      ${dataJson}");
-      // print("dataJsonnnnnnnnnnnnnnn      ${dataJson.runtimeType}");
-
-      // print("groups      ${UserGroupDefaultData.length}");
       log('Okay UserGroupDefault rep');
       return dataJson;
     } catch (e) {

@@ -1,10 +1,14 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetHistoriqueCotisation.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DetailCotisationPage extends StatefulWidget {
-  DetailCotisationPage({super.key,
+  DetailCotisationPage({
+    super.key,
     required this.montantCotisations,
     required this.motifCotisations,
     required this.dateCotisation,
@@ -13,7 +17,6 @@ class DetailCotisationPage extends StatefulWidget {
     required this.contributionOneUser,
     required this.nbreParticipant,
     required this.nbreParticipantCotisationOK,
-    required this.montantSanctionCollectee,
     required this.isActive,
   });
   int montantCotisations;
@@ -24,7 +27,6 @@ class DetailCotisationPage extends StatefulWidget {
   String contributionOneUser;
   int nbreParticipant;
   int nbreParticipantCotisationOK;
-  String montantSanctionCollectee;
   int isActive;
 
   @override
@@ -35,12 +37,21 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
   int _pageIndex = 0;
   var Tab = [true, false, false, true, false, true];
 
+  Map<String, dynamic>? get currentDetailCotisation {
+    return context.read<CotisationCubit>().state.detailCotisation;
+  }
+  
+
   @override
   Widget build(BuildContext context) {
+  // final  currentDetailCotisation = context.read<CotisationCubit>().state.detailCotisation;
     return Scaffold(
       backgroundColor: Color(0xFFEFEFEF),
       appBar: AppBar(
-        title: Text("Detail de la cotisations", style: TextStyle(fontSize: 16),),
+        title: Text(
+          "Detail de la cotisations",
+          style: TextStyle(fontSize: 16),
+        ),
         backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
         elevation: 0,
       ),
@@ -51,17 +62,16 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
             Container(
               margin: EdgeInsets.only(top: 10),
               child: widgetDetailCotisationCard(
-                contributionOneUser: widget.contributionOneUser,
-                dateCotisation: widget.dateCotisation,
-                heureCotisation: widget.heureCotisation,
-                montantCotisations: widget.montantCotisations,
-                motifCotisations: widget.motifCotisations,
-                montantSanctionCollectee: widget.montantSanctionCollectee,
-                nbreParticipant: widget.nbreParticipant,
-                nbreParticipantCotisationOK: widget.nbreParticipantCotisationOK,
-                soldeCotisation: widget.soldeCotisation,
-                isActive: widget.isActive
-              ),
+                  contributionOneUser: widget.contributionOneUser,
+                  dateCotisation: widget.dateCotisation,
+                  heureCotisation: widget.heureCotisation,
+                  montantCotisations: widget.montantCotisations,
+                  motifCotisations: widget.motifCotisations,
+                  nbreParticipant: widget.nbreParticipant,
+                  nbreParticipantCotisationOK:
+                      widget.nbreParticipantCotisationOK,
+                  soldeCotisation: widget.soldeCotisation,
+                  isActive: widget.isActive),
             ),
             Container(
               // color: Colors.deepOrange,
@@ -97,9 +107,9 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                             fontSize: 15),
                       ),
                       Container(
-                        
                         child: Text(
-                          "(${Tab.length})",
+                          "(${currentDetailCotisation!["versements"].length})",
+                          // "3",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 11,
@@ -120,7 +130,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                       Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "(4)",
+                          "(${currentDetailCotisation!["members"].length})",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 11,
@@ -162,23 +172,44 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                     ? ListView.builder(
                         padding: EdgeInsets.all(0),
                         shrinkWrap: true,
-                        itemCount: Tab.length,
+                        itemCount:
+                            currentDetailCotisation!["versements"].length,
                         itemBuilder: (context, index) {
                           // Vérifiez la valeur du booléen à l'index actuel
-                          bool valeurBool = Tab[index];
+                          // bool valeurBool = Tab[index];
+                          final currentDetailPersonCotis= currentDetailCotisation!["versements"];
 
-                          return WidgetHistoriqueCotisation();
+                          return WidgetHistoriqueCotisation(
+                            is_versement_finished: currentDetailPersonCotis[index]["versement"].length==0 ? 0 : currentDetailPersonCotis[index]["versement"][0]["is_versement_finished"],
+                            matricule: currentDetailPersonCotis[index]["matricule"],
+                            montantTotalAVerser: currentDetailPersonCotis[index]["versement"].length==0 ? "0" : currentDetailPersonCotis[index]["versement"][0]["source_amount"],
+                            montantVersee: currentDetailPersonCotis[index]["versement"].length==0 ? "0" : currentDetailPersonCotis[index]["versement"][0]["balance_after"],
+                            nom: currentDetailPersonCotis[index]["first_name"]==null? "" : currentDetailPersonCotis[index]["first_name"],
+                            photoProfil: currentDetailPersonCotis[index]["photo_profil"],
+                            prenom: currentDetailPersonCotis[index]["last_name"]==null? "" :currentDetailPersonCotis[index]["last_name"],
+                          );
                         },
                       )
                     : ListView.builder(
                         padding: EdgeInsets.all(0),
                         shrinkWrap: true,
-                        itemCount: Tab.length,
+                        itemCount: currentDetailCotisation!["members"].length,
                         itemBuilder: (context, index) {
                           // Vérifiez la valeur du booléen à l'index actuel
-                          bool valeurBool = Tab[index];
+                          // bool valeurBool = Tab[index];
+                          final currentDetailPersonNonCotis= currentDetailCotisation!["members"];
+                          print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${currentDetailPersonNonCotis[index]["membre"]["versement"].length}");
 
-                          return WidgetHistoriqueCotisation();
+                          return WidgetHistoriqueCotisation(
+                            is_versement_finished: currentDetailPersonNonCotis[index]["membre"]["versement"].length==0 ? 0 : currentDetailPersonNonCotis[index]["membre"]["versement"][0]["is_versement_finished"],
+
+                            matricule: currentDetailPersonNonCotis[index]["membre"]["matricule"],
+                            montantTotalAVerser: currentDetailPersonNonCotis[index]["membre"]["versement"].length==0 ? "0" : currentDetailPersonNonCotis[index]["membre"]["versement"][0]["source_amount"],
+                            montantVersee: currentDetailPersonNonCotis[index]["membre"]["versement"].length==0 ? "0" : currentDetailPersonNonCotis[index]["membre"]["versement"][0]["balance_after"],
+                            nom: currentDetailPersonNonCotis[index]["membre"]["first_name"]==null? "" : currentDetailPersonNonCotis[index]["membre"]["first_name"],
+                            photoProfil: currentDetailPersonNonCotis[index]["membre"]["photo_profil"],
+                            prenom: currentDetailPersonNonCotis[index]["membre"]["last_name"]==null? "" :currentDetailPersonNonCotis[index]["membre"]["last_name"],
+                          );
                           // Ajoutez ici le widget que vous souhaitez afficher pour true
                         },
                       ),
