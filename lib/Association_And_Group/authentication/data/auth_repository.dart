@@ -24,6 +24,27 @@ class AuthRepository {
       return {};
     }
   }
+
+  Future<Map<String, dynamic>> LoginRepository(numeroPhone) async {
+    try {
+      print("zzzeeezzzzz $numeroPhone");
+      log("response DetailCotisation");
+      final response = await dio
+          .post('${Variables.LienAIP}/login', data: {
+        "phone": numeroPhone,
+      });
+      print("dataJszzz=======++++++      ${response.data["data"]}");
+
+      final Map<String, dynamic> dataJson = response.data["data"];
+      // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
+      log('Okay DetailCotisation rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur DetailCotisation rep');
+      print(e);
+      return {};
+    }
+  }
 }
 
   

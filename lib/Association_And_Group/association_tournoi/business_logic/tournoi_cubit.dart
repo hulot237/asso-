@@ -12,7 +12,7 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
   DetailTournoiCourantCubit()
       : super(
           DetailTournoiCourantState(
-            detailtournoiCourant: {},
+            detailtournoiCourant: null,
           ),
         );
 

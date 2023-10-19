@@ -10,8 +10,8 @@ class UserGroupCubit extends Cubit<UserGroupState> {
   UserGroupCubit()
       : super(
           UserGroupState(
-            userGroup: [],
-            userGroupDefault: {},
+            userGroup: null,
+            userGroupDefault: null,
           ),
         );
 

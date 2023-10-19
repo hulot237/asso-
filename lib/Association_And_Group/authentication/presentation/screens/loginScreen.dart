@@ -1,5 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/verificationPage.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
 // import 'package:integration_part_two/pages/homeCoursier.dart';
@@ -15,28 +19,50 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController countrycode = TextEditingController();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final numeroPhoneController = TextEditingController();
 
-  // Future<void> handleLogin() async {
-  //   final email = emailController.text;
-  //   final password = passwordController.text;
+  Future<void> handleLogin() async {
+    final numeroPhone = numeroPhoneController.text;
 
-  //   final success = await context.read<AuthCubit>().login(email, password);
+    final success = await context.read<AuthCubit>().LoginCubit(numeroPhone);
 
-  //   if (success) {
-  //     Navigator.push(
-  //         context, MaterialPageRoute(builder: (context) => homeCoursier()));
+    if (success && context.read<AuthCubit>().state.loginInfo != {}) {
+      var loginInfo = context.read<AuthCubit>().state.loginInfo;
 
-  //     print("success login");
-  //     print(success);
-  //   } else {
-  //     print("erreur login");
-  //     print(success);
+      for (var elt in loginInfo!["user_groups"]) {
+        if (elt["is_default"] = true) {
+          await AppCubitStorage().updateCodeAssDefaul(elt!["urlcode"]);
+        }
 
-  //     // Afficher un message d'erreur ou une alerte
-  //   }
-  // }
+        print("################################################# ${elt["is_default"]}");
+      }
+
+      await AppCubitStorage().updatepasswordKey(loginInfo["password"]);
+      await AppCubitStorage().updateuserNameKey(loginInfo["username"]);
+      await AppCubitStorage()
+          .updatemembreCode(loginInfo["membre"]["membre_code"]);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ),
+      );
+
+      print("success login");
+      print("success loginnnn   ${context.read<AuthCubit>().state.loginInfo}");
+      print("success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
+      print("success password   ${AppCubitStorage().state.passwordKey}");
+      print("success username   ${AppCubitStorage().state.userNameKey}");
+      print("success membre_code   ${AppCubitStorage().state.membreCode}");
+
+      print(success);
+    } else {
+      print("erreur login");
+      print(success);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +88,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset("assets/images/Groupe_ou_Asso.png", scale: 3,),
+                        Image.asset(
+                          "assets/images/Groupe_ou_Asso.png",
+                          scale: 3,
+                        ),
                         SizedBox(height: 70),
                         Text(
                           "Entrer votre numéro pour obtenir le code d'authentification",
@@ -102,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                 margin: EdgeInsets.only(top: 12),
                                 alignment: Alignment.center,
                                 child: TextField(
-                                  controller: emailController,
+                                  controller: numeroPhoneController,
                                   keyboardType: TextInputType.number,
                                   style: TextStyle(
                                     fontSize: 17,
@@ -125,12 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          VerificationPage()));
-                              // handleLogin();
+                              handleLogin();
                             },
                             child: Text(
                               "Vérification",

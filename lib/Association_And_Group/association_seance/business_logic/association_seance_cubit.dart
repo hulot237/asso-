@@ -6,7 +6,7 @@ class SeanceCubit extends Cubit<SeanceState> {
   SeanceCubit()
       : super(
           SeanceState(
-            detailSeance: {},
+            detailSeance: null,
           ),
         );
 

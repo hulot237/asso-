@@ -181,11 +181,11 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
 
                           return WidgetHistoriqueCotisation(
                             is_versement_finished: currentDetailPersonCotis[index]["versement"].length==0 ? 0 : currentDetailPersonCotis[index]["versement"][0]["is_versement_finished"],
-                            matricule: currentDetailPersonCotis[index]["matricule"],
+                            matricule: currentDetailPersonCotis[index]["matricule"] ==null ? "" :currentDetailPersonCotis[index]["matricule"],
                             montantTotalAVerser: currentDetailPersonCotis[index]["versement"].length==0 ? "0" : currentDetailPersonCotis[index]["versement"][0]["source_amount"],
                             montantVersee: currentDetailPersonCotis[index]["versement"].length==0 ? "0" : currentDetailPersonCotis[index]["versement"][0]["balance_after"],
                             nom: currentDetailPersonCotis[index]["first_name"]==null? "" : currentDetailPersonCotis[index]["first_name"],
-                            photoProfil: currentDetailPersonCotis[index]["photo_profil"],
+                            photoProfil: currentDetailPersonCotis[index]["photo_profil"]==null? "": currentDetailPersonCotis[index]["photo_profil"],
                             prenom: currentDetailPersonCotis[index]["last_name"]==null? "" :currentDetailPersonCotis[index]["last_name"],
                           );
                         },
@@ -203,11 +203,11 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                           return WidgetHistoriqueCotisation(
                             is_versement_finished: currentDetailPersonNonCotis[index]["membre"]["versement"].length==0 ? 0 : currentDetailPersonNonCotis[index]["membre"]["versement"][0]["is_versement_finished"],
 
-                            matricule: currentDetailPersonNonCotis[index]["membre"]["matricule"],
+                            matricule: currentDetailPersonNonCotis[index]["membre"]["matricule"]==null? "" : currentDetailPersonNonCotis[index]["membre"]["matricule"],
                             montantTotalAVerser: currentDetailPersonNonCotis[index]["membre"]["versement"].length==0 ? "0" : currentDetailPersonNonCotis[index]["membre"]["versement"][0]["source_amount"],
                             montantVersee: currentDetailPersonNonCotis[index]["membre"]["versement"].length==0 ? "0" : currentDetailPersonNonCotis[index]["membre"]["versement"][0]["balance_after"],
                             nom: currentDetailPersonNonCotis[index]["membre"]["first_name"]==null? "" : currentDetailPersonNonCotis[index]["membre"]["first_name"],
-                            photoProfil: currentDetailPersonNonCotis[index]["membre"]["photo_profil"],
+                            photoProfil: currentDetailPersonNonCotis[index]["membre"]["photo_profil"]==null? "": currentDetailPersonNonCotis[index]["photo_profil"],
                             prenom: currentDetailPersonNonCotis[index]["membre"]["last_name"]==null? "" :currentDetailPersonNonCotis[index]["membre"]["last_name"],
                           );
                           // Ajoutez ici le widget que vous souhaitez afficher pour true

@@ -4,7 +4,19 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:flutter/material.dart';
 
 class WidgetDetailTontineCard extends StatefulWidget {
-  const WidgetDetailTontineCard({super.key});
+WidgetDetailTontineCard({super.key, 
+    required this.nomTontine,
+  required this.montantTontine,
+  required this.positionBeneficiaire,
+  required this.nbrMembreTontine,
+  required this.dateCreaTontine,
+  });
+
+String dateCreaTontine;
+String nomTontine;
+String montantTontine;
+  String positionBeneficiaire;
+String nbrMembreTontine;
 
   @override
   State<WidgetDetailTontineCard> createState() =>
@@ -57,7 +69,7 @@ class _WidgetDetailTontineCardState
                           // margin: EdgeInsets.only(right: 15),
                           child: Container(
                             child: Text(
-                              "Tontine du staff de Faroty",
+                              widget.nomTontine,
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -106,7 +118,7 @@ class _WidgetDetailTontineCardState
                             ),
                             Container(
                               child: Text(
-                                "12/02/2023",
+                                widget.dateCreaTontine,
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     fontSize: 10,
@@ -131,7 +143,7 @@ class _WidgetDetailTontineCardState
                           children: [
                             Container(
                               child: Text(
-                                "Bénéficiaires(17/30)",
+                                "Bénéficiaires(${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -160,7 +172,7 @@ class _WidgetDetailTontineCardState
                             ),
                             Container(
                               child: Text(
-                                "${formatMontantFrancais(50000)} FCFA",
+                                "${formatMontantFrancais(double.parse(widget.montantTontine) )} FCFA",
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w800,

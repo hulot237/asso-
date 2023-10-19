@@ -534,8 +534,8 @@ class Modal {
                         child: WidgetPersonSanctionner(
                           motif: itemLListSanction["motif"],
                           nom: itemLListSanction["membre"]["first_name"] ==null? "" : itemLListSanction["membre"]["first_name"],
-                          outilSanction: itemLListSanction["amount"].toString() =="null"? itemLListSanction["libelle"] : formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()) ),
-                          photoProfil: itemLListSanction["membre"]["photo_profil"],
+                          outilSanction: itemLListSanction["amount"].toString() =="null"? itemLListSanction["libelle"] : "${formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()) )} FCFA",
+                          photoProfil: itemLListSanction["membre"]["photo_profil"]==null? "" : itemLListSanction["membre"]["photo_profil"],
                           prenom: itemLListSanction["membre"]["last_name"] ==null? "" : itemLListSanction["membre"]["last_name"],
                         ));
                   },

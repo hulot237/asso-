@@ -28,6 +28,13 @@ String formatDate(String dateString) {
 }
 
 
+String formatDateString(String dateStr) {
+  DateTime dateTime = DateTime.parse(dateStr); // Analyser la date initiale
+  String formattedDate = "${dateTime.year}/${dateTime.month}/${dateTime.day}";
+  return formattedDate;
+}
+
+
 String formatTime(String dateTimeString) {
   final inputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
   final outputFormat = DateFormat("HH:mm");

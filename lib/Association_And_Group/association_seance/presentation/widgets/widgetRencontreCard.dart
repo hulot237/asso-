@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/detailRencontrePage.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:flutter/material.dart';
@@ -54,296 +55,299 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
   @override
   Widget build(BuildContext context) {
     
-    return GestureDetector(
-      onTap: () {
-        handleDefaultSeance(widget.codeSeance);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => detailRencontrePage(
-              dateRencontre: widget.dateRencontre,
-              descriptionRencontre: widget.descriptionRencontre,
-              heureRencontre: widget.heureRencontre,
-              identifiantRencontre: widget.identifiantRencontre,
-              isActiveRencontre: widget.isActiveRencontre,
-              lieuRencontre: widget.lieuRencontre,
-              nomRecepteurRencontre: widget.nomRecepteurRencontre,
-              prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
-              photoProfilRecepteur: widget.photoProfilRecepteur,
-            ),
-          ),
-        );
-      },
-      child: Container(
-        // height: 200,
-        padding: EdgeInsets.all(14),
-        // margin: EdgeInsets.only(left: 7, right: 7, top: 5),
-        decoration: BoxDecoration(
-          // border: Border.all(width: 0.5, color: Colors.black26),
-         color: widget.isActiveRencontre==1? Colors.white : Color.fromARGB(12, 0, 0, 0),
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-          
-            BoxShadow(
-              color: widget.isActiveRencontre==1? Color.fromARGB(110, 117, 117, 117) : Color.fromARGB(0, 117, 117, 117)  ,
-              spreadRadius: 0.2,
-              blurRadius: 0.2,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    // margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(bottom: 7),
-                          child: Text(
-                            "recepteur".tr(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                              color: Color.fromARGB(164, 20, 45, 99),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 15,
-                                width: 15,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "${Variables.LienAIP}${widget.photoProfilRecepteur}",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                // alignment: Alignment.center,
-                                // color: Colors.deepOrange,
-                                margin: EdgeInsets.only(left: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          2.3,
-                                      // margin: EdgeInsets.only(bottom: 5),
-                                      child: Text(
-                                        "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                child: Text(
-                                  "rencontre".tr(),
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 20, 45, 99),
-                                      fontSize: 12),
-                                ),
-                              ),
-                              Container(
-                                child: Text(
-                                  " ${widget.identifiantRencontre}",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 20, 45, 99),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        widget.isActiveRencontre==1?
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(48, 76, 175, 79),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          padding: EdgeInsets.all(2),
-                          child: Text(
-                            "En cours",
-                            style: TextStyle(
-                              fontSize: 9,
-                              color: const Color.fromARGB(255, 20, 153, 25),
-                            ),
-                          ),
-                        ):Container(
-                          // decoration: BoxDecoration(
-                          //   color: Color.fromARGB(48, 76, 175, 79),
-                          //   borderRadius: BorderRadius.circular(4),
-                          // ),
-                          padding: EdgeInsets.all(2),
-                          child: Text(
-                            "Terminé",
-                            style: TextStyle(
-                              fontSize: 9,
-                              color: Colors.red,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+    return BlocBuilder<SeanceCubit, SeanceState>(
+      builder: (context, state) {
+        return   GestureDetector(
+        onTap: () {
+          handleDefaultSeance(widget.codeSeance);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => detailRencontrePage(
+                dateRencontre: widget.dateRencontre,
+                descriptionRencontre: widget.descriptionRencontre,
+                heureRencontre: widget.heureRencontre,
+                identifiantRencontre: widget.identifiantRencontre,
+                isActiveRencontre: widget.isActiveRencontre,
+                lieuRencontre: widget.lieuRencontre,
+                nomRecepteurRencontre: widget.nomRecepteurRencontre,
+                prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
+                photoProfilRecepteur: widget.photoProfilRecepteur,
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(17, 131, 131, 131),
-                      borderRadius: BorderRadius.circular(4),
+          );
+        },
+        child: Container(
+          // height: 200,
+          padding: EdgeInsets.all(14),
+          // margin: EdgeInsets.only(left: 7, right: 7, top: 5),
+          decoration: BoxDecoration(
+            // border: Border.all(width: 0.5, color: Colors.black26),
+           color: widget.isActiveRencontre==1? Colors.white : Color.fromARGB(12, 0, 0, 0),
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+            
+              BoxShadow(
+                color: widget.isActiveRencontre==1? Color.fromARGB(110, 117, 117, 117) : Color.fromARGB(0, 117, 117, 117)  ,
+                spreadRadius: 0.2,
+                blurRadius: 0.2,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      // margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 7),
+                            child: Text(
+                              "recepteur".tr(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                                color: Color.fromARGB(164, 20, 45, 99),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(
+                                      "${Variables.LienAIP}${widget.photoProfilRecepteur}",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // alignment: Alignment.center,
+                                  // color: Colors.deepOrange,
+                                  margin: EdgeInsets.only(left: 5),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width /
+                                            2.3,
+                                        // margin: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color:
+                                                Color.fromARGB(255, 20, 45, 99),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    padding: EdgeInsets.all(5),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "rencontre".tr(),
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 20, 45, 99),
+                                        fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    " ${widget.identifiantRencontre}",
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 20, 45, 99),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          widget.isActiveRencontre==1?
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(48, 76, 175, 79),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            padding: EdgeInsets.all(2),
+                            child: Text(
+                              "En cours",
+                              style: TextStyle(
+                                fontSize: 9,
+                                color: const Color.fromARGB(255, 20, 153, 25),
+                              ),
+                            ),
+                          ):Container(
+                            // decoration: BoxDecoration(
+                            //   color: Color.fromARGB(48, 76, 175, 79),
+                            //   borderRadius: BorderRadius.circular(4),
+                            // ),
+                            padding: EdgeInsets.all(2),
+                            child: Text(
+                              "Terminé",
+                              style: TextStyle(
+                                fontSize: 9,
+                                color: Colors.red,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
                     child: Container(
-                      child: Text(
-                        widget.descriptionRencontre,
-                        // textAlign: TextAlign.start,
-                        style: TextStyle(
-                          letterSpacing: 0.3,
-                          height: 1.3,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(17, 131, 131, 131),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      padding: EdgeInsets.all(5),
+                      child: Container(
+                        child: Text(
+                          widget.descriptionRencontre,
+                          // textAlign: TextAlign.start,
+                          style: TextStyle(
+                            letterSpacing: 0.3,
+                            height: 1.3,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromARGB(255, 20, 45, 99),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Container(
-              // margin: EdgeInsets.only(top: 7),
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(29, 131, 131, 131),
-                borderRadius: BorderRadius.circular(5),
-                // border: Border.all(width: 0.1),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Text(
-                            "lieu".tr(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                              color: Color.fromARGB(164, 20, 45, 99),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 1),
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  child: Text(
-                                    widget.lieuRencontre,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        color: Color.fromARGB(255, 20, 45, 99),
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 5),
-                                child: Icon(
-                                  Icons.maps_home_work_rounded,
-                                  size: 13,
-                                  color: Color.fromARGB(164, 20, 45, 99),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Text(
-                            "dateheure".tr(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                              color: Color.fromARGB(164, 20, 45, 99),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 1),
-                          child: Text(
-                            "${widget.dateRencontre} : ${widget.heureRencontre}",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Color.fromARGB(255, 20, 45, 99),
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
-            ),
-          ],
+              Container(
+                // margin: EdgeInsets.only(top: 7),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(29, 131, 131, 131),
+                  borderRadius: BorderRadius.circular(5),
+                  // border: Border.all(width: 0.1),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Text(
+                              "lieu".tr(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                                color: Color.fromARGB(164, 20, 45, 99),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 1),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Container(
+                                    child: Text(
+                                      widget.lieuRencontre,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 5),
+                                  child: Icon(
+                                    Icons.maps_home_work_rounded,
+                                    size: 13,
+                                    color: Color.fromARGB(164, 20, 45, 99),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Text(
+                              "dateheure".tr(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                                color: Color.fromARGB(164, 20, 45, 99),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 1),
+                            child: Text(
+                              "${widget.dateRencontre} : ${widget.heureRencontre}",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color.fromARGB(255, 20, 45, 99),
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      );}
     );
   }
 }

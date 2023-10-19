@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/pages/FicheMembrePage.dart';
@@ -6,6 +8,7 @@ import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
 import 'package:faroty_association_1/pages/proposAidePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -20,6 +23,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Map<String, dynamic>? get currentInfoAssociationCourant {
     return context.read<UserGroupCubit>().state.userGroupDefault;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -271,10 +275,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   GestureDetector(
                     onTap: () {
                       // context.read<ServiceCubit>().state.currentService!.id;
-                      Modal().showBottomSheetListAss(
-                          context, 
-                          context.read<UserGroupCubit>().state.userGroup
-                          );
+                      Modal().showBottomSheetListAss(context,
+                          context.read<UserGroupCubit>().state.userGroup);
                     },
                     child: Container(
                       padding: EdgeInsets.only(
@@ -443,36 +445,39 @@ class _SettingScreenState extends State<SettingScreen> {
                   // color: Colors.lightBlue,
                   ),
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20),
+            GestureDetector(
+              
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromARGB(45, 255, 82, 82),
-                ),
-                width: MediaQuery.of(context).size.width / 2.7,
-                margin: EdgeInsets.only(top: 15),
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 10),
-                      // color: Color.fromARGB(185, 255, 214, 64),
-                      child: Icon(Icons.logout_rounded, color: Colors.red),
-                    ),
-                    Container(
-                      // color: Colors.greenAccent,
-                      child: Text(
-                        "Déconnexion",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.red,
-                          fontWeight: FontWeight.w600,
-                        ),
+                margin: EdgeInsets.only(bottom: 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color.fromARGB(45, 255, 82, 82),
+                  ),
+                  width: MediaQuery.of(context).size.width / 2.7,
+                  margin: EdgeInsets.only(top: 15),
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 10),
+                        // color: Color.fromARGB(185, 255, 214, 64),
+                        child: Icon(Icons.logout_rounded, color: Colors.red),
                       ),
-                    )
-                  ],
+                      Container(
+                        // color: Colors.greenAccent,
+                        child: Text(
+                          "Déconnexion",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             )

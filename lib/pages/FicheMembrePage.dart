@@ -50,7 +50,7 @@ class _AccountPageState extends State<AccountPage> {
                             width: 70,
                             height: 70,
                             child: Image.network(
-                              "${Variables.LienAIP}${currentDetailUser!["current_membre"]["photo_profil"]}",
+                              "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -63,7 +63,7 @@ class _AccountPageState extends State<AccountPage> {
                               padding:
                                   EdgeInsets.only(left: 5, right: 5, top: 5),
                               child: Text(
-                                "${currentDetailUser["current_membre"]["first_name"] == null ? "" : currentDetailUser["current_membre"]["first_name"]} ${currentDetailUser["current_membre"]["last_name"] == null ? "" : currentDetailUser["current_membre"]["lastt_name"]}",
+                                "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["lastt_name"]}",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 15,
@@ -93,7 +93,7 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                             ),
                             Text(
-                              "${currentDetailUser["current_membre"]["type"] == "2" ? "Fondateur" : currentDetailUser["current_membre"]["type"] == "3" ? "Membre" : "Super Admin"}",
+                              "${currentDetailUser["type"] == "2" ? "Fondateur" : currentDetailUser["type"] == "3" ? "Membre" : "Super Admin"}",
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
@@ -113,7 +113,7 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                             ),
                             Text(
-                              "${currentDetailUser["current_membre"]["matricule"]}",
+                              "${currentDetailUser["matricule"]}",
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
@@ -132,7 +132,7 @@ class _AccountPageState extends State<AccountPage> {
                                 color: const Color.fromARGB(127, 255, 255, 255),
                               ),
                             ),
-                            currentDetailUser["current_membre"]
+                            currentDetailUser
                                         ["is_inscription_payed"] ==
                                     1
                                 ? Text(
@@ -145,7 +145,7 @@ class _AccountPageState extends State<AccountPage> {
                                   )
                                 : GestureDetector(
                                     onTap: () async {
-                                      final url = currentDetailUser["current_membre"]["inscription_pay_link"];
+                                      final url = currentDetailUser["inscription_pay_link"];
                                       if (await canLaunch(url)) {
                                         await launch(url);
                                       } else {
@@ -250,7 +250,7 @@ class _AccountPageState extends State<AccountPage> {
                                               ),
                                               Container(
                                                 child: Text(
-                                                  currentDetailUser["current_membre"]["email"]==null? "" : currentDetailUser["current_membre"]["email"],
+                                                  currentDetailUser["email"]==null? "" : currentDetailUser["email"],
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
@@ -299,7 +299,7 @@ class _AccountPageState extends State<AccountPage> {
                                               Container(
                                                 child: Text(
                                                   
-                                                  "${currentDetailUser["current_membre"]["first_phone"] }",
+                                                  "${currentDetailUser["first_phone"] }",
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
@@ -397,13 +397,13 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             child: ListView.builder(
                               padding: EdgeInsets.all(0),
-                              itemCount: currentDetailUser["current_membre"]["beneficiary"].length,
+                              itemCount: currentDetailUser["beneficiary"].length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
-                                final itemCurrentDetailUser = currentDetailUser["current_membre"]["beneficiary"][index];
+                                final itemCurrentDetailUser = currentDetailUser["beneficiary"][index];
                                 // print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${currentDetailUser["current_membre"]["beneficiary"]}");
-                                if (currentDetailUser["current_membre"]["beneficiary"].length!=0) {
+                                if (currentDetailUser["beneficiary"].length!=0) {
                                   
                                 return Container(
                                   decoration: BoxDecoration(

@@ -21,7 +21,6 @@ class SeanceState extends Equatable {
     );
   }
 
-  factory SeanceState.fromJson(Map<String, dynamic> json) {
-    return SeanceState(detailSeance: json['detailSeance']);
-  }
+
+
 }

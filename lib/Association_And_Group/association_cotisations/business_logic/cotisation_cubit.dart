@@ -7,7 +7,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class CotisationCubit extends Cubit<CotisationState> {
   CotisationCubit()
       : super(
-          CotisationState(detailCotisation: {}, allCotisationAss: []),
+          CotisationState(detailCotisation: null, allCotisationAss: null),
         );
 
   Future<bool> detailCotisationCubit(codeCotisation) async {

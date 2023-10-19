@@ -7,11 +7,13 @@ class WidgetCompteCard extends StatefulWidget {
     required this.montantCompte,
     required this.nomCompte,
     required this.numeroCompte,
+    required this.couleur,
   });
 
   final String montantCompte;
   final String nomCompte;
   final String numeroCompte;
+  final Color couleur;
 
   @override
   State<WidgetCompteCard> createState() => _WidgetCompteCardState();
@@ -45,7 +47,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                 // color: Colors.cyanAccent,
                 border: Border.all(
                   width: 5,
-                  color: Color.fromRGBO(0, 162, 255, 1),
+                  color: widget.couleur,
                 )),
             margin: EdgeInsets.only(top: 5),
             child: Container(
@@ -57,7 +59,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w300,
-                  color: Color.fromRGBO(0, 162, 255, 1),
+                  color: widget.couleur,
                 ),
               ),
             ),

@@ -9,7 +9,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class CompteCubit extends Cubit<CompteState> {
   CompteCubit()
       : super(
-          CompteState(allCompteAss: []),
+          CompteState(allCompteAss: null),
         );
 
 

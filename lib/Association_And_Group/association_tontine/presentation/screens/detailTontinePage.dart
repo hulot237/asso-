@@ -1,14 +1,24 @@
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailTontineCard.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:flutter/material.dart';
-import 'package:linear_step_indicator/linear_step_indicator.dart';
 
 class DetailTontinePage extends StatefulWidget {
-  const DetailTontinePage({super.key});
-
+  DetailTontinePage({
+    super.key,
+    required this.dateCreaTontine,
+    required this.nomTontine,
+    required this.montantTontine,
+    required this.positionBeneficiaire,
+    required this.nbrMembreTontine,
+    required this.listMembre,
+  });
+  String dateCreaTontine;
+  String nomTontine;
+  String montantTontine;
+  String positionBeneficiaire;
+  String nbrMembreTontine;
+  List listMembre;
   @override
   State<DetailTontinePage> createState() => _DetailTontinePageState();
 }
@@ -18,6 +28,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
   int _pageIndex = 0;
   var Tab = [true, false, false, true, false, true];
   int _index = 0;
+  int i = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +36,25 @@ class _DetailTontinePageState extends State<DetailTontinePage>
     return Scaffold(
       backgroundColor: Color(0xFFEFEFEF),
       appBar: AppBar(
-        title: Text("Detail de la tontine", style: TextStyle(fontSize: 16),),
+        title: Text(
+          "Detail de la tontine",
+          style: TextStyle(fontSize: 16),
+        ),
         backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
         elevation: 0,
       ),
       body: Container(
         child: Column(
           children: [
-            
             Container(
               margin: EdgeInsets.only(left: 5, right: 5, top: 10),
-              child: WidgetDetailTontineCard(),
+              child: WidgetDetailTontineCard(
+                dateCreaTontine: widget.dateCreaTontine,
+                nomTontine: widget.nomTontine,
+                montantTontine: widget.montantTontine,
+                positionBeneficiaire: widget.positionBeneficiaire,
+                nbrMembreTontine: widget.nbrMembreTontine,
+              ),
             ),
             Column(
               children: [
@@ -59,7 +78,8 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                     padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
                     child: Row(
                       children: [
-                        for (var i = 0; i < 15; i++)
+                        for (var itemListMembre in widget.listMembre)
+                        
                           Container(
                             // color: Colors.white,
                             child: Column(
@@ -70,7 +90,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                   margin: EdgeInsets.only(bottom: 3),
                                   width: 70,
                                   child: Text(
-                                    "KENGNE DJOUSSE Hulot",
+                                    "${itemListMembre["first_name"]} ${itemListMembre["last_name"]}",
                                     style: TextStyle(
                                       fontSize: 8,
                                       fontWeight: FontWeight.w800,
@@ -93,7 +113,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                         child: Container(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            "${i}",
+                                            "${++i}",
                                             style: TextStyle(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,
@@ -111,17 +131,17 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 3),
-                                  child: Text(
-                                    "21/02/2024",
-                                    style: TextStyle(
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color.fromRGBO(20, 45, 99, 1),
-                                    ),
-                                  ),
-                                ),
+                                // Container(
+                                //   margin: EdgeInsets.only(top: 3),
+                                //   child: Text(
+                                //     "21/02/2024",
+                                //     style: TextStyle(
+                                //       fontSize: 8,
+                                //       fontWeight: FontWeight.w600,
+                                //       color: Color.fromRGBO(20, 45, 99, 1),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
