@@ -71,7 +71,8 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         routes: {
-          "/": (context) =>AppCubitStorage().state.userNameKey != "" && AppCubitStorage().state.passwordKey != ""? LoginPage() : HomePage(),
+          // "/": (context) =>AppCubitStorage().state.userNameKey == null  && AppCubitStorage().state.passwordKey == null && AppCubitStorage().state.codeAssDefaul == null ? LoginPage() : HomePage(),
+          "/": (context) => LoginPage(),
 
         },
       ),

@@ -504,6 +504,21 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                 ],
               ),
             ),
+            Expanded(
+              child: Container(
+                // width: MediaQuery.sizeOf(context).width,
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.only(bottom: 20),
+                // color: Colors.amber,
+                child: Text(
+                  "Version 1.0.2",
+                  style: TextStyle(
+                      color: Color.fromARGB(52, 20, 45, 99),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900),
+                ),
+              ),
+            )
           ],
         ),
       );

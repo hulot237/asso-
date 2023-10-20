@@ -20,6 +20,7 @@ class WidgetCotisationExpireInProgress extends StatefulWidget {
     // required this.montantSanctionCollectee,
     required this.isActive,
     required this.codeCotisation,
+    required this.type,
   });
   int montantCotisations;
   String motifCotisations;
@@ -29,6 +30,7 @@ class WidgetCotisationExpireInProgress extends StatefulWidget {
   String contributionOneUser;
   int nbreParticipant;
   int nbreParticipantCotisationOK;
+  String type;
   // String montantSanctionCollectee;
   int isActive;
   String codeCotisation;
@@ -73,6 +75,7 @@ class _WidgetCotisationExpireInProgressState
               nbreParticipantCotisationOK: widget.nbreParticipantCotisationOK,
               soldeCotisation: widget.soldeCotisation,
               isActive: 0,
+              type: widget.type,
             ),
           ),
         );
@@ -260,76 +263,76 @@ class _WidgetCotisationExpireInProgressState
                       ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 5),
-                    width: MediaQuery.of(context).size.width / 1.1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Text(
-                                  "Vous avez cotisé :",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                  ),
-                                ),
-                                margin: EdgeInsets.only(right: 5),
-                              ),
-                              Container(
-                                child: Text(
-                                  "${formatMontantFrancais(double.parse(widget.contributionOneUser))} FCFA",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 5, bottom: 5),
-                    alignment: Alignment.centerLeft,
-                    // margin: EdgeInsets.only(bottom: 7),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      // color: Color.fromARGB(20, 255, 27, 27),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Text(
-                            "Sanction: ",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "${formatMontantFrancais(double.parse("4000"))} FCFA",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // margin: EdgeInsets.only(right: 5),
-                  ),
+                  // Container(
+                  //   margin: EdgeInsets.only(bottom: 5),
+                  //   width: MediaQuery.of(context).size.width / 1.1,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Container(
+                  //         child: Row(
+                  //           children: [
+                  //             Container(
+                  //               child: Text(
+                  //                 "Vous avez cotisé :",
+                  //                 style: TextStyle(
+                  //                   fontSize: 11,
+                  //                   fontWeight: FontWeight.bold,
+                  //                   color: Color.fromARGB(255, 20, 45, 99),
+                  //                 ),
+                  //               ),
+                  //               margin: EdgeInsets.only(right: 5),
+                  //             ),
+                  //             Container(
+                  //               child: Text(
+                  //                 "${formatMontantFrancais(double.parse(widget.contributionOneUser))} FCFA",
+                  //                 style: TextStyle(
+                  //                   fontSize: 12,
+                  //                   fontWeight: FontWeight.w800,
+                  //                   color: Color.fromARGB(255, 20, 45, 99),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Container(
+                  //   padding: EdgeInsets.only(top: 5, bottom: 5),
+                  //   alignment: Alignment.centerLeft,
+                  //   // margin: EdgeInsets.only(bottom: 7),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     // color: Color.fromARGB(20, 255, 27, 27),
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Container(
+                  //         child: Text(
+                  //           "Sanction: ",
+                  //           style: TextStyle(
+                  //             fontSize: 11,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.red,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Container(
+                  //         child: Text(
+                  //           "${formatMontantFrancais(double.parse("4000"))} FCFA",
+                  //           style: TextStyle(
+                  //             fontSize: 12,
+                  //             fontWeight: FontWeight.w800,
+                  //             color: Colors.red,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   // margin: EdgeInsets.only(right: 5),
+                  // ),
                 ],
               ),
             ),

@@ -5,7 +5,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit()
       : super(
-          AuthState(detailUser: null, loginInfo: null),
+          AuthState(detailUser: null, loginInfo: null, updateInfoUser: null),
         );
 
   Future<bool> detailAuthCubit(userCode) async {
@@ -18,29 +18,20 @@ class AuthCubit extends Cubit<AuthState> {
         // print("data in cubit ${data.length}");
 
         emit(
-          state.copyWith(
-            detailuser: data,
-            logininfo: state.loginInfo
-          ),
+          state.copyWith(detailuser: data, logininfo: state.loginInfo, updateinfouser: state.updateInfoUser),
         );
 
         print("detailAuthCubit Cubit ok");
         return true;
       } else {
         emit(
-          state.copyWith(
-            detailuser: {},
-            logininfo: state.loginInfo
-          ),
+          state.copyWith(detailuser: {}, logininfo: state.loginInfo, updateinfouser: state.updateInfoUser),
         );
         return false;
       }
     } catch (e) {
       emit(
-        state.copyWith(
-          detailuser: {},
-          logininfo: state.loginInfo
-        ),
+        state.copyWith(detailuser: {}, logininfo: state.loginInfo, updateinfouser: state.updateInfoUser),
       );
       return false;
     }
@@ -51,11 +42,10 @@ class AuthCubit extends Cubit<AuthState> {
       final data = await AuthRepository().LoginRepository(numeroPhone);
 
       if (data != null) {
-
         emit(
           state.copyWith(
             logininfo: data,
-            detailuser: state.detailUser,
+            detailuser: state.detailUser, updateinfouser: state.updateInfoUser
           ),
         );
 
@@ -65,7 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(
           state.copyWith(
             logininfo: {},
-            detailuser: state.detailUser,
+            detailuser: state.detailUser,updateinfouser: state.updateInfoUser
           ),
         );
         return false;
@@ -74,6 +64,44 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         state.copyWith(
           logininfo: {},
+          detailuser: state.detailUser,updateinfouser: state.updateInfoUser
+        ),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> UpdateInfoUserCubit(key, value, partner_urlcode, membre_code) async {
+    try {
+      final data = await AuthRepository()
+          .UpdateInfoUserRepository(key, value, partner_urlcode, membre_code);
+
+      if (data != null) {
+        emit(
+          state.copyWith(
+            updateinfouser: data,
+            logininfo: state.loginInfo,
+            detailuser: state.detailUser,
+          ),
+        );
+
+        print("detailAuthCubittttttttttttttttttt Cubit ok");
+        return true;
+      } else {
+        emit(
+          state.copyWith(
+            updateinfouser:{},
+            logininfo: state.loginInfo,
+            detailuser: state.detailUser,
+          ),
+        );
+        return false;
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          updateinfouser:{},
+          logininfo: state.loginInfo,
           detailuser: state.detailUser,
         ),
       );

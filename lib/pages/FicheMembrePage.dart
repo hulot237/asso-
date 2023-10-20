@@ -1,4 +1,5 @@
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final currentDetailUser = context.read<AuthCubit>().state.detailUser;
+    print(currentDetailUser);
     return Scaffold(
       backgroundColor: Color(0xFFEFEFEF),
       body: Padding(
@@ -63,7 +65,7 @@ class _AccountPageState extends State<AccountPage> {
                               padding:
                                   EdgeInsets.only(left: 5, right: 5, top: 5),
                               child: Text(
-                                "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["lastt_name"]}",
+                                "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 15,
@@ -145,12 +147,13 @@ class _AccountPageState extends State<AccountPage> {
                                   )
                                 : GestureDetector(
                                     onTap: () async {
-                                      final url = currentDetailUser["inscription_pay_link"];
-                                      if (await canLaunch(url)) {
-                                        await launch(url);
-                                      } else {
-                                        throw 'Impossible d\'ouvrir le lien $url';
-                                      }
+                                      Modal().showModalActionPayement(context, currentDetailUser["inscription_pay_link"]);
+                                      // final url = currentDetailUser["inscription_pay_link"];
+                                      // if (await canLaunch(url)) {
+                                      //   await launch(url);
+                                      // } else {
+                                      //   throw 'Impossible d\'ouvrir le lien $url';
+                                      // }
                                     },
                                     child: Row(
                                       children: [

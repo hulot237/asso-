@@ -10,12 +10,14 @@ class WidgetSanctionPayeeIsMoney extends StatefulWidget {
     required this.motifSanction,
     required this.montantSanction,
     required this.montantPayeeSanction,
+    required this.versement,
   });
   String heureSanction;
   String dateSanction;
   String motifSanction;
   String montantPayeeSanction;
   String montantSanction;
+  List versement;
   @override
   State<WidgetSanctionPayeeIsMoney> createState() =>
       _WidgetSanctionPayeeIsMoneyState();
@@ -27,7 +29,7 @@ class _WidgetSanctionPayeeIsMoneyState
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Modal().showModalTransactionByEvent(context);
+        Modal().showModalTransactionByEvent(context, widget.versement, widget.montantSanction);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),

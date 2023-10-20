@@ -45,6 +45,36 @@ class AuthRepository {
       return {};
     }
   }
+
+
+    Future<Map<String, dynamic>> UpdateInfoUserRepository(key, value, partner_urlcode, membre_code) async {
+    try {
+      print("zzzeeezzzzz $key");
+      print("zzzeeezzzzz $value");
+      print("zzzeeezzzzz $partner_urlcode");
+      print("zzzeeezzzzz $membre_code");
+
+
+      log("response DetailCotisation");
+      final response = await dio
+          .put('${Variables.LienAIP}/api/v1/membre/update', data: {
+        "key": key,
+        "value": value,
+        "partner_urlcode": partner_urlcode,
+        "membre_code": membre_code,
+      });
+      print("dataJszzz=======++++++      ${response.data["data"]}");
+
+      final Map<String, dynamic> dataJson = response.data["data"];
+      // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
+      log('Okay UpdateInfoUser rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur UpdateInfoUser rep');
+      print(e);
+      return {};
+    }
+  }
 }
 
   

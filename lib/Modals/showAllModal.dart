@@ -1,13 +1,16 @@
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -293,7 +296,7 @@ class Modal {
     );
   }
 
-  void showModalTransactionByEvent(context) {
+  void showModalTransactionByEvent(context, versement, montantAPayer) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -329,7 +332,7 @@ class Modal {
                     children: [
                       Container(
                         child: Text(
-                          "Cotisation",
+                          "A verser",
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w300,
@@ -339,7 +342,7 @@ class Modal {
                       ),
                       Container(
                         child: Text(
-                          "${formatMontantFrancais(1200)} FCFA",
+                          "${formatMontantFrancais(double.parse(montantAPayer))} FCFA",
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
@@ -353,7 +356,7 @@ class Modal {
                     children: [
                       Container(
                         child: Text(
-                          "Versé",
+                          "Déjà versé",
                           style: TextStyle(
                               fontSize: 11,
                               color: Colors.green,
@@ -362,7 +365,7 @@ class Modal {
                       ),
                       Container(
                         child: Text(
-                          "${formatMontantFrancais(2000)} FCFA",
+                          "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_after"] : "0"))} FCFA",
                           style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
@@ -384,7 +387,7 @@ class Modal {
                       ),
                       Container(
                         child: Text(
-                          "${formatMontantFrancais(1000)} FCFA",
+                          "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_remaining"] : "0"))} FCFA",
                           style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
@@ -398,31 +401,43 @@ class Modal {
             ),
           ],
         ),
-        content: Container(
-          // color: Colors.white,
-          color: Color.fromARGB(120, 226, 226, 226),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          // padding: EdgeInsets.only(top: 10),
-          // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
-          child: Container(
-            margin: EdgeInsets.only(top: 7, right: 5, left: 5),
-            color: Colors.white,
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: 15,
-                    itemBuilder: (context, index) {
-                      return Container(
-                          child: widgetListTransactionByEventCard());
-                    },
+        content: versement.length > 0
+            ? Container(
+                // color: Colors.white,
+                color: Color.fromARGB(120, 226, 226, 226),
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                // padding: EdgeInsets.only(top: 10),
+                // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
+                child: Container(
+                  margin: EdgeInsets.only(top: 7, right: 5, left: 5),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: versement[0]["transanctions"].length,
+                          itemBuilder: (context, index) {
+                            final detailVersement =
+                                versement[0]["transanctions"][index];
+                            return Container(
+                                child: widgetListTransactionByEventCard(
+                              date: formatDateString(
+                                  detailVersement["created_at"]),
+                              montant: detailVersement["amount"],
+                            ));
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
+                ),
+              )
+            : Container(
+                child: Center(
+                  child: Text("Aucune transaction"),
+                ),
+              ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -533,10 +548,23 @@ class Modal {
                         margin: EdgeInsets.only(left: 5, right: 5),
                         child: WidgetPersonSanctionner(
                           motif: itemLListSanction["motif"],
-                          nom: itemLListSanction["membre"]["first_name"] ==null? "" : itemLListSanction["membre"]["first_name"],
-                          outilSanction: itemLListSanction["amount"].toString() =="null"? itemLListSanction["libelle"] : "${formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()) )} FCFA",
-                          photoProfil: itemLListSanction["membre"]["photo_profil"]==null? "" : itemLListSanction["membre"]["photo_profil"],
-                          prenom: itemLListSanction["membre"]["last_name"] ==null? "" : itemLListSanction["membre"]["last_name"],
+                          nom: itemLListSanction["membre"]["first_name"] == null
+                              ? ""
+                              : itemLListSanction["membre"]["first_name"],
+                          outilSanction: itemLListSanction["amount"]
+                                      .toString() ==
+                                  "null"
+                              ? itemLListSanction["libelle"]
+                              : "${formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()))} FCFA",
+                          photoProfil: itemLListSanction["membre"]
+                                      ["photo_profil"] ==
+                                  null
+                              ? ""
+                              : itemLListSanction["membre"]["photo_profil"],
+                          prenom:
+                              itemLListSanction["membre"]["last_name"] == null
+                                  ? ""
+                                  : itemLListSanction["membre"]["last_name"],
                         ));
                   },
                 ),
@@ -659,13 +687,13 @@ class Modal {
                               padding: EdgeInsets.all(5),
                               child: widgetListPresenceCard(
                                 imageProfil:
-                                    currentListPrsent["photo_profil"] == "null"
+                                    currentListPrsent["photo_profil"] == null
                                         ? ""
                                         : currentListPrsent['photo_profil'],
-                                nom: currentListPrsent['first_name'] == "null"
+                                nom: currentListPrsent['first_name'] == null
                                     ? ""
                                     : currentListPrsent['first_name'],
-                                prenom: currentListPrsent['last_name'] == "null"
+                                prenom: currentListPrsent['last_name'] == null
                                     ? ""
                                     : currentListPrsent['last_name'],
                                 presence: '1',
@@ -679,6 +707,7 @@ class Modal {
                           itemCount: listAbs.length,
                           itemBuilder: (context, index) {
                             final currentListAbs = listAbs[index];
+
                             return Container(
                               padding: EdgeInsets.all(5),
                               child: widgetListPresenceCard(
@@ -719,7 +748,36 @@ class Modal {
     );
   }
 
-  void showBottomSheetEditProfil(context) {
+  void showBottomSheetEditProfil(BuildContext context, hintText, key) {
+      TextEditingController infoUserController = TextEditingController();
+    Future<void> handleDetailUser(userCode) async {
+      final allCotisationAss =
+          await context.read<AuthCubit>().detailAuthCubit(userCode);
+
+      if (allCotisationAss != null) {
+        print("objec===============ttt  ${allCotisationAss}");
+        print(
+            "éé22==============ssssssssssssssssssssssssss=222  ${context.read<AuthCubit>().state.detailUser}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
+    Future<void> handleUpdateInfoUser(
+        key, value, partner_urlcode, membre_code) async {
+      final allCotisationAss = await context
+          .read<AuthCubit>()
+          .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
+
+      if (allCotisationAss != null) {
+        print("objec===============ttt  ${allCotisationAss}");
+        print(
+            "éé22==============ssssssssssssssssssssssssss=222  ${context.read<AuthCubit>().state.detailUser}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       // isScrollControlled: true,
@@ -765,26 +823,36 @@ class Modal {
                       color: Color.fromARGB(15, 20, 45, 99),
                     ),
                     child: TextField(
+                      controller: infoUserController,
                       style: TextStyle(fontSize: 15),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "kengnedjoussehulot@gmail.com",
+                        hintText: "${hintText}",
+                        
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.only(
-                        top: 10,
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                    child: Text(
-                      "Confirmer",
-                      style: TextStyle(
-                        color: Colors.white,
+                  GestureDetector(
+
+                    onTap: () {
+                      handleUpdateInfoUser(key, infoUserController.text, AppCubitStorage().state.codeAssDefaul, AppCubitStorage().state.membreCode);
+                      handleDetailUser(AppCubitStorage().state.membreCode);
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(
+                          top: 10,
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: Text(
+                        "Confirmer",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

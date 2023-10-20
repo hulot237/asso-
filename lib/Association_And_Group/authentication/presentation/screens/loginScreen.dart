@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final success = await context.read<AuthCubit>().LoginCubit(numeroPhone);
 
-    if (success && context.read<AuthCubit>().state.loginInfo != {}) {
+    if (success && context.read<AuthCubit>().state.loginInfo != null) {
       var loginInfo = context.read<AuthCubit>().state.loginInfo;
 
       for (var elt in loginInfo!["user_groups"]) {
@@ -34,7 +34,8 @@ class _LoginPageState extends State<LoginPage> {
           await AppCubitStorage().updateCodeAssDefaul(elt!["urlcode"]);
         }
 
-        print("################################################# ${elt["is_default"]}");
+        print(
+            "################################################# ${elt["is_default"]}");
       }
 
       await AppCubitStorage().updatepasswordKey(loginInfo["password"]);
@@ -42,15 +43,20 @@ class _LoginPageState extends State<LoginPage> {
       await AppCubitStorage()
           .updatemembreCode(loginInfo["membre"]["membre_code"]);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ),
-      );
+      if (AppCubitStorage().state.codeAssDefaul != null &&
+          AppCubitStorage().state.passwordKey != null &&
+          AppCubitStorage().state.userNameKey != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+      }
 
       print("success login");
-      print("success loginnnn   ${context.read<AuthCubit>().state.loginInfo}");
+      print(
+          "success loginnnnZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ   ${context.read<AuthCubit>().state.loginInfo}");
       print("success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
       print("success password   ${AppCubitStorage().state.passwordKey}");
       print("success username   ${AppCubitStorage().state.userNameKey}");
@@ -62,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
       print(success);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +174,13 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
+                        if (AppCubitStorage().state.codeAssDefaul == null ||
+                            AppCubitStorage().state.passwordKey == null ||
+                            AppCubitStorage().state.userNameKey == null)
+                          Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Text(
+                                  "zzzzzzzzzzzzzzzzzzzzzzzzzaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssss")),
                       ],
                     ),
                   ),

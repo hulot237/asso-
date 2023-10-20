@@ -4,7 +4,7 @@ class Variables {
   static String LienAIP = 'http://192.168.1.110:3333';
 
   List urlcodes=[
-    "567505","336050"
+    "${AppCubitStorage().state.codeAssDefaul}"
   ];
 
   static String codeMembre = "${AppCubitStorage().state.membreCode}";

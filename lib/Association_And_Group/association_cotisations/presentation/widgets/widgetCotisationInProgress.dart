@@ -20,6 +20,7 @@ class WidgetCotisationInProgress extends StatefulWidget {
     required this.isActive,
     required this.montantMin,
     required this.codeCotisation,
+    required this.type,
   });
   int montantCotisations;
   String motifCotisations;
@@ -33,6 +34,7 @@ class WidgetCotisationInProgress extends StatefulWidget {
   int isActive;
   String montantMin;
   String codeCotisation;
+  String type;
 
   @override
   State<WidgetCotisationInProgress> createState() =>
@@ -76,7 +78,7 @@ class _WidgetCotisationInProgressState
               nbreParticipant: widget.nbreParticipant,
               nbreParticipantCotisationOK: widget.nbreParticipantCotisationOK,
               soldeCotisation: widget.soldeCotisation,
-              isActive:widget.isActive,
+              isActive:widget.isActive, type: widget.type,
             ),
           ),
         );
@@ -220,8 +222,7 @@ class _WidgetCotisationInProgressState
                                   ),
                                   Container(
                                     child: Text(
-                                      formatMontantFrancais(double.parse(widget.montantMin))
-                                      ,
+                                      "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
                                       style: TextStyle(
                                         color: Color.fromARGB(255, 20, 45, 99),
                                       ),
@@ -254,7 +255,7 @@ class _WidgetCotisationInProgressState
                               ),
                               Container(
                                   child: Text(
-                                formatMontantFrancais(double.parse(widget.soldeCotisation)),
+                                "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w800,
@@ -288,53 +289,53 @@ class _WidgetCotisationInProgressState
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Modal().showModalTransactionByEvent(context);
-                    },
-                    child: Container(
-                      // color: Colors.brown,
-                      padding: EdgeInsets.only(top: 3, bottom: 5),
-                      // width: MediaQuery.of(context).size.width / 1.1,
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Modal().showModalTransactionByEvent(context);
-                            },
-                            child: Container(
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      "Vous avez cotisé :",
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 20, 45, 99),
-                                      ),
-                                    ),
-                                    margin: EdgeInsets.only(right: 5),
-                                  ),
-                                  Container(
-                                    child: Text(
-                                      "${formatMontantFrancais(double.parse(widget.contributionOneUser))} FCFA",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w800,
-                                          color: Color.fromARGB(255, 20, 45, 99)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Modal().showModalTransactionByEvent(context, [], widget.montantCotisations);
+                  //   },
+                  //   child: Container(
+                  //     // color: Colors.brown,
+                  //     padding: EdgeInsets.only(top: 3, bottom: 5),
+                  //     // width: MediaQuery.of(context).size.width / 1.1,
+                  //     child: Row(
+                  //       // mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         GestureDetector(
+                  //           onTap: () {
+                  //             Modal().showModalTransactionByEvent(context, [], widget.montantCotisations);
+                  //           },
+                  //           child: Container(
+                  //             child: Row(
+                  //               // crossAxisAlignment: CrossAxisAlignment.center,
+                  //               children: [
+                  //                 Container(
+                  //                   child: Text(
+                  //                     "Vous avez cotisé :",
+                  //                     style: TextStyle(
+                  //                       fontSize: 11,
+                  //                       fontWeight: FontWeight.bold,
+                  //                       color: Color.fromARGB(255, 20, 45, 99),
+                  //                     ),
+                  //                   ),
+                  //                   margin: EdgeInsets.only(right: 5),
+                  //                 ),
+                  //                 Container(
+                  //                   child: Text(
+                  //                     "${formatMontantFrancais(double.parse(widget.contributionOneUser))} FCFA",
+                  //                     style: TextStyle(
+                  //                         fontSize: 12,
+                  //                         fontWeight: FontWeight.w800,
+                  //                         color: Color.fromARGB(255, 20, 45, 99)),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

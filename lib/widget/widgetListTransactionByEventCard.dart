@@ -3,7 +3,9 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:flutter/material.dart';
 
 class widgetListTransactionByEventCard extends StatefulWidget {
-  const widgetListTransactionByEventCard({super.key});
+   widgetListTransactionByEventCard({super.key, required this.date, required this.montant });
+String date;
+   String montant;
 
   @override
   State<widgetListTransactionByEventCard> createState() =>
@@ -37,30 +39,6 @@ class _widgetListTransactionByEventCardState
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 5, bottom: 5),
-                    child: Text(
-                      "Moyen",
-                      style: TextStyle(
-                          fontSize: 11, color: Color.fromARGB(255, 20, 45, 99)),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      "MyCollect",
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 20, 45, 99)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              child: Column(
-                children: [
-                  Container(
                     margin: EdgeInsets.all(5),
                     child: Text(
                       "Date",
@@ -71,7 +49,7 @@ class _widgetListTransactionByEventCardState
                   Container(
                     margin: EdgeInsets.only(bottom: 5),
                     child: Text(
-                      "21/02/2022",
+                      widget.date,
                       style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
@@ -95,7 +73,7 @@ class _widgetListTransactionByEventCardState
                   Container(
                     margin: EdgeInsets.only(bottom: 5),
                     child: Text(
-                      "${formatMontantFrancais(2000)} FCFA",
+                      "${formatMontantFrancais(double.parse(widget.montant))} FCFA",
                       style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,

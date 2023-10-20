@@ -56,100 +56,113 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                 nbrMembreTontine: widget.nbrMembreTontine,
               ),
             ),
-            Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.only(bottom: 7, left: 5, right: 5),
-                  padding: EdgeInsets.only(top: 20),
-                  child: Text(
-                    "Ordre de passage",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(20, 45, 99, 1),
+            Container(
+              // color: Colors.blueGrey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(bottom: 7, left: 5, right: 5),
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text(
+                      "Ordre de passage",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(20, 45, 99, 1),
+                      ),
                     ),
                   ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
+                  Container(
                     color: Colors.white,
-                    padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
-                    child: Row(
-                      children: [
-                        for (var itemListMembre in widget.listMembre)
-                        
-                          Container(
-                            // color: Colors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 3),
-                                  width: 70,
-                                  child: Text(
-                                    "${itemListMembre["first_name"]} ${itemListMembre["last_name"]}",
-                                    style: TextStyle(
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.w800,
-                                      color: Color.fromRGBO(20, 45, 99, 1),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(360),
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.24),
+                    width: MediaQuery.of(context).size.width,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (var itemListMembre in widget.listMembre)
+                              Container(
+                                // color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(bottom: 3),
+                                      width: 70,
+                                      child: Text(
+                                        "${itemListMembre["membre"]["first_name"] == null ? "" : itemListMembre["membre"]["first_name"]} ${itemListMembre["membre"]["last_name"] == null ? "" : itemListMembre["membre"]["last_name"]}",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 8,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color.fromRGBO(20, 45, 99, 1),
                                         ),
-                                        width: 15,
-                                        height: 15,
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "${++i}",
-                                            style: TextStyle(
-                                              fontSize: 8,
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                                  Color.fromRGBO(20, 45, 99, 1),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(360),
+                                              color: itemListMembre["is_pased"]==0? Color.fromRGBO(
+                                                  20, 45, 99, 0.24) : Color.fromRGBO(15, 190, 24, 0.658),
+                                            ),
+                                            width: 15,
+                                            height: 15,
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              child: 
+                                              itemListMembre["is_pased"]==0? Text(
+                                                "${++i}",
+                                                style: TextStyle(
+                                                  fontSize: 8,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color.fromRGBO(
+                                                      20, 45, 99, 1),
+                                                ),
+                                              ) : Icon(Icons.check, size: 10, color: Colors.white,)
+                                              
                                             ),
                                           ),
-                                        ),
+                                          Container(
+                                            color: itemListMembre["is_pased"]==0? Color.fromRGBO(
+                                                  20, 45, 99, 0.24) : Color.fromRGBO(15, 190, 24, 0.658),
+                                            width: 80,
+                                            height: 2,
+                                          ),
+                                        ],
                                       ),
-                                      Container(
-                                        color: Color.fromRGBO(20, 45, 99, 0.24),
-                                        width: 80,
-                                        height: 2,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    // Container(
+                                    //   margin: EdgeInsets.only(top: 3),
+                                    //   child: Text(
+                                    //     "21/02/2024",
+                                    //     style: TextStyle(
+                                    //       fontSize: 8,
+                                    //       fontWeight: FontWeight.w600,
+                                    //       color: Color.fromRGBO(20, 45, 99, 1),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
                                 ),
-                                // Container(
-                                //   margin: EdgeInsets.only(top: 3),
-                                //   child: Text(
-                                //     "21/02/2024",
-                                //     style: TextStyle(
-                                //       fontSize: 8,
-                                //       fontWeight: FontWeight.w600,
-                                //       color: Color.fromRGBO(20, 45, 99, 1),
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                          ),
-                      ],
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             Container(
               width: MediaQuery.of(context).size.width,

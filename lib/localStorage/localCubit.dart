@@ -8,10 +8,10 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
             Language: "fr",
             codeTournois: "z",
             ValTest: "zzzzzz",
-            codeAssDefaul: "",
-            membreCode: "",
-            userNameKey: "",
-            passwordKey: "",
+            codeAssDefaul: null,
+            membreCode: null,
+            userNameKey: null,
+            passwordKey: null,
           ),
         );
 

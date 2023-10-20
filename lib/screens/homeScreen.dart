@@ -134,18 +134,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     // TODO: implement initState
+    handleUserGroupDefault();
     handleTournoiDefault();
     handleAllUserGroup();
-    handleUserGroupDefault();
     handleAllCotisationAss(AppCubitStorage().state.codeAssDefaul);
     handleDetailUser(Variables.codeMembre);
 
     super.initState();
   }
 
-  //   Map<String, dynamic>? get currentDetailUser {
-  //   return context.read<AuthCubit>().state.detailUser;
-  // }
+    Map<String, dynamic>? get currentInfoAssociationCourant {
+    return context.read<UserGroupCubit>().state.userGroupDefault;
+  }
 
   var Tab = [true, false, false, true, false, true, 'expi', 'expi'];
 
@@ -154,17 +154,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     TabController _tabController = TabController(length: 2, vsync: this);
     final currentAllCotisationAss =
         context.read<CotisationCubit>().state.allCotisationAss;
-        final currentDetailUser= context.read<AuthCubit>().state.detailUser;
-       final currentInfoAssociationCourant= context.read<UserGroupCubit>().state.userGroupDefault;
+    final currentDetailUser = context.read<AuthCubit>().state.detailUser;
+    // final currentInfoAssociationCourant =
+    //     context.read<UserGroupCubit>().state.userGroupDefault;
 
     return BlocBuilder<AuthCubit, AuthState>(builder: (authContext, authState) {
       return BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
           builder: (tournoisContext, tournoisState) {
-        if (authState.loginInfo ==null || authState.detailUser == null ||
-            tournoisState.detailtournoiCourant == null ) return Container();
+        if (authState.loginInfo == null ||
+            authState.detailUser == null ||
+            tournoisState.detailtournoiCourant == null) return Container();
         return BlocBuilder<UserGroupCubit, UserGroupState>(
           builder: (context, state) {
-            if (state.userGroup == null || state.userGroupDefault==null ) return Container();
+            if (state.userGroup == null || state.userGroupDefault == null)
+              return Container();
             return Scaffold(
               backgroundColor: Color(0xFFEFEFEF),
               body: CustomScrollView(
@@ -234,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           height: 30,
                                           width: 30,
                                           child: Image.network(
-                                            "${Variables.LienAIP}${currentInfoAssociationCourant!['profile_photo']==null? "" : currentInfoAssociationCourant!['profile_photo']}",
+                                            "${Variables.LienAIP}${currentInfoAssociationCourant!['profile_photo'] == null ? "" : currentInfoAssociationCourant!['profile_photo']}",
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -358,33 +361,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               print(
                                   "^^^^^^^^^^^^^^^^^^^^^^^^ ${currentDetail}");
 
+
+                              print(" is_tontineis_tontineis_tontineis_tontineis_tontine            ${currentDetail["is_tontine"]}");
+                              print(" typetypetypetypetype            ${currentDetail["type"]}");
+                              print(" is_passedis_passedis_passedis_passedis_passed            ${currentDetail["is_passed"]}");
+
                               if (currentDetail["is_tontine"] == 0 &&
                                   currentDetail["type"] == "0" &&
                                   currentDetail["is_passed"] == 0) {
-                                return GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                        left: 7, right: 7, top: 3, bottom: 7),
-                                    child: WidgetCotisationInFixed(
-                                      contributionOneUser: '2000',
-                                      codeCotisation:
-                                          currentDetail["cotisation_code"],
-                                      heureCotisation: formatTime(
-                                          currentDetail["start_date"]),
-                                      dateCotisation: formatDate(
-                                          currentDetail["start_date"]),
-                                      montantCotisations:
-                                          currentDetail["amount"],
-                                      motifCotisations: currentDetail["name"],
-                                      nbreParticipant: 5,
-                                      soldeCotisation:
-                                          currentDetail["cotisation_balance"],
-                                      nbreParticipantCotisationOK: 4,
+                                return Container(
+                                  margin: EdgeInsets.only(
+                                      left: 7, right: 7, top: 3, bottom: 7),
+                                  child: WidgetCotisationInFixed(
+                                    contributionOneUser: '2000',
+                                    codeCotisation:
+                                        currentDetail["cotisation_code"],
+                                    heureCotisation: formatTime(
+                                        currentDetail["start_date"]),
+                                    dateCotisation: formatDate(
+                                        currentDetail["start_date"]),
+                                    montantCotisations:
+                                        currentDetail["amount"],
+                                    motifCotisations: currentDetail["name"],
+                                    nbreParticipant: 5,
+                                    soldeCotisation:
+                                        currentDetail["cotisation_balance"],
+                                    nbreParticipantCotisationOK: 4,type:currentDetail["type"],
 
-                                      // montantSanctionCollectee: currentDetail["amount_sanction"],
-                                      isActive: 1,
-                                    ),
+                                    // montantSanctionCollectee: currentDetail["amount_sanction"],
+                                    isActive: 1,
                                   ),
                                 );
                               } else if (currentDetail["is_tontine"] == 0 &&
@@ -409,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     nbreParticipantCotisationOK: 7,
                                     montantSanctionCollectee: '1500',
                                     isActive: 1,
-                                    montantMin: "200",
+                                    montantMin: "200",type:currentDetail["type"],
                                   ),
                                 );
                               } else if (currentDetail["is_tontine"] == 0 &&
@@ -433,7 +438,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     nbreParticipant: 12,
                                     soldeCotisation:
                                         currentDetail["cotisation_balance"],
-                                    isActive: 0,
+                                    isActive: 0,type:currentDetail["type"],
                                   ),
                                 );
                               } else if (currentDetail["is_tontine"] == 0 &&
@@ -457,7 +462,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         currentDetail["cotisation_balance"],
                                     isActive: 0,
                                     codeCotisation:
-                                        currentDetail["cotisation_code"],
+                                        currentDetail["cotisation_code"],type:currentDetail["type"],
                                   ),
                                 );
                               }
@@ -475,7 +480,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               final ItemDetailUserSanction =
                                   currentDetailUser["sanctions"][index];
 
-                              print("################ ${ItemDetailUserSanction}");
+                              print(
+                                  "################ ${ItemDetailUserSanction}");
 
                               if (ItemDetailUserSanction["type"] == "1" &&
                                   ItemDetailUserSanction["is_sanction_payed"] ==
@@ -484,6 +490,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   margin: EdgeInsets.only(
                                       left: 7, right: 7, top: 3, bottom: 7),
                                   child: WidgetSanctionNonPayeeIsMoney(
+                                    versement:
+                                        ItemDetailUserSanction["versement"],
                                     dateSanction: formatDate(
                                         ItemDetailUserSanction["start_date"]),
                                     heureSanction: formatTime(
@@ -530,6 +538,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   margin: EdgeInsets.only(
                                       left: 7, right: 7, top: 3, bottom: 7),
                                   child: WidgetSanctionPayeeIsMoney(
+                                    versement:
+                                        ItemDetailUserSanction["versement"],
                                     dateSanction: formatDate(
                                         ItemDetailUserSanction["start_date"]),
                                     heureSanction: formatTime(
