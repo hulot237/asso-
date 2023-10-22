@@ -28,6 +28,40 @@ String formatDate(String dateString) {
 }
 
 
+String formatTimeToFrench(String isoDate) {
+  final dateTime = DateTime.parse(isoDate);
+  final formattedTime = DateFormat.Hm('fr_FR').format(dateTime);
+  return formattedTime;
+}
+
+
+String formatTimeToEnglish(String isoDate) {
+  final dateTime = DateTime.parse(isoDate);
+  final formattedTime = DateFormat.Hm().format(dateTime);
+  return formattedTime;
+}
+
+
+
+String formatDateToEnglish(String isoDate) {
+  final dateTime = DateTime.parse(isoDate);
+  final formattedDate = DateFormat('yyyy/MM/dd').format(dateTime);
+  return formattedDate;
+}
+
+
+
+
+
+String formatDateToFrench(String isoDate) {
+  final dateTime = DateTime.parse(isoDate);
+  final formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+  return formattedDate;
+}
+
+
+
+
 String formatDateString(String dateStr) {
   DateTime dateTime = DateTime.parse(dateStr); // Analyser la date initiale
   String formattedDate = "${dateTime.year}/${dateTime.month}/${dateTime.day}";

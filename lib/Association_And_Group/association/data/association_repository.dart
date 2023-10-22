@@ -45,7 +45,7 @@ class AssociationRepository {
       print("AllAssociationOfUser reposit ok");
       return data;
     } catch (e) {
-      print('erreur AllAssociationOfUser rep');
+      print('erreur AllAssociationOfUserTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT rep');
       print(e);
       return null;
     }

@@ -87,7 +87,7 @@ class _WidgetDetailTontineCardState
                           
                         ),
                         child: Text(
-                          "En cours",
+                          "en_cours".tr(),
                           style: TextStyle(
                               color: Colors.green,
                               fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class _WidgetDetailTontineCardState
                           children: [
                             Container(
                               child: Text(
-                                "Ouverture:",
+                                "ouverture".tr(),
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     fontSize: 10,
@@ -143,7 +143,7 @@ class _WidgetDetailTontineCardState
                           children: [
                             Container(
                               child: Text(
-                                "Bénéficiaires(${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
+                                "${"bénéficiaires".tr()} (${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,

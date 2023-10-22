@@ -1,4 +1,10 @@
+import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/screens/homeScreen.dart';
 import 'package:faroty_association_1/screens/settingsScreen.dart';
 import 'package:faroty_association_1/screens/HistoriqueScreen.dart';
@@ -13,8 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-
   int _pageIndex = 0;
 
   final items = [
@@ -40,10 +44,125 @@ class _HomePageState extends State<HomePage> {
     SettingScreen(),
   ];
 
+  Future<void> handleUserGroupDefault() async {
+    final userGroupDefault =
+        await context.read<UserGroupCubit>().UserGroupDefaultCubit();
+
+    if (userGroupDefault != null) {
+      // await AppCubitStorage().updateCodeAssDefaul(
+      //     "${context.read<UserGroupCubit>().state.userGroupDefault!["urlcode"]}");
+      for (var elt in context
+          .read<UserGroupCubit>()
+          .state
+          .userGroupDefault!["tournois"]) {
+        if (elt['is_default'] == 1) {
+          print("okkkkkkkkkkkk ${elt["tournois_code"]}");
+
+          // setState(() {
+
+          await AppCubitStorage()
+              .updateCodeTournoisDefault("${elt["tournois_code"]}");
+
+          // });
+
+          // AppCubitStorage().updateValeur1WithValA(elt['is_default'], "ournois_cod" );
+
+          print(
+            "TournoisCodeDefaultCubitStorage==   ${AppCubitStorage().state.codeTournois}",
+          );
+        }
+      }
+
+      // updateDataTournoisCodeDefaul
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
+  Future<void> handleTournoiDefault() async {
+    final detailTournoiCourant = await context
+        .read<DetailTournoiCourantCubit>()
+        .detailTournoiCourantCubit();
+
+    if (detailTournoiCourant != null) {
+      print(
+          "objectdddddddddddddddddddddddddddddddddd  ${detailTournoiCourant}");
+      print(
+          "dddddddddddddddddddddddddddddddddddddddd ${context.read<DetailTournoiCourantCubit>().state.detailtournoiCourant}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
+  Future<void> handleAllCotisationAss(codeAssociation) async {
+    final allCotisationAss = await context
+        .read<CotisationCubit>()
+        .AllCotisationAssCubit(codeAssociation);
+
+    if (allCotisationAss != null) {
+      print("objec~~~~~~~~ttt  ${allCotisationAss}");
+      print(
+          "éé22222~~~~~~~~  ${context.read<CotisationCubit>().state.allCotisationAss}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
+  Future<void> handleAllUserGroup() async {
+    final AllUserGroup =
+        await context.read<UserGroupCubit>().AllUserGroupOfUserCubit();
+
+    if (AllUserGroup != null) {
+      print("1");
+
+      // print(context.read<UserGroupCubit>().state.userGroup);
+    } else {
+      print("AllUserGroup null");
+    }
+  }
+
+  Future<void> handleDetailUser(userCode) async {
+    final allCotisationAss =
+        await context.read<AuthCubit>().detailAuthCubit(userCode);
+
+    if (allCotisationAss != null) {
+      print("objec===============ttt  ${allCotisationAss}");
+      print(
+          "éé22===============222  ${context.read<AuthCubit>().state.detailUser}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
+  Future<void> handleAllCompteAss(codeAssociation) async {
+    final allCotisationAss =
+        await context.read<CompteCubit>().AllCompteAssCubit(codeAssociation);
+
+    if (allCotisationAss != null) {
+      print("obj}===}}}}ttt  ${allCotisationAss}");
+      print(
+          "éé22222~===}}}}}}}}}}  ${context.read<CompteCubit>().state.allCompteAss}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    handleUserGroupDefault();
+    handleTournoiDefault();
+    handleAllUserGroup();
+    handleAllCotisationAss(AppCubitStorage().state.codeAssDefaul);
+    handleDetailUser(Variables().codeMembre);
+    handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       backgroundColor: Color(0xFFEFEFEF),
       bottomNavigationBar: Container(
         // color: Colors.green,
@@ -52,7 +171,6 @@ class _HomePageState extends State<HomePage> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           child: BottomNavigationBar(
-            
             backgroundColor: Color.fromARGB(255, 226, 226, 226),
             type: BottomNavigationBarType.shifting,
             selectedIconTheme: IconThemeData(size: 25),
@@ -64,6 +182,12 @@ class _HomePageState extends State<HomePage> {
             items: items,
             currentIndex: _pageIndex,
             onTap: (index) {
+              handleUserGroupDefault();
+              handleTournoiDefault();
+              handleAllUserGroup();
+              handleAllCotisationAss(AppCubitStorage().state.codeAssDefaul);
+              handleDetailUser(Variables().codeMembre);
+handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
               setState(() {
                 _pageIndex = index;
               });

@@ -148,7 +148,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                         child: Text(
                                           "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}",
                                           overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
@@ -202,7 +202,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                             ),
                             padding: EdgeInsets.all(2),
                             child: Text(
-                              "En cours",
+                              "en_cours".tr(),
                               style: TextStyle(
                                 fontSize: 9,
                                 color: const Color.fromARGB(255, 20, 153, 25),
@@ -215,7 +215,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                             // ),
                             padding: EdgeInsets.all(2),
                             child: Text(
-                              "Terminé",
+                              "terminé".tr(),
                               style: TextStyle(
                                 fontSize: 9,
                                 color: Colors.red,

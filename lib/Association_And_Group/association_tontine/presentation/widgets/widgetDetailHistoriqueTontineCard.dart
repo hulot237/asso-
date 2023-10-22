@@ -186,7 +186,7 @@ class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriq
                           children: [
                             Container(
                               child: Text(
-                                "Montant collecté",
+                                "montant_collecté".tr(),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,

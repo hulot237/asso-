@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotisationExpireInFIxed.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotisationExpireInProgress.dart';
@@ -18,6 +19,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetTontineRencontreCard.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -78,7 +80,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
         backgroundColor: Color(0xFFEFEFEF),
         appBar: AppBar(
           title: Text(
-            "Detail de la rencontre",
+            "detail_de_la_rencontre".tr(),
             style: TextStyle(fontSize: 16),
           ),
           backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
@@ -189,6 +191,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                           itemBuilder: (context, index) {
                             final currentDetail =
                                 currentDetailSeance!["cotisation"][index];
+                                print("objecteerererererererererz ${currentDetail}");
 
                             if (currentDetail["is_tontine"] == 1) {
                               return GestureDetector(
@@ -235,10 +238,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                         contributionOneUser: '2000',
                                         codeCotisation:
                                             currentDetail["cotisation_code"],
-                                        heureCotisation: formatTime(
-                                            currentDetail["start_date"]),
-                                        dateCotisation: formatDate(
-                                            currentDetail["start_date"]),
+                                        heureCotisation: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (currentDetail["start_date"]) : formatTimeToEnglish (currentDetail["start_date"]),
+                                        
+                                        dateCotisation: AppCubitStorage().state.Language=="fr"? formatDateToFrench(currentDetail["start_date"]) : formatDateToEnglish(currentDetail["start_date"]), 
                                         montantCotisations:
                                             currentDetail["amount"],
                                         motifCotisations: currentDetail["name"],
@@ -263,10 +265,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                       codeCotisation:
                                           currentDetail["cotisation_code"],
                                       contributionOneUser: '2000',
-                                      heureCotisation: formatTime(
-                                          currentDetail["start_date"]),
-                                      dateCotisation: formatDate(
-                                          currentDetail["start_date"]),
+                                      // AppCubitStorage().state.Language=="fr"? formatTimeToFrench (currentDetail["start_date"]) : formatTimeToEnglish (currentDetail["start_date"])
+                                      heureCotisation: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (currentDetail["start_date"]) : formatTimeToEnglish (currentDetail["start_date"]),
+                                      dateCotisation: AppCubitStorage().state.Language=="fr"? formatDateToFrench(currentDetail["start_date"]) : formatDateToEnglish(currentDetail["start_date"]),
                                       montantCotisations:
                                           currentDetail["amount"],
                                       motifCotisations: currentDetail["name"],
@@ -291,12 +292,10 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                           currentDetail["cotisation_code"],
                                       contributionOneUser: '1500',
                                       motifCotisations: currentDetail["name"],
-                                      dateCotisation: formatDate(
-                                          currentDetail["start_date"]),
+                                      dateCotisation: AppCubitStorage().state.Language=="fr"? formatDateToFrench(currentDetail["start_date"]) : formatDateToEnglish(currentDetail["start_date"]),
                                       montantCotisations:
                                           currentDetail["amount"],
-                                      heureCotisation: formatTime(
-                                          currentDetail["start_date"]),
+                                      heureCotisation: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (currentDetail["start_date"]) : formatTimeToEnglish (currentDetail["start_date"]),
                                       // montantSanctionCollectee: '1500',
                                       nbreParticipantCotisationOK: 10,
                                       nbreParticipant: 12,
@@ -315,12 +314,10 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                     child: WidgetCotisationExpireInProgress(
                                       contributionOneUser: '1500',
                                       motifCotisations: currentDetail["name"],
-                                      dateCotisation: formatDate(
-                                          currentDetail["start_date"]),
+                                      dateCotisation: AppCubitStorage().state.Language=="fr"? formatDateToFrench(currentDetail["start_date"]) : formatDateToEnglish(currentDetail["start_date"]), 
                                       montantCotisations:
                                           currentDetail["amount"],
-                                      heureCotisation: formatTime(
-                                          currentDetail["start_date"]),
+                                      heureCotisation: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (currentDetail["start_date"]) : formatTimeToEnglish (currentDetail["start_date"]),
                                       // montantSanctionCollectee: currentDetail["amount_sanction"] ,
                                       nbreParticipantCotisationOK: 10,
                                       nbreParticipant: 12,
@@ -345,13 +342,26 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 // final currentDetail = currentDetailSeance["cotisation"][index];
                                 final ItemDetailSeanceSanction =
                                     currentDetailSeance!["sanctions"][index];
-                                // print(
-                                //     "]]]]]]]]]]]]]]]]] ${ItemDetailSeanceSanction["membre"]["membre_code"]}");
+                                print(
+                                    "]]]]]]]]]]]]]]]]] ${currentDetailSeance!["sanctions"][index]}");
+
+
+                                     print(
+                                    "]]]]]]]]]]]]]]]]]################## ${ItemDetailSeanceSanction["membre"]["membre_code"] }");
+
+                                                                         print(
+                                    "2222222222222333333333333 ${Variables().codeMembre }");
+
+                                    print(
+                                    "1111111111111333333333 ${AppCubitStorage().state.membreCode }");
+                                    
+                                    
+
+                                    
 
                                 if (ItemDetailSeanceSanction["type"] == "1" &&
-                                    ItemDetailSeanceSanction["membre"]
-                                            ["membre_code"] ==
-                                        Variables.codeMembre &&
+                                    ItemDetailSeanceSanction["membre"]["membre_code"] ==
+                                        Variables().codeMembre &&
                                     ItemDetailSeanceSanction[
                                             "is_sanction_payed"] ==
                                         0) {
@@ -359,14 +369,11 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
                                     child: WidgetSanctionNonPayeeIsMoney(
-                                      dateSanction: formatDate(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
+                                      dateSanction: AppCubitStorage().state.Language=="fr"? formatDateToFrench(ItemDetailSeanceSanction["start_date"]) : formatDateToEnglish(ItemDetailSeanceSanction["start_date"]),
                                       versement:
                                           ItemDetailSeanceSanction["versement"],
-                                      heureSanction: formatTime(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
+                                        
+                                      heureSanction: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (ItemDetailSeanceSanction["start_date"]) : formatTimeToEnglish (ItemDetailSeanceSanction["start_date"]),
                                       montantPayeeSanction:
                                           ItemDetailSeanceSanction[
                                               "sanction_balance"],
@@ -387,7 +394,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                         "0" &&
                                     ItemDetailSeanceSanction["membre"]
                                             ["membre_code"] ==
-                                        Variables.codeMembre &&
+                                        Variables().codeMembre &&
                                     ItemDetailSeanceSanction[
                                             "is_sanction_payed"] ==
                                         0) {
@@ -395,12 +402,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
                                     child: WidgetSanctionNonPayeeIsOther(
-                                      dateSanction: formatDate(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
-                                      heureSanction: formatTime(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
+                                      dateSanction: AppCubitStorage().state.Language=="fr"? formatDateToFrench(ItemDetailSeanceSanction["start_date"]) : formatDateToEnglish(ItemDetailSeanceSanction["start_date"]),
+                                      heureSanction: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (ItemDetailSeanceSanction["start_date"]) : formatTimeToEnglish (ItemDetailSeanceSanction["start_date"]),
                                       objetSanction:
                                           ItemDetailSeanceSanction["libelle"],
                                       motifSanction:
@@ -414,19 +417,15 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                         1 &&
                                     ItemDetailSeanceSanction["membre"]
                                             ["membre_code"] ==
-                                        Variables.codeMembre) {
+                                        Variables().codeMembre) {
                                   return Container(
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
                                     child: WidgetSanctionPayeeIsMoney(
                                       versement:
                                           ItemDetailSeanceSanction["versement"],
-                                      dateSanction: formatDate(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
-                                      heureSanction: formatTime(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
+                                      dateSanction: AppCubitStorage().state.Language=="fr"? formatDateToFrench(ItemDetailSeanceSanction["start_date"]) : formatDateToEnglish(ItemDetailSeanceSanction["start_date"]),
+                                      heureSanction: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (ItemDetailSeanceSanction["start_date"]) : formatTimeToEnglish (ItemDetailSeanceSanction["start_date"]),
                                       montantPayeeSanction:
                                           ItemDetailSeanceSanction[
                                               "sanction_balance"],
@@ -445,17 +444,13 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                         1 &&
                                     ItemDetailSeanceSanction["membre"]
                                             ["membre_code"] ==
-                                        Variables.codeMembre) {
+                                        Variables().codeMembre) {
                                   return Container(
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
                                     child: WidgetSanctionPayeeIsOther(
-                                      dateSanction: formatDate(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
-                                      heureSanction: formatTime(
-                                          ItemDetailSeanceSanction[
-                                              "start_date"]),
+                                      dateSanction: AppCubitStorage().state.Language=="fr"? formatDateToFrench(ItemDetailSeanceSanction["start_date"]) : formatDateToEnglish(ItemDetailSeanceSanction["start_date"]),
+                                      heureSanction: AppCubitStorage().state.Language=="fr"? formatTimeToFrench (ItemDetailSeanceSanction["start_date"]) : formatTimeToEnglish (ItemDetailSeanceSanction["start_date"]),
                                       motifSanction:
                                           ItemDetailSeanceSanction["motif"],
                                       objetSanction:

@@ -188,7 +188,7 @@ class _WidgetCotisationInProgressState
                       children: [
                         Container(
                           child: Text(
-                            "Type: Volontaire",
+                            "type_volontaire".tr(),
                             style: TextStyle(
                               color: Color.fromARGB(255, 20, 45, 99),
                             ),

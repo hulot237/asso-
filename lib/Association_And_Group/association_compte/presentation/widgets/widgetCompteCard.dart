@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -92,8 +93,8 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: 5),
-                      child: const Text(
-                        "Compte ",
+                      child: Text(
+                        "compte".tr(),
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
@@ -104,7 +105,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                     Container(
                       margin: EdgeInsets.only(top: 5),
                       child: Text(
-                        "#${widget.numeroCompte}",
+                        " #${widget.numeroCompte}",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,

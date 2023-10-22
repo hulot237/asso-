@@ -126,7 +126,7 @@ class _WidgetTontineRencontreCardState
                     children: [
                       Container(
                         child: Text(
-                          "Bénéficiaire(${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
+                          "${"bénéficiaire".tr()}(${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -198,7 +198,7 @@ class _WidgetTontineRencontreCardState
                           children: [
                             Container(
                               child: Text(
-                                "Montant collecté",
+                                "montant_collecté".tr(),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,

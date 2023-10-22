@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class UserGroupRepository {
   final dio = Dio();
@@ -13,10 +14,18 @@ class UserGroupRepository {
       // final token = AuthCubit().state.token;
       log("response1");
 
-      final response = await dio
-          .post('${Variables.LienAIP}/api/v1/usergroupe/userpages', data: {
-        "urlcodes": Variables().urlcodes,
-      });
+      final response = await dio.post(
+        '${Variables.LienAIP}/api/v1/usergroupe/userpages',
+        data: {
+          "urlcodes": Variables().urlcodes,
+        },
+        options: Options(
+          headers: {
+            "password": AppCubitStorage().state.passwordKey,
+            "username": AppCubitStorage().state.userNameKey,
+          },
+        ),
+      );
 
       final List<dynamic> dataJson = response.data["data"]["userGroups"];
       // print("dataJsozzzzzzzzzzzzz      ${response.data["data"]["userGroups"].runtimeType}");
@@ -40,10 +49,18 @@ class UserGroupRepository {
   Future<Map<String, dynamic>> UserGroupDefault() async {
     try {
       log("response2");
-      final response = await dio
-          .post('${Variables.LienAIP}/api/v1/usergroupe/default', data: {
-        "urlcodes": Variables().urlcodes,
-      });
+      final response = await dio.post(
+        '${Variables.LienAIP}/api/v1/usergroupe/default',
+        data: {
+          "urlcodes": Variables().urlcodes,
+        },
+        options: Options(
+          headers: {
+            "password": AppCubitStorage().state.passwordKey,
+            "username": AppCubitStorage().state.userNameKey,
+          },
+        ),
+      );
       // print("dataJsozzzzzzzzzzzzz      ${response.data["data"]["partner_id"]}");
 
       final Map<String, dynamic> dataJson = response.data["data"];

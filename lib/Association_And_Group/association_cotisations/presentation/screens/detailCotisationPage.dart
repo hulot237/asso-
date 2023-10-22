@@ -1,4 +1,5 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
@@ -60,7 +61,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
         backgroundColor: Color(0xFFEFEFEF),
         appBar: AppBar(
           title: Text(
-            "Detail de la cotisations",
+            "detail_de_la_cotisations".tr(),
             style: TextStyle(fontSize: 16),
           ),
           backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
@@ -90,7 +91,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  "Historique des cotisations",
+                  "historique_des_cotisations".tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -112,7 +113,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                     0: Row(
                       children: [
                         Text(
-                          'Cotisé',
+                          'cotisé'.tr(),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -133,7 +134,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                     1: Row(
                       children: [
                         Text(
-                          'Non cotisé',
+                          'non_cotisé'.tr(),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -252,8 +253,6 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                             // bool valeurBool = Tab[index];
                             final currentDetailPersonNonCotis =
                                 currentDetailCotisation!["members"][index];
-                            print(
-                                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${currentDetailPersonNonCotis}");
 
                             return WidgetHistoriqueCotisation(
                               is_versement_finished:

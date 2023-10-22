@@ -111,7 +111,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               child: Container(
                                 padding: EdgeInsets.all(1),
                                 child: Text(
-                                  "En cours",
+                                  "en_cours".tr(),
                                   style: TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold,
@@ -127,7 +127,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               child: Container(
                                 padding: EdgeInsets.all(1),
                                 child: Text(
-                                  "Terminé",
+                                  "terminé".tr(),
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.bold,
@@ -179,7 +179,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           children: [
                             Container(
                               child: Text(
-                                "lieu2".tr(),
+                                "lieu_de_la_réception".tr(),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
@@ -326,7 +326,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 Container(
                                   margin: EdgeInsets.only(bottom: 3),
                                   child: Text(
-                                    "Présence",
+                                    "présence".tr(),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w800,

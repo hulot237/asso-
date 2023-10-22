@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailTontineCard.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
@@ -66,7 +67,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                     margin: EdgeInsets.only(bottom: 7, left: 5, right: 5),
                     padding: EdgeInsets.only(top: 20),
                     child: Text(
-                      "Ordre de passage",
+                      "ordre_de_passage".tr(),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -113,7 +114,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(360),
-                                              color: itemListMembre["is_pased"]==0? Color.fromRGBO(
+                                              color: itemListMembre["is_passed"]==0? Color.fromRGBO(
                                                   20, 45, 99, 0.24) : Color.fromRGBO(15, 190, 24, 0.658),
                                             ),
                                             width: 15,
@@ -121,7 +122,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                             child: Container(
                                               alignment: Alignment.center,
                                               child: 
-                                              itemListMembre["is_pased"]==0? Text(
+                                              itemListMembre["is_passed"]==0? Text(
                                                 "${++i}",
                                                 style: TextStyle(
                                                   fontSize: 8,
@@ -134,7 +135,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                             ),
                                           ),
                                           Container(
-                                            color: itemListMembre["is_pased"]==0? Color.fromRGBO(
+                                            color: itemListMembre["is_passed"]==0? Color.fromRGBO(
                                                   20, 45, 99, 0.24) : Color.fromRGBO(15, 190, 24, 0.658),
                                             width: 80,
                                             height: 2,

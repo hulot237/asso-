@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
@@ -64,7 +65,7 @@ class _VerificationPageState extends State<VerificationPage> {
                         Image.asset("assets/images/Groupe_ou_Asso.png", scale: 4,),
                         SizedBox(height: 30),
                         Text(
-                          "Vérification",
+                          "vérification".tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 27,

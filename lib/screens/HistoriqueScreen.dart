@@ -63,6 +63,21 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
     }
   }
 
+  Future<void> handleTournoiDefault() async {
+    final detailTournoiCourant = await context
+        .read<DetailTournoiCourantCubit>()
+        .detailTournoiCourantCubit();
+
+    if (detailTournoiCourant != null) {
+      print(
+          "objectdddddddddddddddddddddddddddddddddd  ${detailTournoiCourant}");
+      print(
+          "dddddddddddddddddddddddddddddddddddddddd ${context.read<DetailTournoiCourantCubit>().state.detailtournoiCourant}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
   Map<String, dynamic>? get currentInfoAssociationCourant {
     return context.read<UserGroupCubit>().state.userGroupDefault;
   }
@@ -89,8 +104,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
     // TODO: implement initState
     super.initState();
     handleAllCotisationAss(AppCubitStorage().state.codeAssDefaul);
-    handleDetailUser(Variables.codeMembre);
+    handleDetailUser(Variables().codeMembre);
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+    handleTournoiDefault();
   }
 
   List<Color> listeDeCouleurs = [
@@ -106,6 +122,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
     final currentAllCotisationAss =
         context.read<CotisationCubit>().state.allCotisationAss;
     final currentCompteAss = context.read<CompteCubit>().state.allCompteAss;
+    final currentDetailtournoiCourant =
+        context.read<DetailTournoiCourantCubit>().state.detailtournoiCourant;
 
     List<Map<String, dynamic>> comptePlusColor =
         currentCompteAss!.asMap().entries.map((entry) {
@@ -116,9 +134,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
         'color': listeDeCouleurs[index],
       };
     }).toList();
-
-    print(
-        "{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{' ${comptePlusColor[1]["color"]}");
 
     return BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
         builder: (DetailTournoiContext, DetailTournoiState) {
@@ -205,6 +220,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                           ),
                         ),
                       ),
+                      currentDetailtournoiCourant!["tournois"]
+                                    ["seance"]
+                                .length>0?
                       Expanded(
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -248,9 +266,13 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                   codeSeance: itemSeance["seance_code"],
                                   photoProfilRecepteur: "",
                                   dateRencontre:
-                                      formatDate(itemSeance["date_seance"]),
+                                      AppCubitStorage().state.Language == "fr"
+                                          ? formatDateToFrench(
+                                              itemSeance["date_seance"])
+                                          : formatDateToEnglish(
+                                              itemSeance["date_seance"]),
                                   descriptionRencontre:
-                                      'Le rencontre du ${formatDate(itemSeance["date_seance"])} se tiendra à ${itemSeance["heure_debut"]}',
+                                      'Le rencontre du ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemSeance["date_seance"]) : formatDateToEnglish(itemSeance["date_seance"])} se tiendra à ${itemSeance["heure_debut"]}',
                                   heureRencontre: itemSeance["heure_debut"],
                                   identifiantRencontre: itemSeance["matricule"],
                                   lieuRencontre: itemSeance["localisation"],
@@ -268,7 +290,18 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                             },
                           ),
                         ),
-                      ),
+                      ):Container(
+                                    padding: EdgeInsets.only(top: 200),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "Aucune rencontre",
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20
+                                      ),
+                                    ),
+                                  ),
                     ],
                   ),
                 ),
@@ -299,24 +332,20 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                 letterSpacing: 0.2),
                           ),
                         ),
+                        currentDetailtournoiCourant["tontines"]
+                                  .length>0?
                         Expanded(
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             child: ListView.builder(
                               padding: EdgeInsets.all(0),
                               shrinkWrap: true,
-                              // itemCount: 4,
                               itemCount: currentDetailtournoiCourant["tontines"]
                                   .length,
-                              // ["seance"].length,
                               itemBuilder: (context, index) {
-                                // if (index > 1) return Container();
                                 final itemTontine =
                                     currentDetailtournoiCourant["tontines"]
                                         [index];
-                                // print("################### ${itemTontine["membres"][index]}");
-
-                                // return
 
                                 for (var item in itemTontine["membres"])
                                   if (item["membre"]["membre_code"] ==
@@ -328,8 +357,17 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 DetailTontinePage(
-                                              dateCreaTontine: formatDateString(
-                                                  "${itemTontine["created_at"]}"),
+                                              dateCreaTontine: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      itemTontine["created_at"])
+                                                  : formatDateToEnglish(
+                                                      itemTontine[
+                                                          "created_at"]),
+                                              // formatDateString(
+                                              //     "${itemTontine["created_at"]}"),
                                               nomTontine:
                                                   "${itemTontine["libele"]}",
                                               montantTontine:
@@ -350,8 +388,14 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                             top: 3,
                                             bottom: 7),
                                         child: widgetTontineHistoriqueCard(
-                                          dateCreaTontine: formatDateString(
-                                              "${itemTontine["created_at"]}"),
+                                          dateCreaTontine: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  itemTontine["created_at"])
+                                              : formatDateToEnglish(
+                                                  itemTontine["created_at"]),
                                           nomTontine:
                                               "${itemTontine["libele"]}",
                                           montantTontine:
@@ -365,7 +409,18 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                               },
                             ),
                           ),
-                        ),
+                        ):Container(
+                                    padding: EdgeInsets.only(top: 200),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "Aucune tontine",
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20
+                                      ),
+                                    ),
+                                  ),
                       ],
                     ),
                   ),
@@ -373,13 +428,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                   padding: EdgeInsets.only(
                     top: 1.5,
                     left: 1.5,
-                    // bottom: 10,
                     right: 1.5,
                   ),
                   width: MediaQuery.of(context).size.width,
-                  // decoration: BoxDecoration(
-                  //   color: Color.fromARGB(255, 226, 226, 226),
-                  // ),
                   child: Column(
                     children: [
                       Container(
@@ -394,6 +445,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                               letterSpacing: 0.2),
                         ),
                       ),
+                      currentAllCotisationAss!.length>0?
                       Expanded(
                         child: Container(
                             width: MediaQuery.of(context).size.width,
@@ -402,31 +454,40 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                               shrinkWrap: true,
                               itemCount: currentAllCotisationAss!.length,
                               itemBuilder: (context, index) {
-                                // Vérifiez la valeur du booléen à l'index actuel
                                 final currentDetail =
                                     currentAllCotisationAss[index];
-                                    print("[[[[[[[[[[[[[[[[object]]]]]]]]]]]]]]]] ${currentDetail["seance"]}");
-// if(currentDetail["association_seance_id"] == null)
+                                print(
+                                    "[[[[[[[[[[[[[[[[object]]]]]]]]]]]]]]]] ${currentDetail["seance"]}");
 
-            // "ass_membre_id": 2,
-            // "association_seance_id": null,
                                 if (currentDetail["is_tontine"] == 0 &&
                                     currentDetail["type"] == "0" &&
-                                    currentDetail["is_passed"] == 0 ) {
+                                    currentDetail["is_passed"] == 0) {
                                   return GestureDetector(
                                     onTap: () {},
                                     child: Container(
                                       margin: EdgeInsets.only(
                                           left: 7, right: 7, top: 3, bottom: 7),
                                       child: WidgetCotisationInFixed(
-                                        type:currentDetail["type"],
+                                        type: currentDetail["type"],
                                         contributionOneUser: '2000',
                                         codeCotisation:
                                             currentDetail["cotisation_code"],
-                                        heureCotisation: formatTime(
-                                            currentDetail["start_date"]),
-                                        dateCotisation: formatDate(
-                                            currentDetail["start_date"]),
+                                        heureCotisation: AppCubitStorage()
+                                                    .state
+                                                    .Language ==
+                                                "fr"
+                                            ? formatTimeToFrench(
+                                                currentDetail["start_date"])
+                                            : formatTimeToEnglish(
+                                                currentDetail["start_date"]),
+                                        dateCotisation: AppCubitStorage()
+                                                    .state
+                                                    .Language ==
+                                                "fr"
+                                            ? formatDateToFrench(
+                                                currentDetail["start_date"])
+                                            : formatDateToEnglish(
+                                                currentDetail["start_date"]),
                                         montantCotisations:
                                             currentDetail["amount"],
                                         motifCotisations: currentDetail["name"],
@@ -442,7 +503,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                   );
                                 } else if (currentDetail["is_tontine"] == 0 &&
                                     currentDetail["type"] == "1" &&
-                                    currentDetail["is_passed"] == 0 ) {
+                                    currentDetail["is_passed"] == 0) {
                                   return Container(
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
@@ -450,10 +511,20 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                       codeCotisation:
                                           currentDetail["cotisation_code"],
                                       contributionOneUser: '2000',
-                                      heureCotisation: formatTime(
-                                          currentDetail["start_date"]),
-                                      dateCotisation: formatDate(
-                                          currentDetail["start_date"]),
+                                      heureCotisation:
+                                          AppCubitStorage().state.Language ==
+                                                  "fr"
+                                              ? formatTimeToFrench(
+                                                  currentDetail["start_date"])
+                                              : formatTimeToEnglish(
+                                                  currentDetail["start_date"]),
+                                      dateCotisation:
+                                          AppCubitStorage().state.Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  currentDetail["start_date"])
+                                              : formatDateToEnglish(
+                                                  currentDetail["start_date"]),
                                       montantCotisations:
                                           currentDetail["amount"],
                                       motifCotisations: currentDetail["name"],
@@ -463,12 +534,13 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                       nbreParticipantCotisationOK: 7,
                                       montantSanctionCollectee: '1500',
                                       isActive: 1,
-                                      montantMin: "200",type:currentDetail["type"],
+                                      montantMin: "200",
+                                      type: currentDetail["type"],
                                     ),
                                   );
                                 } else if (currentDetail["is_tontine"] == 0 &&
                                     currentDetail["type"] == "0" &&
-                                    currentDetail["is_passed"] == 1 ) {
+                                    currentDetail["is_passed"] == 1) {
                                   return Container(
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
@@ -477,35 +549,55 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                           currentDetail["cotisation_code"],
                                       contributionOneUser: '1500',
                                       motifCotisations: currentDetail["name"],
-                                      dateCotisation: formatDate(
-                                          currentDetail["start_date"]),
+                                      dateCotisation:
+                                          AppCubitStorage().state.Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  currentDetail["start_date"])
+                                              : formatDateToEnglish(
+                                                  currentDetail["start_date"]),
                                       montantCotisations:
                                           currentDetail["amount"],
-                                      heureCotisation: formatTime(
-                                          currentDetail["start_date"]),
+                                      heureCotisation:
+                                          AppCubitStorage().state.Language ==
+                                                  "fr"
+                                              ? formatTimeToFrench(
+                                                  currentDetail["start_date"])
+                                              : formatTimeToEnglish(
+                                                  currentDetail["start_date"]),
                                       // montantSanctionCollectee: '1500',
                                       nbreParticipantCotisationOK: 10,
                                       nbreParticipant: 12,
                                       soldeCotisation:
                                           currentDetail["cotisation_balance"],
-                                      isActive: 0,type:currentDetail["type"],
+                                      isActive: 0, type: currentDetail["type"],
                                     ),
                                   );
                                 } else if (currentDetail["is_tontine"] == 0 &&
                                     currentDetail["type"] == "1" &&
-                                    currentDetail["is_passed"] == 1 ) {
+                                    currentDetail["is_passed"] == 1) {
                                   return Container(
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
                                     child: WidgetCotisationExpireInProgress(
                                       contributionOneUser: '1500',
                                       motifCotisations: currentDetail["name"],
-                                      dateCotisation: formatDate(
-                                          currentDetail["start_date"]),
+                                      dateCotisation:
+                                          AppCubitStorage().state.Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  currentDetail["start_date"])
+                                              : formatDateToEnglish(
+                                                  currentDetail["start_date"]),
                                       montantCotisations:
                                           currentDetail["amount"],
-                                      heureCotisation: formatTime(
-                                          currentDetail["start_date"]),
+                                      heureCotisation:
+                                          AppCubitStorage().state.Language ==
+                                                  "fr"
+                                              ? formatTimeToFrench(
+                                                  currentDetail["start_date"])
+                                              : formatTimeToEnglish(
+                                                  currentDetail["start_date"]),
                                       // montantSanctionCollectee: currentDetail["amount_sanction"] ,
                                       nbreParticipantCotisationOK: 10,
                                       nbreParticipant: 12,
@@ -513,7 +605,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                           currentDetail["cotisation_balance"],
                                       isActive: 1,
                                       codeCotisation:
-                                          currentDetail["cotisation_code"],type:currentDetail["type"],
+                                          currentDetail["cotisation_code"],
+                                      type: currentDetail["type"],
                                     ),
                                   );
                                 }
@@ -521,7 +614,18 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                 // Ajoutez ici le widget que vous souhaitez afficher pour true
                               },
                             )),
-                      ),
+                      ):Container(
+                                    padding: EdgeInsets.only(top: 200),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "Aucune cotisation",
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20
+                                      ),
+                                    ),
+                                  ),
                     ],
                   ),
                 ),
@@ -544,6 +648,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                               letterSpacing: 0.2),
                         ),
                       ),
+                      currentDetailUser!["sanctions"].length>0?
                       Expanded(
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -564,10 +669,22 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                   child: WidgetSanctionNonPayeeIsMoney(
                                     versement:
                                         ItemDetailUserSanction["versement"],
-                                    dateSanction: formatDate(
-                                        ItemDetailUserSanction["start_date"]),
-                                    heureSanction: formatTime(
-                                        ItemDetailUserSanction["start_date"]),
+                                    dateSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatDateToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatDateToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
+                                    heureSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatTimeToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatTimeToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
                                     montantPayeeSanction:
                                         ItemDetailUserSanction[
                                             "sanction_balance"],
@@ -592,10 +709,22 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                   margin: EdgeInsets.only(
                                       left: 7, right: 7, top: 3, bottom: 7),
                                   child: WidgetSanctionNonPayeeIsOther(
-                                    dateSanction: formatDate(
-                                        ItemDetailUserSanction["start_date"]),
-                                    heureSanction: formatTime(
-                                        ItemDetailUserSanction["start_date"]),
+                                    dateSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatDateToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatDateToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
+                                    heureSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatTimeToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatTimeToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
                                     objetSanction:
                                         ItemDetailUserSanction["libelle"],
                                     motifSanction:
@@ -612,10 +741,22 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                   child: WidgetSanctionPayeeIsMoney(
                                     versement:
                                         ItemDetailUserSanction["versement"],
-                                    dateSanction: formatDate(
-                                        ItemDetailUserSanction["start_date"]),
-                                    heureSanction: formatTime(
-                                        ItemDetailUserSanction["start_date"]),
+                                    dateSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatDateToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatDateToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
+                                    heureSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatTimeToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatTimeToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
                                     montantPayeeSanction:
                                         ItemDetailUserSanction[
                                             "sanction_balance"],
@@ -634,10 +775,22 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                                   margin: EdgeInsets.only(
                                       left: 7, right: 7, top: 3, bottom: 7),
                                   child: WidgetSanctionPayeeIsOther(
-                                    dateSanction: formatDate(
-                                        ItemDetailUserSanction["start_date"]),
-                                    heureSanction: formatTime(
-                                        ItemDetailUserSanction["start_date"]),
+                                    dateSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatDateToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatDateToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
+                                    heureSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatTimeToFrench(
+                                                ItemDetailUserSanction[
+                                                    "start_date"])
+                                            : formatTimeToEnglish(
+                                                ItemDetailUserSanction[
+                                                    "start_date"]),
                                     motifSanction:
                                         ItemDetailUserSanction["motif"],
                                     objetSanction:
@@ -652,7 +805,18 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                             },
                           ),
                         ),
-                      ),
+                      ):Container(
+                                    padding: EdgeInsets.only(top: 200),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "Aucune sanction",
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20
+                                      ),
+                                    ),
+                                  ),
                     ],
                   ),
                 ),

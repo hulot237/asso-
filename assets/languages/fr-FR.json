@@ -4,7 +4,47 @@
     "rencontre":"Rencontre",
     "recepteur":"Recepteur",
     "lieu":"Lieu",
-    "lieu2":"Lieu de la réception",
+    "lieu_de_la_réception":"Lieu de la réception",
     "cotiser":"Cotiser",
-    "dateheure":"Date et heure"
+    "dateheure":"Date et heure",
+    "compte":"Compte",
+    "detail_de_la_cotisations": "Detail de la cotisations",
+    "historique_des_cotisations": "Historique des cotisations",
+    "cotisé": "Cotisé",
+    "non_cotisé": "Non cotisé",
+    "expiré": "Expiré",
+    "type_fixe": "Type: Fixe",
+    "type_volontaire": "Type: Volontaire",
+    "ouverture": "Ouverture :",
+    "vous_avez_cotisé": "Vous avez cotisé",
+    "solde": "Solde",
+    "transactions": "Transactions",
+    "a_payer": "A payer",
+    "voulez_vous_payer?" : "Voulez vous payer?",
+    "oui": "Oui",
+    "déjà_payé": "Déjà payé",
+    "detail_de_la_rencontre": "Detail de la rencontre",
+    "en_cours": "En cours",
+    "terminé": "Terminé",
+    "présence": "Présence",
+    "ordre_de_passage": "Ordre de passage",
+    "montant_collecté": "Montant collecté",
+    "bénéficiaires": "Bénéficiaires",
+    "numero_de_téléphone": "Numero de téléphone",
+    "vérification": "vérification",
+    "vos_associations":"Vos associations",
+    "vos_tournois":"Vos tournois",
+    "tournoi":"Tournoi",
+    "liste_de_vos_transactions":"Liste de vos transactions",
+    "reste":"Reste"
+
+
+
+
+
+
+
+
+
+
 }

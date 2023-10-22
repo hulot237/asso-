@@ -168,14 +168,18 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                                   .state
                                   .detailCotisation;
 
+                              if (currentDetailCotisation!["members"].length >
+                                  0)
+                                for (var itemDetailCotisation
+                                    in currentDetailCotisation!["members"])
+                                  if (itemDetailCotisation["membre"]
+                                          ["membre_code"] ==
+                                      AppCubitStorage().state.membreCode)
+                                    Modal().showModalActionPayement(
+                                        context,
+                                        itemDetailCotisation[
+                                            "cotisation_pay_link"]);
 
-                              if (currentDetailCotisation!["members"].length > 0)
-                                for (var itemDetailCotisation in currentDetailCotisation!["members"])
-                                  // print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{''}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} ${AppCubitStorage().state.membreCode}");
-                                  if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
-                                    Modal().showModalActionPayement(context, itemDetailCotisation["cotisation_pay_link"]);
-
-                              // Modal().showModalActionPayement(context, 'eée');
                             },
                             child: Container(
                               padding: EdgeInsets.only(
@@ -183,13 +187,6 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                               decoration: BoxDecoration(
                                 color: Color.fromRGBO(0, 162, 255, 1),
                                 borderRadius: BorderRadius.circular(15),
-                                // boxShadow: [
-                                //   BoxShadow(
-                                //       color: Color.fromARGB(122, 65, 65, 65),
-                                //       spreadRadius: 0.1,
-                                //       blurRadius: 1,
-                                //       offset: Offset(0.5, 2)),
-                                // ],
                               ),
                               child: Container(
                                 child: Text(
@@ -219,7 +216,7 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                         children: [
                           Container(
                             child: Text(
-                              "Type: Fixe",
+                              "type_fixe".tr(),
                               style: TextStyle(
                                 color: Color.fromARGB(255, 20, 45, 99),
                               ),

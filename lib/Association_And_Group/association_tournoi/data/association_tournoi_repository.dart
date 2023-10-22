@@ -9,7 +9,6 @@ class DetailTournoiCourantRepository {
   final dio = Dio();
   final codeTournoiDefaul = AppCubitStorage().state.codeTournois;
 
-
   Future<Map<String, dynamic>> DetailTournoiCourant() async {
     try {
       log("response1");
@@ -23,15 +22,40 @@ class DetailTournoiCourantRepository {
 
       final Map<String, dynamic> dataJson = response.data["data"];
 
-
-      print("dataJsozzzzzzzzzzzzzT      ${response.data["data"]["tournois"]["seance"]}");
-
-
+      print(
+          "dataJsozzzzzzzzzzzzzT      ${response.data["data"]["tournois"]["seance"]}");
 
       log('Okay AllUserGroupOfUser rep');
       return dataJson;
     } catch (e) {
       log('erreur AllUserGroupOfUser rep');
+      print(e);
+      return {};
+    }
+  }
+
+
+
+  Future<Map<String, dynamic>> ChangeTournoi(codeTournoi, codeAss) async {
+    try {
+      log("response1");
+
+      final response = await dio.patch(
+        '${Variables.LienAIP}/api/v1/$codeAss/tournois/$codeTournoi/default',
+        // data: {
+        //   // "urlcodes": Variables().urlcodes,
+        // },
+      );
+
+      final Map<String, dynamic> dataJson = response.data["data"];
+
+      print(
+          "ChangeTournoiiiiiiiiiiiiiiiiiiiii      ${response.data["data"]}");
+
+      log('Okay ChangeTournoi rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur ChangeTournoi rep');
       print(e);
       return {};
     }

@@ -149,7 +149,7 @@ class _WidgetCotisationExpireInProgressState
                           child: Container(
                             // color: Colors.black,
                             child: Text(
-                              "Expiré",
+                              "expiré".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
@@ -174,7 +174,7 @@ class _WidgetCotisationExpireInProgressState
                       children: [
                         Container(
                           child: Text(
-                            "Type: Volontaire",
+                            "type_volontaire".tr(),
                             style: TextStyle(
                               color: Color.fromARGB(255, 20, 45, 99),
                             ),

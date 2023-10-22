@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: "Numero de téléphone",
+                                      hintText: "numero_de_téléphone".tr(),
                                       hintStyle: TextStyle(
                                         color: Color.fromARGB(122, 20, 45, 99),
                                       )),
@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                               handleLogin();
                             },
                             child: Text(
-                              "Vérification",
+                              "vérification".tr(),
                               style: TextStyle(fontSize: 19),
                             ),
                             style: ElevatedButton.styleFrom(

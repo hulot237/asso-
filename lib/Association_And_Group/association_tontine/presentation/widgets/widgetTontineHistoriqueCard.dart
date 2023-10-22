@@ -62,7 +62,7 @@ class _widgetTontineHistoriqueCardState
                                   children: [
                                     Container(
                                       child: Text(
-                                        "Ouverture: ",
+                                        "${"ouverture".tr()} ",
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ class _widgetTontineHistoriqueCardState
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Text(
-                          "En cours",
+                          "en_cours".tr(),
                           style: TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.w400,
@@ -183,7 +183,7 @@ class _widgetTontineHistoriqueCardState
                     children: [
                       Container(
                         child: Text(
-                          "Bénéficiaire(${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
+                          "${"bénéficiaire".tr()}(${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,

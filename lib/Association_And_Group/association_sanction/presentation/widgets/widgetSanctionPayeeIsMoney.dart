@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,7 @@ class _WidgetSanctionPayeeIsMoneyState
                                 Container(
                                   padding: EdgeInsets.only(bottom: 5),
                                   child: Text(
-                                    "A payer",
+                                    "a_payer".tr(),
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),
@@ -134,7 +135,7 @@ class _WidgetSanctionPayeeIsMoneyState
                                 Container(
                                   padding: EdgeInsets.only(bottom: 5),
                                   child: Text(
-                                    "Déjà payé",
+                                    "déjà_payé".tr(),
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),

@@ -164,7 +164,7 @@ class _WidgetCotisationExpireInFixedState
                             child: Container(
                               // color: Colors.black,
                               child: Text(
-                                "Expiré",
+                                "expiré".tr(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -189,7 +189,7 @@ class _WidgetCotisationExpireInFixedState
                         children: [
                           Container(
                             child: Text(
-                              "Type: Fixe",
+                              "type_fixe".tr(),
                               style: TextStyle(
                                 color: Color.fromARGB(255, 20, 45, 99),
                               ),

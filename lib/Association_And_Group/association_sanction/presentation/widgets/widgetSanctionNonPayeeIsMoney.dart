@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,7 @@ class _WidgetSanctionNonPayeeIsMoneyState
                                 Container(
                                   padding: EdgeInsets.only(bottom: 5),
                                   child: Text(
-                                    "A payer",
+                                    "a_payer".tr(),
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),
@@ -138,7 +139,7 @@ class _WidgetSanctionNonPayeeIsMoneyState
                               child: Row(
                                 children: [
                                   Container(
-                                    child: Text("Voulez-vous payer?"),
+                                    child: Text("voulez_vous_payer?".tr()),
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Container(
@@ -156,7 +157,7 @@ class _WidgetSanctionNonPayeeIsMoneyState
                                       // ],
                                     ),
                                     child: Text(
-                                      "Oui",
+                                      "oui".tr(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -173,7 +174,7 @@ class _WidgetSanctionNonPayeeIsMoneyState
                                 Container(
                                   padding: EdgeInsets.only(bottom: 5),
                                   child: Text(
-                                    "Déjà payé",
+                                    "déjà_payé".tr(),
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),

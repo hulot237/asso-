@@ -1,12 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +45,7 @@ class Modal {
               Container(
                 margin: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
-                  "Vos associations",
+                  "vos_associations".tr(),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -76,8 +79,57 @@ class Modal {
     );
   }
 
-  void showBottomSheetListTournoi(context, List currentInfoAssociationCourant) {
+  void showBottomSheetListTournoi(
+      BuildContext context, List currentInfoAssociationCourant) {
     // .state.userGroupDefault
+    Color? colorSelect(tournois_code) {
+      if (tournois_code == AppCubitStorage().state.codeTournois) {
+        return Color.fromRGBO(0, 162, 255, 0.915);
+      } else {
+        return Color.fromARGB(23, 20, 45, 99);
+      }
+      // Aucune correspondance trouvée, retourne null.
+      return null;
+    }
+
+        Color? colorSelectText(tournois_code) {
+      if (tournois_code == AppCubitStorage().state.codeTournois) {
+        return Colors.white;
+      } else {
+        return Color.fromARGB(139, 20, 45, 99);
+      }
+      // Aucune correspondance trouvée, retourne null.
+      return null;
+    }
+
+    Future handleChangeTournoi(codeTournoi) async {
+      final allCotisationAss = await context
+          .read<DetailTournoiCourantCubit>()
+          .changeTournoiCubit(
+              codeTournoi, AppCubitStorage().state.codeAssDefaul);
+
+      await AppCubitStorage().updateCodeTournoisDefault(codeTournoi);
+
+      
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext context) => HomePage(),
+        ),
+        (route) => false,
+      );
+
+      print(
+          "2222222222222222222222222222222222222222é ${AppCubitStorage().state.codeAssDefaul}");
+
+      if (allCotisationAss != null) {
+        print("objec~~~~~~~~ttt  ${allCotisationAss}");
+        print(
+            "éé22222~~~~~~~~  ${context.read<DetailTournoiCourantCubit>().state.changeTournoi}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
@@ -99,17 +151,18 @@ class Modal {
                 height: 5,
                 width: 55,
                 decoration: BoxDecoration(
+                    // if (item["tournois_code"] == AppCubitStorage().state.codeTournois)
                     color: Color.fromARGB(255, 20, 45, 99),
                     borderRadius: BorderRadius.circular(50)),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
-                  "Vos tournois",
+                  "vos_tournois".tr(),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
-                    color: Color.fromARGB(164, 20, 45, 99),
+                    color: Color.fromARGB(255, 20, 45, 99),
                   ),
                 ),
               ),
@@ -119,22 +172,31 @@ class Modal {
                   itemBuilder: (context, index) {
                     final currentItemAssociationList =
                         currentInfoAssociationCourant[index];
+                    print(
+                        "aaaaaaaaaaaaaaaaaaaaaaaa ${currentInfoAssociationCourant[index]}");
 
-                    return Container(
-                      // margin: EdgeInsets.only(bottom: 10, right: 5, left: 5),
-                      // padding: EdgeInsets.all(10),
+                    return GestureDetector(
+                      onTap: () {
+                        handleChangeTournoi(
+                            currentItemAssociationList["tournois_code"]);
+                      },
                       child: Container(
-                        padding: EdgeInsets.only(top: 15, bottom: 15, left: 15),
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(20, 20, 45, 99),
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        margin: EdgeInsets.all(5),
-                        child: Text(
-                          'Tournoi #${currentItemAssociationList["reference"]}',
-                          style: TextStyle(
-                              color: Color.fromARGB(164, 20, 45, 99),
-                              fontWeight: FontWeight.w800),
+                        // margin: EdgeInsets.only(bottom: 10, right: 5, left: 5),
+                        // padding: EdgeInsets.all(10),
+                        child: Container(
+                          padding:
+                              EdgeInsets.only(top: 15, bottom: 15, left: 15),
+                          decoration: BoxDecoration(
+                            color: colorSelect(currentItemAssociationList["tournois_code"]),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          margin: EdgeInsets.all(5),
+                          child: Text(
+                            '${"tournoi".tr()} #${currentItemAssociationList["matricule"]}',
+                            style: TextStyle(
+                                color: colorSelectText(currentItemAssociationList["tournois_code"]),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
                       ),
                     );
@@ -307,8 +369,8 @@ class Modal {
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 15),
-              child: const Text(
-                'Liste de vos transactions',
+              child: Text(
+                "liste_de_vos_transactions".tr(),
                 style: TextStyle(
                   color: Color.fromARGB(255, 20, 45, 99),
                 ),
@@ -332,7 +394,7 @@ class Modal {
                     children: [
                       Container(
                         child: Text(
-                          "A verser",
+                          "a_payer".tr(),
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w300,
@@ -356,7 +418,7 @@ class Modal {
                     children: [
                       Container(
                         child: Text(
-                          "Déjà versé",
+                          "déjà_versé".tr(),
                           style: TextStyle(
                               fontSize: 11,
                               color: Colors.green,
@@ -378,7 +440,7 @@ class Modal {
                     children: [
                       Container(
                         child: Text(
-                          "Reste",
+                          "reste".tr(),
                           style: TextStyle(
                               fontSize: 11,
                               color: Colors.red,
@@ -422,8 +484,13 @@ class Modal {
                                 versement[0]["transanctions"][index];
                             return Container(
                                 child: widgetListTransactionByEventCard(
-                              date: formatDateString(
-                                  detailVersement["created_at"]),
+                              date: AppCubitStorage().state.Language == "fr"
+                                  ? formatDateToFrench(
+                                      detailVersement["created_at"])
+                                  : formatDateToEnglish(
+                                      detailVersement["created_at"]),
+                              //  formatDateString(
+                              // detailVersement["created_at"]),
                               montant: detailVersement["amount"],
                             ));
                           },
@@ -749,7 +816,7 @@ class Modal {
   }
 
   void showBottomSheetEditProfil(BuildContext context, hintText, key) {
-      TextEditingController infoUserController = TextEditingController();
+    TextEditingController infoUserController = TextEditingController();
     Future<void> handleDetailUser(userCode) async {
       final allCotisationAss =
           await context.read<AuthCubit>().detailAuthCubit(userCode);
@@ -828,14 +895,16 @@ class Modal {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "${hintText}",
-                        
                       ),
                     ),
                   ),
                   GestureDetector(
-
                     onTap: () {
-                      handleUpdateInfoUser(key, infoUserController.text, AppCubitStorage().state.codeAssDefaul, AppCubitStorage().state.membreCode);
+                      handleUpdateInfoUser(
+                          key,
+                          infoUserController.text,
+                          AppCubitStorage().state.codeAssDefaul,
+                          AppCubitStorage().state.membreCode);
                       handleDetailUser(AppCubitStorage().state.membreCode);
                       Navigator.pop(context);
                     },
