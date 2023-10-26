@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
@@ -5,6 +7,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetHistoriqueCotisation.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,6 +40,39 @@ class DetailCotisationPage extends StatefulWidget {
   State<DetailCotisationPage> createState() => _DetailCotisationPageState();
 }
 
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Color(0xFFEFEFEF),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(
+          "detail_de_la_cotisations".tr(),
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ),
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Color(0xFFEFEFEF),
+    appBar: AppBar(
+      title: Text(
+        "detail_de_la_cotisations".tr(),
+        style: TextStyle(fontSize: 16),
+      ),
+      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      elevation: 0,
+    ),
+    body: child,
+  );
+}
+
 class _DetailCotisationPageState extends State<DetailCotisationPage> {
   int _pageIndex = 0;
   var Tab = [true, false, false, true, false, true];
@@ -47,27 +83,18 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final  currentDetailCotisation = context.read<CotisationCubit>().state.detailCotisation;
     return BlocBuilder<CotisationCubit, CotisationState>(
         builder: (context, state) {
-      if (state.detailCotisation == null)
+      if (state.isLoading == null || state.isLoading == true)
         return Container(
           color: Colors.white,
           child: Center(
             child: CircularProgressIndicator(),
           ),
         );
-      return Scaffold(
-        backgroundColor: Color(0xFFEFEFEF),
-        appBar: AppBar(
-          title: Text(
-            "detail_de_la_cotisations".tr(),
-            style: TextStyle(fontSize: 16),
-          ),
-          backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
-          elevation: 0,
-        ),
-        body: Container(
+      return PageScaffold(
+        context: context,
+        child: Container(
           margin: EdgeInsets.only(top: 0, left: 5, right: 5),
           child: Column(
             children: [
@@ -121,8 +148,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                         ),
                         Container(
                           child: Text(
-                            "(${currentDetailCotisation!["versements"].length})",
-                            // "3",
+                            "(${currentDetailCotisation!["versements"].length == null ? 0 : currentDetailCotisation!["versements"].length})",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
@@ -143,7 +169,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                         Container(
                           alignment: Alignment.center,
                           child: Text(
-                            "(${currentDetailCotisation!["members"].length})",
+                            " (${currentDetailCotisation!["members"].length == null ? 0 : currentDetailCotisation!["members"].length})",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,

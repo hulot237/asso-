@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -13,6 +15,7 @@ import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
 import 'package:faroty_association_1/pages/proposAidePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -28,6 +31,10 @@ class _SettingScreenState extends State<SettingScreen> {
 
   Map<String, dynamic>? get currentInfoAssociationCourant {
     return context.read<UserGroupCubit>().state.userGroupDefault;
+  }
+
+  Map<String, dynamic>? get currentInfoAllTournoiAssCourant {
+    return context.read<UserGroupCubit>().state.ChangeAssData;
   }
 
   Future<void> handleChangeTournoi(codeTournoi) async {
@@ -58,7 +65,7 @@ class _SettingScreenState extends State<SettingScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            "Profil",
+            "profil".tr(),
             style: TextStyle(fontSize: 16),
           ),
           backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
@@ -155,7 +162,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   color: Color(0xFFEFEFEF),
                                   borderRadius: BorderRadius.circular(5)),
                               child: Text(
-                                "Matricule: ${currentDetailUser["matricule"]}",
+                                "${"matricule".tr()}: ${currentDetailUser["matricule"]}",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 12,
@@ -218,7 +225,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Text(
-                                    "Votre compte",
+                                    "votre_compte".tr(),
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 20, 45, 99),
@@ -240,7 +247,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         // context.read<ServiceCubit>().state.currentService!.id;
                         Modal().showBottomSheetListTournoi(
                           context,
-                          currentInfoAssociationCourant!["tournois"],
+                          currentInfoAllTournoiAssCourant!["user_group"]["tournois"],
                         );
                       },
                       child: Container(
@@ -269,7 +276,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Text(
-                                    "Tournoi",
+                                    "tournoi".tr(),
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 20, 45, 99),
@@ -280,7 +287,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             ),
                             for (var item
-                                in currentInfoAssociationCourant!["tournois"])
+                                in currentInfoAllTournoiAssCourant!["user_group"]["tournois"])
                               if (item["tournois_code"] ==
                                   AppCubitStorage().state.codeTournois)
                                 Text(
@@ -332,7 +339,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Text(
-                                    "Groupe et Association",
+                                    "groupe_et_association".tr(),
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 20, 45, 99),
@@ -343,7 +350,9 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             ),
                             Text(
-                              "${currentInfoAssociationCourant!["matricule"]}",
+                                "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"]}",
+
+                              // "${currentInfoAssociationCourant!["matricule"]}",
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Color.fromARGB(125, 20, 45, 99),
@@ -394,7 +403,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Text(
-                                    "Paramètres",
+                                    "paramètres".tr(),
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 20, 45, 99),
@@ -448,7 +457,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Text(
-                                    "A propos et aide",
+                                    "a_propos_et_aide".tr(),
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 20, 45, 99),
@@ -497,7 +506,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Text(
-                                    "Partager l'application",
+                                    "partager_l'application".tr(),
                                     style: TextStyle(
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 20, 45, 99),
@@ -524,6 +533,22 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
               ),
               GestureDetector(
+                onTap: () {
+
+
+                        print("success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
+      print("success password   ${AppCubitStorage().state.passwordKey}");
+      print("success username   ${AppCubitStorage().state.userNameKey}");
+      print("success membre_code   ${AppCubitStorage().state.membreCode}");
+                  print("object");
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => LoginPage(),
+                    ),
+                    (route) => false,
+                  );
+                  HydratedBloc.storage.clear();
+                },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 10),
                   child: Container(
@@ -545,7 +570,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         Container(
                           // color: Colors.greenAccent,
                           child: Text(
-                            "Déconnexion",
+                            "déconnexion".tr(),
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.red,

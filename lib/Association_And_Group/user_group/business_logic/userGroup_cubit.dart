@@ -12,10 +12,11 @@ class UserGroupCubit extends Cubit<UserGroupState> {
           UserGroupState(
             userGroup: null,
             userGroupDefault: null,
+            ChangeAssData: null,isLoading: false
           ),
         );
 
-  Future<bool> AllUserGroupOfUserCubit() async {
+  Future<bool> AllUserGroupOfUserCubit() async {emit(state.copyWith(isloading: true));
     try {
       final data = await UserGroupRepository().AllGroupOfUser();
 
@@ -28,6 +29,7 @@ class UserGroupCubit extends Cubit<UserGroupState> {
           state.copyWith(
             usergroup: data,
             usergroupdefault: state.userGroupDefault,
+            changeassdata: state.ChangeAssData,isloading: false,
           ),
         );
 
@@ -37,7 +39,8 @@ class UserGroupCubit extends Cubit<UserGroupState> {
         emit(
           state.copyWith(
             usergroup: [],
-            usergroupdefault: state.userGroupDefault,
+            changeassdata: state.ChangeAssData,
+            usergroupdefault: state.userGroupDefault,isloading: false,
           ),
         );
         return false;
@@ -46,16 +49,17 @@ class UserGroupCubit extends Cubit<UserGroupState> {
       emit(
         state.copyWith(
           usergroup: [],
-          usergroupdefault: state.userGroupDefault,
+            changeassdata: state.ChangeAssData,
+          usergroupdefault: state.userGroupDefault,isloading: false,
         ),
       );
       return true;
     }
   }
 
-  Future<bool> UserGroupDefaultCubit() async {
+  Future<bool> UserGroupDefaultCubit(codeAssDefaul) async {
     try {
-      final data = await UserGroupRepository().UserGroupDefault();
+      final data = await UserGroupRepository().UserGroupDefault(codeAssDefaul);
 
       if (data != null) {
         // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
@@ -66,6 +70,8 @@ class UserGroupCubit extends Cubit<UserGroupState> {
           state.copyWith(
             usergroupdefault: data,
             usergroup: state.userGroup,
+            changeassdata: state.ChangeAssData,isloading: false,
+
           ),
         );
 
@@ -76,6 +82,8 @@ class UserGroupCubit extends Cubit<UserGroupState> {
           state.copyWith(
             usergroupdefault: {},
             usergroup: state.userGroup,
+            changeassdata: state.ChangeAssData,isloading: false,
+
           ),
         );
         return false;
@@ -85,6 +93,49 @@ class UserGroupCubit extends Cubit<UserGroupState> {
         state.copyWith(
           usergroupdefault: {},
           usergroup: state.userGroup,
+            changeassdata: state.ChangeAssData,isloading: false,
+
+        ),
+      );
+      return true;
+    }
+  }
+
+  Future<bool> ChangeAssCubit(codeAss) async {
+    try {
+      final data = await UserGroupRepository().ChangerAss(codeAss);
+
+      if (data != null) {
+        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
+
+        print("ChangeAssCubitChangeAssCubitChangeAssCubit data in cubittttttttt ${data}");
+
+        emit(
+          state.copyWith(
+            usergroupdefault: state.userGroupDefault,
+            usergroup: state.userGroup,
+            changeassdata: data,isloading: false,
+          ),
+        );
+
+        print("UserGroupDefaultCubit Cubit ok");
+        return true;
+      } else {
+        emit(
+          state.copyWith(
+            changeassdata: {},
+            usergroupdefault: state.userGroupDefault,
+            usergroup: state.userGroup,isloading: false,
+          ),
+        );
+        return false;
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          changeassdata: {},
+          usergroupdefault: state.userGroupDefault,
+          usergroup: state.userGroup,isloading: false,
         ),
       );
       return true;

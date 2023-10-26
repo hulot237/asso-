@@ -7,23 +7,25 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class CotisationCubit extends Cubit<CotisationState> {
   CotisationCubit()
       : super(
-          CotisationState(detailCotisation: null, allCotisationAss: null),
+          CotisationState(
+            detailCotisation: null,
+            allCotisationAss: null,
+            isLoading: false,
+          ),
         );
 
   Future<bool> detailCotisationCubit(codeCotisation) async {
+    emit(state.copyWith(isloading: true));
     try {
       final data =
           await CotisationRepository().DetailCotisation(codeCotisation);
 
       if (data != null) {
-        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-        // print("data in cubit ${data.length}");
-
         emit(
           state.copyWith(
             detailcotisation: data,
             allcotisationAss: state.allCotisationAss,
+            isloading: false,
           ),
         );
 
@@ -34,6 +36,7 @@ class CotisationCubit extends Cubit<CotisationState> {
           state.copyWith(
             detailcotisation: {},
             allcotisationAss: state.allCotisationAss,
+            isloading: false,
           ),
         );
         return false;
@@ -43,6 +46,7 @@ class CotisationCubit extends Cubit<CotisationState> {
         state.copyWith(
           detailcotisation: {},
           allcotisationAss: state.allCotisationAss,
+          isloading: false,
         ),
       );
       return true;
@@ -55,14 +59,12 @@ class CotisationCubit extends Cubit<CotisationState> {
           await CotisationRepository().AllCotisationOfAss(codeAssociation);
 
       if (data != null) {
-        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-        // print("data in cubit ${data.length}");
-
         emit(
           state.copyWith(
-              allcotisationAss: data, 
-              detailcotisation: state.detailCotisation),
+            allcotisationAss: data,
+            detailcotisation: state.detailCotisation,
+            isloading: false,
+          ),
         );
 
         print("DetailSeance Cubit ok");
@@ -70,16 +72,20 @@ class CotisationCubit extends Cubit<CotisationState> {
       } else {
         emit(
           state.copyWith(
-              allcotisationAss: [], 
-              detailcotisation: state.detailCotisation),
+            allcotisationAss: [],
+            detailcotisation: state.detailCotisation,
+            isloading: false,
+          ),
         );
         return false;
       }
     } catch (e) {
       emit(
         state.copyWith(
-            allcotisationAss: [], 
-            detailcotisation: state.detailCotisation),
+          allcotisationAss: [],
+          detailcotisation: state.detailCotisation,
+          isloading: false,
+        ),
       );
       return true;
     }

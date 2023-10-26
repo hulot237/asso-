@@ -7,7 +7,7 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> UserDetail(userCode) async {
     try {
-      print("zzzeeezzzzz $userCode");
+      print("zzzeeezzzddddddddddddddddddddddddddddddddzz $userCode");
       log("response DetailCotisation");
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/membre/$userCode/show',

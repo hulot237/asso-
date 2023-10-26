@@ -34,7 +34,29 @@ class DetailTournoiCourantRepository {
     }
   }
 
+  Future<List<dynamic>> AllTournoiAss(codeAss) async {
+    try {
+      log("response1");
 
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/tournois/$codeAss',
+        // data: {
+        //   // "urlcodes": Variables().urlcodes,
+        // },
+      );
+
+      final List<dynamic> dataJson = response.data["data"];
+
+      print("AllTournoiAsseeeeeeeee      ${response.data["data"]}");
+
+      log('Okay AllTournoiAss rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur AllTournoiAss rep');
+      print(e);
+      return [];
+    }
+  }
 
   Future<Map<String, dynamic>> ChangeTournoi(codeTournoi, codeAss) async {
     try {
@@ -49,8 +71,7 @@ class DetailTournoiCourantRepository {
 
       final Map<String, dynamic> dataJson = response.data["data"];
 
-      print(
-          "ChangeTournoiiiiiiiiiiiiiiiiiiiii      ${response.data["data"]}");
+      print("ChangeTournoiiiiiiiiiiiiiiiiiiiii      ${response.data["data"]}");
 
       log('Okay ChangeTournoi rep');
       return dataJson;

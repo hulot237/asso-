@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,6 +15,35 @@ class ProfilPersonnelPage extends StatefulWidget {
 
   @override
   State<ProfilPersonnelPage> createState() => _ProfilPersonnelPageState();
+}
+
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Colors.white,
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(
+          "votre_profil".tr(),
+          style: TextStyle(fontSize: 16),
+        ),
+        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      ),
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      title: Text("votre_profil".tr()),
+      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      elevation: 0,
+    ),
+    body: child,
+  );
 }
 
 class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
@@ -38,14 +71,9 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(builder: (authContext, authState) {
       final currentDetailUser = context.read<AuthCubit>().state.detailUser;
-      return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text("Votre profil"),
-          backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
-          elevation: 0,
-        ),
-        body: Container(
+      return PageScaffold(
+        context: context,
+        child: Container(
           // padding: EdgeInsets.only(top: 20),
           child: Column(
             children: [
@@ -56,11 +84,13 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 15, bottom: 5),
-                          child: Column(
-                            children: [
-                              Stack(
+                        Stack(
+                          children: [
+                            Container(
+                              // color: Colors.deepOrange,
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.only(top: 15, bottom: 5),
+                              child: Column(
                                 children: [
                                   Container(
                                     padding: EdgeInsets.all(4),
@@ -81,24 +111,31 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 2,
-                                    top: 12,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Color.fromRGBO(0, 162, 255, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(360)),
-                                      width: 20,
-                                      height: 20,
-                                      child: Icon(Icons.mode_edit_rounded,
-                                          color: Colors.white, size: 14),
-                                    ),
-                                  ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            Positioned(
+                              right: 115,
+                              top: 20,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                color: Colors.white,
+                                    borderRadius: BorderRadius.circular(360),
+                                  ),
+                                padding: EdgeInsets.all(2),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(0, 162, 255, 1),
+                                    borderRadius: BorderRadius.circular(360),
+                                  ),
+                                  width: 30,
+                                  height: 30,
+                                  child: Icon(Icons.mode_edit_rounded,
+                                      color: Colors.white, size: 14),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -166,7 +203,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                 children: [
                                                   Container(
                                                     child: Text(
-                                                      "Nom",
+                                                      "nom".tr(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -265,7 +302,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                 children: [
                                                   Container(
                                                     child: Text(
-                                                      "Prénom",
+                                                      "prénom".tr(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -435,7 +472,8 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                 children: [
                                                   Container(
                                                     child: Text(
-                                                      "Numéro de téléphone",
+                                                      "numéro_de_téléphone"
+                                                          .tr(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -521,7 +559,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                 children: [
                                                   Container(
                                                     child: Text(
-                                                      "Adresse Email",
+                                                      "adresse_email".tr(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -562,36 +600,36 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                             ],
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromARGB(45, 255, 82, 82),
-                          ),
-                          width: MediaQuery.of(context).size.width / 2.2,
-                          margin: EdgeInsets.all(50),
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(right: 10),
-                                // color: Color.fromARGB(185, 255, 214, 64),
-                                child:
-                                    Icon(Icons.lock_outline, color: Colors.red),
-                              ),
-                              Container(
-                                // color: Colors.greenAccent,
-                                child: Text(
-                                  "Changer de PIN",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     color: Color.fromARGB(45, 255, 82, 82),
+                        //   ),
+                        //   width: MediaQuery.of(context).size.width / 2.2,
+                        //   margin: EdgeInsets.all(50),
+                        //   padding: EdgeInsets.all(10),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Container(
+                        //         margin: EdgeInsets.only(right: 10),
+                        //         // color: Color.fromARGB(185, 255, 214, 64),
+                        //         child:
+                        //             Icon(Icons.lock_outline, color: Colors.red),
+                        //       ),
+                        //       Container(
+                        //         // color: Colors.greenAccent,
+                        //         child: Text(
+                        //           "Changer de PIN",
+                        //           style: TextStyle(
+                        //               fontSize: 15,
+                        //               color: Colors.red,
+                        //               fontWeight: FontWeight.w600),
+                        //         ),
+                        //       )
+                        //     ],
+                        //   ),
+                        // )
                       ],
                     );
                   },
@@ -601,6 +639,16 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
           ),
         ),
       );
+
+      // Scaffold(
+      //   backgroundColor: Colors.white,
+      //   appBar: AppBar(
+      //     title: Text("votre_profil".tr()),
+      //     backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      //     elevation: 0,
+      //   ),
+      //   body:
+      // );
     });
   }
 }

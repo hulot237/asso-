@@ -18,7 +18,37 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Modal {
-  void showBottomSheetListAss(context, List? listAllAss) {
+  void showBottomSheetListAss(BuildContext context, List? listAllAss) {
+
+    Future handleChangeAss(codeAss) async {
+      final allCotisationAss =
+          await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+
+      await AppCubitStorage().updateCodeAssDefaul(codeAss);
+      await AppCubitStorage().updatemembreCode(context
+          .read<UserGroupCubit>()
+          .state
+          .ChangeAssData!["membre"]["membre_code"]);
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext context) => HomePage(),
+        ),
+        (route) => false,
+      );
+
+      print(
+          "2222222222222222222222222222222222222222é ${AppCubitStorage().state.codeAssDefaul}");
+
+      if (allCotisationAss != null) {
+        print("objec~~~~~~~~ttt  ${allCotisationAss}");
+        print(
+            "éé22222~~~~~~~~  ${context.read<DetailTournoiCourantCubit>().state.changeTournoi}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -59,15 +89,22 @@ class Modal {
                   itemBuilder: (context, index) {
                     final currentItemAssociationList = listAllAss[index];
 
-                    return Column(
-                      children: [
-                        widgetListAssCard(
-                          nomAssociation: currentItemAssociationList.name!,
-                          nbreEventPending: 5,
-                          phofilAssociation:
-                              "${Variables.LienAIP}${currentItemAssociationList.profile_photo}",
-                        ),
-                      ],
+                    return GestureDetector(
+                      onTap: () {
+                        print("${currentItemAssociationList.urlcode!}");
+                        handleChangeAss(currentItemAssociationList.urlcode!);
+                      },
+                      child: Column(
+                        children: [
+                          widgetListAssCard(
+                            urlcodeAss: currentItemAssociationList.urlcode,
+                            nomAssociation: currentItemAssociationList.name!,
+                            nbreEventPending: 5,
+                            phofilAssociation:
+                                "${Variables.LienAIP}${currentItemAssociationList.profile_photo}",
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -92,7 +129,7 @@ class Modal {
       return null;
     }
 
-        Color? colorSelectText(tournois_code) {
+    Color? colorSelectText(tournois_code) {
       if (tournois_code == AppCubitStorage().state.codeTournois) {
         return Colors.white;
       } else {
@@ -109,8 +146,6 @@ class Modal {
               codeTournoi, AppCubitStorage().state.codeAssDefaul);
 
       await AppCubitStorage().updateCodeTournoisDefault(codeTournoi);
-
-      
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -187,14 +222,17 @@ class Modal {
                           padding:
                               EdgeInsets.only(top: 15, bottom: 15, left: 15),
                           decoration: BoxDecoration(
-                            color: colorSelect(currentItemAssociationList["tournois_code"]),
+                            color: colorSelect(
+                                currentItemAssociationList["tournois_code"]),
                             borderRadius: BorderRadius.circular(7),
                           ),
                           margin: EdgeInsets.all(5),
                           child: Text(
                             '${"tournoi".tr()} #${currentItemAssociationList["matricule"]}',
                             style: TextStyle(
-                                color: colorSelectText(currentItemAssociationList["tournois_code"]),
+                                color: colorSelectText(
+                                    currentItemAssociationList[
+                                        "tournois_code"]),
                                 fontWeight: FontWeight.w800),
                           ),
                         ),
@@ -418,7 +456,7 @@ class Modal {
                     children: [
                       Container(
                         child: Text(
-                          "déjà_versé".tr(),
+                          "déjà_payé".tr(),
                           style: TextStyle(
                               fontSize: 11,
                               color: Colors.green,
@@ -502,14 +540,14 @@ class Modal {
               )
             : Container(
                 child: Center(
-                  child: Text("Aucune transaction"),
+                  child: Text("aucune_transaction".tr()),
                 ),
               ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text(
-              'Fermer',
+            child: Text(
+              'fermer'.tr(),
               style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
             ),
           ),
@@ -530,8 +568,8 @@ class Modal {
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 15),
-              child: const Text(
-                'Les transactions sur la cotisation',
+              child: Text(
+                'les_transactions_sur_la_cotisation'.tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color.fromARGB(255, 20, 45, 99),
@@ -569,8 +607,8 @@ class Modal {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text(
-              'Fermer',
+            child: Text(
+              'fermer'.tr(),
               style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
             ),
           ),
@@ -589,8 +627,8 @@ class Modal {
         title: Container(
           padding: EdgeInsets.only(top: 15, bottom: 15),
           alignment: Alignment.center,
-          child: const Text(
-            'Les personnes sanctionnées',
+          child: Text(
+            'les_personnes_sanctionnées'.tr(),
             style: TextStyle(
               color: Color.fromARGB(255, 20, 45, 99),
             ),
@@ -642,8 +680,8 @@ class Modal {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text(
-              'Fermer',
+            child: Text(
+              'fermer'.tr(),
               style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
             ),
           ),
@@ -663,8 +701,8 @@ class Modal {
         title: Container(
           padding: EdgeInsets.only(top: 15, bottom: 15),
           alignment: Alignment.center,
-          child: const Text(
-            'Liste de presence',
+          child: Text(
+            'liste_de_presence'.tr(),
             style: TextStyle(
               color: Color.fromARGB(255, 20, 45, 99),
             ),
@@ -696,7 +734,7 @@ class Modal {
                       child: Row(
                         children: [
                           Container(
-                            child: Text("Présents"),
+                            child: Text("présents".tr()),
                           ),
                           Container(
                             child: Text(
@@ -711,7 +749,7 @@ class Modal {
                       child: Row(
                         children: [
                           Container(
-                            child: Text("Absent"),
+                            child: Text("absents".tr()),
                           ),
                           Container(
                             child: Text(
@@ -805,8 +843,8 @@ class Modal {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text(
-              'Fermer',
+            child: Text(
+              'fermer'.tr(),
               style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
             ),
           ),
@@ -870,7 +908,7 @@ class Modal {
                   Container(
                     margin: EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
-                      "Entrer la nouvelle valeur",
+                      "entrer_la_nouvelle_valeur".tr(),
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w400,
@@ -918,7 +956,7 @@ class Modal {
                         borderRadius: BorderRadius.circular(7),
                       ),
                       child: Text(
-                        "Confirmer",
+                        "confirmer".tr(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -946,7 +984,7 @@ class Modal {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: Text(
-                'Effectuer le paiement',
+                'effectuer_le_paiement'.tr(),
                 style: TextStyle(
                   color: Color.fromARGB(255, 185, 200, 233),
                 ),
@@ -984,7 +1022,7 @@ class Modal {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Text(
-                    "Payer vous même",
+                    "payer_vous_même".tr(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -1009,7 +1047,7 @@ class Modal {
                       )),
                   // height: 20,
                   child: Text(
-                    "partager le lien de paiement",
+                    "partager_le_lien_de_paiement".tr(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

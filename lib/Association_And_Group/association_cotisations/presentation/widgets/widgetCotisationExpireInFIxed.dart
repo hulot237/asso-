@@ -49,8 +49,8 @@ class _WidgetCotisationExpireInFixedState
 
     if (detailCotisation != null) {
       print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationCubit>().state.detailCotisation}");
+      // print(
+      //     "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationCubit>().state.detailCotisation}");
     } else {
       print("userGroupDefault null");
     }
@@ -76,6 +76,7 @@ class _WidgetCotisationExpireInFixedState
       return GestureDetector(
         onTap: () {
           handleDetailCotisation(widget.codeCotisation);
+          context.read<CotisationCubit>().state.detailCotisation;
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -251,30 +252,30 @@ class _WidgetCotisationExpireInFixedState
                               ],
                             ),
                           ),
-                          Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Icon(
-                                    Icons.people_alt_rounded,
-                                    size: 16,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                  ),
-                                  margin: EdgeInsets.only(right: 3),
-                                ),
-                                Container(
-                                  child: Text(
-                                    "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w800,
-                                      color: Color.fromARGB(255, 20, 45, 99),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   child: Row(
+                          //     children: [
+                          //       Container(
+                          //         child: Icon(
+                          //           Icons.people_alt_rounded,
+                          //           size: 16,
+                          //           color: Color.fromARGB(255, 20, 45, 99),
+                          //         ),
+                          //         margin: EdgeInsets.only(right: 3),
+                          //       ),
+                          //       Container(
+                          //         child: Text(
+                          //           "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
+                          //           style: TextStyle(
+                          //             fontSize: 12,
+                          //             fontWeight: FontWeight.w800,
+                          //             color: Color.fromARGB(255, 20, 45, 99),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

@@ -36,14 +36,13 @@ class WidgetRencontreCard extends StatefulWidget {
   State<WidgetRencontreCard> createState() => _WidgetRencontreCardState();
 }
 
-
 class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
   Future<void> handleDefaultSeance(codeSeance) async {
-    final detailSeance = await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
+    final detailSeance =
+        await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
 
     if (detailSeance != null) {
-      print(
-          "objectttttttttttttttttttttttttt  ${detailSeance}");
+      print("objectttttttttttttttttttttttttt  ${detailSeance}");
       print(
           "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  ${context.read<SeanceCubit>().state.detailSeance}");
     } else {
@@ -51,15 +50,16 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    
-    return BlocBuilder<SeanceCubit, SeanceState>(
-      builder: (context, state) {
-        return   GestureDetector(
+    return BlocBuilder<SeanceCubit, SeanceState>(builder: (context, state) {
+      return GestureDetector(
         onTap: () {
+          print("eeeeeeeeeeeeeeeee");
           handleDefaultSeance(widget.codeSeance);
+          final detailSeance =
+              context.read<SeanceCubit>().detailSeanceCubit(widget.codeSeance);
+
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -83,12 +83,15 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
           // margin: EdgeInsets.only(left: 7, right: 7, top: 5),
           decoration: BoxDecoration(
             // border: Border.all(width: 0.5, color: Colors.black26),
-           color: widget.isActiveRencontre==1? Colors.white : Color.fromARGB(12, 0, 0, 0),
+            color: widget.isActiveRencontre == 1
+                ? Colors.white
+                : Color.fromARGB(12, 0, 0, 0),
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
-            
               BoxShadow(
-                color: widget.isActiveRencontre==1? Color.fromARGB(110, 117, 117, 117) : Color.fromARGB(0, 117, 117, 117)  ,
+                color: widget.isActiveRencontre == 1
+                    ? Color.fromARGB(110, 117, 117, 117)
+                    : Color.fromARGB(0, 117, 117, 117),
                 spreadRadius: 0.2,
                 blurRadius: 0.2,
               ),
@@ -138,12 +141,14 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                   // color: Colors.deepOrange,
                                   margin: EdgeInsets.only(left: 5),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        width: MediaQuery.of(context).size.width /
-                                            2.3,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.3,
                                         // margin: EdgeInsets.only(bottom: 5),
                                         child: Text(
                                           "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}",
@@ -194,34 +199,36 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               ],
                             ),
                           ),
-                          widget.isActiveRencontre==1?
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(48, 76, 175, 79),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            padding: EdgeInsets.all(2),
-                            child: Text(
-                              "en_cours".tr(),
-                              style: TextStyle(
-                                fontSize: 9,
-                                color: const Color.fromARGB(255, 20, 153, 25),
-                              ),
-                            ),
-                          ):Container(
-                            // decoration: BoxDecoration(
-                            //   color: Color.fromARGB(48, 76, 175, 79),
-                            //   borderRadius: BorderRadius.circular(4),
-                            // ),
-                            padding: EdgeInsets.all(2),
-                            child: Text(
-                              "terminé".tr(),
-                              style: TextStyle(
-                                fontSize: 9,
-                                color: Colors.red,
-                              ),
-                            ),
-                          )
+                          widget.isActiveRencontre == 1
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(48, 76, 175, 79),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  padding: EdgeInsets.all(2),
+                                  child: Text(
+                                    "en_cours".tr(),
+                                    style: TextStyle(
+                                      fontSize: 9,
+                                      color: const Color.fromARGB(
+                                          255, 20, 153, 25),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  // decoration: BoxDecoration(
+                                  //   color: Color.fromARGB(48, 76, 175, 79),
+                                  //   borderRadius: BorderRadius.circular(4),
+                                  // ),
+                                  padding: EdgeInsets.all(2),
+                                  child: Text(
+                                    "terminé".tr(),
+                                    style: TextStyle(
+                                      fontSize: 9,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                )
                         ],
                       ),
                     ),
@@ -293,7 +300,8 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize: 10,
-                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
@@ -347,7 +355,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
             ],
           ),
         ),
-      );}
-    );
+      );
+    });
   }
 }

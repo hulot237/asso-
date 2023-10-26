@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -8,16 +12,41 @@ class ProposAidePage extends StatefulWidget {
   State<ProposAidePage> createState() => _ProposAidePageState();
 }
 
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Colors.white,
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(
+          "a_propos_et_aide".tr(),
+          style: TextStyle(fontSize: 16),
+        ),
+        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      ),
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      title: Text(
+        "a_propos_et_aide".tr(),
+      ),
+      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      elevation: 0,
+    ),
+    body: child,
+  );
+}
+
 class _ProposAidePageState extends State<ProposAidePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("A propos et aide", style: TextStyle(fontSize: 16),),
-                backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
-        elevation: 0,
-      ),
-      body: Container(
+    return PageScaffold(context: context, child: Container(
         // color: Colors.blueAccent,
         margin: EdgeInsets.only(left: 20),
         width: MediaQuery.of(context).size.width / 1.4,
@@ -35,7 +64,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                 Container(
                   padding: EdgeInsets.all(5),
                   child: Text(
-                    "Utilisation et confidentialité",
+                    "utilisation_et_confidentialité".tr(),
                     style: TextStyle(
                       fontSize: 15,
                       color: Color.fromARGB(255, 20, 45, 99),
@@ -57,7 +86,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.only(top: 5, bottom: 5),
                   child: Text(
-                    "A propos de l'application",
+                    "a_propos_de_l'application".tr(),
                     style: TextStyle(
                       fontSize: 15,
                       color: Color.fromARGB(255, 20, 45, 99),
@@ -79,7 +108,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.only(top: 5, bottom: 5),
                   child: Text(
-                    "Centre d'aide",
+                    "centre_d'aide".tr(),
                     style: TextStyle(
                       fontSize: 15,
                       color: Color.fromARGB(255, 20, 45, 99),
@@ -101,7 +130,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.only(top: 5, bottom: 5),
                   child: Text(
-                    "Nous contacter",
+                    "nous_contacter".tr(),
                     style: TextStyle(
                       fontSize: 15,
                       color: Color.fromARGB(255, 20, 45, 99),
@@ -113,7 +142,19 @@ class _ProposAidePageState extends State<ProposAidePage> {
             ),
           ],
         ),
-      ),
-    );
+      ),);
+    
+    
+    // Scaffold(
+    //   appBar: AppBar(
+    //     title: Text(
+    //       "a_propos_et_aide".tr(),
+    //       style: TextStyle(fontSize: 16),
+    //     ),
+    //     backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+    //     elevation: 0,
+    //   ),
+    //   body: 
+    // );
   }
 }

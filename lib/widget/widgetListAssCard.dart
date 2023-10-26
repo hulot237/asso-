@@ -1,3 +1,4 @@
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 
 class widgetListAssCard extends StatefulWidget {
@@ -6,17 +7,39 @@ class widgetListAssCard extends StatefulWidget {
     required this.nomAssociation,
     required this.nbreEventPending,
     required this.phofilAssociation,
+    required this.urlcodeAss,
   });
 
   final String nomAssociation;
   final int nbreEventPending;
   final String phofilAssociation;
+  final String urlcodeAss;
 
   @override
   State<widgetListAssCard> createState() => _widgetListAssCardState();
 }
 
 class _widgetListAssCardState extends State<widgetListAssCard> {
+
+     Color? colorSelect(code_ass) {
+      if (code_ass == AppCubitStorage().state.codeAssDefaul) {
+        return Color.fromRGBO(0, 162, 255, 0.915);
+      } else {
+        return Color.fromARGB(23, 20, 45, 99);
+      }
+      // Aucune correspondance trouvée, retourne null.
+      return null;
+    }
+
+    Color? colorSelectText(code_ass) {
+      if (code_ass == AppCubitStorage().state.codeAssDefaul) {
+        return Colors.white;
+      } else {
+        return Color.fromARGB(139, 20, 45, 99);
+      }
+      // Aucune correspondance trouvée, retourne null.
+      return null;
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +48,12 @@ class _widgetListAssCardState extends State<widgetListAssCard> {
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
-            color: Color.fromARGB(20, 20, 45, 99),
+            color: colorSelect(widget.urlcodeAss),
             borderRadius: BorderRadius.circular(7)),
         margin: EdgeInsets.all(5),
         // padding: EdgeInsets.all(15),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(50),
@@ -50,23 +73,10 @@ class _widgetListAssCardState extends State<widgetListAssCard> {
                   widget.nomAssociation,
                   overflow: TextOverflow.clip,
                   style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 17,
                       fontWeight: FontWeight.w400,
-                      color: Color.fromARGB(164, 20, 45, 99)),
+                      color:colorSelectText(widget.urlcodeAss)),
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(221, 20, 45, 99),
-                  borderRadius: BorderRadius.circular(50)),
-              child: Text(
-                widget.nbreEventPending.toString(),
-                style: TextStyle(
-                    fontSize: 8,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
               ),
             ),
           ],

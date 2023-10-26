@@ -6,7 +6,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       : super(
           AppStorageModel(
             Language: "fr",
-            codeTournois: "z",
+            codeTournois: null,
             ValTest: "zzzzzz",
             codeAssDefaul: null,
             membreCode: null,

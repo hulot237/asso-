@@ -7,7 +7,7 @@ class SeanceRepository {
 
   Future<Map<String, dynamic>> DetailSeance(codeSeance) async {
     try {
-    print("zzzeeerrrtttyyy $codeSeance");
+      print("zzzeeerrrtttyyy $codeSeance");
       log("response DetailSeance");
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/seance/$codeSeance/show',
@@ -24,6 +24,30 @@ class SeanceRepository {
       return {};
     }
   }
+
+
+
+  Future<List<dynamic>> AllSeanceAss(codeAss) async {
+    try {
+      print("zzzeeerrrtttyyy $codeAss");
+      log("response DetailSeance");
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/seance/$codeAss',
+      );
+      print("dataJsoàààààààààààààààààààààààààààààà      ${response.data["data"]}");
+
+      final List<dynamic> dataJson = response.data["data"];
+      // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
+      log('Okay DetailSeance rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur DetailSeance rep');
+      print(e);
+      return [];
+    }
+  }
+
+  // https://api.group.rush.faroty.com/api/v1/seance/467226
 
   // patch("/prositions/reject/:propositionId/active
 

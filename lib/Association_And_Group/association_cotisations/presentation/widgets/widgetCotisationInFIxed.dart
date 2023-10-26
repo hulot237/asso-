@@ -179,7 +179,6 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                                         context,
                                         itemDetailCotisation[
                                             "cotisation_pay_link"]);
-
                             },
                             child: Container(
                               padding: EdgeInsets.only(
@@ -278,28 +277,28 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                               ],
                             ),
                           ),
-                          Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Icon(
-                                    Icons.people_alt_rounded,
-                                    size: 16,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                  ),
-                                  margin: EdgeInsets.only(right: 5),
-                                ),
-                                Container(
-                                    child: Text(
-                                  "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w800,
-                                      color: Color.fromARGB(255, 20, 45, 99)),
-                                ))
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   child: Row(
+                          //     children: [
+                          //       Container(
+                          //         child: Icon(
+                          //           Icons.people_alt_rounded,
+                          //           size: 16,
+                          //           color: Color.fromARGB(255, 20, 45, 99),
+                          //         ),
+                          //         margin: EdgeInsets.only(right: 5),
+                          //       ),
+                          //       Container(
+                          //           child: Text(
+                          //         "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
+                          //         style: TextStyle(
+                          //             fontSize: 12,
+                          //             fontWeight: FontWeight.w800,
+                          //             color: Color.fromARGB(255, 20, 45, 99)),
+                          //       ))
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

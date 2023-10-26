@@ -183,7 +183,7 @@ class _widgetTontineHistoriqueCardState
                     children: [
                       Container(
                         child: Text(
-                          "${"bénéficiaire".tr()}(${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
+                          "${"Participant".tr()} (${widget.nbrMembreTontine})",
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,

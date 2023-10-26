@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +14,38 @@ class ParamsAppPage extends StatefulWidget {
 
   @override
   State<ParamsAppPage> createState() => _ParamsAppPageState();
+}
+
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Color(0xFFEFEFEF),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(
+          "paramètres".tr(),
+          style: TextStyle(fontSize: 16),
+        ),
+        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      ),
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Color(0xFFEFEFEF),
+    appBar: AppBar(
+      title: Text(
+        "paramètres".tr(),
+        style: TextStyle(fontSize: 16),
+      ),
+      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      elevation: 0,
+    ),
+    body: child,
+  );
 }
 
 class _ParamsAppPageState extends State<ParamsAppPage> {
@@ -35,16 +70,9 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
 
     return BlocBuilder<AppCubitStorage, AppStorageModel>(
         builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Paramètres",
-            style: TextStyle(fontSize: 16),
-          ),
-          backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
-          elevation: 0,
-        ),
-        body: Column(
+      return PageScaffold(
+        context: context,
+        child: Column(
           children: [
             Container(
               child: ExpansionTile(
@@ -63,7 +91,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                 ),
                 title: Container(
                   child: Text(
-                    "Langue",
+                    "langue".tr(),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -103,7 +131,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                               ),
                             ),
                       child: Text(
-                        "Francais ${AppCubitStorage().state.Language}",
+                        "${"francais".tr()} ${AppCubitStorage().state.Language}",
                         style: AppCubitStorage().state.Language == "fr"
                             ? TextStyle(
                                 color: Colors.white,
@@ -148,7 +176,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             ),
                       margin: EdgeInsets.only(top: 10, bottom: 10),
                       child: Text(
-                        "Anglais",
+                        "anglais".tr(),
                         style: AppCubitStorage().state.Language == "en"
                             ? TextStyle(
                                 color: Colors.white,
@@ -180,7 +208,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                 children: [
                   Container(
                     child: Text(
-                      "Mode d'affichage",
+                      "mode_d'affichage".tr(),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -204,7 +232,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         0: Row(
                           children: [
                             Text(
-                              'Jours',
+                              "jour".tr(),
                               style: TextStyle(
                                 color: Color.fromARGB(255, 20, 45, 99),
                                 fontWeight: FontWeight.bold,
@@ -224,7 +252,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         1: Row(
                           children: [
                             Text(
-                              'Nuit',
+                              "nuit".tr(),
                               style: TextStyle(
                                   color: Color.fromARGB(255, 20, 45, 99),
                                   fontWeight: FontWeight.bold,
@@ -296,7 +324,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                           children: [
                             Container(
                               child: Text(
-                                "Son",
+                                "son".tr(),
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -316,7 +344,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                       0: Row(
                                         children: [
                                           Text(
-                                            'Oui',
+                                            'oui'.tr(),
                                             style: TextStyle(
                                               color: Color.fromARGB(
                                                   255, 20, 45, 99),
@@ -338,7 +366,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                       1: Row(
                                         children: [
                                           Text(
-                                            'Non',
+                                            'non'.tr(),
                                             style: TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 20, 45, 99),
@@ -420,7 +448,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                       0: Row(
                                         children: [
                                           Text(
-                                            'Oui',
+                                            'oui'.tr(),
                                             style: TextStyle(
                                               color: Color.fromARGB(
                                                   255, 20, 45, 99),
@@ -442,7 +470,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                       1: Row(
                                         children: [
                                           Text(
-                                            'Non',
+                                            'non'.tr(),
                                             style: TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 20, 45, 99),
@@ -522,6 +550,18 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
           ],
         ),
       );
+
+      // Scaffold(
+      //   appBar: AppBar(
+      //     title: Text(
+      //       "paramètres".tr(),
+      //       style: TextStyle(fontSize: 16),
+      //     ),
+      //     backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      //     elevation: 0,
+      //   ),
+      //   body:
+      // );
     });
   }
 }

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/verificationPage.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/screens/homeScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
 // import 'package:integration_part_two/pages/homeCoursier.dart';
@@ -15,6 +18,32 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
+
+
+
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Color(0xFFEFEFEF),
+      
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Color(0xFFEFEFEF),
+    
+    body: child,
+  );
+}
+
+
+
+
 
 class _LoginPageState extends State<LoginPage> {
   TextEditingController countrycode = TextEditingController();
@@ -29,19 +58,18 @@ class _LoginPageState extends State<LoginPage> {
     if (success && context.read<AuthCubit>().state.loginInfo != null) {
       var loginInfo = context.read<AuthCubit>().state.loginInfo;
 
-      for (var elt in loginInfo!["user_groups"]) {
-        if (elt["is_default"] = true) {
-          await AppCubitStorage().updateCodeAssDefaul(elt!["urlcode"]);
-        }
+      // for (var elt in loginInfo!["user_groups"]) {
+      //   if (elt["is_default"] = true) {
+      //     await AppCubitStorage().updateCodeAssDefaul(elt!["urlcode"]);
+      //   }
 
-        print(
-            "################################################# ${elt["is_default"]}");
-      }
+      //   print("################################################A ${elt}");
+      // }
 
-      await AppCubitStorage().updatepasswordKey(loginInfo["password"]);
-      await AppCubitStorage().updateuserNameKey(loginInfo["username"]);
-      await AppCubitStorage()
-          .updatemembreCode(loginInfo["membre"]["membre_code"]);
+      await AppCubitStorage().updateCodeAssDefaul(loginInfo!["user_groups"][0]["urlcode"]);
+      await AppCubitStorage().updatepasswordKey(loginInfo!["password"]);
+      await AppCubitStorage().updateuserNameKey(loginInfo!["username"]);
+      await AppCubitStorage().updatemembreCode(loginInfo["membre"]["membre_code"]);
 
       if (AppCubitStorage().state.codeAssDefaul != null &&
           AppCubitStorage().state.passwordKey != null &&
@@ -71,9 +99,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFEFEFEF),
-      body: Container(
+    return PageScaffold(context: context, 
+    child: Container(
         padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
         // color: Colors.brown,
         margin: const EdgeInsets.only(
@@ -160,6 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               handleLogin();
+
                             },
                             child: Text(
                               "vérification".tr(),
@@ -180,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                               margin: EdgeInsets.only(top: 20),
                               child: Text(
-                                  "zzzzzzzzzzzzzzzzzzzzzzzzzaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssss")),
+                                  "")),
                       ],
                     ),
                   ),
@@ -203,7 +231,8 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-      ),
-    );
+      ),);
+    
+    
   }
 }

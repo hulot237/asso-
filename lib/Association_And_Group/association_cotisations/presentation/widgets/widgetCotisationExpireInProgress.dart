@@ -236,30 +236,30 @@ class _WidgetCotisationExpireInProgressState
                             ],
                           ),
                         ),
-                        Container(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Icon(
-                                  Icons.people_alt_rounded,
-                                  size: 16,
-                                  color: Color.fromARGB(255, 20, 45, 99),
-                                ),
-                                margin: EdgeInsets.only(right: 3),
-                              ),
-                              Container(
-                                child: Text(
-                                  "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   child: Row(
+                        //     children: [
+                        //       Container(
+                        //         child: Icon(
+                        //           Icons.people_alt_rounded,
+                        //           size: 16,
+                        //           color: Color.fromARGB(255, 20, 45, 99),
+                        //         ),
+                        //         margin: EdgeInsets.only(right: 3),
+                        //       ),
+                        //       Container(
+                        //         child: Text(
+                        //           "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
+                        //           style: TextStyle(
+                        //             fontSize: 12,
+                        //             fontWeight: FontWeight.w800,
+                        //             color: Color.fromARGB(255, 20, 45, 99),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

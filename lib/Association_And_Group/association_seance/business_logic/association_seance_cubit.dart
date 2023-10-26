@@ -5,15 +5,51 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class SeanceCubit extends Cubit<SeanceState> {
   SeanceCubit()
       : super(
-          SeanceState(
-            detailSeance: null,
+          SeanceState(detailSeance: null, allSeanceAss: null, isLoading: false),
+        );
+
+  Future<bool> AllAssSeanceCubit(codeAss) async {
+    emit(state.copyWith(isloading: true));
+    try {
+      final data = await SeanceRepository().AllSeanceAss(codeAss);
+
+      if (data != null) {
+        emit(
+          state.copyWith(
+            allseanceass: data,
+            detailseance: state.detailSeance,
+            isloading: false,
           ),
         );
 
+        print("DetailSeance Cubit ok");
+        return true;
+      } else {
+        emit(
+          state.copyWith(
+            allseanceass: [],
+            detailseance: state.detailSeance,
+            isloading: false,
+          ),
+        );
+        return false;
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          allseanceass: [],
+          detailseance: state.detailSeance,
+          isloading: false,
+        ),
+      );
+      return true;
+    }
+  }
+
   Future<bool> detailSeanceCubit(codeSeance) async {
+    emit(state.copyWith(isloading: true));
     try {
-      final data =
-          await SeanceRepository().DetailSeance(codeSeance);
+      final data = await SeanceRepository().DetailSeance(codeSeance);
 
       if (data != null) {
         // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
@@ -23,64 +59,37 @@ class SeanceCubit extends Cubit<SeanceState> {
         emit(
           state.copyWith(
             detailseance: data,
+            allseanceass: state.allSeanceAss,
+            isloading: false,
           ),
         );
 
         print("DetailSeance Cubit ok");
+
+        // emit(state.copyWith(isloading: false));
+
         return true;
       } else {
         emit(
           state.copyWith(
             detailseance: {},
+            allseanceass: state.allSeanceAss,
+            isloading: false,
           ),
         );
+        // emit(state.copyWith(isloading: false));
+
         return false;
       }
     } catch (e) {
       emit(
         state.copyWith(
           detailseance: {},
+          allseanceass: state.allSeanceAss,
+          isloading: false,
         ),
       );
       return true;
     }
   }
-
-  // Future<bool> UserGroupDefaultCubit() async {
-  //   try {
-  //     final data = await UserGroupRepository().UserGroupDefault();
-
-  //     if (data != null) {
-  //       // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-  //       print("UserGroupDefaultCubit data in cubittttttttt ${data}");
-
-  //       emit(
-  //         state.copyWith(
-  //           usergroupdefault: data,
-  //           usergroup: state.userGroup,
-  //         ),
-  //       );
-
-  //       print("UserGroupDefaultCubit Cubit ok");
-  //       return true;
-  //     } else {
-  //       emit(
-  //         state.copyWith(
-  //           usergroupdefault: {},
-  //           usergroup: state.userGroup,
-  //         ),
-  //       );
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     emit(
-  //       state.copyWith(
-  //         usergroupdefault: {},
-  //         usergroup: state.userGroup,
-  //       ),
-  //     );
-  //     return true;
-  //   }
-  // }
 }

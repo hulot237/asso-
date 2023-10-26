@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailTontineCard.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DetailTontinePage extends StatefulWidget {
@@ -24,6 +27,48 @@ class DetailTontinePage extends StatefulWidget {
   State<DetailTontinePage> createState() => _DetailTontinePageState();
 }
 
+
+
+
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Color(0xFFEFEFEF),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(
+          "Detail de la tontine",
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ),
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Color(0xFFEFEFEF),
+    appBar: AppBar(
+      title: Text(
+        "Detail de la tontine",
+        style: TextStyle(fontSize: 16),
+      ),
+      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      elevation: 0,
+    ),
+    body: child,
+  );
+}
+
+
+
+
+
+
+
 class _DetailTontinePageState extends State<DetailTontinePage>
     with TickerProviderStateMixin {
   int _pageIndex = 0;
@@ -34,17 +79,8 @@ class _DetailTontinePageState extends State<DetailTontinePage>
   @override
   Widget build(BuildContext context) {
     final TabController _tabController = TabController(length: 2, vsync: this);
-    return Scaffold(
-      backgroundColor: Color(0xFFEFEFEF),
-      appBar: AppBar(
-        title: Text(
-          "Detail de la tontine",
-          style: TextStyle(fontSize: 16),
-        ),
-        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
-        elevation: 0,
-      ),
-      body: Container(
+    return PageScaffold(context: context, 
+    child: Container(
         child: Column(
           children: [
             Container(
@@ -123,7 +159,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                               alignment: Alignment.center,
                                               child: 
                                               itemListMembre["is_passed"]==0? Text(
-                                                "${++i}",
+                                                "${itemListMembre["order"]}",
                                                 style: TextStyle(
                                                   fontSize: 8,
                                                   fontWeight: FontWeight.w700,
@@ -207,7 +243,20 @@ class _DetailTontinePageState extends State<DetailTontinePage>
             ),
           ],
         ),
-      ),
-    );
+      ),);    
+    
+    
+    // Scaffold(
+    //   backgroundColor: Color(0xFFEFEFEF),
+    //   appBar: AppBar(
+    //     title: Text(
+    //       "Detail de la tontine",
+    //       style: TextStyle(fontSize: 16),
+    //     ),
+    //     backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+    //     elevation: 0,
+    //   ),
+    //   body: 
+    // );
   }
 }

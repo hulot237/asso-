@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
 // import 'package:integration_part_two/pages/homeCoursier.dart';
@@ -11,6 +14,28 @@ class VerificationPage extends StatefulWidget {
   @override
   State<VerificationPage> createState() => _VerificationPageState();
 }
+
+
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Color(0xFFEFEFEF),
+      
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Color(0xFFEFEFEF),
+    
+    body: child,
+  );
+}
+
+
 
 class _VerificationPageState extends State<VerificationPage> {
   TextEditingController countrycode = TextEditingController();
@@ -40,9 +65,7 @@ class _VerificationPageState extends State<VerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFEFEFEF),
-      body: Container(
+    return PageScaffold(context: context, child: Container(
         padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
         // color: Colors.brown,
         margin: const EdgeInsets.only(
@@ -137,7 +160,7 @@ class _VerificationPageState extends State<VerificationPage> {
                               // handleLogin();
                             },
                             child: Text(
-                              "Vérifier",
+                              "vérifier".tr(),
                               style: TextStyle(fontSize: 19),
                             ),
                             style: ElevatedButton.styleFrom(
@@ -157,7 +180,9 @@ class _VerificationPageState extends State<VerificationPage> {
             ],
           ),
         ),
-      ),
-    );
+      ),);
+    
+    
+    
   }
 }

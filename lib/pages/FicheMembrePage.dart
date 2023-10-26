@@ -1,9 +1,12 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -12,14 +15,35 @@ class AccountPage extends StatefulWidget {
   State<AccountPage> createState() => _AccountPageState();
 }
 
+
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Color(0xFFEFEFEF),
+      
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Color(0xFFEFEFEF),
+    
+    body: child,
+  );
+}
+
+
+
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final currentDetailUser = context.read<AuthCubit>().state.detailUser;
     print(currentDetailUser);
-    return Scaffold(
-      backgroundColor: Color(0xFFEFEFEF),
-      body: Padding(
+    return PageScaffold(context: context, 
+    child: Padding(
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top,
         ),
@@ -87,7 +111,7 @@ class _AccountPageState extends State<AccountPage> {
                         Column(
                           children: [
                             Text(
-                              "Statut",
+                              "statut".tr(),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -107,7 +131,7 @@ class _AccountPageState extends State<AccountPage> {
                         Column(
                           children: [
                             Text(
-                              "Matricule",
+                              "matricule".tr(),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -138,7 +162,7 @@ class _AccountPageState extends State<AccountPage> {
                                         ["is_inscription_payed"] ==
                                     1
                                 ? Text(
-                                    "Payé",
+                                    "payé".tr(),
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
@@ -158,7 +182,7 @@ class _AccountPageState extends State<AccountPage> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          "Non payé",
+                                          "non_payé".tr(),
                                           style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
@@ -197,7 +221,7 @@ class _AccountPageState extends State<AccountPage> {
                             margin: EdgeInsets.only(top: 20, bottom: 5),
                             width: MediaQuery.of(context).size.width,
                             child: Text(
-                              "Informations personnelles",
+                              "informations_personnelles".tr(),
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
@@ -291,7 +315,7 @@ class _AccountPageState extends State<AccountPage> {
                                             children: [
                                               Container(
                                                 child: Text(
-                                                  "Téléphone",
+                                                  "téléphone".tr(),
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           139, 20, 45, 99),
@@ -383,7 +407,7 @@ class _AccountPageState extends State<AccountPage> {
                             margin: EdgeInsets.only(top: 20, bottom: 5),
                             width: MediaQuery.of(context).size.width,
                             child: Text(
-                              "Vos bénéficiaires",
+                              "vos_bénéficiaires".tr(),
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
@@ -451,7 +475,7 @@ class _AccountPageState extends State<AccountPage> {
                                                   children: [
                                                     Container(
                                                       child: Text(
-                                                        "Nom",
+                                                        "nom_complete".tr(),
                                                         style: TextStyle(
                                                             color:
                                                                 Color.fromARGB(
@@ -511,7 +535,7 @@ class _AccountPageState extends State<AccountPage> {
                                                   children: [
                                                     Container(
                                                       child: Text(
-                                                        "Téléphone",
+                                                        "téléphone".tr(),
                                                         style: TextStyle(
                                                             color:
                                                                 Color.fromARGB(
@@ -745,7 +769,9 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ],
         ),
-      ),
-    );
+      ),);
+    
+    
+
   }
 }

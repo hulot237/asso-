@@ -3,6 +3,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -142,8 +143,26 @@ class _WidgetCotisationInProgressState
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                              Modal().showModalActionPayement(context, "zz");
+                          onTap: () async {
+                              await handleDetailCotisation(
+                                  widget.codeCotisation);
+
+                              final currentDetailCotisation = context
+                                  .read<CotisationCubit>()
+                                  .state
+                                  .detailCotisation;
+
+                              if (currentDetailCotisation!["members"].length >
+                                  0)
+                                for (var itemDetailCotisation
+                                    in currentDetailCotisation!["members"])
+                                  if (itemDetailCotisation["membre"]
+                                          ["membre_code"] ==
+                                      AppCubitStorage().state.membreCode)
+                                    Modal().showModalActionPayement(
+                                        context,
+                                        itemDetailCotisation[
+                                            "cotisation_pay_link"]);
                             },
                           child: Container(
                              padding: EdgeInsets.only(left: 8, right: 8, top:5, bottom: 5 ),
@@ -213,17 +232,9 @@ class _WidgetCotisationInProgressState
                                 children: [
                                   Container(
                                     child: Text(
-                                      "Min ",
+                                      "Volontaire ",
                                       style: TextStyle(
                                         fontSize: 10,
-                                        color: Color.fromARGB(255, 20, 45, 99),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text(
-                                      "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
-                                      style: TextStyle(
                                         color: Color.fromARGB(255, 20, 45, 99),
                                       ),
                                     ),
@@ -264,28 +275,28 @@ class _WidgetCotisationInProgressState
                             ],
                           ),
                         ),
-                        Container(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Icon(
-                                  Icons.people_alt_rounded,
-                                  size: 16,
-                                  color: Color.fromARGB(255, 20, 45, 99),
-                                ),
-                                margin: EdgeInsets.only(right: 5),
-                              ),
-                              Container(
-                                  child: Text(
-                                "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color.fromARGB(255, 20, 45, 99)),
-                              ))
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   child: Row(
+                        //     children: [
+                        //       Container(
+                        //         child: Icon(
+                        //           Icons.people_alt_rounded,
+                        //           size: 16,
+                        //           color: Color.fromARGB(255, 20, 45, 99),
+                        //         ),
+                        //         margin: EdgeInsets.only(right: 5),
+                        //       ),
+                        //       Container(
+                        //           child: Text(
+                        //         "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
+                        //         style: TextStyle(
+                        //             fontSize: 12,
+                        //             fontWeight: FontWeight.w800,
+                        //             color: Color.fromARGB(255, 20, 45, 99)),
+                        //       ))
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

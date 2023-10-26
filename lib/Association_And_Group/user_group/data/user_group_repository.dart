@@ -46,13 +46,13 @@ class UserGroupRepository {
     }
   }
 
-  Future<Map<String, dynamic>> UserGroupDefault() async {
+  Future<Map<String, dynamic>> UserGroupDefault(codeAssDefaul) async {
     try {
       log("response2");
       final response = await dio.post(
         '${Variables.LienAIP}/api/v1/usergroupe/default',
         data: {
-          "urlcodes": Variables().urlcodes,
+          "urlcodes": ["$codeAssDefaul"],
         },
         options: Options(
           headers: {
@@ -61,14 +61,43 @@ class UserGroupRepository {
           },
         ),
       );
+
+      print(
+          "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzeeeeeeeeeeeee ${response}");
+
       // print("dataJsozzzzzzzzzzzzz      ${response.data["data"]["partner_id"]}");
 
       final Map<String, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-      log('Okay UserGroupDefault rep');
+      log('Okay UserGroupDefaultUserGroupDefault rep');
       return dataJson;
     } catch (e) {
-      log('erreur UserGroupDefault rep');
+      log('erreur UserGroupDefaultUserGroupDefault rep');
+      print(e);
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> ChangerAss(codeAss) async {
+    try {
+      log("response2");
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/usergroupe/$codeAss/show',
+        options: Options(
+          headers: {
+            "password": AppCubitStorage().state.passwordKey,
+            "username": AppCubitStorage().state.userNameKey,
+          },
+        ),
+      );
+
+      print(
+          "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzeeeeeeeeeeeee ${response}");
+      final Map<String, dynamic> dataJson = response.data["data"];
+      log('Okay UserGroupDefaultUserGroupDefault rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur UserGroupDefaultUserGroupDefault rep');
       print(e);
       return {};
     }
