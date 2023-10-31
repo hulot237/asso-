@@ -23,6 +23,7 @@ class WidgetCotisationInFixed extends StatefulWidget {
     required this.isActive,
     required this.codeCotisation,
     required this.type,
+    required this.lienDePaiement,
   });
   int montantCotisations;
   String motifCotisations;
@@ -35,6 +36,7 @@ class WidgetCotisationInFixed extends StatefulWidget {
   int isActive;
   String codeCotisation;
   String type;
+  String lienDePaiement;
 
   @override
   State<WidgetCotisationInFixed> createState() =>
@@ -160,25 +162,11 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              await handleDetailCotisation(
-                                  widget.codeCotisation);
-
-                              final currentDetailCotisation = context
-                                  .read<CotisationCubit>()
-                                  .state
-                                  .detailCotisation;
-
-                              if (currentDetailCotisation!["members"].length >
-                                  0)
-                                for (var itemDetailCotisation
-                                    in currentDetailCotisation!["members"])
-                                  if (itemDetailCotisation["membre"]
-                                          ["membre_code"] ==
-                                      AppCubitStorage().state.membreCode)
+                              
                                     Modal().showModalActionPayement(
-                                        context,
-                                        itemDetailCotisation[
-                                            "cotisation_pay_link"]);
+                                      context,
+                                      widget.lienDePaiement,
+                                    );
                             },
                             child: Container(
                               padding: EdgeInsets.only(

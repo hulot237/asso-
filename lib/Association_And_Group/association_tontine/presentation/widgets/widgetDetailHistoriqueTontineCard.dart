@@ -1,19 +1,58 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class widgetDetailHistoriqueTontineCard extends StatefulWidget {
-  const widgetDetailHistoriqueTontineCard({super.key});
+  widgetDetailHistoriqueTontineCard(
+      {super.key,
+      required this.nomBeneficiaire,
+      required this.prenomBeneficiaire,
+      required this.dateOpen,
+      required this.dateClose,
+      required this.montantTontine,
+      required this.montantCollecte,
+      required this.codeCotisation,
+      required this.lienDePaiement,});
+  String nomBeneficiaire;
+  String dateClose;
+  String dateOpen;
+  String montantCollecte;
+  int montantTontine;
+  String prenomBeneficiaire;
+  String codeCotisation;
+  String lienDePaiement;
 
   @override
-  State<widgetDetailHistoriqueTontineCard> createState() => _widgetDetailHistoriqueTontineCardState();
+  State<widgetDetailHistoriqueTontineCard> createState() =>
+      _widgetDetailHistoriqueTontineCardState();
 }
 
-class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriqueTontineCard> {
+class _widgetDetailHistoriqueTontineCardState
+    extends State<widgetDetailHistoriqueTontineCard> {
+
+
+        Future<void> handleDetailCotisation(codeCotisation) async {
+    final detailCotisation = await context
+        .read<CotisationCubit>()
+        .detailCotisationCubit(codeCotisation);
+
+    if (detailCotisation != null) {
+      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
+      print(
+          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationCubit>().state.detailCotisation}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -27,7 +66,6 @@ class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriq
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 10),
-
                   width: MediaQuery.of(context).size.width / 1.1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,28 +78,12 @@ class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriq
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
+                                // margin: EdgeInsets.only(top: 3),
                                 child: Row(
                                   children: [
                                     Container(
                                       child: Text(
-                                        "KENGNE DJOUSSE Hulot",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 3),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "Bepanda ambiance carrefour bocom",
+                                        "${"Bénéficiaire".tr()} :",
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
@@ -73,26 +95,12 @@ class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriq
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
+                              Container(
                                 child: Row(
                                   children: [
                                     Container(
                                       child: Text(
-                                        "rencontre".tr(),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        " 01S01",
+                                        "${widget.nomBeneficiaire}",
                                         style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,
@@ -103,29 +111,83 @@ class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriq
                                   ],
                                 ),
                               ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                                Modal().showModalActionPayement(
+                                    context,
+                                    widget.lienDePaiement);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              left: 8, right: 8, top: 5, bottom: 5),
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(0, 162, 255, 1),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Container(
+                            child: Text(
+                              "Tontiner",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Container(
+                      //   child: Row(
+                      //     children: [
+                      //       Container(
+                      //         child: Text(
+                      //           "rencontre".tr(),
+                      //           style: TextStyle(
+                      //             fontSize: 12,
+                      //             fontWeight: FontWeight.w300,
+                      //             color: Color.fromRGBO(20, 45, 99, 1),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       Container(
+                      //         child: Text(
+                      //           " 01S01",
+                      //           style: TextStyle(
+                      //             fontSize: 12,
+                      //             fontWeight: FontWeight.bold,
+                      //             color: Color.fromRGBO(20, 45, 99, 1),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10, bottom: 10),
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Text(
-                          "Bénéficiaire(3/20)",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Color.fromARGB(255, 20, 45, 99),
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   child: Text(
+                      //     "Bénéficiaire(3/20)",
+                      //     style: TextStyle(
+                      //       fontSize: 12,
+                      //       fontWeight: FontWeight.w500,
+                      //       color: Color.fromARGB(255, 20, 45, 99),
+                      //     ),
+                      //   ),
+                      // ),
                       Container(
                         margin: EdgeInsets.only(top: 3),
                         child: Text(
-                          "21/02/2003",
+                          "${widget.dateOpen} - ${widget.dateClose}",
                           style: TextStyle(
                               fontSize: 10,
                               overflow: TextOverflow.ellipsis,
@@ -164,7 +226,7 @@ class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriq
                                     child: Container(
                                       margin: EdgeInsets.only(top: 3),
                                       child: Text(
-                                        "${formatMontantFrancais(5000)} FCFA",
+                                        "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontSize: 12,
@@ -197,7 +259,7 @@ class _widgetDetailHistoriqueTontineCardState extends State<widgetDetailHistoriq
                             Container(
                               margin: EdgeInsets.only(top: 3),
                               child: Text(
-                                "${formatMontantFrancais(12000)} FCFA",
+                                "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.green,

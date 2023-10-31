@@ -5,13 +5,13 @@ import 'package:faroty_association_1/Association_And_Group/user_group/data/user_
 class DetailTournoiCourantState extends Equatable {
   final Map<String, dynamic>? detailtournoiCourant;
   final Map<String, dynamic>? changeTournoi;
-  final List<dynamic>? allTournoiAss;
+  // final List<dynamic>? allTournoiAss;
   final bool isLoading;
 
   DetailTournoiCourantState({
     this.detailtournoiCourant,
     this.changeTournoi,
-    this.allTournoiAss,
+    // this.allTournoiAss,
     this.isLoading = false,
   });
 
@@ -19,7 +19,7 @@ class DetailTournoiCourantState extends Equatable {
   List<Object?> get props => [
         detailtournoiCourant,
         changeTournoi,
-        allTournoiAss,
+        // allTournoiAss,
         isLoading,
       ];
 
@@ -27,20 +27,20 @@ class DetailTournoiCourantState extends Equatable {
     // List<UserGroupCourantModel>? userGroupDefault,
     Map<String, dynamic>? detailtournoicourant,
     Map<String, dynamic>? changetournoi,
-    List<dynamic>? alltournoiass,
+    // List<dynamic>? alltournoiass,
     required bool isloading,
   }) {
     return DetailTournoiCourantState(
       detailtournoiCourant: detailtournoicourant,
       changeTournoi: changetournoi,
-      allTournoiAss: alltournoiass,
+      // allTournoiAss: alltournoiass,
       isLoading: isloading,
     );
   }
 
-  factory DetailTournoiCourantState.fromJson(Map<String, dynamic> json) {
-    return DetailTournoiCourantState(
-      detailtournoiCourant: json['detailTournoiCourant']
-    );
-  }
+  // factory DetailTournoiCourantState.fromJson(Map<String, dynamic> json) {
+  //   return DetailTournoiCourantState(
+  //     detailtournoiCourant: json['detailTournoiCourant']
+  //   );
+  // }
 }

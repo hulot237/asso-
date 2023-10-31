@@ -10,6 +10,7 @@ WidgetDetailTontineCard({super.key,
   required this.positionBeneficiaire,
   required this.nbrMembreTontine,
   required this.dateCreaTontine,
+  required this.isActive,
   });
 
 String dateCreaTontine;
@@ -17,6 +18,7 @@ String nomTontine;
 String montantTontine;
   String positionBeneficiaire;
 String nbrMembreTontine;
+int isActive;
 
   @override
   State<WidgetDetailTontineCard> createState() =>
@@ -79,6 +81,7 @@ class _WidgetDetailTontineCardState
                           ),
                         ),
                       ),
+                      widget.isActive==1?
                       Container(
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
@@ -93,7 +96,13 @@ class _WidgetDetailTontineCardState
                               fontWeight: FontWeight.bold,
                               fontSize: 13),
                         ),
-                      ),
+                      ):Text(
+                          "terminé".tr(),
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13),
+                        ),
                     ],
                   ),
                 ),

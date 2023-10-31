@@ -4,7 +4,6 @@ import 'package:faroty_association_1/Modals/variable.dart';
 
 class CotisationRepository {
   final dio = Dio();
-// http://192.168.1.110:3333/api/v1/cotisation/1hcul26gv/show
   Future<Map<String, dynamic>> DetailCotisation(codeCotisation) async {
     try {
     print("zzzeeezzzzz $codeCotisation");
@@ -20,27 +19,27 @@ class CotisationRepository {
       return dataJson;
     } catch (e) {
       log('erreur DetailCotisation rep');
-      print(e);
+      print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ${e}");
       return {};
     }
   }
 
 
-  Future<List<dynamic>> AllCotisationOfAss(codeAssociation) async {
+  Future<List<dynamic>> AllCotisationOfAssTournoi(codeTournoi) async {
     try {
-    print("zzzeeezzzzz $codeAssociation");
-      log("response AllCotisationOfAss");
+    print("zzzeeezzzzz $codeTournoi");
+      log("response AllCotisationOfAssAllCotisationOfAss");
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/cotisation/$codeAssociation',
+        '${Variables.LienAIP}/api/v1/cotisation/tournois/$codeTournoi',
       );
-      print("dataJszzz~~~~~~~~~~zzzzzzzzzzzz      ${response.data["data"]}");
+      print("AllCotisationOfAssAllCotisationOfAss      ${response.data["data"]}");
 
       final List<dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-      log('Okay AllCotisationOfAss rep');
+      log('Okay AllCotisationOfAssAllCotisationOfAss rep');
       return dataJson;
     } catch (e) {
-      log('erreur AllCotisationOfAss rep');
+      log('erreur AllCotisationOfAssAllCotisationOfAss rep');
       print(e);
       return [];
     }

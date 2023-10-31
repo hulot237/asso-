@@ -16,10 +16,10 @@ class AuthRepository {
 
       final Map<String, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-      log('Okay DetailCotisation rep');
+      log('Okay UserDetail rep');
       return dataJson;
     } catch (e) {
-      log('erreur DetailCotisation rep');
+      log('erreur UserDetail rep');
       print(e);
       return {};
     }
@@ -37,10 +37,10 @@ class AuthRepository {
 
       final Map<String, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-      log('Okay DetailCotisation rep');
+      log('Okay LoginRepository rep');
       return dataJson;
     } catch (e) {
-      log('erreur DetailCotisation rep');
+      log('erreur LoginRepository rep');
       print(e);
       return {};
     }

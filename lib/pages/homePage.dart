@@ -53,28 +53,28 @@ Widget PageScaffold({
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<void> handleUserGroupDefault() async {
-    final userGroupDefault = await context
-        .read<UserGroupCubit>()
-        .UserGroupDefaultCubit({AppCubitStorage().state.codeAssDefaul});
+  // Future<void> handleUserGroupDefault() async {
+  //   final userGroupDefault = await context
+  //       .read<UserGroupCubit>()
+  //       .UserGroupDefaultCubit({AppCubitStorage().state.codeAssDefaul});
 
-    if (userGroupDefault != null) {
-      // await AppCubitStorage().updateCodeAssDefaul(
-      //     "${context.read<UserGroupCubit>().state.userGroupDefault!["urlcode"]}");
-      for (var elt in context
-          .read<UserGroupCubit>()
-          .state
-          .userGroupDefault!["tournois"]) {
-        if (elt['is_default'] == 1) {
+  //   if (userGroupDefault != null) {
+  //     // await AppCubitStorage().updateCodeAssDefaul(
+  //     //     "${context.read<UserGroupCubit>().state.userGroupDefault!["urlcode"]}");
+  //     for (var elt in context
+  //         .read<UserGroupCubit>()
+  //         .state
+  //         .userGroupDefault!["tournois"]) {
+  //       if (elt['is_default'] == 1) {
 
-        }
-      }
+  //       }
+  //     }
 
-      // updateDataTournoisCodeDefaul
-    } else {
-      print("userGroupDefault null");
-    }
-  }
+  //     // updateDataTournoisCodeDefaul
+  //   } else {
+  //     print("userGroupDefault null");
+  //   }
+  // }
 
   Future<void> handleTournoiDefault() async {
     final detailTournoiCourant = await context
@@ -88,19 +88,19 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> handleTournoiAll(codeAss) async {
-    final allTournoi = await context
-        .read<DetailTournoiCourantCubit>().allTournoiAss(codeAss);
+  // Future<void> handleTournoiAll(codeAss) async {
+  //   // final allTournoi = await context
+  //   //     .read<DetailTournoiCourantCubit>().allTournoiAss(codeAss);
 
-    if (allTournoi != null) {
-      print(
-          "objectdddddddddddddddddddddddddddddddddd  ${allTournoi}");
-      print(
-          "dddddddddddddddddddddddddddddddddddddddd ${context.read<DetailTournoiCourantCubit>().state.detailtournoiCourant}");
-    } else {
-      print("userGroupDefault null");
-    }
-  }
+  //   if (allTournoi != null) {
+  //     print(
+  //         "objectdddddddddddddddddddddddddddddddddd  ${allTournoi}");
+  //     print(
+  //         "dddddddddddddddddddddddddddddddddddddddd ${context.read<DetailTournoiCourantCubit>().state.detailtournoiCourant}");
+  //   } else {
+  //     print("userGroupDefault null");
+  //   }
+  // }
 
   // Future<void> handleAllCotisationAss(codeAssociation) async {
   //   final allCotisationAss = await context

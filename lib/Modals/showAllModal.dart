@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -19,16 +22,25 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Modal {
   void showBottomSheetListAss(BuildContext context, List? listAllAss) {
-
     Future handleChangeAss(codeAss) async {
-      final allCotisationAss =
+      final ChangeAss =
           await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
 
-      await AppCubitStorage().updateCodeAssDefaul(codeAss);
-      await AppCubitStorage().updatemembreCode(context
-          .read<UserGroupCubit>()
-          .state
-          .ChangeAssData!["membre"]["membre_code"]);
+      if (ChangeAss != null) {
+        await AppCubitStorage().updateCodeAssDefaul(codeAss);
+
+        await AppCubitStorage().updatemembreCode(context
+            .read<UserGroupCubit>()
+            .state
+            .ChangeAssData!["membre"]["membre_code"]);
+
+        await AppCubitStorage().updateCodeTournoisDefault(context
+            .read<UserGroupCubit>()
+            .state
+            .ChangeAssData!["user_group"]["tournois"][0]["tournois_code"]);
+      } else {
+        print("userGroupDefault null");
+      }
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -36,81 +48,89 @@ class Modal {
         ),
         (route) => false,
       );
-
-      print(
-          "2222222222222222222222222222222222222222é ${AppCubitStorage().state.codeAssDefaul}");
-
-      if (allCotisationAss != null) {
-        print("objec~~~~~~~~ttt  ${allCotisationAss}");
-        print(
-            "éé22222~~~~~~~~  ${context.read<DetailTournoiCourantCubit>().state.changeTournoi}");
-      } else {
-        print("userGroupDefault null");
-      }
     }
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.only(top: 10),
-          margin: EdgeInsets.only(left: 10, right: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(7),
-              topLeft: Radius.circular(7),
-            ),
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          child: Column(
-            children: [
-              Container(
-                height: 5,
-                width: 55,
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 20, 45, 99),
-                    borderRadius: BorderRadius.circular(50)),
+        return Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(left: 10, right: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(7),
+                  topLeft: Radius.circular(7),
+                ),
+                color: Color.fromARGB(255, 255, 255, 255),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 10, bottom: 10),
-                child: Text(
-                  "vos_associations".tr(),
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                    color: Color.fromARGB(164, 20, 45, 99),
+              child: Column(
+                children: [
+                  Container(
+                    height: 5,
+                    width: 55,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 20, 45, 99),
+                        borderRadius: BorderRadius.circular(50)),
                   ),
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: listAllAss!.length,
-                  itemBuilder: (context, index) {
-                    final currentItemAssociationList = listAllAss[index];
-
-                    return GestureDetector(
-                      onTap: () {
-                        print("${currentItemAssociationList.urlcode!}");
-                        handleChangeAss(currentItemAssociationList.urlcode!);
-                      },
-                      child: Column(
-                        children: [
-                          widgetListAssCard(
-                            urlcodeAss: currentItemAssociationList.urlcode,
-                            nomAssociation: currentItemAssociationList.name!,
-                            nbreEventPending: 5,
-                            phofilAssociation:
-                                "${Variables.LienAIP}${currentItemAssociationList.profile_photo}",
-                          ),
-                        ],
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Text(
+                      "vos_associations".tr(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: Color.fromARGB(164, 20, 45, 99),
                       ),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: listAllAss!.length,
+                      itemBuilder: (context, index) {
+                        final currentItemAssociationList = listAllAss[index];
+
+                        return GestureDetector(
+                          onTap: () {
+                            // print("${currentItemAssociationList.urlcode!}");
+                            handleChangeAss(
+                                currentItemAssociationList["urlcode"]!);
+                          },
+                          child: Column(
+                            children: [
+                              widgetListAssCard(
+                                urlcodeAss:
+                                    currentItemAssociationList["urlcode"],
+                                nomAssociation:
+                                    currentItemAssociationList["name"],
+                                nbreEventPending: 5,
+                                phofilAssociation:
+                                    "${Variables.LienAIP}${currentItemAssociationList["profile_photo"] == null ? "" : currentItemAssociationList["profile_photo"]}",
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+            BlocBuilder<UserGroupCubit, UserGroupState>(
+                builder: (UserGroupContext, UserGroupState) {
+              if (UserGroupState.isLoading == null ||
+                  UserGroupState.isLoading == true)
+                return Container(
+                  color: Color.fromARGB(91, 0, 0, 0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              return Container();
+            }),
+          ],
         );
       },
     );
@@ -248,7 +268,14 @@ class Modal {
     );
   }
 
-  void showBottomSheetHistTontine(context, _tabController) {
+  void showBottomSheetHistTontine(BuildContext context, _tabController,
+      List prsnesTontinee, List prsnesNonTontinee) {
+    final currentDetailCotisation =
+        context.read<CotisationCubit>().state.detailCotisation;
+
+    print("eeee${prsnesTontinee}");
+    print("aaaa${prsnesNonTontinee}");
+
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -276,22 +303,11 @@ class Modal {
               Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
                       "Historique de la tontine",
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w900,
-                        color: Color.fromARGB(164, 20, 45, 99),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 7),
-                    child: Text(
-                      "21/02/2024",
-                      style: TextStyle(
-                        fontSize: 15,
                         fontWeight: FontWeight.w900,
                         color: Color.fromARGB(164, 20, 45, 99),
                       ),
@@ -326,11 +342,28 @@ class Modal {
                               Container(
                                 child: Text("Tontiné"),
                               ),
-                              Container(
-                                child: Text(
-                                  "(10)",
-                                  style: TextStyle(fontSize: 10),
-                                ),
+                              BlocBuilder<CotisationCubit, CotisationState>(
+                                builder: (context, state) {
+                                  if (state.isLoading == null ||
+                                      state.isLoading == true)
+                                    return Container(
+                                      // color: Colors.white,
+                                      // margin: EdgeInsets.only(top: 15),
+                                      width: 10,
+                                      height: 10,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 0.3,
+                                        ),
+                                      ),
+                                    );
+                                  return Container(
+                                    child: Text(
+                                      " (${prsnesTontinee.length})",
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  );
+                                },
                               )
                             ],
                           ),
@@ -341,11 +374,28 @@ class Modal {
                               Container(
                                 child: Text("Non tontiné"),
                               ),
-                              Container(
-                                child: Text(
-                                  "(2)",
-                                  style: TextStyle(fontSize: 10),
-                                ),
+                              BlocBuilder<CotisationCubit, CotisationState>(
+                                builder: (context, state) {
+                                  if (state.isLoading == null ||
+                                      state.isLoading == true)
+                                    return Container(
+                                      // color: Colors.white,
+                                      // margin: EdgeInsets.only(top: 15),
+                                      width: 10,
+                                      height: 10,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 0.3,
+                                        ),
+                                      ),
+                                    );
+                                  return Container(
+                                    child: Text(
+                                      " (${prsnesNonTontinee.length})",
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                  );
+                                },
                               )
                             ],
                           ),
@@ -355,40 +405,124 @@ class Modal {
                   ),
                 ],
               ),
-              Expanded(
-                child: Container(
-                  color: Color.fromARGB(120, 226, 226, 226),
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.all(0),
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            child: widgetHistoriqueTontineCard(),
-                            margin: EdgeInsets.only(
-                                top: 3, bottom: 7, left: 10, right: 10),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.all(0),
-                        itemCount: 2,
-                        itemBuilder: (context, index) {
-                          return Container(
+              BlocBuilder<CotisationCubit, CotisationState>(
+                  builder: (context, state) {
+                if (state.isLoading == null || state.isLoading == true)
+                  return Container(
+                    // color: Colors.white,
+                    margin: EdgeInsets.only(top: 15),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                return Expanded(
+                  child: Container(
+                    color: Color.fromARGB(120, 226, 226, 226),
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(0),
+                          itemCount: prsnesTontinee.length,
+                          itemBuilder: (context, index) {
+                            final currentDetailPersonCotis =
+                                prsnesTontinee[index];
+                            return Container(
+                              child: widgetHistoriqueTontineCard(
+                                date: AppCubitStorage().state.Language == "fr"
+                                    ? formatDateToFrench(
+                                        currentDetailPersonCotis["updated_at"])
+                                    : formatDateToEnglish(
+                                        currentDetailPersonCotis["updated_at"]),
+                                imageProfil: currentDetailPersonCotis[
+                                            "photo_profil"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailPersonCotis["photo_profil"],
+                                is_versement_finished:
+                                    currentDetailPersonCotis["versement"][0]
+                                        ["is_versement_finished"],
+                                montantVersee:
+                                    currentDetailPersonCotis["versement"][0]
+                                        ["balance_after"],
+                                nom: currentDetailPersonCotis["first_name"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailPersonCotis["first_name"],
+                                prenom: currentDetailPersonCotis["last_name"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailPersonCotis["last_name"],
+                              ),
                               margin: EdgeInsets.only(
                                   top: 3, bottom: 7, left: 10, right: 10),
-                              child: widgetHistoriqueTontineCard());
-                        },
-                      ),
-                      //  Text("2"),
-                    ],
+                            );
+                          },
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(0),
+                          itemCount: prsnesNonTontinee.length,
+                          itemBuilder: (context, index) {
+                            final currentDetailPersonNonCotis =
+                                prsnesNonTontinee![index];
+                            return Container(
+                              margin: EdgeInsets.only(
+                                  top: 3, bottom: 7, left: 10, right: 10),
+                              child: widgetHistoriqueTontineCard(
+                                date: AppCubitStorage().state.Language == "fr"
+                                    ? formatDateToFrench(
+                                        currentDetailPersonNonCotis[
+                                            "updated_at"])
+                                    : formatDateToEnglish(
+                                        currentDetailPersonNonCotis[
+                                            "updated_at"]),
+                                imageProfil:
+                                    currentDetailPersonNonCotis["membre"]
+                                                ["photo_profil"] ==
+                                            null
+                                        ? ""
+                                        : currentDetailPersonNonCotis["membre"]
+                                            ["photo_profil"],
+                                is_versement_finished:
+                                    currentDetailPersonNonCotis["membre"]
+                                                    ["versement"]
+                                                .length ==
+                                            0
+                                        ? 0
+                                        : currentDetailPersonNonCotis["membre"]
+                                                ["versement"][0]
+                                            ["is_versement_finished"],
+                                montantVersee:
+                                    currentDetailPersonNonCotis["membre"]
+                                                    ["versement"]
+                                                .length ==
+                                            0
+                                        ? "0"
+                                        : currentDetailPersonNonCotis["membre"]
+                                            ["versement"][0]["balance_after"],
+                                nom: currentDetailPersonNonCotis["membre"]
+                                            ["first_name"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailPersonNonCotis["membre"]
+                                        ["first_name"],
+                                prenom: currentDetailPersonNonCotis["membre"]
+                                            ["last_name"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailPersonNonCotis["membre"]
+                                        ["last_name"],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
+                );
+              })
             ],
           ),
         );

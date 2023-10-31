@@ -29,8 +29,8 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   // bool _customIconHelp = false;
 
-  Map<String, dynamic>? get currentInfoAssociationCourant {
-    return context.read<UserGroupCubit>().state.userGroupDefault;
+  List<dynamic>? get currentInfoAllAssociation {
+    return context.read<UserGroupCubit>().state.userGroup;
   }
 
   Map<String, dynamic>? get currentInfoAllTournoiAssCourant {
@@ -53,13 +53,14 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //  Map<String, dynamic>? currentInfoAssociationCourant = context.read<UserGroupCubit>().state.userGroupDefault;
-    setState(() {
-      print(
-          "zzzzzzzzzzzzzzzzzzzzzzzededededeecec ${currentInfoAssociationCourant!["tournois"]}");
-    });
-
     return BlocBuilder<AuthCubit, AuthState>(builder: (authContext, authState) {
+      if (authState.isLoading == null || authState.isLoading == true)
+        return Container(
+          color: Colors.white,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       final currentDetailUser = context.read<AuthCubit>().state.detailUser;
       return Scaffold(
         backgroundColor: Colors.white,
@@ -247,7 +248,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         // context.read<ServiceCubit>().state.currentService!.id;
                         Modal().showBottomSheetListTournoi(
                           context,
-                          currentInfoAllTournoiAssCourant!["user_group"]["tournois"],
+                          currentInfoAllTournoiAssCourant!["user_group"]
+                              ["tournois"],
                         );
                       },
                       child: Container(
@@ -286,8 +288,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 ],
                               ),
                             ),
-                            for (var item
-                                in currentInfoAllTournoiAssCourant!["user_group"]["tournois"])
+                            for (var item in currentInfoAllTournoiAssCourant![
+                                "user_group"]["tournois"])
                               if (item["tournois_code"] ==
                                   AppCubitStorage().state.codeTournois)
                                 Text(
@@ -308,8 +310,10 @@ class _SettingScreenState extends State<SettingScreen> {
                     GestureDetector(
                       onTap: () {
                         // context.read<ServiceCubit>().state.currentService!.id;
-                        Modal().showBottomSheetListAss(context,
-                            context.read<UserGroupCubit>().state.userGroup);
+                        Modal().showBottomSheetListAss(
+                          context,
+                          currentInfoAllAssociation,
+                        );
                       },
                       child: Container(
                         padding: EdgeInsets.only(
@@ -350,9 +354,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             ),
                             Text(
-                                "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"]}",
+                              "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"]}",
 
-                              // "${currentInfoAssociationCourant!["matricule"]}",
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Color.fromARGB(125, 20, 45, 99),
@@ -534,13 +537,17 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               GestureDetector(
                 onTap: () {
-
-
-                        print("success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
-      print("success password   ${AppCubitStorage().state.passwordKey}");
-      print("success username   ${AppCubitStorage().state.userNameKey}");
-      print("success membre_code   ${AppCubitStorage().state.membreCode}");
-                  print("object");
+                  // print(
+                  //     "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
+                  // print(
+                  //     "success password   ${AppCubitStorage().state.passwordKey}");
+                  // print(
+                  //     "success username   ${AppCubitStorage().state.userNameKey}");
+                  // print(
+                  //     "success membre_code   ${AppCubitStorage().state.membreCode}");
+                  // print(
+                  //     "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
+                  // print("object");
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (BuildContext context) => LoginPage(),

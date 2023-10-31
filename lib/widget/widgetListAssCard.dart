@@ -13,7 +13,7 @@ class widgetListAssCard extends StatefulWidget {
   final String nomAssociation;
   final int nbreEventPending;
   final String phofilAssociation;
-  final String urlcodeAss;
+  final String? urlcodeAss;
 
   @override
   State<widgetListAssCard> createState() => _widgetListAssCardState();

@@ -238,7 +238,61 @@ class _AccountPageState extends State<AccountPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                
+
+
                                 Container(
+                                  // margin: EdgeInsets.only(bottom: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                right: 7, bottom: 20),
+                                            child: Icon(
+                                              Icons.phone_android_outlined,
+                                              color: Color.fromARGB(
+                                                  255, 20, 45, 99),
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                child: Text(
+                                                  "téléphone".tr(),
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          139, 20, 45, 99),
+                                                      fontWeight:
+                                                          FontWeight.w800),
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  
+                                                  "${currentDetailUser["first_phone"] }",
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 20, 45, 99),
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                               
+                               
+                               Container(
                                   // margin: EdgeInsets.only(bottom: 5),
                                   child: Column(
                                     crossAxisAlignment:
@@ -278,55 +332,6 @@ class _AccountPageState extends State<AccountPage> {
                                               Container(
                                                 child: Text(
                                                   currentDetailUser["email"]==null? "" : currentDetailUser["email"],
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 20, 45, 99),
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  // margin: EdgeInsets.only(bottom: 5),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                right: 7, bottom: 20),
-                                            child: Icon(
-                                              Icons.phone_android_outlined,
-                                              color: Color.fromARGB(
-                                                  255, 20, 45, 99),
-                                            ),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  "téléphone".tr(),
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          139, 20, 45, 99),
-                                                      fontWeight:
-                                                          FontWeight.w800),
-                                                ),
-                                              ),
-                                              Container(
-                                                child: Text(
-                                                  
-                                                  "${currentDetailUser["first_phone"] }",
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),

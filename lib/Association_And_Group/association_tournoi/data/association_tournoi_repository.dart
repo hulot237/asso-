@@ -14,10 +14,7 @@ class DetailTournoiCourantRepository {
       log("response1");
 
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/tournois/$codeTournoiDefaul/show',
-        // data: {
-        //   // "urlcodes": Variables().urlcodes,
-        // },
+        '${Variables.LienAIP}/api/v1/tournois/${AppCubitStorage().state.codeTournois}/show',
       );
 
       final Map<String, dynamic> dataJson = response.data["data"];
@@ -25,10 +22,10 @@ class DetailTournoiCourantRepository {
       print(
           "dataJsozzzzzzzzzzzzzT      ${response.data["data"]["tournois"]["seance"]}");
 
-      log('Okay AllUserGroupOfUser rep');
+      log('Okay DetailTournoiCourant rep');
       return dataJson;
     } catch (e) {
-      log('erreur AllUserGroupOfUser rep');
+      log('erreur DetailTournoiCourant rep');
       print(e);
       return {};
     }

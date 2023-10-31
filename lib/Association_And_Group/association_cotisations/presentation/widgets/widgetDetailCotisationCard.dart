@@ -392,10 +392,10 @@ class _widgetDetailCotisationCardState
                                   ),
                                 ),
                           GestureDetector(
-                            onTap: () {
-                              Modal()
-                                  .showModalAllTransactionCotisation(context);
-                            },
+                            // onTap: () {
+                            //   Modal()
+                            //       .showModalAllTransactionCotisation(context);
+                            // },
                             child: Container(
                               alignment: Alignment.centerRight,
                               child: Column(

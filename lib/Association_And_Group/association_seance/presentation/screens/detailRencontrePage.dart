@@ -90,9 +90,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
   int _pageIndex = 0;
   var Tab = [true, false, false, true, "end", "end"];
 
-  Map<String, dynamic>? get currentInfoAssociationCourant {
-    return context.read<UserGroupCubit>().state.userGroupDefault;
-  }
+  // Map<String, dynamic>? get currentInfoAssociationCourant {
+  //   return context.read<UserGroupCubit>().state.userGroupDefault;
+  // }
 
   Map<String, dynamic>? get currentDetailSeance {
     return context.read<SeanceCubit>().state.detailSeance;
@@ -189,6 +189,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                               margin: EdgeInsets.only(
                                   left: 7, right: 7, top: 3, bottom: 7),
                               child: WidgetCotisationInFixed(
+                                lienDePaiement: currentDetail["cotisation_pay_link"]==null? "Le lien n'a pas été généré": currentDetail["cotisation_pay_link"],
                                 contributionOneUser: '2000',
                                 codeCotisation:
                                     currentDetail["cotisation_code"],
@@ -225,6 +226,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                             margin: EdgeInsets.only(
                                 left: 7, right: 7, top: 3, bottom: 7),
                             child: WidgetCotisationInProgress(
+                              lienDePaiement: currentDetail["cotisation_pay_link"]==null? "Le lien n'a pas été généré": currentDetail["cotisation_pay_link"],
                               codeCotisation: currentDetail["cotisation_code"],
                               contributionOneUser: '2000',
                               // AppCubitStorage().state.Language=="fr"? formatTimeToFrench (currentDetail["start_date"]) : formatTimeToEnglish (currentDetail["start_date"])

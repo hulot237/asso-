@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/verificationPage.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
@@ -19,9 +20,6 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-
-
-
 Widget PageScaffold({
   required BuildContext context,
   required Widget child,
@@ -29,21 +27,15 @@ Widget PageScaffold({
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
       backgroundColor: Color(0xFFEFEFEF),
-      
       child: child,
     );
   }
 
   return Scaffold(
     backgroundColor: Color(0xFFEFEFEF),
-    
     body: child,
   );
 }
-
-
-
-
 
 class _LoginPageState extends State<LoginPage> {
   TextEditingController countrycode = TextEditingController();
@@ -70,6 +62,8 @@ class _LoginPageState extends State<LoginPage> {
       await AppCubitStorage().updatepasswordKey(loginInfo!["password"]);
       await AppCubitStorage().updateuserNameKey(loginInfo!["username"]);
       await AppCubitStorage().updatemembreCode(loginInfo["membre"]["membre_code"]);
+      await AppCubitStorage().updateCodeTournoisDefault(loginInfo["tournois"]["tournois_code"]);
+      
 
       if (AppCubitStorage().state.codeAssDefaul != null &&
           AppCubitStorage().state.passwordKey != null &&
@@ -89,6 +83,8 @@ class _LoginPageState extends State<LoginPage> {
       print("success password   ${AppCubitStorage().state.passwordKey}");
       print("success username   ${AppCubitStorage().state.userNameKey}");
       print("success membre_code   ${AppCubitStorage().state.membreCode}");
+      print("success tournoi_code   ${AppCubitStorage().state.codeTournois}");
+
 
       print(success);
     } else {
@@ -99,8 +95,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageScaffold(context: context, 
-    child: Container(
+    return PageScaffold(
+      context: context,
+      child: Container(
         padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
         // color: Colors.brown,
         margin: const EdgeInsets.only(
@@ -184,31 +181,36 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           width: double.infinity,
                           height: 40,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              handleLogin();
-
-                            },
-                            child: Text(
-                              "vérification".tr(),
-                              style: TextStyle(fontSize: 19),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF9bc43f),
-                              // primary: Color(0xFF6FA629),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                              builder: (context, state) {
+                            if (state.isLoading == null ||
+                                state.isLoading == true )
+                              return Container(
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color(0xFF9bc43f),
+                                  ),
+                                ),
+                              );
+                            return ElevatedButton(
+                              onPressed: () {
+                                handleLogin();
+                              },
+                              child: 
+                              Text(
+                                "vérification".tr(),
+                                style: TextStyle(fontSize: 19),
                               ),
-                            ),
-                          ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF9bc43f),
+                                // primary: Color(0xFF6FA629),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            );
+                          }),
                         ),
-                        if (AppCubitStorage().state.codeAssDefaul == null ||
-                            AppCubitStorage().state.passwordKey == null ||
-                            AppCubitStorage().state.userNameKey == null)
-                          Container(
-                              margin: EdgeInsets.only(top: 20),
-                              child: Text(
-                                  "")),
                       ],
                     ),
                   ),
@@ -231,8 +233,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-      ),);
-    
-    
+      ),
+    );
   }
 }

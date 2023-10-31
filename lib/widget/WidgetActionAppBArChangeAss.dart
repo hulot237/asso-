@@ -5,24 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WidgetActionAppBArChangeAss extends StatefulWidget {
-  const WidgetActionAppBArChangeAss({super.key});
+
+   WidgetActionAppBArChangeAss({super.key, required this.ListAss});
+  List? ListAss;
 
   @override
   State<WidgetActionAppBArChangeAss> createState() =>
       _WidgetActionAppBArChangeAssState();
 }
 
-
 class _WidgetActionAppBArChangeAssState
     extends State<WidgetActionAppBArChangeAss> {
-
-Map<String, dynamic>? get currentInfoAssociationCourant {
-    return context.read<UserGroupCubit>().state.userGroupDefault;
+  List<dynamic>? get currentInfoAssociationAll {
+    return context.read<UserGroupCubit>().state.userGroup;
   }
 
   @override
   Widget build(BuildContext context) {
-      // Map<String, dynamic>? currentInfoAssociationCourant = context.read<UserGroupCubit>().state.userGroupDefault;
+    // Map<String, dynamic>? currentInfoAssociationCourant = context.read<UserGroupCubit>().state.userGroupDefault;
     return Container(
       alignment: Alignment.center,
       width: 60,
@@ -33,13 +33,14 @@ Map<String, dynamic>? get currentInfoAssociationCourant {
             child: GestureDetector(
               onTap: () {
                 Modal().showBottomSheetListAss(
-                    context, context.read<UserGroupCubit>().state.userGroup);
+                  context,
+                  currentInfoAssociationAll,
+                );
               },
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-
-                  color: Color.fromARGB(255, 255, 26, 9),
+                    color: Color.fromARGB(255, 255, 26, 9),
                   ),
                   borderRadius: BorderRadius.circular(50),
                 ),

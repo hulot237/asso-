@@ -53,10 +53,10 @@ class CotisationCubit extends Cubit<CotisationState> {
     }
   }
 
-  Future<bool> AllCotisationAssCubit(codeAssociation) async {
+  Future<bool> AllCotisationAssTournoiCubit(codeTournoi) async {
     try {
       final data =
-          await CotisationRepository().AllCotisationOfAss(codeAssociation);
+          await CotisationRepository().AllCotisationOfAssTournoi(codeTournoi);
 
       if (data != null) {
         emit(

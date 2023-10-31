@@ -2,26 +2,27 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 
-class UserGroupRepository {
+class TontineRepository {
   final dio = Dio();
 
-  Future<Map<String, dynamic>> UserGroupDefault() async {
+  Future<List<dynamic>> DetailTontine(codeTournoi, codeTontine) async {
     try {
-      log("response2");
-      final response = await dio
-          .post('${Variables.LienAIP}/api/v1/usergroupe/default', data: {
-        "urlcodes": Variables().urlcodes,
-      });
-      // print("dataJsozzzzzzzzzzzzz      ${response.data["data"]["partner_id"]}");
+      print("zzzeeezzzzz $codeTournoi");
+      log("response AllCotisationOfAssAllCotisationOfAss");
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/tontine/$codeTontine/all',
+      );
+      print(
+          "AllCotisationOfAssAllCotisationOfAss      ${response.data["data"]}");
 
-      final Map<String, dynamic> dataJson = response.data["data"];
+      final List<dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-      log('Okay UserGroupDefault rep');
+      log('Okay AllCotisationOfAssAllCotisationOfAss rep');
       return dataJson;
     } catch (e) {
-      log('erreur UserGroupDefault rep');
+      log('erreur AllCotisationOfAssAllCotisationOfAss rep');
       print(e);
-      return {};
+      return [];
     }
   }
 

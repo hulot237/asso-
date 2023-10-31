@@ -8,7 +8,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class UserGroupRepository {
   final dio = Dio();
-  Future<List<UserGroupModel>> AllGroupOfUser() async {
+  Future<List> AllGroupOfUser() async {
     try {
       // Récupérer le token du bloc hydraté
       // final token = AuthCubit().state.token;
@@ -16,9 +16,6 @@ class UserGroupRepository {
 
       final response = await dio.post(
         '${Variables.LienAIP}/api/v1/usergroupe/userpages',
-        data: {
-          "urlcodes": Variables().urlcodes,
-        },
         options: Options(
           headers: {
             "password": AppCubitStorage().state.passwordKey,
@@ -27,15 +24,11 @@ class UserGroupRepository {
         ),
       );
 
-      final List<dynamic> dataJson = response.data["data"]["userGroups"];
+      final List<dynamic> dataJson = response.data["data"]["user_groups"];
       // print("dataJsozzzzzzzzzzzzz      ${response.data["data"]["userGroups"].runtimeType}");
       print("dataJsonsssssssssddddedxex      ${dataJson}");
 
-      final List<UserGroupModel> groups = dataJson
-          .map<UserGroupModel>(
-            (json) => UserGroupModel.fromJson(json),
-          )
-          .toList();
+      final List<dynamic> groups = dataJson;
 
       log('Okay AllUserGroupOfUser rep');
       return groups;
@@ -94,10 +87,10 @@ class UserGroupRepository {
       print(
           "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzeeeeeeeeeeeee ${response}");
       final Map<String, dynamic> dataJson = response.data["data"];
-      log('Okay UserGroupDefaultUserGroupDefault rep');
+      log('Okay ChangerAssChangerAssChangerAss rep');
       return dataJson;
     } catch (e) {
-      log('erreur UserGroupDefaultUserGroupDefault rep');
+      log('erreur ChangerAssChangerAssChangerAss rep');
       print(e);
       return {};
     }

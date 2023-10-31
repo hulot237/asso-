@@ -70,6 +70,13 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(builder: (authContext, authState) {
+            if (authState.isLoading == null || authState.isLoading == true)
+        return Container(
+          color: Colors.white,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       final currentDetailUser = context.read<AuthCubit>().state.detailUser;
       return PageScaffold(
         context: context,
