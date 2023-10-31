@@ -53,28 +53,6 @@ Widget PageScaffold({
 }
 
 class _HomePageState extends State<HomePage> {
-  // Future<void> handleUserGroupDefault() async {
-  //   final userGroupDefault = await context
-  //       .read<UserGroupCubit>()
-  //       .UserGroupDefaultCubit({AppCubitStorage().state.codeAssDefaul});
-
-  //   if (userGroupDefault != null) {
-  //     // await AppCubitStorage().updateCodeAssDefaul(
-  //     //     "${context.read<UserGroupCubit>().state.userGroupDefault!["urlcode"]}");
-  //     for (var elt in context
-  //         .read<UserGroupCubit>()
-  //         .state
-  //         .userGroupDefault!["tournois"]) {
-  //       if (elt['is_default'] == 1) {
-
-  //       }
-  //     }
-
-  //     // updateDataTournoisCodeDefaul
-  //   } else {
-  //     print("userGroupDefault null");
-  //   }
-  // }
 
   Future<void> handleTournoiDefault() async {
     final detailTournoiCourant = await context
@@ -87,73 +65,6 @@ class _HomePageState extends State<HomePage> {
       print("handleTournoiDefault null");
     }
   }
-
-  // Future<void> handleTournoiAll(codeAss) async {
-  //   // final allTournoi = await context
-  //   //     .read<DetailTournoiCourantCubit>().allTournoiAss(codeAss);
-
-  //   if (allTournoi != null) {
-  //     print(
-  //         "objectdddddddddddddddddddddddddddddddddd  ${allTournoi}");
-  //     print(
-  //         "dddddddddddddddddddddddddddddddddddddddd ${context.read<DetailTournoiCourantCubit>().state.detailtournoiCourant}");
-  //   } else {
-  //     print("userGroupDefault null");
-  //   }
-  // }
-
-  // Future<void> handleAllCotisationAss(codeAssociation) async {
-  //   final allCotisationAss = await context
-  //       .read<CotisationCubit>()
-  //       .AllCotisationAssCubit(codeAssociation);
-
-  //   if (allCotisationAss != null) {
-  //     print("objec~~~~~~~~ttt  ${allCotisationAss}");
-  //     print(
-  //         "éé22222~~~~~~~~  ${context.read<CotisationCubit>().state.allCotisationAss}");
-  //   } else {
-  //     print("userGroupDefault null");
-  //   }
-  // }
-
-  // Future<void> handleAllUserGroup() async {
-  //   final AllUserGroup =
-  //       await context.read<UserGroupCubit>().AllUserGroupOfUserCubit();
-
-  //   if (AllUserGroup != null) {
-  //     print("1");
-
-  //     // print(context.read<UserGroupCubit>().state.userGroup);
-  //   } else {
-  //     print("AllUserGroup null");
-  //   }
-  // }
-
-  // Future<void> handleDetailUser(userCode) async {
-  //   final allCotisationAss =
-  //       await context.read<AuthCubit>().detailAuthCubit(userCode);
-
-  //   if (allCotisationAss != null) {
-  //     print("objec===============ttt  ${allCotisationAss}");
-  //     print(
-  //         "éé22===============222  ${context.read<AuthCubit>().state.detailUser}");
-  //   } else {
-  //     print("userGroupDefault null");
-  //   }
-  // }
-
-  // Future<void> handleAllCompteAss(codeAssociation) async {
-  //   final allCotisationAss =
-  //       await context.read<CompteCubit>().AllCompteAssCubit(codeAssociation);
-
-  //   if (allCotisationAss != null) {
-  //     print("obj}===}}}}ttt  ${allCotisationAss}");
-  //     print(
-  //         "éé22222~===}}}}}}}}}}  ${context.read<CompteCubit>().state.allCompteAss}");
-  //   } else {
-  //     print("userGroupDefault null");
-  //   }
-  // }
 
   int _pageIndex = 0;
   final screens = [
@@ -202,13 +113,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // handleUserGroupDefault();
-    // handleTournoiDefault();
-    // handleAllUserGroup();
-    // handleAllCotisationAss(AppCubitStorage().state.codeAssDefaul);
-    // handleDetailUser(Variables().codeMembre);
-    // handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
-    // handleTournoiAll(AppCubitStorage().state.codeAssDefaul);
+
   }
 
   @override
@@ -236,12 +141,7 @@ class _HomePageState extends State<HomePage> {
           items: itemListAndroid,
           currentIndex: _pageIndex,
           onTap: (index) {
-            // handleUserGroupDefault();
-            // handleTournoiDefault();
-            // handleAllUserGroup();
-            // handleAllCotisationAss(AppCubitStorage().state.codeAssDefaul);
-            // handleDetailUser(Variables().codeMembre);
-            // handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+
             setState(() {
               _pageIndex = index;
             });

@@ -13,6 +13,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/pages/paiementPage.dart';
 import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
@@ -1106,7 +1107,7 @@ class Modal {
     );
   }
 
-  void showModalActionPayement(context, lienDePaiement) {
+  void showModalActionPayement(BuildContext context, lienDePaiement) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -1139,12 +1140,14 @@ class Modal {
             children: [
               GestureDetector(
                 onTap: () async {
-                  final url = lienDePaiement;
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    throw 'Impossible d\'ouvrir le lien $url';
-                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaiementPage(
+                        lienDePaiement: lienDePaiement,
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   alignment: Alignment.center,

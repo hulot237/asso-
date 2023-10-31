@@ -1,0 +1,97 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:linear_step_indicator/linear_step_indicator.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+class PaiementPage extends StatefulWidget {
+  PaiementPage({super.key, required this.lienDePaiement});
+  String lienDePaiement;
+
+  @override
+  State<PaiementPage> createState() => _PaiementPageState();
+}
+
+Widget PageScaffold({
+  required BuildContext context,
+  required Widget child,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoPageScaffold(
+      backgroundColor: Colors.white,
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(
+          "Effectuer_le_paiement".tr(),
+          style: TextStyle(fontSize: 14),
+        ),
+        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      ),
+      child: child,
+    );
+  }
+
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      title: Text(
+        "Effectuer_le_paiement".tr(),
+      ),
+      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      elevation: 0,
+    ),
+    body: child,
+  );
+}
+
+class _PaiementPageState extends State<PaiementPage> {
+  late final WebViewController _controller;
+  int progression = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+            print("zzzzzzzzzzz${progress}");
+            setState(() {
+              progression = progress;
+            });
+          },
+          // onPageStarted: (String url) {},
+          // onPageFinished: (String url) {},
+          // onWebResourceError: (WebResourceError error) {},
+          // onNavigationRequest: (NavigationRequest request) {
+          //   if (request.url.startsWith('https://www.youtube.com/')) {
+          //     return NavigationDecision.prevent;
+          //   }
+          //   return NavigationDecision.navigate;
+          // },
+        ),
+      )
+      ..loadRequest(Uri.parse("https://${widget.lienDePaiement}"));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageScaffold(
+      context: context,
+      child: progression < 100
+          ? Center(
+            child: Container(
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: LinearProgressIndicator(
+                  value: (progression / 100).toDouble(),
+                ),
+            ),
+          )
+          : WebViewWidget(controller: _controller),
+    );
+  }
+}

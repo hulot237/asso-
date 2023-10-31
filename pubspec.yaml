@@ -52,6 +52,7 @@ dependencies:
   easy_localization: ^3.0.3
   url_launcher: ^6.0.3
   image_picker: ^1.0.4
+  webview_flutter: ^4.4.1
   
 
 
