@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
@@ -21,6 +22,7 @@ class WidgetCotisationExpireInProgress extends StatefulWidget {
     required this.isActive,
     required this.codeCotisation,
     required this.type,
+    required this.lienDePaiement,
   });
   int montantCotisations;
   String motifCotisations;
@@ -34,6 +36,7 @@ class WidgetCotisationExpireInProgress extends StatefulWidget {
   // String montantSanctionCollectee;
   int isActive;
   String codeCotisation;
+  String lienDePaiement;
   @override
   State<WidgetCotisationExpireInProgress> createState() =>
       _WidgetCotisationExpireInProgressState();
@@ -43,13 +46,13 @@ class _WidgetCotisationExpireInProgressState
     extends State<WidgetCotisationExpireInProgress> {
   Future<void> handleDetailCotisation(codeCotisation) async {
     final detailCotisation = await context
-        .read<CotisationCubit>()
+        .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
     if (detailCotisation != null) {
       print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
       print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationCubit>().state.detailCotisation}");
+          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
     } else {
       print("userGroupDefault null");
     }
@@ -65,6 +68,7 @@ class _WidgetCotisationExpireInProgressState
           context,
           MaterialPageRoute(
             builder: (context) => DetailCotisationPage(
+                lienDePaiement: widget.lienDePaiement,
               contributionOneUser: widget.contributionOneUser,
               dateCotisation: widget.dateCotisation,
               heureCotisation: widget.heureCotisation,
@@ -137,27 +141,60 @@ class _WidgetCotisationExpireInProgressState
                             ),
                           ),
                         ),
-                        Container(
-                          height: 25,
-                          width: 49,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-
-                            // color: Color.fromARGB(33, 255, 0, 0),
-                          ),
-                          child: Container(
-                            // color: Colors.black,
-                            child: Text(
-                              "expiré".tr(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Color.fromARGB(255, 255, 0, 0),
+                        Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  String msg =
+                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                  Modal().showModalActionPayement(
+                                    context,
+                                    msg,
+                                    widget.lienDePaiement,
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 8, right: 8, top: 5, bottom: 5),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(0, 162, 255, 1),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Container(
+                                    child: Text(
+                                      "cotiser".tr(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
+                              Container(
+                                // height: 25,
+                                // width: 49,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7),
+
+                                  // color: Color.fromARGB(33, 255, 0, 0),
+                                ),
+                                child: Container(
+                                  // color: Colors.black,
+                                  child: Text(
+                                    "expiré".tr(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 8,
+                                      color: Color.fromARGB(255, 255, 0, 0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
                       ],
                     ),
                   ),

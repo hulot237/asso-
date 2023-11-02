@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_state.dart';
@@ -73,13 +74,13 @@ class _DetailTontinePageState extends State<DetailTontinePage>
     with TickerProviderStateMixin {
   Future<void> handleDetailCotisation(codeCotisation) async {
     final detailCotisation = await context
-        .read<CotisationCubit>()
+        .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
     if (detailCotisation != null) {
       print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
       print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationCubit>().state.detailCotisation}");
+          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
     } else {
       print("userGroupDefault null");
     }
@@ -227,23 +228,29 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                 ],
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 5),
-              padding: EdgeInsets.only(top: 15),
-              child: Text(
-                "Historique de la tontine",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(20, 45, 99, 1),
+            GestureDetector(
+              onTap: () {
+                print(context.read<TontineCubit>().state.detailTontine);
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 5),
+                padding: EdgeInsets.only(top: 15),
+                child: Text(
+                  "Historique de la tontine",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(20, 45, 99, 1),
+                  ),
                 ),
               ),
             ),
             BlocBuilder<TontineCubit, TontineState>(
                 builder: (tontineContext, tontineState) {
               if (tontineState.isLoading == null ||
-                  tontineState.isLoading == true)
+                  tontineState.isLoading == true ||
+                  tontineState.detailTontine == null)
                 return Container(
                   // color: Colors.white,
                   margin: EdgeInsets.only(top: 25),
@@ -267,16 +274,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                       itemCount: currentDetailTontineCard!.length,
                       itemBuilder: (context, index) {
                         final itemTontine = currentDetailTontineCard[index];
-                        
-                        final nonTontine = context
-                            .read<CotisationCubit>()
-                            .state
-                            .detailCotisation!["members"];
-                            final okayTontine =  context
-                                    .read<CotisationCubit>()
-                                    .state
-                                    .detailCotisation!["versements"];
-                                
+
                         return GestureDetector(
                           onTap: () {
                             handleDetailCotisation(
@@ -284,21 +282,16 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                             );
 
                             Modal().showBottomSheetHistTontine(
-                                tontineContext, _tabController, okayTontine, nonTontine
-                                // context
-                                //     .read<CotisationCubit>()
-                                //     .state
-                                //     .detailCotisation!["versements"],
-                                // context
-                                //     .read<CotisationCubit>()
-                                //     .state
-                                //     .detailCotisation!["members"],
-                                );
+                              tontineContext,
+                              _tabController,
+                            );
                           },
                           child: Container(
                               margin: EdgeInsets.all(5),
                               child: widgetDetailHistoriqueTontineCard(
-                                lienDePaiement: itemTontine['cotisation_pay_link'],
+                                nomTontine: widget.nomTontine,
+                                lienDePaiement:
+                                    itemTontine['cotisation_pay_link'],
                                 dateClose:
                                     AppCubitStorage().state.Language == "fr"
                                         ? formatDateToFrench(
@@ -320,7 +313,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                     itemTontine["membre"]["last_name"] == null
                                         ? ""
                                         : itemTontine["membre"]["last_name"],
-                                        codeCotisation:itemTontine["cotisation_code"] ,
+                                codeCotisation: itemTontine["cotisation_code"],
                               )),
                         );
                       },

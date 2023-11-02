@@ -1,27 +1,27 @@
 import 'package:equatable/equatable.dart';
 
-class CotisationState extends Equatable {
-  final List<dynamic>? allCotisationAss;
+class PayementState extends Equatable {
+  final bool? retraitApprove;
   final bool isLoading;
 
-  CotisationState({
-    this.allCotisationAss,
+  PayementState({
+    this.retraitApprove,
     this.isLoading = false,
   });
 
   @override
   List<Object?> get props => [
-        allCotisationAss,
+        retraitApprove,
         isLoading,
       ];
 
-  CotisationState copyWith({
+  PayementState copyWith({
     // List<UserGroupCourantModel>? userGroupDefault,
-    List<dynamic>? allcotisationAss,
+    bool? retraitapprove,
     required bool isloading,
   }) {
-    return CotisationState(
-      allCotisationAss: allcotisationAss,
+    return PayementState(
+      retraitApprove: retraitapprove,
       isLoading: isloading,
     );
   }

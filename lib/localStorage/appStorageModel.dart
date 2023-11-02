@@ -6,6 +6,8 @@ class AppStorageModel {
   String? membreCode;
   String? userNameKey;
   String? passwordKey;
+    final bool isLoading;
+
 
 
   AppStorageModel({
@@ -15,6 +17,7 @@ class AppStorageModel {
     this.codeAssDefaul,
     this.membreCode,
     this.userNameKey,
+    this.isLoading = false,
     this.passwordKey,
 
   });
@@ -27,6 +30,8 @@ class AppStorageModel {
     String? membreCode,
     String? userNameKey,
     String? passwordKey,
+    required bool isloading,
+
 
   }) {
     return AppStorageModel(
@@ -37,6 +42,9 @@ class AppStorageModel {
       membreCode: membreCode ?? this.membreCode,
       userNameKey: userNameKey?? this.userNameKey,
       passwordKey: passwordKey?? this.passwordKey,
+          isLoading: isloading,
+
+
 
     );
   }

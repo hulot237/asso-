@@ -42,54 +42,25 @@ class _LoginPageState extends State<LoginPage> {
 
   final numeroPhoneController = TextEditingController();
 
-  Future<void> handleLogin() async {
+  Future handleLogin() async {
     final numeroPhone = numeroPhoneController.text;
 
-    final success = await context.read<AuthCubit>().LoginCubit(numeroPhone);
+    final allCotisationAss =
+        await context.read<AuthCubit>().loginFirstCubit(numeroPhone);
 
-    if (success && context.read<AuthCubit>().state.loginInfo != null) {
-      var loginInfo = context.read<AuthCubit>().state.loginInfo;
-
-      // for (var elt in loginInfo!["user_groups"]) {
-      //   if (elt["is_default"] = true) {
-      //     await AppCubitStorage().updateCodeAssDefaul(elt!["urlcode"]);
-      //   }
-
-      //   print("################################################A ${elt}");
-      // }
-
-      await AppCubitStorage().updateCodeAssDefaul(loginInfo!["user_groups"][0]["urlcode"]);
-      await AppCubitStorage().updatepasswordKey(loginInfo!["password"]);
-      await AppCubitStorage().updateuserNameKey(loginInfo!["username"]);
-      await AppCubitStorage().updatemembreCode(loginInfo["membre"]["membre_code"]);
-      await AppCubitStorage().updateCodeTournoisDefault(loginInfo["tournois"]["tournois_code"]);
-      
-
-      if (AppCubitStorage().state.codeAssDefaul != null &&
-          AppCubitStorage().state.passwordKey != null &&
-          AppCubitStorage().state.userNameKey != null) {
+    if (allCotisationAss != null) {
+      print("objec~~~~~~~~~~~~~~é~~  ${allCotisationAss}");
+      print("# ${context.read<AuthCubit>().state.isTrueNomber}");
+      if (context.read<AuthCubit>().state.isTrueNomber == false) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => VerificationPage(numeroPhone:numeroPhone),
           ),
         );
       }
-
-      print("success login");
-      print(
-          "success loginnnnZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ   ${context.read<AuthCubit>().state.loginInfo}");
-      print("success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
-      print("success password   ${AppCubitStorage().state.passwordKey}");
-      print("success username   ${AppCubitStorage().state.userNameKey}");
-      print("success membre_code   ${AppCubitStorage().state.membreCode}");
-      print("success tournoi_code   ${AppCubitStorage().state.codeTournois}");
-
-
-      print(success);
     } else {
-      print("erreur login");
-      print(success);
+      print("handleLogin");
     }
   }
 
@@ -110,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                flex: 7,
+                flex: 10,
                 child: Center(
                   child: Container(
                     // color: Colors.deepOrangeAccent,
@@ -177,14 +148,32 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 25),
+                        // SizedBox(height: 25),
+                        BlocBuilder<AuthCubit, AuthState>(
+                            builder: (Authcontext, Authstate) {
+                          if (Authstate.isTrueNomber == true)
+                            return Container(
+                              margin: EdgeInsets.only(
+                                  top: 20, bottom: 10, left: 10, right: 10),
+                              child: Text(
+                                "Votre numéro est incorrect ou n'est pas lié à un groupe ou une association",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color.fromARGB(255, 255, 34, 18)),
+                              ),
+                            );
+                          return Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                          );
+                        }),
                         SizedBox(
                           width: double.infinity,
                           height: 40,
                           child: BlocBuilder<AuthCubit, AuthState>(
-                              builder: (context, state) {
-                            if (state.isLoading == null ||
-                                state.isLoading == true )
+                              builder: (Authcontext, Authstate) {
+                            if (Authstate.isLoading == null ||
+                                Authstate.isLoading == true)
                               return Container(
                                 child: Center(
                                   child: CircularProgressIndicator(
@@ -194,10 +183,10 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             return ElevatedButton(
                               onPressed: () {
+                                // handleLogin();
                                 handleLogin();
                               },
-                              child: 
-                              Text(
+                              child: Text(
                                 "vérification".tr(),
                                 style: TextStyle(fontSize: 19),
                               ),
@@ -217,6 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Expanded(
+                flex: 1,
                 child: Container(
                   alignment: Alignment.bottomCenter,
                   padding: EdgeInsets.only(bottom: 15),

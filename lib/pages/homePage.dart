@@ -81,11 +81,11 @@ class _HomePageState extends State<HomePage> {
       label: 'Accueil',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.account_tree_rounded),
+      icon: Icon(Icons.article_rounded),
       label: 'Historiques',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.settings_rounded),
+      icon: Icon(Icons.person_2_rounded),
       label: 'Profil',
     ),
   ];

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -7,16 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class widgetDetailHistoriqueTontineCard extends StatefulWidget {
-  widgetDetailHistoriqueTontineCard(
-      {super.key,
-      required this.nomBeneficiaire,
-      required this.prenomBeneficiaire,
-      required this.dateOpen,
-      required this.dateClose,
-      required this.montantTontine,
-      required this.montantCollecte,
-      required this.codeCotisation,
-      required this.lienDePaiement,});
+  widgetDetailHistoriqueTontineCard({
+    super.key,
+    required this.nomBeneficiaire,
+    required this.prenomBeneficiaire,
+    required this.dateOpen,
+    required this.dateClose,
+    required this.montantTontine,
+    required this.montantCollecte,
+    required this.codeCotisation,
+    required this.lienDePaiement,
+    required this.nomTontine,
+  });
   String nomBeneficiaire;
   String dateClose;
   String dateOpen;
@@ -25,6 +28,7 @@ class widgetDetailHistoriqueTontineCard extends StatefulWidget {
   String prenomBeneficiaire;
   String codeCotisation;
   String lienDePaiement;
+  String nomTontine;
 
   @override
   State<widgetDetailHistoriqueTontineCard> createState() =>
@@ -33,23 +37,20 @@ class widgetDetailHistoriqueTontineCard extends StatefulWidget {
 
 class _widgetDetailHistoriqueTontineCardState
     extends State<widgetDetailHistoriqueTontineCard> {
-
-
-        Future<void> handleDetailCotisation(codeCotisation) async {
+  Future<void> handleDetailCotisation(codeCotisation) async {
     final detailCotisation = await context
-        .read<CotisationCubit>()
+        .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
     if (detailCotisation != null) {
       print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
       print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationCubit>().state.detailCotisation}");
+          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
     } else {
       print("userGroupDefault null");
     }
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,9 +118,13 @@ class _widgetDetailHistoriqueTontineCardState
                       ),
                       GestureDetector(
                         onTap: () async {
-                                Modal().showModalActionPayement(
-                                    context,
-                                    widget.lienDePaiement);
+                          String msg =
+                              "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                          Modal().showModalActionPayement(
+                            context,
+                            msg,
+                            widget.lienDePaiement,
+                          );
                         },
                         child: Container(
                           padding: EdgeInsets.only(

@@ -11,7 +11,7 @@ class DetailTournoiCourantRepository {
 
   Future<Map<String, dynamic>> DetailTournoiCourant() async {
     try {
-      log("response1");
+      log("response7");
 
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/tournois/${AppCubitStorage().state.codeTournois}/show',
@@ -33,7 +33,7 @@ class DetailTournoiCourantRepository {
 
   Future<List<dynamic>> AllTournoiAss(codeAss) async {
     try {
-      log("response1");
+      log("response9");
 
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/tournois/$codeAss',
@@ -57,7 +57,7 @@ class DetailTournoiCourantRepository {
 
   Future<Map<String, dynamic>> ChangeTournoi(codeTournoi, codeAss) async {
     try {
-      log("response1");
+      log("response4");
 
       final response = await dio.patch(
         '${Variables.LienAIP}/api/v1/$codeAss/tournois/$codeTournoi/default',

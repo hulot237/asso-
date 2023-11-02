@@ -5,14 +5,14 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
   AppCubitStorage()
       : super(
           AppStorageModel(
-            Language: "fr",
-            codeTournois: null,
-            ValTest: "zzzzzz",
-            codeAssDefaul: null,
-            membreCode: null,
-            userNameKey: null,
-            passwordKey: null,
-          ),
+              Language: "fr",
+              codeTournois: null,
+              ValTest: "zzzzzz",
+              codeAssDefaul: null,
+              membreCode: null,
+              userNameKey: null,
+              passwordKey: null,
+              isLoading: false),
         );
 
   @override
@@ -25,6 +25,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       membreCode: json["membreCode"],
       userNameKey: json["userNameKey"],
       passwordKey: json["passwordKey"],
+      isLoading: json["isLoading"],
     );
   }
 
@@ -38,49 +39,80 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       'membreCode': state.membreCode,
       'userNameKey': state.userNameKey,
       'passwordKey': state.passwordKey,
+      'isLoading': state.isLoading,
+
+      
     };
   }
 
   void updateLanguage(String language) {
+    emit(state.copyWith(isloading: true));
+
     emit(
-      state.copyWith(Language: language),
+      state.copyWith(
+        Language: language,
+        isloading: false,
+      ),
     );
   }
 
   void updateValtest(String valtes) {
+    emit(state.copyWith(isloading: true));
+
     emit(
-      state.copyWith(ValTest: valtes),
+      state.copyWith(
+        ValTest: valtes,
+        isloading: false,
+      ),
     );
   }
 
   Future<void> updateCodeTournoisDefault(String newValue) async {
     bool donneesChargees = false;
+    emit(state.copyWith(isloading: true));
 
     do {
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(
+        Duration(
+          seconds: 1,
+        ),
+      );
       if (newValue != null) {
         donneesChargees = true;
       }
     } while (!donneesChargees);
 
-    emit(state.copyWith(codeTournois: newValue));
+    emit(
+      state.copyWith(codeTournois: newValue, isloading: false),
+    );
   }
 
   Future<void> updateCodeAssDefaul(String newValue) async {
     bool donneesChargees = false;
+    emit(state.copyWith(isloading: true));
 
     do {
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(
+        Duration(
+          seconds: 1,
+        ),
+      );
       if (newValue != null) {
         donneesChargees = true;
       }
     } while (!donneesChargees);
 
-    emit(state.copyWith(codeAssDefaul: newValue));
+    emit(
+      state.copyWith(
+        isloading: false,
+        codeAssDefaul: newValue,
+      ),
+    );
   }
 
   Future<void> updatemembreCode(String newValue) async {
     bool donneesChargees = false;
+    emit(state.copyWith(isloading: true));
 
     do {
       await Future.delayed(Duration(seconds: 1));
@@ -89,11 +121,17 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       }
     } while (!donneesChargees);
 
-    emit(state.copyWith(membreCode: newValue));
+    emit(
+      state.copyWith(
+        membreCode: newValue,
+        isloading: false,
+      ),
+    );
   }
 
   Future<void> updateuserNameKey(String newValue) async {
     bool donneesChargees = false;
+    emit(state.copyWith(isloading: true));
 
     do {
       await Future.delayed(Duration(seconds: 1));
@@ -102,11 +140,17 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       }
     } while (!donneesChargees);
 
-    emit(state.copyWith(userNameKey: newValue));
+    emit(
+      state.copyWith(
+        userNameKey: newValue,
+        isloading: false,
+      ),
+    );
   }
 
   Future<void> updatepasswordKey(String newValue) async {
     bool donneesChargees = false;
+    emit(state.copyWith(isloading: true));
 
     do {
       await Future.delayed(Duration(seconds: 1));
@@ -115,6 +159,11 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       }
     } while (!donneesChargees);
 
-    emit(state.copyWith(passwordKey: newValue));
+    emit(
+      state.copyWith(
+        passwordKey: newValue,
+        isloading: false,
+      ),
+    );
   }
 }

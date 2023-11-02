@@ -33,7 +33,8 @@ class _WidgetSanctionNonPayeeIsMoneyState
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Modal().showModalTransactionByEvent(context, widget.versement, widget.montantSanction);
+        Modal().showModalTransactionByEvent(
+            context, widget.versement, widget.montantSanction);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
@@ -133,7 +134,13 @@ class _WidgetSanctionNonPayeeIsMoneyState
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Modal().showModalActionPayement(context, widget.lienPaiement);
+                              String msg =
+                                  "Aide-moi à payer ma sanction de *${widget.motifSanction}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA* directement via le lien https://${widget.lienPaiement}.";
+                              Modal().showModalActionPayement(
+                                context,
+                                msg,
+                                widget.lienPaiement,
+                              );
                             },
                             child: Container(
                               child: Row(
@@ -143,7 +150,8 @@ class _WidgetSanctionNonPayeeIsMoneyState
                                     margin: EdgeInsets.only(right: 10),
                                   ),
                                   Container(
-                                     padding: EdgeInsets.only(left: 8, right: 8, top:5, bottom: 5 ),
+                                    padding: EdgeInsets.only(
+                                        left: 8, right: 8, top: 5, bottom: 5),
                                     decoration: BoxDecoration(
                                       color: Color.fromRGBO(0, 162, 255, 1),
                                       borderRadius: BorderRadius.circular(15),

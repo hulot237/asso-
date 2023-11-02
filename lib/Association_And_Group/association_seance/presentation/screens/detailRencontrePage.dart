@@ -261,6 +261,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                             margin: EdgeInsets.only(
                                 left: 7, right: 7, top: 3, bottom: 7),
                             child: WidgetCotisationExpireInFixed(
+                              lienDePaiement: currentDetail["cotisation_pay_link"]==null? "Le lien n'a pas été généré": currentDetail["cotisation_pay_link"],
                               codeCotisation: currentDetail["cotisation_code"],
                               contributionOneUser: '1500',
                               motifCotisations: currentDetail["name"],
@@ -293,6 +294,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                             margin: EdgeInsets.only(
                                 left: 7, right: 7, top: 3, bottom: 7),
                             child: WidgetCotisationExpireInProgress(
+                              lienDePaiement: currentDetail["cotisation_pay_link"]==null? "Le lien n'a pas été généré": currentDetail["cotisation_pay_link"],
                               contributionOneUser: '1500',
                               motifCotisations: currentDetail["name"],
                               dateCotisation:

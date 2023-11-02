@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetHistoriqueCotisation.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +27,7 @@ class DetailCotisationPage extends StatefulWidget {
     required this.nbreParticipantCotisationOK,
     required this.isActive,
     required this.type,
+    required this.lienDePaiement,
   });
   int montantCotisations;
   String motifCotisations;
@@ -35,6 +39,7 @@ class DetailCotisationPage extends StatefulWidget {
   int nbreParticipantCotisationOK;
   int isActive;
   String type;
+  String lienDePaiement;
 
   @override
   State<DetailCotisationPage> createState() => _DetailCotisationPageState();
@@ -78,12 +83,24 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
   var Tab = [true, false, false, true, false, true];
 
   Map<String, dynamic>? get currentDetailCotisation {
-    return context.read<CotisationCubit>().state.detailCotisation;
+    return context.read<CotisationDetailCubit>().state.detailCotisation;
+  }
+
+  Future<void> handleAllCotisationAssTournoi(codeTournoi) async {
+    final allCotisationAss = await context
+        .read<CotisationCubit>()
+        .AllCotisationAssTournoiCubit(codeTournoi);
+
+    if (allCotisationAss != null) {
+      print("handleAllCotisationAss");
+    } else {
+      print("handleAllCotisationAss null");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CotisationCubit, CotisationState>(
+    return BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
         builder: (context, state) {
       if (state.isLoading == null || state.isLoading == true)
         return Container(
@@ -111,7 +128,8 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                     nbreParticipantCotisationOK:
                         widget.nbreParticipantCotisationOK,
                     soldeCotisation: widget.soldeCotisation,
-                    isActive: widget.isActive),
+                    isActive: widget.isActive, 
+                    lienDePaiement: widget.lienDePaiement,),
               ),
               Container(
                 // color: Colors.deepOrange,
@@ -218,7 +236,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                             // bool valeurBool = Tab[index];
                             final currentDetailPersonCotis =
                                 currentDetailCotisation!["versements"];
-
+    
                             return WidgetHistoriqueCotisation(
                               is_versement_finished:
                                   currentDetailPersonCotis[index]
@@ -279,7 +297,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
                             // bool valeurBool = Tab[index];
                             final currentDetailPersonNonCotis =
                                 currentDetailCotisation!["members"][index];
-
+    
                             return WidgetHistoriqueCotisation(
                               is_versement_finished:
                                   currentDetailPersonNonCotis["membre"]

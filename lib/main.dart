@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -57,17 +60,25 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CotisationCubit(),
-        ),  
+        ),
         BlocProvider(
           create: (context) => AuthCubit(),
-        ),  
+        ),
         BlocProvider(
           create: (context) => CompteCubit(),
-        ),    
-                 BlocProvider(
+        ),
+        BlocProvider(
           create: (context) => TontineCubit(),
-        ),   
-        
+        ),
+        BlocProvider(
+          create: (context) => CotisationDetailCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PayementCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AuthUpdateCubit(),
+        )
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,
@@ -75,11 +86,13 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         routes: {
-          "/": (context) =>AppCubitStorage().state.userNameKey == null  && AppCubitStorage().state.passwordKey == null && AppCubitStorage().state.codeAssDefaul == null ? LoginPage() : HomePage(),
+          "/": (context) => AppCubitStorage().state.userNameKey == null &&
+                  AppCubitStorage().state.passwordKey == null &&
+                  AppCubitStorage().state.codeAssDefaul == null
+              ? LoginPage()
+              : HomePage(),
           // "/": (context) => LoginPage(),
           "/homepage": (context) => HomePage(),
-
-
         },
       ),
     );

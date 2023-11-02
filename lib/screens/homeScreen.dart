@@ -119,17 +119,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> handleDetailCotisation(codeCotisation) async {
-    final detailCotisation = await context
-        .read<CotisationCubit>()
-        .detailCotisationCubit(codeCotisation);
+  // Future<void> handleDetailCotisation(codeCotisation) async {
+  //   final detailCotisation = await context
+  //       .read<CotisationCubit>()
+  //       .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {
-      print("handleDetailCotisation");
-    } else {
-      print("handleDetailCotisation null");
-    }
-  }
+  //   if (detailCotisation != null) {
+  //     print("handleDetailCotisation");
+  //   } else {
+  //     print("handleDetailCotisation null");
+  //   }
+  // }
 
   // Future<void> handleTournoiAll(codeAss) async {
   //   final allTournoi =
@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     handleDetailUser(AppCubitStorage().state.membreCode);
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
     handleAllSeanceAss(AppCubitStorage().state.codeAssDefaul);
-    handleDetailCotisation(AppCubitStorage().state.codeAssDefaul);
+    // handleDetailCotisation(AppCubitStorage().state.codeAssDefaul);
     // handleTournoiAll(AppCubitStorage().state.codeAssDefaul);
 
     super.initState();
@@ -195,252 +195,260 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         );
       final currentDetailUser = context.read<AuthCubit>().state.detailUser;
+      return BlocBuilder<UserGroupCubit, UserGroupState>(
+          builder: (context, state) {
+        if (state.isLoading == null ||
+            state.isLoading == true ||
+            state.ChangeAssData == null ||
+            state.userGroup == null)
+          return Container(
+            color: Colors.white,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        return BlocBuilder<DetailTournoiCourantCubit,
+            DetailTournoiCourantState>(
+          builder: (tournoisContext, tournoisState) {
+            if (tournoisState.isLoading == null ||
+                tournoisState.isLoading == true ||
+                tournoisState.detailtournoiCourant == null)
+              return Container(
+                color: Colors.white,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            final currentDetailtournoiCourant = context
+                .read<DetailTournoiCourantCubit>()
+                .state
+                .detailtournoiCourant;
 
-        final currentAllCotisationAssTournoi =
-            context.read<CotisationCubit>().state.allCotisationAss;
-        return BlocBuilder<UserGroupCubit, UserGroupState>(
-            builder: (context, state) {
-          if (state.isLoading == null ||
-              state.isLoading == true ||
-              state.ChangeAssData == null ||
-              state.userGroup == null)
-            return Container(
-              color: Colors.white,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          return BlocBuilder<DetailTournoiCourantCubit,
-              DetailTournoiCourantState>(
-            builder: (tournoisContext, tournoisState) {
-              if (tournoisState.isLoading == null ||
-                  tournoisState.isLoading == true ||
-                  tournoisState.detailtournoiCourant == null)
-                return Container(
-                  color: Colors.white,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              final currentDetailtournoiCourant = context
-                  .read<DetailTournoiCourantCubit>()
-                  .state
-                  .detailtournoiCourant;
-
-              return Scaffold(
-                backgroundColor: Color(0xFFEFEFEF),
-                body: CustomScrollView(
-                  slivers: [
-                    SliverAppBar.large(
-                      // expandedHeight: 20,
-                      // toolbarHeight: 1,
-                      leading: Container(),
-                      elevation: 0,
-                      backgroundColor: Color.fromRGBO(0, 162, 255, 0.915),
-                      flexibleSpace: FlexibleSpaceBar(
-                        titlePadding: EdgeInsets.only(
-                          top: 10,
-                          bottom: 10,
-                          left: 20,
-                          right: 20,
-                        ),
-                        centerTitle: false,
-                        title: Container(
-                          child: Stack(
-                            children: [
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        margin: EdgeInsets.only(right: 13),
-                                        child: Text(
-                                          "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["name"]}",
-                                          // "dd",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                          ),
-                                          // textAlign: TextAlign.center,
-                                          maxLines: 2,
+            return Scaffold(
+              backgroundColor: Color(0xFFEFEFEF),
+              body: CustomScrollView(
+                slivers: [
+                  SliverAppBar.large(
+                    // expandedHeight: 20,
+                    // toolbarHeight: 1,
+                    leading: Container(),
+                    elevation: 0,
+                    backgroundColor: Color.fromRGBO(0, 162, 255, 0.915),
+                    flexibleSpace: FlexibleSpaceBar(
+                      titlePadding: EdgeInsets.only(
+                        top: 10,
+                        bottom: 10,
+                        left: 20,
+                        right: 20,
+                      ),
+                      centerTitle: false,
+                      title: Container(
+                        child: Stack(
+                          children: [
+                            Container(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      margin: EdgeInsets.only(right: 13),
+                                      child: Text(
+                                        "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["name"]}",
+                                        // "dd",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
                                         ),
+                                        // textAlign: TextAlign.center,
+                                        maxLines: 2,
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Modal().showBottomSheetListAss(
-                                          context,
-                                          context
-                                              .read<UserGroupCubit>()
-                                              .state
-                                              .userGroup,
-                                        );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color:
-                                                Color.fromARGB(255, 255, 26, 9),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(50),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Modal().showBottomSheetListAss(
+                                        context,
+                                        context
+                                            .read<UserGroupCubit>()
+                                            .state
+                                            .userGroup,
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color:
+                                              Color.fromARGB(255, 255, 26, 9),
                                         ),
-                                        padding: EdgeInsets.all(1),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                            ),
-                                            height: 30,
-                                            width: 30,
-                                            child: Image.network(
-                                              // "zz",
-                                              "${Variables.LienAIP}${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"]}",
-                                              fit: BoxFit.cover,
-                                            ),
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      padding: EdgeInsets.all(1),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          height: 30,
+                                          width: 30,
+                                          child: Image.network(
+                                            // "zz",
+                                            "${Variables.LienAIP}${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"]}",
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                right: 2,
-                                top: 3,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 255, 26, 9),
-                                      borderRadius: BorderRadius.circular(50)),
-                                  width: 5,
-                                  height: 5,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        background: Stack(children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Image.network(
-                              "https://img.freepik.com/premium-vector/lamp-icon-idea-concept-large-group-people-form-create-shape-lamp-vector-illustration_191567-1626.jpg?size=626&ext=jpg&ga=GA1.1.852592464.1694512378&semt=ais",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromARGB(85, 255, 255, 255),
-                                  spreadRadius: 1,
-                                  blurRadius: 15,
-                                  offset: const Offset(5, 5),
-                                ),
-                                const BoxShadow(
-                                    color: Color.fromARGB(4, 255, 255, 255),
-                                    offset: Offset(-5, -5),
-                                    blurRadius: 15,
-                                    spreadRadius: 1),
-                              ],
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  Color.fromARGB(0, 85, 85, 85),
-                                  Color.fromARGB(70, 53, 53, 53),
-                                  Color.fromARGB(80, 63, 63, 63),
-                                  Color.fromARGB(221, 46, 46, 46),
+                                  ),
                                 ],
                               ),
                             ),
-                          ),
-                        ]),
+                            Positioned(
+                              right: 2,
+                              top: 3,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 255, 26, 9),
+                                    borderRadius: BorderRadius.circular(50)),
+                                width: 5,
+                                height: 5,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    if (currentDetailtournoiCourant!["tournois"] != null)
-                      if (currentDetailtournoiCourant["tournois"]["seance"]
-                              .length >
-                          0)
-                        if (currentDetailtournoiCourant["tournois"]["seance"][0]
-                                ["status"] ==
-                            1)
-                          SliverPersistentHeader(
-                            pinned: false,
-                            floating: false,
-                            delegate: FixedHeaderBar(
-                              isActiveRencontre:
-                                  currentDetailtournoiCourant["tournois"]
-                                      ["seance"][0]["status"],
-                              codeSeance:
-                                  currentDetailtournoiCourant["tournois"]
-                                      ["seance"][0]["seance_code"],
-                              matriculeRencontre:
-                                  currentDetailtournoiCourant["tournois"]
-                                      ["seance"][0]["matricule"],
-                              nomRecepteurRencontre:
-                                  currentDetailtournoiCourant["tournois"]
-                                                  ["seance"][0]["membre"]
-                                              ["first_name"] ==
-                                          null
-                                      ? ""
-                                      : currentDetailtournoiCourant["tournois"]
-                                          ["seance"][0]["membre"]["first_name"],
-                              prenomRecepteurRencontre:
-                                  currentDetailtournoiCourant["tournois"]
-                                                  ["seance"][0]["membre"]
-                                              ["last_name"] ==
-                                          null
-                                      ? ""
-                                      : currentDetailtournoiCourant["tournois"]
-                                          ["seance"][0]["membre"]["last_name"],
-                              photoProfilRecepteur:
-                                  currentDetailtournoiCourant["tournois"]
-                                                  ["seance"][0]["membre"]
-                                              ["photo_profil"] ==
-                                          null
-                                      ? ""
-                                      : currentDetailtournoiCourant["tournois"]
-                                              ["seance"][0]["membre"]
-                                          ["photo_profil"],
-                              dateRencontre:
-                                  currentDetailtournoiCourant["tournois"]
-                                      ["seance"][0]["date_seance"],
-                              // descriptionRencontre: itemSeance["zzzzzzzzzzzzzzz"],
-                              heureRencontre:
-                                  currentDetailtournoiCourant["tournois"]
-                                      ["seance"][0]["heure_debut"],
-                              lieuRencontre:
-                                  currentDetailtournoiCourant["tournois"]
-                                      ["seance"][0]["localisation"],
-                              maxExtent: 210,
-                              minExtent: 210,
+                      background: Stack(children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          child: Image.asset(
+                            "assets/images/associazioni.jpeg",
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(62, 255, 255, 255),
+                                spreadRadius: 1,
+                                blurRadius: 15,
+                                offset: const Offset(5, 5),
+                              ),
+                              const BoxShadow(
+                                  color: Color.fromARGB(4, 255, 255, 255),
+                                  offset: Offset(-5, -5),
+                                  blurRadius: 15,
+                                  spreadRadius: 1),
+                            ],
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color.fromARGB(0, 85, 85, 85),
+                                Color.fromARGB(70, 53, 53, 53),
+                                Color.fromARGB(80, 63, 63, 63),
+                                Color.fromARGB(221, 46, 46, 46),
+                              ],
                             ),
                           ),
-                    // break;
-                    SliverPersistentHeader(
-                      pinned: true,
-                      floating: false,
-                      delegate: SliverTabBar(
-                        tabController: _tabController,
-                        maxExtent: 50,
-                        minExtent: 50,
-                      ),
+                        ),
+                      ]),
                     ),
-                    SliverToBoxAdapter(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 2,
-                        margin: EdgeInsets.all(5),
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            if(currentAllCotisationAssTournoi !=null)
-                            currentAllCotisationAssTournoi!.length > 0
+                  ),
+                  if (currentDetailtournoiCourant!["tournois"] != null)
+                    if (currentDetailtournoiCourant["tournois"]["seance"]
+                            .length >
+                        0)
+                      if (currentDetailtournoiCourant["tournois"]["seance"][0]
+                              ["status"] ==
+                          1)
+                        SliverPersistentHeader(
+                          pinned: false,
+                          floating: false,
+                          delegate: FixedHeaderBar(
+                            isActiveRencontre:
+                                currentDetailtournoiCourant["tournois"]
+                                    ["seance"][0]["status"],
+                            codeSeance: currentDetailtournoiCourant["tournois"]
+                                ["seance"][0]["seance_code"],
+                            matriculeRencontre:
+                                currentDetailtournoiCourant["tournois"]
+                                    ["seance"][0]["matricule"],
+                            nomRecepteurRencontre:
+                                currentDetailtournoiCourant["tournois"]
+                                                ["seance"][0]["membre"]
+                                            ["first_name"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailtournoiCourant["tournois"]
+                                        ["seance"][0]["membre"]["first_name"],
+                            prenomRecepteurRencontre:
+                                currentDetailtournoiCourant["tournois"]
+                                                ["seance"][0]["membre"]
+                                            ["last_name"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailtournoiCourant["tournois"]
+                                        ["seance"][0]["membre"]["last_name"],
+                            photoProfilRecepteur:
+                                currentDetailtournoiCourant["tournois"]
+                                                ["seance"][0]["membre"]
+                                            ["photo_profil"] ==
+                                        null
+                                    ? ""
+                                    : currentDetailtournoiCourant["tournois"]
+                                        ["seance"][0]["membre"]["photo_profil"],
+                            dateRencontre:
+                                currentDetailtournoiCourant["tournois"]
+                                    ["seance"][0]["date_seance"],
+                            // descriptionRencontre: itemSeance["zzzzzzzzzzzzzzz"],
+                            heureRencontre:
+                                currentDetailtournoiCourant["tournois"]
+                                    ["seance"][0]["heure_debut"],
+                            lieuRencontre:
+                                currentDetailtournoiCourant["tournois"]
+                                    ["seance"][0]["localisation"],
+                            maxExtent: 210,
+                            minExtent: 210,
+                          ),
+                        ),
+                  // break;
+                  SliverPersistentHeader(
+                    pinned: true,
+                    floating: false,
+                    delegate: SliverTabBar(
+                      tabController: _tabController,
+                      maxExtent: 50,
+                      minExtent: 50,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 2,
+                      margin: EdgeInsets.all(5),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          BlocBuilder<CotisationCubit, CotisationState>(
+                              builder: (context, state) {
+                            if (state.isLoading == null ||
+                                state.isLoading == true ||
+                                state.allCotisationAss == null)
+                              return Container(
+                                color: Colors.white,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            final currentAllCotisationAssTournoi = context
+                                .read<CotisationCubit>()
+                                .state
+                                .allCotisationAss;
+                            return currentAllCotisationAssTournoi!.length > 0
                                 ? ListView.builder(
                                     padding: EdgeInsets.all(0),
                                     shrinkWrap: true,
@@ -462,7 +470,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               top: 3,
                                               bottom: 7),
                                           child: WidgetCotisationInFixed(
-                                            lienDePaiement: ItemDetailCotisation[
+                                            lienDePaiement:
+                                                ItemDetailCotisation[
                                                     "cotisation_pay_link"],
                                             contributionOneUser: '2000',
                                             codeCotisation:
@@ -517,7 +526,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               top: 3,
                                               bottom: 7),
                                           child: WidgetCotisationInProgress(
-                                            lienDePaiement: ItemDetailCotisation["cotisation_pay_link"],
+                                            lienDePaiement:
+                                                ItemDetailCotisation[
+                                                    "cotisation_pay_link"],
                                             codeCotisation:
                                                 ItemDetailCotisation[
                                                     "cotisation_code"],
@@ -570,6 +581,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               top: 3,
                                               bottom: 7),
                                           child: WidgetCotisationExpireInFixed(
+                                            lienDePaiement: ItemDetailCotisation[
+                                                        "cotisation_pay_link"] ==
+                                                    null
+                                                ? "Le lien n'a pas été généré"
+                                                : ItemDetailCotisation[
+                                                    "cotisation_pay_link"],
                                             codeCotisation:
                                                 ItemDetailCotisation[
                                                     "cotisation_code"],
@@ -622,6 +639,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               bottom: 7),
                                           child:
                                               WidgetCotisationExpireInProgress(
+                                            lienDePaiement: ItemDetailCotisation[
+                                                        "cotisation_pay_link"] ==
+                                                    null
+                                                ? "Le lien n'a pas été généré"
+                                                : ItemDetailCotisation[
+                                                    "cotisation_pay_link"],
                                             contributionOneUser: '1500',
                                             motifCotisations:
                                                 ItemDetailCotisation["name"],
@@ -674,226 +697,221 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           fontWeight: FontWeight.w100,
                                           fontSize: 20),
                                     ),
+                                  );
+                          }),
+
+                          currentDetailUser!["sanctions"].length > 0
+                              ?
+                              // if(false)
+                              ListView.builder(
+                                  // shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+
+                                  padding: EdgeInsets.all(0),
+                                  itemCount:
+                                      currentDetailUser!["sanctions"].length,
+                                  itemBuilder: (context, index) {
+                                    final ItemDetailUserSanction =
+                                        currentDetailUser["sanctions"][index];
+
+                                    print(
+                                        "################ ${ItemDetailUserSanction}");
+
+                                    if (ItemDetailUserSanction["type"] == "1" &&
+                                        ItemDetailUserSanction[
+                                                "is_sanction_payed"] ==
+                                            0) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            left: 7,
+                                            right: 7,
+                                            top: 3,
+                                            bottom: 7),
+                                        child: WidgetSanctionNonPayeeIsMoney(
+                                          versement: ItemDetailUserSanction[
+                                              "versement"],
+                                          dateSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatDateToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          heureSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatTimeToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatTimeToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          montantPayeeSanction:
+                                              ItemDetailUserSanction[
+                                                  "sanction_balance"],
+                                          montantSanction:
+                                              ItemDetailUserSanction["amount"]
+                                                  .toString(),
+                                          motifSanction:
+                                              ItemDetailUserSanction["motif"],
+                                          lienPaiement: ItemDetailUserSanction[
+                                                      "sanction_pay_link"] ==
+                                                  null
+                                              ? " "
+                                              : ItemDetailUserSanction[
+                                                  "sanction_pay_link"],
+                                        ),
+                                      );
+                                    } else if (ItemDetailUserSanction["type"] ==
+                                            "0" &&
+                                        ItemDetailUserSanction[
+                                                "is_sanction_payed"] ==
+                                            0) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            left: 7,
+                                            right: 7,
+                                            top: 3,
+                                            bottom: 7),
+                                        child: WidgetSanctionNonPayeeIsOther(
+                                          dateSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatDateToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          heureSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatTimeToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatTimeToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          objetSanction:
+                                              ItemDetailUserSanction["libelle"],
+                                          motifSanction:
+                                              ItemDetailUserSanction["motif"],
+                                        ),
+                                      );
+                                    } else if (ItemDetailUserSanction["type"] ==
+                                            "1" &&
+                                        ItemDetailUserSanction[
+                                                "is_sanction_payed"] ==
+                                            1) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            left: 7,
+                                            right: 7,
+                                            top: 3,
+                                            bottom: 7),
+                                        child: WidgetSanctionPayeeIsMoney(
+                                          versement: ItemDetailUserSanction[
+                                              "versement"],
+                                          dateSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatDateToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          heureSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatTimeToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatTimeToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          montantPayeeSanction:
+                                              ItemDetailUserSanction[
+                                                  "sanction_balance"],
+                                          montantSanction:
+                                              ItemDetailUserSanction["amount"]
+                                                  .toString(),
+                                          motifSanction:
+                                              ItemDetailUserSanction["motif"],
+                                        ),
+                                      );
+                                    } else if (ItemDetailUserSanction["type"] ==
+                                            "0" &&
+                                        ItemDetailUserSanction[
+                                                "is_sanction_payed"] ==
+                                            1) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            left: 7,
+                                            right: 7,
+                                            top: 3,
+                                            bottom: 7),
+                                        child: WidgetSanctionPayeeIsOther(
+                                          dateSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatDateToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          heureSanction: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatTimeToFrench(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"])
+                                              : formatTimeToEnglish(
+                                                  ItemDetailUserSanction[
+                                                      "start_date"]),
+                                          motifSanction:
+                                              ItemDetailUserSanction["motif"],
+                                          objetSanction:
+                                              ItemDetailUserSanction["libelle"],
+                                        ),
+                                      );
+                                    }
+                                  },
+                                )
+                              : Container(
+                                  padding: EdgeInsets.only(top: 100),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "aucune_sanction".tr(),
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20),
                                   ),
-                            currentDetailUser!["sanctions"].length > 0
-                                ?
-                                // if(false)
-                                ListView.builder(
-                                    // shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-
-                                    padding: EdgeInsets.all(0),
-                                    itemCount:
-                                        currentDetailUser!["sanctions"].length,
-                                    itemBuilder: (context, index) {
-                                      final ItemDetailUserSanction =
-                                          currentDetailUser["sanctions"][index];
-
-                                      print(
-                                          "################ ${ItemDetailUserSanction}");
-
-                                      if (ItemDetailUserSanction["type"] ==
-                                              "1" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              0) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionNonPayeeIsMoney(
-                                            versement: ItemDetailUserSanction[
-                                                "versement"],
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            montantPayeeSanction:
-                                                ItemDetailUserSanction[
-                                                    "sanction_balance"],
-                                            montantSanction:
-                                                ItemDetailUserSanction["amount"]
-                                                    .toString(),
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                            lienPaiement: ItemDetailUserSanction[
-                                                        "sanction_pay_link"] ==
-                                                    null
-                                                ? " "
-                                                : ItemDetailUserSanction[
-                                                    "sanction_pay_link"],
-                                          ),
-                                        );
-                                      } else if (ItemDetailUserSanction[
-                                                  "type"] ==
-                                              "0" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              0) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionNonPayeeIsOther(
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            objetSanction:
-                                                ItemDetailUserSanction[
-                                                    "libelle"],
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                          ),
-                                        );
-                                      } else if (ItemDetailUserSanction[
-                                                  "type"] ==
-                                              "1" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              1) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionPayeeIsMoney(
-                                            versement: ItemDetailUserSanction[
-                                                "versement"],
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            montantPayeeSanction:
-                                                ItemDetailUserSanction[
-                                                    "sanction_balance"],
-                                            montantSanction:
-                                                ItemDetailUserSanction["amount"]
-                                                    .toString(),
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                          ),
-                                        );
-                                      } else if (ItemDetailUserSanction[
-                                                  "type"] ==
-                                              "0" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              1) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionPayeeIsOther(
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                            objetSanction:
-                                                ItemDetailUserSanction[
-                                                    "libelle"],
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  )
-                                : Container(
-                                    padding: EdgeInsets.only(top: 100),
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                      "aucune_sanction".tr(),
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.26),
-                                          fontWeight: FontWeight.w100,
-                                          fontSize: 20),
-                                    ),
-                                  ),
-                            //  Text("2"),
-                          ],
-                        ),
+                                ),
+                          //  Text("2"),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-          );
-        });
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       });
+    });
   }
 }
 

@@ -8,8 +8,8 @@ class AuthCubit extends Cubit<AuthState> {
           AuthState(
             detailUser: null,
             loginInfo: null,
-            updateInfoUser: null,
             isLoading: false,
+            isTrueNomber: null,
           ),
         );
 
@@ -25,11 +25,10 @@ class AuthCubit extends Cubit<AuthState> {
 
         emit(
           state.copyWith(
-            detailuser: data,
-            logininfo: state.loginInfo,
-            updateinfouser: state.updateInfoUser,
-            isloading: false,
-          ),
+              detailuser: data,
+              logininfo: state.loginInfo,
+              isloading: false,
+              istruenomber: state.isTrueNomber),
         );
 
         print("detailAuthCubit Cubit ok");
@@ -37,38 +36,75 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         emit(
           state.copyWith(
-            detailuser: {},
-            logininfo: state.loginInfo,
-            updateinfouser: state.updateInfoUser,
-            isloading: false,
-          ),
+              detailuser: {},
+              logininfo: state.loginInfo,
+              isloading: false,
+              istruenomber: state.isTrueNomber),
         );
         return false;
       }
     } catch (e) {
       emit(
         state.copyWith(
-          detailuser: {},
-          logininfo: state.loginInfo,
-          updateinfouser: state.updateInfoUser,
-          isloading: false,
-        ),
+            detailuser: {},
+            logininfo: state.loginInfo,
+            isloading: false,
+            istruenomber: state.isTrueNomber),
       );
       return false;
     }
   }
 
-  Future<bool> LoginCubit(numeroPhone) async {
+  Future<bool> ConfirmationCubit(codeConfirmation) async {
     emit(state.copyWith(isloading: true));
     try {
-      final data = await AuthRepository().LoginRepository(numeroPhone);
+      final data =
+          await AuthRepository().ConfirmationRepository(codeConfirmation);
 
       if (data != null) {
         emit(
           state.copyWith(
-            logininfo: data,
+              logininfo: data,
+              detailuser: state.detailUser,
+              isloading: false,
+              istruenomber: state.isTrueNomber),
+        );
+
+        print("detailAuthCubittttttttttttttttttt Cubit ok");
+        return true;
+      } else {
+        emit(
+          state.copyWith(
+              logininfo: {},
+              detailuser: state.detailUser,
+              isloading: false,
+              istruenomber: state.isTrueNomber),
+        );
+        return false;
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+            logininfo: {},
             detailuser: state.detailUser,
-            updateinfouser: state.updateInfoUser,
+            isloading: false,
+            istruenomber: state.isTrueNomber),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> loginFirstCubit(phoneNumber) async {
+    emit(state.copyWith(isloading: true));
+    try {
+      final data = await AuthRepository().LoginRepository(phoneNumber);
+
+      if (data != null) {
+        emit(
+          state.copyWith(
+            istruenomber: data,
+            logininfo: state.loginInfo,
+            detailuser: state.detailUser,
             isloading: false,
           ),
         );
@@ -80,7 +116,7 @@ class AuthCubit extends Cubit<AuthState> {
           state.copyWith(
             logininfo: {},
             detailuser: state.detailUser,
-            updateinfouser: state.updateInfoUser,
+            istruenomber: true,
             isloading: false,
           ),
         );
@@ -91,51 +127,7 @@ class AuthCubit extends Cubit<AuthState> {
         state.copyWith(
           logininfo: {},
           detailuser: state.detailUser,
-          updateinfouser: state.updateInfoUser,
-          isloading: false,
-        ),
-      );
-      return false;
-    }
-  }
-
-  Future<bool> UpdateInfoUserCubit(
-      key, value, partner_urlcode, membre_code) async {
-    emit(state.copyWith(isloading: true));
-
-    try {
-      final data = await AuthRepository()
-          .UpdateInfoUserRepository(key, value, partner_urlcode, membre_code);
-
-      if (data != null) {
-        emit(
-          state.copyWith(
-            updateinfouser: data,
-            logininfo: state.loginInfo,
-            detailuser: state.detailUser,
-            isloading: false,
-          ),
-        );
-
-        print("detailAuthCubittttttttttttttttttt Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            updateinfouser: {},
-            logininfo: state.loginInfo,
-            detailuser: state.detailUser,
-            isloading: false,
-          ),
-        );
-        return false;
-      }
-    } catch (e) {
-      emit(
-        state.copyWith(
-          updateinfouser: {},
-          logininfo: state.loginInfo,
-          detailuser: state.detailUser,
+          istruenomber: true,
           isloading: false,
         ),
       );

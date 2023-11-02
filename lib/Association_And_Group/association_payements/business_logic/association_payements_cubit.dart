@@ -1,37 +1,42 @@
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_payements/data/association_payements_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class CotisationCubit extends Cubit<CotisationState> {
-  CotisationCubit()
+class PayementCubit extends Cubit<PayementState> {
+  PayementCubit()
       : super(
-          CotisationState(
-            allCotisationAss: null,
+          PayementState(
+            retraitApprove: null,
             isLoading: false,
           ),
         );
-  Future<bool> AllCotisationAssTournoiCubit(codeTournoi) async {
+
+  Future<bool> approvePayementCubit(withdrawId, codeMembre) async {
     emit(state.copyWith(isloading: true));
     try {
       final data =
-          await CotisationRepository().AllCotisationOfAssTournoi(codeTournoi);
+          await PayementRepository().ApprouvePayement(withdrawId, codeMembre);
 
       if (data != null) {
         emit(
           state.copyWith(
-            allcotisationAss: data,
+            retraitapprove: data,
             isloading: false,
           ),
         );
 
         print("DetailSeance Cubit ok");
+
         return true;
       } else {
         emit(
           state.copyWith(
-            allcotisationAss: [],
+            retraitapprove: false,
             isloading: false,
           ),
         );
@@ -40,7 +45,7 @@ class CotisationCubit extends Cubit<CotisationState> {
     } catch (e) {
       emit(
         state.copyWith(
-          allcotisationAss: [],
+          retraitapprove: false,
           isloading: false,
         ),
       );

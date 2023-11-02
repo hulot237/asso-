@@ -35,6 +35,8 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "a_propos_et_aide".tr(),
+          style: TextStyle(fontSize: 16),
+
       ),
       backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
       elevation: 0,

@@ -94,8 +94,15 @@
 "utilisation_et_confidentialité":"Terms of Use and Privacy",
 "a_propos_de_l'application":"About the Application",
 "centre_d'aide":"Help Center",
-"nous_contacter":"Contact us"
-
+"nous_contacter":"Contact us",
+"active_de_retrait":"Withdrawal activities",
+"retrait_en_attente":"Pending withdrawal",
+"etes_vous_sur?":"Are you sure ?",
+"veuillez_saisir_le_code_que_vous_avez_reçu_par_SMS_au_+237":"Please enter the code you received via SMS at +237",
+"vérifier":"To check",
+"code_à_5_chiffres":"5-digit code",
+"renvoyer": "To bounce",
+"vous_n'avez_pas_reçu_le_code?":"You did not receive the code?"
 
 
 

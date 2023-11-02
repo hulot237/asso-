@@ -97,9 +97,15 @@ class _WidgetTontineRencontreCardState
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Modal().showModalActionPayement(context, "zz");
-                        },
+                        // onTap: () async {
+                        //           String msg =
+                        //               "Aide-moi à payer ma tontine ${widget.nomTontine}.\nMontant: ${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA.\nMerci de suivre le lien ${widget.lienDePaiement} pour valider";
+                        //           Modal().showModalActionPayement(
+                        //             context,
+                        //             msg,
+                        //             widget,
+                        //           );
+                        //         },
                         child: Container(
                           padding: EdgeInsets.only(left: 8, right: 8, top:5, bottom: 5 ),
                           decoration: BoxDecoration(

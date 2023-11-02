@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,6 @@ class AccountPage extends StatefulWidget {
   State<AccountPage> createState() => _AccountPageState();
 }
 
-
 Widget PageScaffold({
   required BuildContext context,
   required Widget child,
@@ -23,27 +23,24 @@ Widget PageScaffold({
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
       backgroundColor: Color(0xFFEFEFEF),
-      
       child: child,
     );
   }
 
   return Scaffold(
     backgroundColor: Color(0xFFEFEFEF),
-    
     body: child,
   );
 }
-
-
 
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final currentDetailUser = context.read<AuthCubit>().state.detailUser;
     print(currentDetailUser);
-    return PageScaffold(context: context, 
-    child: Padding(
+    return PageScaffold(
+      context: context,
+      child: Padding(
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top,
         ),
@@ -158,9 +155,7 @@ class _AccountPageState extends State<AccountPage> {
                                 color: const Color.fromARGB(127, 255, 255, 255),
                               ),
                             ),
-                            currentDetailUser
-                                        ["is_inscription_payed"] ==
-                                    1
+                            currentDetailUser["is_inscription_payed"] == 1
                                 ? Text(
                                     "payé".tr(),
                                     style: TextStyle(
@@ -171,13 +166,14 @@ class _AccountPageState extends State<AccountPage> {
                                   )
                                 : GestureDetector(
                                     onTap: () async {
-                                      Modal().showModalActionPayement(context, currentDetailUser["inscription_pay_link"]);
-                                      // final url = currentDetailUser["inscription_pay_link"];
-                                      // if (await canLaunch(url)) {
-                                      //   await launch(url);
-                                      // } else {
-                                      //   throw 'Impossible d\'ouvrir le lien $url';
-                                      // }
+                                      String msg =
+                                          "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse(currentDetailUser["entry_amount"]))} FCFA.\nMerci de suivre le lien ${currentDetailUser["inscription_pay_link"]} pour valider";
+                                      Modal().showModalActionPayement(
+                                        context,
+                                        msg,
+                                        currentDetailUser[
+                                            "inscription_pay_link"],
+                                      );
                                     },
                                     child: Row(
                                       children: [
@@ -238,9 +234,6 @@ class _AccountPageState extends State<AccountPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                
-
-
                                 Container(
                                   // margin: EdgeInsets.only(bottom: 5),
                                   child: Column(
@@ -274,8 +267,7 @@ class _AccountPageState extends State<AccountPage> {
                                               ),
                                               Container(
                                                 child: Text(
-                                                  
-                                                  "${currentDetailUser["first_phone"] }",
+                                                  "${currentDetailUser["first_phone"]}",
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
@@ -290,9 +282,8 @@ class _AccountPageState extends State<AccountPage> {
                                     ],
                                   ),
                                 ),
-                               
-                               
-                               Container(
+
+                                Container(
                                   // margin: EdgeInsets.only(bottom: 5),
                                   child: Column(
                                     crossAxisAlignment:
@@ -331,7 +322,11 @@ class _AccountPageState extends State<AccountPage> {
                                               ),
                                               Container(
                                                 child: Text(
-                                                  currentDetailUser["email"]==null? "" : currentDetailUser["email"],
+                                                  currentDetailUser["email"] ==
+                                                          null
+                                                      ? ""
+                                                      : currentDetailUser[
+                                                          "email"],
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
@@ -429,155 +424,159 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             child: ListView.builder(
                               padding: EdgeInsets.all(0),
-                              itemCount: currentDetailUser["beneficiary"].length,
+                              itemCount:
+                                  currentDetailUser["beneficiary"].length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
-                                final itemCurrentDetailUser = currentDetailUser["beneficiary"][index];
+                                final itemCurrentDetailUser =
+                                    currentDetailUser["beneficiary"][index];
                                 // print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${currentDetailUser["current_membre"]["beneficiary"]}");
-                                if (currentDetailUser["beneficiary"].length!=0) {
-                                  
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        width: 0.5,
-                                        color: Color.fromARGB(76, 20, 45, 99),
+                                if (currentDetailUser["beneficiary"].length !=
+                                    0) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          width: 0.5,
+                                          color: Color.fromARGB(76, 20, 45, 99),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin:
-                                            EdgeInsets.only(bottom: 2, top: 3),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                    right: 7,
-                                                    bottom: 20,
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.person,
-                                                    color: Color.fromARGB(
-                                                      255,
-                                                      20,
-                                                      45,
-                                                      99,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 2, top: 3),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                      right: 7,
+                                                      bottom: 20,
                                                     ),
-                                                  ),
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      child: Text(
-                                                        "nom_complete".tr(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    139,
-                                                                    20,
-                                                                    45,
-                                                                    99),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w800),
+                                                    child: Icon(
+                                                      Icons.person,
+                                                      color: Color.fromARGB(
+                                                        255,
+                                                        20,
+                                                        45,
+                                                        99,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      child: Text(
-                                                        "${itemCurrentDetailUser["first_name"]==null? "" : itemCurrentDetailUser["first_name"]} ${itemCurrentDetailUser["last_name"]==null? "" : itemCurrentDetailUser["last_name"]}",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    20,
-                                                                    45,
-                                                                    99),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        child: Text(
+                                                          "nom_complete".tr(),
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      139,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                      Container(
+                                                        child: Text(
+                                                          "${itemCurrentDetailUser["first_name"] == null ? "" : itemCurrentDetailUser["first_name"]} ${itemCurrentDetailUser["last_name"] == null ? "" : itemCurrentDetailUser["last_name"]}",
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                    right: 7,
-                                                    bottom: 20,
-                                                  ),
-                                                  child: Icon(
-                                                    Icons
-                                                        .phone_android_outlined,
-                                                    color: Color.fromARGB(
-                                                        255, 20, 45, 99),
-                                                  ),
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      child: Text(
-                                                        "téléphone".tr(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    139,
-                                                                    20,
-                                                                    45,
-                                                                    99),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w800),
-                                                      ),
+                                        Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                      right: 7,
+                                                      bottom: 20,
                                                     ),
-                                                    Container(
-                                                      child: Text(
-                                                        "${itemCurrentDetailUser["first_phone"]}",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    20,
-                                                                    45,
-                                                                    99),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
+                                                    child: Icon(
+                                                      Icons
+                                                          .phone_android_outlined,
+                                                      color: Color.fromARGB(
+                                                          255, 20, 45, 99),
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        child: Text(
+                                                          "téléphone".tr(),
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      139,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: Text(
+                                                          "${itemCurrentDetailUser["first_phone"]}",
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                                      ],
+                                    ),
+                                  );
                                 }
                               },
                             ),
@@ -774,9 +773,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ],
         ),
-      ),);
-    
-    
-
+      ),
+    );
   }
 }

@@ -3,41 +3,37 @@ import 'package:equatable/equatable.dart';
 class AuthState extends Equatable {
   final Map<String, dynamic>? detailUser;
   final Map<String, dynamic>? loginInfo;
-  final Map<String, dynamic>? updateInfoUser;
-    final bool isLoading;
-
+  final bool isLoading;
+  final bool? isTrueNomber;
 
   AuthState({
     this.detailUser,
     this.loginInfo,
-    this.updateInfoUser,
-        this.isLoading = false,
+    this.isLoading = false,
+    this.isTrueNomber,
   });
 
   @override
   List<Object?> get props => [
         detailUser,
         loginInfo,
-        updateInfoUser,
-                isLoading,
+        isLoading,
+        isTrueNomber,
       ];
 
   AuthState copyWith({
     // List<UserGroupCourantModel>? userGroupDefault,
     Map<String, dynamic>? detailuser,
     Map<String, dynamic>? logininfo,
-    Map<String, dynamic>? updateinfouser,
-        required bool isloading,
+    required bool isloading,
+    bool? istruenomber,
   }) {
     return AuthState(
       detailUser: detailuser,
       loginInfo: logininfo,
-      updateInfoUser: updateinfouser,
-            isLoading: isloading,
-    );
-  }
+      isLoading: isloading,
+      isTrueNomber: istruenomber,
 
-  factory AuthState.fromJson(Map<String, dynamic> json) {
-    return AuthState(detailUser: json['detailUser']);
+    );
   }
 }

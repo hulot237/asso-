@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
@@ -18,6 +23,7 @@ import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,6 +48,7 @@ class Modal {
       } else {
         print("userGroupDefault null");
       }
+                            Navigator.pop(context);
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -96,6 +103,7 @@ class Modal {
                         return GestureDetector(
                           onTap: () {
                             // print("${currentItemAssociationList.urlcode!}");
+
                             handleChangeAss(
                                 currentItemAssociationList["urlcode"]!);
                           },
@@ -123,12 +131,14 @@ class Modal {
                 builder: (UserGroupContext, UserGroupState) {
               if (UserGroupState.isLoading == null ||
                   UserGroupState.isLoading == true)
+                  
                 return Container(
                   color: Color.fromARGB(91, 0, 0, 0),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 );
+                
               return Container();
             }),
           ],
@@ -269,13 +279,9 @@ class Modal {
     );
   }
 
-  void showBottomSheetHistTontine(BuildContext context, _tabController,
-      List prsnesTontinee, List prsnesNonTontinee) {
+  void showBottomSheetHistTontine(BuildContext context, _tabController) {
     final currentDetailCotisation =
-        context.read<CotisationCubit>().state.detailCotisation;
-
-    print("eeee${prsnesTontinee}");
-    print("aaaa${prsnesNonTontinee}");
+        context.read<CotisationDetailCubit>().state.detailCotisation;
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
@@ -343,13 +349,12 @@ class Modal {
                               Container(
                                 child: Text("Tontiné"),
                               ),
-                              BlocBuilder<CotisationCubit, CotisationState>(
+                              BlocBuilder<CotisationDetailCubit,
+                                  CotisationDetailState>(
                                 builder: (context, state) {
                                   if (state.isLoading == null ||
                                       state.isLoading == true)
                                     return Container(
-                                      // color: Colors.white,
-                                      // margin: EdgeInsets.only(top: 15),
                                       width: 10,
                                       height: 10,
                                       child: Center(
@@ -358,9 +363,14 @@ class Modal {
                                         ),
                                       ),
                                     );
+
+                                  final okayTontine = context
+                                      .read<CotisationDetailCubit>()
+                                      .state
+                                      .detailCotisation!["versements"];
                                   return Container(
                                     child: Text(
-                                      " (${prsnesTontinee.length})",
+                                      " (${okayTontine.length})",
                                       style: TextStyle(fontSize: 10),
                                     ),
                                   );
@@ -375,7 +385,8 @@ class Modal {
                               Container(
                                 child: Text("Non tontiné"),
                               ),
-                              BlocBuilder<CotisationCubit, CotisationState>(
+                              BlocBuilder<CotisationDetailCubit,
+                                  CotisationDetailState>(
                                 builder: (context, state) {
                                   if (state.isLoading == null ||
                                       state.isLoading == true)
@@ -390,9 +401,13 @@ class Modal {
                                         ),
                                       ),
                                     );
+                                  final nonTontine = context
+                                      .read<CotisationDetailCubit>()
+                                      .state
+                                      .detailCotisation!["members"];
                                   return Container(
                                     child: Text(
-                                      " (${prsnesNonTontinee.length})",
+                                      " (${nonTontine.length})",
                                       style: TextStyle(fontSize: 10),
                                     ),
                                   );
@@ -406,7 +421,7 @@ class Modal {
                   ),
                 ],
               ),
-              BlocBuilder<CotisationCubit, CotisationState>(
+              BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
                   builder: (context, state) {
                 if (state.isLoading == null || state.isLoading == true)
                   return Container(
@@ -416,6 +431,15 @@ class Modal {
                       child: CircularProgressIndicator(),
                     ),
                   );
+                final nonTontine = context
+                    .read<CotisationDetailCubit>()
+                    .state
+                    .detailCotisation!["members"];
+
+                final okayTontine = context
+                    .read<CotisationDetailCubit>()
+                    .state
+                    .detailCotisation!["versements"];
                 return Expanded(
                   child: Container(
                     color: Color.fromARGB(120, 226, 226, 226),
@@ -425,10 +449,9 @@ class Modal {
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0),
-                          itemCount: prsnesTontinee.length,
+                          itemCount: okayTontine.length,
                           itemBuilder: (context, index) {
-                            final currentDetailPersonCotis =
-                                prsnesTontinee[index];
+                            final currentDetailPersonCotis = okayTontine[index];
                             return Container(
                               child: widgetHistoriqueTontineCard(
                                 date: AppCubitStorage().state.Language == "fr"
@@ -464,10 +487,10 @@ class Modal {
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0),
-                          itemCount: prsnesNonTontinee.length,
+                          itemCount: nonTontine.length,
                           itemBuilder: (context, index) {
                             final currentDetailPersonNonCotis =
-                                prsnesNonTontinee![index];
+                                nonTontine![index];
                             return Container(
                               margin: EdgeInsets.only(
                                   top: 3, bottom: 7, left: 10, right: 10),
@@ -988,11 +1011,24 @@ class Modal {
     );
   }
 
-  void showBottomSheetEditProfil(BuildContext context, hintText, key) {
+  void showBottomSheetEditProfilPhoto(BuildContext context, key, _pickImage) {
     TextEditingController infoUserController = TextEditingController();
     Future<void> handleDetailUser(userCode) async {
       final allCotisationAss =
           await context.read<AuthCubit>().detailAuthCubit(userCode);
+
+      if (allCotisationAss != null) {
+        print("objec===============ttt  ${allCotisationAss}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
+    Future<void> handleUpdateInfoUser(
+        key, value, partner_urlcode, membre_code) async {
+      final allCotisationAss = await context
+          .read<AuthUpdateCubit>()
+          .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
 
       if (allCotisationAss != null) {
         print("objec===============ttt  ${allCotisationAss}");
@@ -1003,10 +1039,119 @@ class Modal {
       }
     }
 
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      // isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 15),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 5,
+                    width: 55,
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 20, 45, 99),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _pickImage;
+                    },
+                    child: Container(
+                      height: 50,
+                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                      padding: EdgeInsets.only(left: 25),
+                      // height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        color: Color.fromARGB(15, 20, 45, 99),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add_a_photo_outlined,
+                            color: Color.fromARGB(255, 20, 45, 99),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Text(
+                              "Camera",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 20, 45, 99),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    margin: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                    ),
+                    padding: EdgeInsets.only(left: 25),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7),
+                      color: Color.fromARGB(15, 20, 45, 99),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add_photo_alternate_outlined,
+                          color: Color.fromARGB(255, 20, 45, 99),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: Text(
+                            "Galerie",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 20, 45, 99),
+                                fontWeight: FontWeight.w400),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showBottomSheetEditProfil(BuildContext context, hintText, key) {
+    TextEditingController infoUserController = TextEditingController();
+    Future<void> handleDetailUser(userCode) async {
+      final allCotisationAss =
+          await context.read<AuthCubit>().detailAuthCubit(userCode);
+
+      if (allCotisationAss != null) {
+        print("objec===============ttt  ${allCotisationAss}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
     Future<void> handleUpdateInfoUser(
         key, value, partner_urlcode, membre_code) async {
       final allCotisationAss = await context
-          .read<AuthCubit>()
+          .read<AuthUpdateCubit>()
           .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
 
       if (allCotisationAss != null) {
@@ -1107,7 +1252,7 @@ class Modal {
     );
   }
 
-  void showModalActionPayement(BuildContext context, lienDePaiement) {
+  void showModalActionPayement(BuildContext context, msg, lienDePaiement) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -1140,6 +1285,9 @@ class Modal {
             children: [
               GestureDetector(
                 onTap: () async {
+                  Navigator.pop(
+                    context,
+                  );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -1170,7 +1318,10 @@ class Modal {
               ),
               GestureDetector(
                 onTap: () {
-                  Share.share(lienDePaiement);
+                  Navigator.pop(
+                    context,
+                  );
+                  Share.share("${msg}");
                 },
                 child: Container(
                   alignment: Alignment.center,

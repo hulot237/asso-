@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
@@ -22,6 +23,7 @@ class WidgetCotisationExpireInFixed extends StatefulWidget {
     required this.isActive,
     required this.codeCotisation,
     required this.type,
+    required this.lienDePaiement,
   });
   int montantCotisations;
   String motifCotisations;
@@ -34,6 +36,7 @@ class WidgetCotisationExpireInFixed extends StatefulWidget {
   int isActive;
   String codeCotisation;
   String type;
+  String lienDePaiement;
 
   @override
   State<WidgetCotisationExpireInFixed> createState() =>
@@ -44,7 +47,7 @@ class _WidgetCotisationExpireInFixedState
     extends State<WidgetCotisationExpireInFixed> {
   Future<void> handleDetailCotisation(codeCotisation) async {
     final detailCotisation = await context
-        .read<CotisationCubit>()
+        .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
     if (detailCotisation != null) {
@@ -69,18 +72,19 @@ class _WidgetCotisationExpireInFixedState
       // for (var itemDetailCotisation in currentDetailCotisation!["versements"]) {
       //   if (itemDetailCotisation["membre_code"] == AppCubitStorage().state.membreCode) {
       //      contributionOneUser = itemDetailCotisation["balance_after"];
-          
+
       //   }
       // }
-      
+
       return GestureDetector(
         onTap: () {
           handleDetailCotisation(widget.codeCotisation);
-          context.read<CotisationCubit>().state.detailCotisation;
+          context.read<CotisationDetailCubit>().state.detailCotisation;
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => DetailCotisationPage(
+                lienDePaiement: widget.lienDePaiement,
                 contributionOneUser: widget.contributionOneUser,
                 dateCotisation: widget.dateCotisation,
                 heureCotisation: widget.heureCotisation,
@@ -153,26 +157,59 @@ class _WidgetCotisationExpireInFixedState
                               ),
                             ),
                           ),
-                          Container(
-                            height: 25,
-                            width: 49,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-
-                              // color: Color.fromARGB(33, 255, 0, 0),
-                            ),
-                            child: Container(
-                              // color: Colors.black,
-                              child: Text(
-                                "expiré".tr(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: Color.fromARGB(255, 255, 0, 0),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  String msg =
+                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                  Modal().showModalActionPayement(
+                                    context,
+                                    msg,
+                                    widget.lienDePaiement,
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 8, right: 8, top: 5, bottom: 5),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(0, 162, 255, 1),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Container(
+                                    child: Text(
+                                      "cotiser".tr(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              Container(
+                                // height: 25,
+                                // width: 49,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7),
+
+                                  // color: Color.fromARGB(33, 255, 0, 0),
+                                ),
+                                child: Container(
+                                  // color: Colors.black,
+                                  child: Text(
+                                    "expiré".tr(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 8,
+                                      color: Color.fromARGB(255, 255, 0, 0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),

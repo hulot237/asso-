@@ -12,7 +12,7 @@ class UserGroupRepository {
     try {
       // Récupérer le token du bloc hydraté
       // final token = AuthCubit().state.token;
-      log("response1");
+      log("response6");
 
       final response = await dio.post(
         '${Variables.LienAIP}/api/v1/usergroupe/userpages',
@@ -41,7 +41,7 @@ class UserGroupRepository {
 
   Future<Map<String, dynamic>> UserGroupDefault(codeAssDefaul) async {
     try {
-      log("response2");
+      log("response10");
       final response = await dio.post(
         '${Variables.LienAIP}/api/v1/usergroupe/default',
         data: {
@@ -73,7 +73,7 @@ class UserGroupRepository {
 
   Future<Map<String, dynamic>> ChangerAss(codeAss) async {
     try {
-      log("response2");
+      log("response11");
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/usergroupe/$codeAss/show',
         options: Options(
