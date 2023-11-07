@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -48,7 +49,6 @@ class Modal {
       } else {
         print("userGroupDefault null");
       }
-                            Navigator.pop(context);
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -56,6 +56,7 @@ class Modal {
         ),
         (route) => false,
       );
+      
     }
 
     showModalBottomSheet(
@@ -106,6 +107,8 @@ class Modal {
 
                             handleChangeAss(
                                 currentItemAssociationList["urlcode"]!);
+                            Navigator.pop(context);
+
                           },
                           child: Column(
                             children: [
@@ -127,19 +130,30 @@ class Modal {
                 ],
               ),
             ),
-            BlocBuilder<UserGroupCubit, UserGroupState>(
-                builder: (UserGroupContext, UserGroupState) {
-              if (UserGroupState.isLoading == null ||
-                  UserGroupState.isLoading == true)
-                  
+            BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
+                builder:
+                    (DetailTournoiCourantContext, DetailTournoiCourantState) {
+              if (DetailTournoiCourantState.isLoading == null ||
+                  DetailTournoiCourantState.isLoading == true)
                 return Container(
                   color: Color.fromARGB(91, 0, 0, 0),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 );
-                
-              return Container();
+              return BlocBuilder<UserGroupCubit, UserGroupState>(
+                  builder: (UserGroupContext, UserGroupState) {
+                if (UserGroupState.isLoading == null ||
+                    UserGroupState.isLoading == true)
+                  return Container(
+                    color: Color.fromARGB(91, 0, 0, 0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+
+                return Container();
+              });
             }),
           ],
         );

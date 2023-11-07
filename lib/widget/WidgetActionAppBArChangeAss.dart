@@ -16,9 +16,9 @@ class WidgetActionAppBArChangeAss extends StatefulWidget {
 
 class _WidgetActionAppBArChangeAssState
     extends State<WidgetActionAppBArChangeAss> {
-  List<dynamic>? get currentInfoAssociationAll {
-    return context.read<UserGroupCubit>().state.userGroup;
-  }
+  // List<dynamic>? get currentInfoAssociationAll {
+  //   return context.read<UserGroupCubit>().state.userGroup;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _WidgetActionAppBArChangeAssState
               onTap: () {
                 Modal().showBottomSheetListAss(
                   context,
-                  currentInfoAssociationAll,
+                  widget.ListAss,
                 );
               },
               child: Container(

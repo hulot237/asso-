@@ -322,10 +322,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height,
-                          child: Image.asset(
-                            "assets/images/associazioni.jpeg",
-                            fit: BoxFit.fill,
-                          ),
+                          child: 
+                          Image.network(
+                                            // "zz",
+                                            "${Variables.LienAIP}${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["background_cover"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["background_cover"]}",
+                                            fit: BoxFit.cover,
+                                          ),
+                          // Image.asset(
+                          //   "assets/images/associazioni.jpeg",
+                          //   fit: BoxFit.fill,
+                          // ),
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width,

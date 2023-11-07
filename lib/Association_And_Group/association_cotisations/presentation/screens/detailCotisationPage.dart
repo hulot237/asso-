@@ -101,8 +101,8 @@ class _DetailCotisationPageState extends State<DetailCotisationPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-        builder: (context, state) {
-      if (state.isLoading == null || state.isLoading == true)
+        builder: (CotisationDetailcontext, CotisationDetailstate) {
+      if (CotisationDetailstate.isLoading == null || CotisationDetailstate.isLoading == true)
         return Container(
           color: Colors.white,
           child: Center(
