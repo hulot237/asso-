@@ -182,7 +182,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 2, vsync: this);
-    // 697636339
 
     return BlocBuilder<AuthCubit, AuthState>(builder: (authContext, authState) {
       if (authState.isLoading == null ||

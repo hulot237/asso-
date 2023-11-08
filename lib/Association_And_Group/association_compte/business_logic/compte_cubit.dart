@@ -5,11 +5,13 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class CompteCubit extends Cubit<CompteState> {
   CompteCubit()
       : super(
-          CompteState(allCompteAss: null),
+          CompteState(allCompteAss: null,isLoading: false,),
         );
 
 
   Future<bool> AllCompteAssCubit(codeAssociation) async {
+    emit(state.copyWith(isloading: true));
+
     try {
       final data =
           await CompteRepository().AllCompteAss(codeAssociation);
@@ -21,6 +23,7 @@ class CompteCubit extends Cubit<CompteState> {
 
         emit(
           state.copyWith(
+            isloading: false,
               allcompteAss: data, )
         );
 
@@ -29,6 +32,7 @@ class CompteCubit extends Cubit<CompteState> {
       } else {
         emit(
           state.copyWith(
+            isloading: false,
               allcompteAss: [],)
         );
         return false;
@@ -36,6 +40,7 @@ class CompteCubit extends Cubit<CompteState> {
     } catch (e) {
       emit(
         state.copyWith(
+            isloading: false,
             allcompteAss: [], )
       );
       return true;

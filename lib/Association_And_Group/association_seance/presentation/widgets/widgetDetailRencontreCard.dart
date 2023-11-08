@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -39,7 +40,11 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
   @override
   Widget build(BuildContext context) {
     final TabController _tabController2 = TabController(length: 2, vsync: this);
-    final currentDetailSeanceSanction = context.read<SeanceCubit>().state.detailSeance!["sanctions"];
+
+    // Map<String, dynamic>? get currentAssCourant {
+    //   return context.read<UserGroupCubit>().state.ChangeAssData;
+    // }
+    // ("${currentDetailSeance!["abs"].length + currentDetailSeance!["presents"].length}"),
 
     return Container(
       decoration: BoxDecoration(
@@ -258,41 +263,85 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Modal().showModalPersonSanctionner(context, currentDetailSeanceSanction);
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            // alignment: Alignment.center,
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 3),
-                                  child: Text(
-                                    "Sanctions",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w800,
-                                      color: Color.fromARGB(171, 20, 45, 99),
+                        child: BlocBuilder<SeanceCubit, SeanceState>(
+                            builder: (context, state) {
+                          if (state.isLoading == null ||
+                              state.isLoading == true)
+                            return GestureDetector(
+                              child: Container(
+                                color: Colors.transparent,
+                                // alignment: Alignment.center,
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(bottom: 3),
+                                      child: Text(
+                                        "Sanctions",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          color:
+                                              Color.fromARGB(171, 20, 45, 99),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Container(
+                                      width: 16,
+                                      height: 16,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 0.1,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  child: Text(
-                                    "${currentDetailSeanceSanction.length}",
-                                    style: TextStyle(
+                              ),
+                            );
+                          final currentDetailSeanceSanction = context
+                              .read<SeanceCubit>()
+                              .state
+                              .detailSeance!["sanctions"];
+                          return GestureDetector(
+                            onTap: () {
+                              Modal().showModalPersonSanctionner(
+                                  context, currentDetailSeanceSanction);
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              // alignment: Alignment.center,
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 3),
+                                    child: Text(
+                                      "Sanctions",
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w800,
-                                        color: Color.fromARGB(255, 20, 45, 99)),
+                                        color: Color.fromARGB(171, 20, 45, 99),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Container(
+                                    child: Text(
+                                      "${currentDetailSeanceSanction.length}",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99)),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                       ),
                       Expanded(
                         child: GestureDetector(
@@ -335,15 +384,32 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                   ),
                                   // margin: EdgeInsets.only(right: 5),
                                 ),
-                                Container(
-                                  child: Text(
-                                    widget.nbrPresence,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w800,
-                                        color: Color.fromARGB(255, 20, 45, 99)),
-                                  ),
-                                ),
+                                BlocBuilder<SeanceCubit, SeanceState>(
+                                    builder: (context, state) {
+                                  if (state.isLoading == null ||
+                                      state.isLoading == true)
+                                    return Container(
+                                      width: 16,
+                                      height: 16,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 0.1,
+                                        ),
+                                      ),
+                                    );
+                                  String presence =
+                                      ("${context.read<SeanceCubit>().state.detailSeance!["abs"].length + context.read<SeanceCubit>().state.detailSeance!["presents"].length}");
+                                  return Container(
+                                    child: Text(
+                                      presence,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99)),
+                                    ),
+                                  );
+                                }),
                               ],
                             ),
                           ),
