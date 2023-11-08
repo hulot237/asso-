@@ -114,108 +114,94 @@ class _widgetDetailCotisationCardState
                                       ["membre_code"] ==
                                   AppCubitStorage().state.membreCode)
                                 GestureDetector(
-                                    onTap: () async {
-                                      String msg =
-                                          "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                      Modal().showModalActionPayement(
-                                        context,
-                                        msg,
-                                        widget.lienDePaiement,
-                                      );
-                                    },
-                                    child: widget.isActive == 1
-                                        ? Container(
-                                            padding: EdgeInsets.only(
-                                                left: 8,
-                                                right: 8,
-                                                top: 5,
-                                                bottom: 5),
-                                            decoration: BoxDecoration(
-                                              color: Color.fromRGBO(
-                                                  0, 162, 255, 1),
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              // boxShadow: [
-                                              //   BoxShadow(
-                                              //       color: Color.fromARGB(122, 65, 65, 65),
-                                              //       spreadRadius: 0.1,
-                                              //       blurRadius: 1,
-                                              //       offset: Offset(0.5, 2)),
-                                              // ],
-                                            ),
-                                            child: Text(
-                                              "cotiser".tr(),
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 13),
-                                            ),
-                                          )
-                                        : Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  String msg =
-                                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                                  Modal()
-                                                      .showModalActionPayement(
-                                                    context,
-                                                    msg,
-                                                    widget.lienDePaiement,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 8,
-                                                      right: 8,
-                                                      top: 5,
-                                                      bottom: 5),
-                                                  decoration: BoxDecoration(
-                                                    color: Color.fromRGBO(
-                                                        0, 162, 255, 1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                  ),
-                                                  child: Container(
-                                                    child: Text(
-                                                      "cotiser".tr(),
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 12,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                // height: 25,
-                                                // width: 49,
-                                                alignment: Alignment.center,
+                                  onTap: () async {
+                                    String msg =
+                                        "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                    Modal().showModalActionPayement(
+                                      context,
+                                      msg,
+                                      widget.lienDePaiement,
+                                    );
+                                  },
+                                  child: widget.isActive == 1
+                                      ? Container(
+                                          padding: EdgeInsets.only(
+                                              left: 8,
+                                              right: 8,
+                                              top: 5,
+                                              bottom: 5),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Color.fromRGBO(0, 162, 255, 1),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Text(
+                                            "cotiser".tr(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13),
+                                          ),
+                                        )
+                                      : Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                String msg =
+                                                    "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                                Modal().showModalActionPayement(
+                                                  context,
+                                                  msg,
+                                                  widget.lienDePaiement,
+                                                );
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 8,
+                                                    right: 8,
+                                                    top: 5,
+                                                    bottom: 5),
                                                 decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      0, 162, 255, 1),
                                                   borderRadius:
-                                                      BorderRadius.circular(7),
-
-                                                  // color: Color.fromARGB(33, 255, 0, 0),
+                                                      BorderRadius.circular(15),
                                                 ),
                                                 child: Container(
-                                                  // color: Colors.black,
                                                   child: Text(
-                                                    "expiré".tr(),
+                                                    "cotiser".tr(),
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      fontSize: 8,
-                                                      color: Color.fromARGB(
-                                                          255, 255, 0, 0),
+                                                      fontSize: 12,
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          )),
+                                            ),
+                                            Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                              ),
+                                              child: Container(
+                                                child: Text(
+                                                  "expiré".tr(),
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 8,
+                                                    color: Color.fromARGB(
+                                                        255, 255, 0, 0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                ),
                           if (currentDetailCotisation!["versements"].length > 0)
                             for (var itemDetailCotisation
                                 in currentDetailCotisation!["versements"])
@@ -254,29 +240,58 @@ class _widgetDetailCotisationCardState
                                                 fontSize: 13),
                                           ),
                                         )
-                                      : Container(
-                                          height: 25,
-                                          width: 49,
-                                          alignment: Alignment.center,
+                                      : Column(
+                                        children: [
+                                          Container(
+                                          padding: EdgeInsets.only(
+                                              left: 8,
+                                              right: 8,
+                                              top: 5,
+                                              bottom: 5),
                                           decoration: BoxDecoration(
+                                            color: Color.fromRGBO(
+                                                0, 162, 255, 0.288),
                                             borderRadius:
-                                                BorderRadius.circular(7),
-
-                                            // color: Color.fromARGB(33, 255, 0, 0),
+                                                BorderRadius.circular(15),
+                                            // boxShadow: [
+                                            //   BoxShadow(
+                                            //       color: Color.fromARGB(122, 65, 65, 65),
+                                            //       spreadRadius: 0.1,
+                                            //       blurRadius: 1,
+                                            //       offset: Offset(0.5, 2)),
+                                            // ],
                                           ),
-                                          child: Container(
-                                            // color: Colors.black,
-                                            child: Text(
-                                              "expiré".tr(),
-                                              style: TextStyle(
+                                          child: Text(
+                                            "cotiser".tr(),
+                                            style: TextStyle(
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                                color: Color.fromARGB(
-                                                    255, 255, 0, 0),
-                                              ),
-                                            ),
+                                                fontSize: 13),
                                           ),
                                         ),
+                                          Container(
+                                              // height: 25,
+                                              width: 49,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                              ),
+                                              child: Container(
+                                                // color: Colors.black,
+                                                child: Text(
+                                                  "expiré".tr(),
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 8,
+                                                    color: Color.fromARGB(
+                                                        255, 255, 0, 0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
                                 ),
                         ],
                       ),
@@ -345,46 +360,47 @@ class _widgetDetailCotisationCardState
                                 in currentDetailCotisation!["versements"])
                               if (itemDetailCotisation["membre_code"] ==
                                   AppCubitStorage().state.membreCode)
-                              GestureDetector(
-                                onTap: () {
-                                  Modal().showModalTransactionByEvent(
-                                      context,
-                                      itemDetailCotisation["versement"] != null
-                                          ? itemDetailCotisation["versement"]
-                                          : [],
-                                      '${widget.montantCotisations}');
-                                },
-                                child: Container(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          "vous_avez_cotisé".tr(),
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                GestureDetector(
+                                  onTap: () {
+                                    Modal().showModalTransactionByEvent(
+                                        context,
+                                        itemDetailCotisation["versement"] !=
+                                                null
+                                            ? itemDetailCotisation["versement"]
+                                            : [],
+                                        '${widget.montantCotisations}');
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            "vous_avez_cotisé".tr(),
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 20, 45, 99),
+                                            ),
+                                          ),
+                                          margin: EdgeInsets.only(right: 5),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "${formatMontantFrancais(double.parse(itemDetailCotisation["versement"] != null ? itemDetailCotisation["versement"][0]["balance_after"] : "0"))} FCFA",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w800,
+                                                color: Color.fromARGB(
+                                                    255, 20, 45, 99)),
                                           ),
                                         ),
-                                        margin: EdgeInsets.only(right: 5),
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          "${formatMontantFrancais(double.parse(itemDetailCotisation["versement"] != null ? itemDetailCotisation["versement"][0]["balance_after"] : "0"))} FCFA",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w800,
-                                              color: Color.fromARGB(
-                                                  255, 20, 45, 99)),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
                           if (currentDetailCotisation!["members"].length > 0)
                             for (var itemDetailCotisation
                                 in currentDetailCotisation!["members"])
