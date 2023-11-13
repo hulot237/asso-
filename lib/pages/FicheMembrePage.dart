@@ -5,6 +5,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -214,7 +215,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 20, bottom: 5),
+                            margin: EdgeInsets.only(top: 15, bottom: 5),
                             width: MediaQuery.of(context).size.width,
                             child: Text(
                               "informations_personnelles".tr(),
@@ -227,7 +228,7 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(7),
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(19, 20, 45, 99),
                                 borderRadius: BorderRadius.circular(10)),
@@ -247,6 +248,7 @@ class _AccountPageState extends State<AccountPage> {
                                                 right: 7, bottom: 20),
                                             child: Icon(
                                               Icons.phone_android_outlined,
+                                              size: 18,
                                               color: Color.fromARGB(
                                                   255, 20, 45, 99),
                                             ),
@@ -261,6 +263,7 @@ class _AccountPageState extends State<AccountPage> {
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           139, 20, 45, 99),
+                                                          fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w800),
                                                 ),
@@ -271,6 +274,7 @@ class _AccountPageState extends State<AccountPage> {
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
+                                                          fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ),
@@ -298,6 +302,7 @@ class _AccountPageState extends State<AccountPage> {
                                             ),
                                             child: Icon(
                                               Icons.email_outlined,
+                                              size: 18,
                                               color: Color.fromARGB(
                                                 255,
                                                 20,
@@ -314,8 +319,8 @@ class _AccountPageState extends State<AccountPage> {
                                                 child: Text(
                                                   "Email",
                                                   style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          139, 20, 45, 99),
+                                                      color: Color.fromARGB(139, 20, 45, 99),
+                                                          fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w800),
                                                 ),
@@ -330,6 +335,7 @@ class _AccountPageState extends State<AccountPage> {
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
+                                                          fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ),
@@ -404,7 +410,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 20, bottom: 5),
+                            margin: EdgeInsets.only(top: 15, bottom: 5),
                             width: MediaQuery.of(context).size.width,
                             child: Text(
                               "vos_bénéficiaires".tr(),
@@ -417,169 +423,436 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(7),
                             decoration: BoxDecoration(
                               color: Color.fromARGB(19, 20, 45, 99),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: ListView.builder(
-                              padding: EdgeInsets.all(0),
-                              itemCount:
-                                  currentDetailUser["beneficiary"].length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context, int index) {
-                                final itemCurrentDetailUser =
-                                    currentDetailUser["beneficiary"][index];
-                                // print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${currentDetailUser["current_membre"]["beneficiary"]}");
-                                if (currentDetailUser["beneficiary"].length !=
-                                    0) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          width: 0.5,
-                                          color: Color.fromARGB(76, 20, 45, 99),
-                                        ),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: 2, top: 3),
+                            child: currentDetailUser["beneficiary"].length > 0
+                                ? ListView.builder(
+                                    padding: EdgeInsets.all(0),
+                                    itemCount:
+                                        currentDetailUser["beneficiary"].length,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final itemCurrentDetailUser =
+                                          currentDetailUser["beneficiary"]
+                                              [index];
+                                      // print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${currentDetailUser["current_membre"]["beneficiary"]}");
+                                      if (currentDetailUser["beneficiary"]
+                                              .length !=
+                                          0) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                width: 0.5,
+                                                color: Color.fromARGB(
+                                                    76, 20, 45, 99),
+                                              ),
+                                            ),
+                                          ),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      right: 7,
-                                                      bottom: 20,
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.person,
-                                                      color: Color.fromARGB(
-                                                        255,
-                                                        20,
-                                                        45,
-                                                        99,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        child: Text(
-                                                          "nom_complete".tr(),
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      139,
-                                                                      20,
-                                                                      45,
-                                                                      99),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 2, top: 3),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            right: 7,
+                                                            bottom: 20,
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.person,
+                                                            size: 18,
+                                                            color:
+                                                                Color.fromARGB(
+                                                              255,
+                                                              20,
+                                                              45,
+                                                              99,
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Container(
-                                                        child: Text(
-                                                          "${itemCurrentDetailUser["first_name"] == null ? "" : itemCurrentDetailUser["first_name"]} ${itemCurrentDetailUser["last_name"] == null ? "" : itemCurrentDetailUser["last_name"]}",
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      20,
-                                                                      45,
-                                                                      99),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                              child: Text(
+                                                                "nom_complete"
+                                                                    .tr(),
+                                                                style: TextStyle(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            139,
+                                                                            20,
+                                                                            45,
+                                                                            99),
+                                                                            fontSize: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              child: Text(
+                                                                "${itemCurrentDetailUser["first_name"] == null ? "" : itemCurrentDetailUser["first_name"]} ${itemCurrentDetailUser["last_name"] == null ? "" : itemCurrentDetailUser["last_name"]}",
+                                                                style: TextStyle(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            20,
+                                                                            45,
+                                                                            99),
+                                                                            fontSize: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            right: 7,
+                                                            bottom: 20,
+                                                          ),
+                                                          child: Icon(
+                                                            Icons
+                                                                .phone_android_outlined,
+                                                                size: 18,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                          ),
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                              child: Text(
+                                                                "téléphone"
+                                                                    .tr(),
+                                                                style:
+                                                                    TextStyle(
+                                                                        color: Color
+                                                                            .fromARGB(
+                                                                          139,
+                                                                          20,
+                                                                          45,
+                                                                          99,
+                                                                        ),
+                                                                        fontWeight: FontWeight.w800,
+                                                                        fontSize: 12),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              child: Text(
+                                                                "${itemCurrentDetailUser["first_phone"]}",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          20,
+                                                                          45,
+                                                                          99),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                          fontSize: 12
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                        Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      right: 7,
-                                                      bottom: 20,
-                                                    ),
-                                                    child: Icon(
-                                                      Icons
-                                                          .phone_android_outlined,
-                                                      color: Color.fromARGB(
-                                                          255, 20, 45, 99),
-                                                    ),
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        child: Text(
-                                                          "téléphone".tr(),
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      139,
-                                                                      20,
-                                                                      45,
-                                                                      99),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        child: Text(
-                                                          "${itemCurrentDetailUser["first_phone"]}",
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      20,
-                                                                      45,
-                                                                      99),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              },
+                                        );
+                                      }
+                                    },
+                                  )
+                                : Text(
+                                    "Vous n'avez pas de bénéficiaire",
+                                    style: TextStyle(
+                                        color: Color.fromARGB(112, 20, 45, 99),
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12),
+                                  ),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      // alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(left: 10, right: 10),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 15, bottom: 5),
+                            width: MediaQuery.of(context).size.width,
+                            child: Text(
+                              "vos_transactions".tr(),
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(141, 20, 45, 99),
+                              ),
                             ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(top: 10, right: 10, left: 10),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(19, 20, 45, 99),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: currentDetailUser["payments"].length > 0
+                                ? ListView.builder(
+                                    padding: EdgeInsets.all(0),
+                                    itemCount:
+                                        currentDetailUser["payments"].length,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final itemCurrentDetailUser =
+                                          currentDetailUser["payments"][index];
+                                      // print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd }");
+
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                width: 0.5,
+                                                color: Color.fromARGB(
+                                                    76, 20, 45, 99),
+                                              ),
+                                            ),
+                                        ),
+                                        margin: EdgeInsets.only(
+                                            bottom: 10,
+                                            // left: 5,
+                                            // right: 5,
+                                            // top: 5,
+                                            ),
+                                        padding: EdgeInsets.only(
+                                            bottom: 5,
+                                            // left: 5,
+                                            // right: 5,
+                                            // top: 5,
+                                            ),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          child: Text(
+                                                            "Date : ",
+                                                            style: TextStyle(
+                                                              fontSize: 12,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: Text(
+                                                            "${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemCurrentDetailUser["created_at"]) : formatDateToEnglish(itemCurrentDetailUser["created_at"])}",
+                                                            style: TextStyle(
+                                                              fontSize: 10,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 5, bottom: 5),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        child: Text(
+                                                          "Motif : ",
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width /
+                                                                1.5,
+                                                        child: Text(
+                                                          "${itemCurrentDetailUser["description"]}",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                              255,
+                                                              20,
+                                                              45,
+                                                              99,
+                                                            ),
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        child: Text(
+                                                          "${"montant".tr()} : ",
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: Text(
+                                                          "${"${formatMontantFrancais(double.parse(itemCurrentDetailUser["amount"]))} FCFA"}",
+                                                          overflow:
+                                                              TextOverflow.clip,
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      28, 228, 0, 0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360)),
+                                              child: Icon(
+                                                Icons.close_fullscreen,
+                                                size: 12,
+                                                color: Colors.red,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    })
+                                : Text(
+                                    "Vous n'avez éffectuer aucune transaction",
+                                    style: TextStyle(
+                                        color: Color.fromARGB(112, 20, 45, 99),
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12),
+                                  ),
                           )
                         ],
                       ),

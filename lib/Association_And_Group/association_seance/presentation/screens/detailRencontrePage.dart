@@ -1,13 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotisationExpireInFIxed.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotisationExpireInProgress.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotisationInFIxed.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotisationInProgress.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotistion.dart';
 import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/WidgetSanctionNonPayeeIsOther.dart';
 import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionNonPayeeIsMoney.dart';
 import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionPayeeIsMoney.dart';
@@ -15,10 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/association_sanction/
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetDetailRencontreCard.dart';
-import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
-import 'package:faroty_association_1/Modals/showAllModal.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetTontineRencontreCard.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -182,172 +173,74 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                         );
                       final currentDetailSeance =
                           context.read<SeanceCubit>().state.detailSeance;
-                      return ListView.builder(
-                        padding: EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        itemCount: currentDetailSeance!["cotisation"].length,
-                        itemBuilder: (context, index) {
-                          final currentDetail =
-                              currentDetailSeance!["cotisation"][index];
-                          if (currentDetail["is_tontine"] == 0 &&
-                              currentDetail["type"] == "0" &&
-                              currentDetail["is_passed"] == 0) {
-                            return GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                    left: 7, right: 7, top: 3, bottom: 7),
-                                child: WidgetCotisationInFixed(
-                                  lienDePaiement: currentDetail[
-                                              "cotisation_pay_link"] ==
-                                          null
-                                      ? "Le lien n'a pas été généré"
-                                      : currentDetail["cotisation_pay_link"],
-                                  contributionOneUser: '2000',
-                                  codeCotisation:
-                                      currentDetail["cotisation_code"],
-                                  heureCotisation:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatTimeToFrench(
-                                              currentDetail["start_date"])
-                                          : formatTimeToEnglish(
-                                              currentDetail["start_date"]),
-
-                                  dateCotisation:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatDateToFrench(
-                                              currentDetail["start_date"])
-                                          : formatDateToEnglish(
-                                              currentDetail["start_date"]),
-                                  montantCotisations: currentDetail["amount"],
-                                  motifCotisations: currentDetail["name"],
-                                  nbreParticipant: 5,
-                                  soldeCotisation:
-                                      currentDetail["cotisation_balance"],
-                                  nbreParticipantCotisationOK: 4,
-                                  type: currentDetail["type"],
-
-                                  // montantSanctionCollectee: currentDetail["amount_sanction"],
-                                  isActive: 1,
-                                ),
-                              ),
-                            );
-                          } else if (currentDetail["is_tontine"] == 0 &&
-                              currentDetail["type"] == "1" &&
-                              currentDetail["is_passed"] == 0) {
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  left: 7, right: 7, top: 3, bottom: 7),
-                              child: WidgetCotisationInProgress(
-                                lienDePaiement:
-                                    currentDetail["cotisation_pay_link"] == null
-                                        ? "Le lien n'a pas été généré"
-                                        : currentDetail["cotisation_pay_link"],
-                                codeCotisation:
-                                    currentDetail["cotisation_code"],
-                                contributionOneUser: '2000',
-                                // AppCubitStorage().state.Language=="fr"? formatTimeToFrench (currentDetail["start_date"]) : formatTimeToEnglish (currentDetail["start_date"])
-                                heureCotisation:
-                                    AppCubitStorage().state.Language == "fr"
-                                        ? formatTimeToFrench(
-                                            currentDetail["start_date"])
-                                        : formatTimeToEnglish(
-                                            currentDetail["start_date"]),
-                                dateCotisation:
-                                    AppCubitStorage().state.Language == "fr"
+                      List<dynamic> objetCotisationUniquement =
+                          currentDetailSeance!["cotisation"]
+                              .where((objet) => objet["is_tontine"] == 0)
+                              .toList();
+                      return objetCotisationUniquement.length > 0
+                          ? ListView.builder(
+                              itemCount: objetCotisationUniquement.length,
+                              padding: EdgeInsets.all(0),
+                              itemBuilder: (BuildContext context, int index) {
+                                final ItemDetailCotisation =
+                                    objetCotisationUniquement[index];
+                                return Container(
+                                  margin: EdgeInsets.only(
+                                      left: 7, right: 7, top: 3, bottom: 7),
+                                  child: WidgetCotisation(
+                                    montantCotisations:
+                                        ItemDetailCotisation["amount"],
+                                    motifCotisations:
+                                        ItemDetailCotisation["name"],
+                                    dateCotisation: AppCubitStorage()
+                                                .state
+                                                .Language ==
+                                            "fr"
                                         ? formatDateToFrench(
-                                            currentDetail["start_date"])
+                                            ItemDetailCotisation["start_date"])
                                         : formatDateToEnglish(
-                                            currentDetail["start_date"]),
-                                montantCotisations: currentDetail["amount"],
-                                motifCotisations: currentDetail["name"],
-                                nbreParticipant: 24,
-                                soldeCotisation:
-                                    currentDetail["cotisation_balance"],
-                                nbreParticipantCotisationOK: 7,
-                                montantSanctionCollectee: '1500',
-                                isActive: 1,
-                                montantMin: "200",
-                                type: currentDetail["type"],
-                              ),
-                            );
-                          } else if (currentDetail["is_tontine"] == 0 &&
-                              currentDetail["type"] == "0" &&
-                              currentDetail["is_passed"] == 1) {
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  left: 7, right: 7, top: 3, bottom: 7),
-                              child: WidgetCotisationExpireInFixed(
-                                lienDePaiement:
-                                    currentDetail["cotisation_pay_link"] == null
-                                        ? "Le lien n'a pas été généré"
-                                        : currentDetail["cotisation_pay_link"],
-                                codeCotisation:
-                                    currentDetail["cotisation_code"],
-                                contributionOneUser: '1500',
-                                motifCotisations: currentDetail["name"],
-                                dateCotisation:
-                                    AppCubitStorage().state.Language == "fr"
-                                        ? formatDateToFrench(
-                                            currentDetail["start_date"])
-                                        : formatDateToEnglish(
-                                            currentDetail["start_date"]),
-                                montantCotisations: currentDetail["amount"],
-                                heureCotisation:
-                                    AppCubitStorage().state.Language == "fr"
+                                            ItemDetailCotisation["start_date"]),
+                                    heureCotisation: AppCubitStorage()
+                                                .state
+                                                .Language ==
+                                            "fr"
                                         ? formatTimeToFrench(
-                                            currentDetail["start_date"])
+                                            ItemDetailCotisation["start_date"])
                                         : formatTimeToEnglish(
-                                            currentDetail["start_date"]),
-                                // montantSanctionCollectee: '1500',
-                                nbreParticipantCotisationOK: 10,
-                                nbreParticipant: 12,
-                                soldeCotisation:
-                                    currentDetail["cotisation_balance"],
-                                isActive: 0,
-                                type: currentDetail["type"],
+                                            ItemDetailCotisation["start_date"]),
+                                    soldeCotisation: ItemDetailCotisation[
+                                        "cotisation_balance"],
+                                    contributionOneUser: "2",
+                                    nbreParticipant: 23,
+                                    nbreParticipantCotisationOK: 11,
+                                    codeCotisation:
+                                        ItemDetailCotisation["cotisation_code"],
+                                    type: ItemDetailCotisation["type"],
+                                    lienDePaiement: ItemDetailCotisation[
+                                                "cotisation_pay_link"] ==
+                                            null
+                                        ? "le lien n'a pas été généré"
+                                        : ItemDetailCotisation[
+                                            "cotisation_pay_link"],
+                                    is_passed:
+                                        ItemDetailCotisation["is_passed"],
+                                    is_tontine:
+                                        ItemDetailCotisation["is_tontine"],
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              padding: EdgeInsets.only(top: 100),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "aucune_cotisation".tr(),
+                                style: TextStyle(
+                                    color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 20),
                               ),
                             );
-                          } else if (currentDetail["is_tontine"] == 0 &&
-                              currentDetail["type"] == "1" &&
-                              currentDetail["is_passed"] == 1) {
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  left: 7, right: 7, top: 3, bottom: 7),
-                              child: WidgetCotisationExpireInProgress(
-                                lienDePaiement:
-                                    currentDetail["cotisation_pay_link"] == null
-                                        ? "Le lien n'a pas été généré"
-                                        : currentDetail["cotisation_pay_link"],
-                                contributionOneUser: '1500',
-                                motifCotisations: currentDetail["name"],
-                                dateCotisation:
-                                    AppCubitStorage().state.Language == "fr"
-                                        ? formatDateToFrench(
-                                            currentDetail["start_date"])
-                                        : formatDateToEnglish(
-                                            currentDetail["start_date"]),
-                                montantCotisations: currentDetail["amount"],
-                                heureCotisation:
-                                    AppCubitStorage().state.Language == "fr"
-                                        ? formatTimeToFrench(
-                                            currentDetail["start_date"])
-                                        : formatTimeToEnglish(
-                                            currentDetail["start_date"]),
-                                // montantSanctionCollectee: currentDetail["amount_sanction"] ,
-                                nbreParticipantCotisationOK: 10,
-                                nbreParticipant: 12,
-                                soldeCotisation:
-                                    currentDetail["cotisation_balance"],
-                                isActive: 0,
-                                codeCotisation:
-                                    currentDetail["cotisation_code"],
-                                type: currentDetail["type"],
-                              ),
-                            );
-                          }
-                        },
-                      );
                     },
                   ),
                   BlocBuilder<SeanceCubit, SeanceState>(

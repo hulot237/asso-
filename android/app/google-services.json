@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "643631488704",
+    "project_id": "groups-associations",
+    "storage_bucket": "groups-associations.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643631488704:android:0d9e65cd0cc9990734d725",
+        "android_client_info": {
+          "package_name": "com.example.faroty_association_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDiTfJPdc5IMD6CgZkfkWOlxiFvGc8jsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

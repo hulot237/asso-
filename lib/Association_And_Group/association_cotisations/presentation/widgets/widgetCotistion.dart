@@ -10,8 +10,8 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class WidgetCotisationInFixed extends StatefulWidget {
-  WidgetCotisationInFixed({
+class WidgetCotisation extends StatefulWidget {
+  WidgetCotisation({
     super.key,
     required this.montantCotisations,
     required this.motifCotisations,
@@ -21,10 +21,11 @@ class WidgetCotisationInFixed extends StatefulWidget {
     required this.contributionOneUser,
     required this.nbreParticipant,
     required this.nbreParticipantCotisationOK,
-    required this.isActive,
     required this.codeCotisation,
     required this.type,
     required this.lienDePaiement,
+    required this.is_tontine,
+    required this.is_passed,
   });
   int montantCotisations;
   String motifCotisations;
@@ -34,17 +35,17 @@ class WidgetCotisationInFixed extends StatefulWidget {
   String contributionOneUser;
   int nbreParticipant;
   int nbreParticipantCotisationOK;
-  int isActive;
   String codeCotisation;
   String type;
   String lienDePaiement;
+  int is_tontine;
+  int is_passed;
 
   @override
-  State<WidgetCotisationInFixed> createState() =>
-      _WidgetCotisationInFixedState();
+  State<WidgetCotisation> createState() => _WidgetCotisationState();
 }
 
-class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
+class _WidgetCotisationState extends State<WidgetCotisation> {
   Future<void> handleDetailCotisation(codeCotisation) async {
     // final detailTournoiCourant = await context
     //     .read<DetailTournoiCourantCubit>()
@@ -88,7 +89,6 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
             MaterialPageRoute(
               builder: (context) => DetailCotisationPage(
                 lienDePaiement: widget.lienDePaiement,
-
                 contributionOneUser: widget.contributionOneUser,
                 dateCotisation: widget.dateCotisation,
                 heureCotisation: widget.heureCotisation,
@@ -97,25 +97,28 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                 nbreParticipant: widget.nbreParticipant,
                 nbreParticipantCotisationOK: widget.nbreParticipantCotisationOK,
                 soldeCotisation: widget.soldeCotisation,
-                isActive: widget.isActive,
                 type: widget.type,
+                isPassed: widget.is_passed,
               ),
             ),
           );
         },
         child: Container(
           // margin: EdgeInsets.only(left: 3, right: 3),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
 
-            // border: Border(
-            //   left: BorderSide(
-            //     width: 10,
-            //     color: Color.fromRGBO(20, 45, 99, 1),
-            //   ),
-            // ),
-          ),
+          decoration: widget.is_passed == 0
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                )
+              : BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Color.fromARGB(255, 230, 230, 230),
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.white,
+                  ),
+                ),
           padding: EdgeInsets.only(left: 10, top: 5, bottom: 10, right: 10),
           width: MediaQuery.of(context).size.width,
           child: Row(
@@ -163,85 +166,190 @@ class _WidgetCotisationInFixedState extends State<WidgetCotisationInFixed> {
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                                  String msg =
-                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                  Modal().showModalActionPayement(
-                                    context,
-                                    msg,
-                                    widget.lienDePaiement,
-                                  );
-                                },
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  left: 8, right: 8, top: 5, bottom: 5),
-                              decoration: BoxDecoration(
-                                color: Color.fromRGBO(0, 162, 255, 1),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Container(
-                                child: Text(
-                                  "cotiser".tr(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                    color: Colors.white,
+                          widget.is_passed == 1
+                              ? Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        String msg =
+                                            "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                        Modal().showModalActionPayement(
+                                          context,
+                                          msg,
+                                          widget.lienDePaiement,
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: 8,
+                                            right: 8,
+                                            top: 5,
+                                            bottom: 5),
+                                        decoration: BoxDecoration(
+                                          color: Color.fromRGBO(0, 162, 255, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Container(
+                                          child: Text(
+                                            "cotiser".tr(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      child: Container(
+                                        child: Text(
+                                          "expiré".tr(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 8,
+                                            color:
+                                                Color.fromARGB(255, 255, 0, 0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : GestureDetector(
+                                  onTap: () async {
+                                    String msg =
+                                        "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                    Modal().showModalActionPayement(
+                                      context,
+                                      msg,
+                                      widget.lienDePaiement,
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: 8, right: 8, top: 5, bottom: 5),
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(0, 162, 255, 1),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Container(
+                                      child: Text(
+                                        "cotiser".tr(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
-                      // padding: EdgeInsets.only(left: 5, right: 5),
-                      width: MediaQuery.of(context).size.width / 1.1,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        // color: Color.fromARGB(20, 255, 27, 27),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            child: Text(
-                              "type_fixe".tr(),
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 20, 45, 99),
-                              ),
+                    widget.type == "1"
+                        ? Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            // padding: EdgeInsets.only(left: 5, right: 5),
+                            width: MediaQuery.of(context).size.width / 1.1,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              // color: Color.fromARGB(20, 255, 27, 27),
                             ),
-                          ),
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   child: Text(
-                                    "montant".tr(),
+                                    "type_volontaire".tr(),
                                     style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
                                       color: Color.fromARGB(255, 20, 45, 99),
                                     ),
                                   ),
                                 ),
                                 Container(
+                                  // padding: EdgeInsets.only(left: 10),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          "montant".tr(),
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Color.fromARGB(255, 20, 45, 99),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 20, 45, 99),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            width: MediaQuery.of(context).size.width / 1.1,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
                                   child: Text(
-                                    "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
+                                    "type_fixe".tr(),
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 20, 45, 99),
                                     ),
                                   ),
                                 ),
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          "montant".tr(),
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Color.fromARGB(255, 20, 45, 99),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 20, 45, 99),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
+                          ),
                     Container(
                       margin: EdgeInsets.only(bottom: 5),
                       width: MediaQuery.of(context).size.width / 1.1,

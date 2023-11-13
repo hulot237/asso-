@@ -10,14 +10,37 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/firebase_options.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/pages/push_notification.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
+
+
+
+
+//function to lisen to background changes
+Future _firebaseBackgroundMessage(RemoteMessage message) async{
+  if (message.notification != null) {
+    print("Some notifications received");
+  }
+}
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  PushNotifications.init();
+  
+  //Listen to background notifications 
+  FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
+
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),

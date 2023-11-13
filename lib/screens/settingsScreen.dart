@@ -101,7 +101,7 @@ class _SettingScreenState extends State<SettingScreen> {
             return false;
           },
           child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFFEFEFEF),
             appBar: AppBar(
               title: Text(
                 "profil".tr(),
@@ -109,6 +109,17 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
               elevation: 0,
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => HomePage(),
+                    ),
+                    (route) => false,
+                  );
+                },
+                child: Icon(Icons.arrow_back),
+              ),
               actions: [
                 Container(
                   child: Stack(

@@ -8,19 +8,19 @@ class TontineRepository {
   Future<List<dynamic>> DetailTontine(codeTournoi, codeTontine) async {
     try {
       print("zzzeeezzzzz $codeTournoi");
-      log("response AllCotisationOfAssAllCotisationOfAss");
+      log("response DetailTontineDetailTontine");
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/tontine/$codeTontine/all',
       );
       print(
-          "AllCotisationOfAssAllCotisationOfAss      ${response.data["data"]}");
+          "DetailTontineDetailTontine      ${response.data["data"]}");
 
       final List<dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-      log('Okay AllCotisationOfAssAllCotisationOfAss rep');
+      log('Okay DetailTontineDetailTontine rep');
       return dataJson;
     } catch (e) {
-      log('erreur AllCotisationOfAssAllCotisationOfAss rep');
+      log('erreur DetailTontineDetailTontine rep');
       print(e);
       return [];
     }
