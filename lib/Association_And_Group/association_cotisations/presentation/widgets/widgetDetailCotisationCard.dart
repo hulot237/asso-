@@ -45,9 +45,6 @@ class widgetDetailCotisationCard extends StatefulWidget {
 
 class _widgetDetailCotisationCardState
     extends State<widgetDetailCotisationCard> {
-  // Map<String, dynamic>? get currentDetailCotisation {
-  //   return context.read<CotisationDetailCubit>().state.detailCotisation;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +69,6 @@ class _widgetDetailCotisationCardState
               child: Column(
                 children: [
                   Container(
-                    // margin: EdgeInsets.only(top: 10, bottom: 7),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -571,9 +567,9 @@ class _widgetDetailCotisationCardState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            Modal().showModalPersonSanctionner(context, []);
-                          },
+                          // onTap: () {
+                          //   Modal().showModalPersonSanctionner(context, [], "");
+                          // },
                           child: Container(
                             margin: EdgeInsets.only(bottom: 3),
                             child: Row(

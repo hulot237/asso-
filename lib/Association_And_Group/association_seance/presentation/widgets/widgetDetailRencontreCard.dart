@@ -18,6 +18,7 @@ class widgetDetailRencontreCard extends StatefulWidget {
     required this.dateRencontre,
     required this.heureRencontre,
     required this.nbrPresence,
+    required this.codeSeance,
   });
 
   String nomRecepteurRencontre;
@@ -29,6 +30,7 @@ class widgetDetailRencontreCard extends StatefulWidget {
   String dateRencontre;
   String heureRencontre;
   String nbrPresence;
+  String codeSeance;
 
   @override
   State<widgetDetailRencontreCard> createState() =>

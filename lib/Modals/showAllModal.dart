@@ -30,6 +30,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Modal {
   void showBottomSheetListAss(BuildContext context, List? listAllAss) {
+    bool isLoading = false;
+
     Future handleChangeAss(codeAss) async {
       final ChangeAss =
           await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
@@ -56,92 +58,86 @@ class Modal {
         ),
         (route) => false,
       );
-      
     }
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
-        return Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              margin: EdgeInsets.only(left: 10, right: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(7),
-                  topLeft: Radius.circular(7),
-                ),
-                color: Color.fromARGB(255, 255, 255, 255),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: 5,
-                    width: 55,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 20, 45, 99),
-                        borderRadius: BorderRadius.circular(50)),
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                margin: EdgeInsets.only(left: 10, right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(7),
+                    topLeft: Radius.circular(7),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
-                    child: Text(
-                      "vos_associations".tr(),
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w900,
-                        color: Color.fromARGB(164, 20, 45, 99),
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 5,
+                      width: 55,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 20, 45, 99),
+                          borderRadius: BorderRadius.circular(50)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      child: Text(
+                        "vos_associations".tr(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                          color: Color.fromARGB(164, 20, 45, 99),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: listAllAss!.length,
-                      itemBuilder: (context, index) {
-                        final currentItemAssociationList = listAllAss[index];
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: listAllAss!.length,
+                        itemBuilder: (context, index) {
+                          final currentItemAssociationList = listAllAss[index];
 
-                        return GestureDetector(
-                          onTap: () {
-                            // print("${currentItemAssociationList.urlcode!}");
+                          return GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
 
-                            handleChangeAss(
-                                currentItemAssociationList["urlcode"]!);
-                            Navigator.pop(context);
+                              await handleChangeAss(
+                                  currentItemAssociationList["urlcode"]!);
 
-                          },
-                          child: Column(
-                            children: [
-                              widgetListAssCard(
-                                urlcodeAss:
-                                    currentItemAssociationList["urlcode"],
-                                nomAssociation:
-                                    currentItemAssociationList["name"],
-                                nbreEventPending: 5,
-                                phofilAssociation:
-                                    "${Variables.LienAIP}${currentItemAssociationList["profile_photo"] == null ? "" : currentItemAssociationList["profile_photo"]}",
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
+                              setState(() {
+                                isLoading = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                widgetListAssCard(
+                                  urlcodeAss:
+                                      currentItemAssociationList["urlcode"],
+                                  nomAssociation:
+                                      currentItemAssociationList["name"],
+                                  nbreEventPending: 5,
+                                  phofilAssociation:
+                                      "${Variables.LienAIP}${currentItemAssociationList["profile_photo"] == null ? "" : currentItemAssociationList["profile_photo"]}",
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
-                builder:
-                    (DetailTournoiCourantContext, DetailTournoiCourantState) {
-              if (DetailTournoiCourantState.isLoading == null ||
-                  DetailTournoiCourantState.isLoading == true)
-                return Container(
-                  color: Color.fromARGB(91, 0, 0, 0),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              return BlocBuilder<UserGroupCubit, UserGroupState>(
+              BlocBuilder<UserGroupCubit, UserGroupState>(
                   builder: (UserGroupContext, UserGroupState) {
                 if (UserGroupState.isLoading == null ||
                     UserGroupState.isLoading == true)
@@ -152,11 +148,18 @@ class Modal {
                     ),
                   );
 
-                return Container();
-              });
-            }),
-          ],
-        );
+                return isLoading
+                    ? Container(
+                        color: Color.fromARGB(91, 0, 0, 0),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Container();
+              }),
+            ],
+          );
+        });
       },
     );
   }
@@ -171,7 +174,7 @@ class Modal {
         return Color.fromARGB(23, 20, 45, 99);
       }
       // Aucune correspondance trouvée, retourne null.
-      return null;
+      // return null;
     }
 
     Color? colorSelectText(tournois_code) {
@@ -181,8 +184,10 @@ class Modal {
         return Color.fromARGB(139, 20, 45, 99);
       }
       // Aucune correspondance trouvée, retourne null.
-      return null;
+      // return null;
     }
+
+    bool isLoading = false;
 
     Future handleChangeTournoi(codeTournoi) async {
       final allCotisationAss = await context
@@ -215,80 +220,114 @@ class Modal {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.only(top: 10),
-          margin: EdgeInsets.only(left: 10, right: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(7),
-              topLeft: Radius.circular(7),
-            ),
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          child: Column(
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Stack(
             children: [
               Container(
-                height: 5,
-                width: 55,
+                padding: EdgeInsets.only(top: 10),
+                margin: EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
-                    // if (item["tournois_code"] == AppCubitStorage().state.codeTournois)
-                    color: Color.fromARGB(255, 20, 45, 99),
-                    borderRadius: BorderRadius.circular(50)),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10, bottom: 10),
-                child: Text(
-                  "vos_tournois".tr(),
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                    color: Color.fromARGB(255, 20, 45, 99),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(7),
+                    topLeft: Radius.circular(7),
                   ),
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: currentInfoAssociationCourant.length,
-                  itemBuilder: (context, index) {
-                    final currentItemAssociationList =
-                        currentInfoAssociationCourant[index];
-                    print(
-                        "aaaaaaaaaaaaaaaaaaaaaaaa ${currentInfoAssociationCourant[index]}");
-
-                    return GestureDetector(
-                      onTap: () {
-                        handleChangeTournoi(
-                            currentItemAssociationList["tournois_code"]);
-                      },
-                      child: Container(
-                        // margin: EdgeInsets.only(bottom: 10, right: 5, left: 5),
-                        // padding: EdgeInsets.all(10),
-                        child: Container(
-                          padding:
-                              EdgeInsets.only(top: 15, bottom: 15, left: 15),
-                          decoration: BoxDecoration(
-                            color: colorSelect(
-                                currentItemAssociationList["tournois_code"]),
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                          margin: EdgeInsets.all(5),
-                          child: Text(
-                            '${"tournoi".tr()} #${currentItemAssociationList["matricule"]}',
-                            style: TextStyle(
-                                color: colorSelectText(
-                                    currentItemAssociationList[
-                                        "tournois_code"]),
-                                fontWeight: FontWeight.w800),
-                          ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 5,
+                      width: 55,
+                      decoration: BoxDecoration(
+                          // if (item["tournois_code"] == AppCubitStorage().state.codeTournois)
+                          color: Color.fromARGB(255, 20, 45, 99),
+                          borderRadius: BorderRadius.circular(50)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      child: Text(
+                        "vos_tournois".tr(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                          color: Color.fromARGB(255, 20, 45, 99),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: currentInfoAssociationCourant.length,
+                        itemBuilder: (context, index) {
+                          final currentItemAssociationList =
+                              currentInfoAssociationCourant[index];
+                          print(
+                              "aaaaaaaaaaaaaaaaaaaaaaaa ${currentInfoAssociationCourant[index]}");
+
+                          return GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await handleChangeTournoi(
+                                  currentItemAssociationList["tournois_code"]);
+                              setState(() {
+                                isLoading = false;
+                              });
+                            },
+                            child: Container(
+                              // margin: EdgeInsets.only(bottom: 10, right: 5, left: 5),
+                              // padding: EdgeInsets.all(10),
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 15, bottom: 15, left: 15),
+                                decoration: BoxDecoration(
+                                  color: colorSelect(currentItemAssociationList[
+                                      "tournois_code"]),
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                                margin: EdgeInsets.all(5),
+                                child: Text(
+                                  '${"tournoi".tr()} #${currentItemAssociationList["matricule"]}',
+                                  style: TextStyle(
+                                      color: colorSelectText(
+                                          currentItemAssociationList[
+                                              "tournois_code"]),
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 ),
-              )
+              ),
+              BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
+                  builder:
+                      (DetailTournoiCouranContext, DetailTournoiCouranState) {
+                if (DetailTournoiCouranState.isLoading == null ||
+                    DetailTournoiCouranState.isLoading == true)
+                  return Container(
+                    color: Color.fromARGB(91, 0, 0, 0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+
+                return isLoading
+                    ? Container(
+                        color: Color.fromARGB(91, 0, 0, 0),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Container();
+              }),
             ],
-          ),
-        );
+          );
+        });
       },
     );
   }
@@ -677,12 +716,13 @@ class Modal {
             ? Container(
                 // color: Colors.white,
                 color: Color.fromARGB(120, 226, 226, 226),
-                height: MediaQuery.of(context).size.height,
+                height: 350,
                 width: MediaQuery.of(context).size.width,
                 // padding: EdgeInsets.only(top: 10),
                 // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
                 child: Container(
                   margin: EdgeInsets.only(top: 7, right: 5, left: 5),
+
                   color: Colors.white,
                   child: Column(
                     children: [
@@ -807,7 +847,7 @@ class Modal {
           ),
         ),
         content: Container(
-          height: MediaQuery.of(context).size.height,
+          height: 450,
           width: MediaQuery.of(context).size.width,
           // padding: EdgeInsets.only(top: 10),
           color: Color.fromARGB(120, 226, 226, 226),
@@ -815,36 +855,52 @@ class Modal {
           child: Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                  itemCount: listSanction.length,
-                  itemBuilder: (context, index) {
-                    final itemLListSanction = listSanction[index];
+                child: listSanction.length > 0
+                    ? ListView.builder(
+                        itemCount: listSanction.length,
+                        itemBuilder: (context, index) {
+                          final itemLListSanction = listSanction[index];
 
-                    print("@@@@@@@@@@@@@ ${itemLListSanction}");
-                    return Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
-                        child: WidgetPersonSanctionner(
-                          motif: itemLListSanction["motif"],
-                          nom: itemLListSanction["membre"]["first_name"] == null
-                              ? ""
-                              : itemLListSanction["membre"]["first_name"],
-                          outilSanction: itemLListSanction["amount"]
-                                      .toString() ==
-                                  "null"
-                              ? itemLListSanction["libelle"]
-                              : "${formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()))} FCFA",
-                          photoProfil: itemLListSanction["membre"]
-                                      ["photo_profil"] ==
-                                  null
-                              ? ""
-                              : itemLListSanction["membre"]["photo_profil"],
-                          prenom:
-                              itemLListSanction["membre"]["last_name"] == null
-                                  ? ""
-                                  : itemLListSanction["membre"]["last_name"],
-                        ));
-                  },
-                ),
+                          print("@@@@@@@@@@@@@ ${itemLListSanction}");
+                          return Container(
+                              margin: EdgeInsets.only(left: 5, right: 5),
+                              child: WidgetPersonSanctionner(
+                                motif: itemLListSanction["motif"],
+                                nom: itemLListSanction["membre"]
+                                            ["first_name"] ==
+                                        null
+                                    ? ""
+                                    : itemLListSanction["membre"]["first_name"],
+                                outilSanction: itemLListSanction["amount"]
+                                            .toString() ==
+                                        "null"
+                                    ? itemLListSanction["libelle"]
+                                    : "${formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()))} FCFA",
+                                photoProfil: itemLListSanction["membre"]
+                                            ["photo_profil"] ==
+                                        null
+                                    ? ""
+                                    : itemLListSanction["membre"]
+                                        ["photo_profil"],
+                                prenom: itemLListSanction["membre"]
+                                            ["last_name"] ==
+                                        null
+                                    ? ""
+                                    : itemLListSanction["membre"]["last_name"],
+                              ));
+                        },
+                      )
+                    : Container(
+                        padding: EdgeInsets.only(top: 200),
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          "aucune_sanction".tr(),
+                          style: TextStyle(
+                              color: Color.fromRGBO(20, 45, 99, 0.26),
+                              fontWeight: FontWeight.w100,
+                              fontSize: 20),
+                        ),
+                      ),
               )
             ],
           ),
@@ -881,6 +937,7 @@ class Modal {
           ),
         ),
         content: Container(
+          height: 450,
           child: Column(
             children: [
               Container(
@@ -954,6 +1011,7 @@ class Modal {
                     child: TabBarView(
                       controller: tabController,
                       children: [
+                        listPrsent.length>0?
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0),
@@ -977,7 +1035,21 @@ class Modal {
                               ),
                             );
                           },
-                        ),
+                        ):ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 100),
+                                    alignment: Alignment.topCenter,
+                                    child: Icon(
+                                      Icons.playlist_remove,
+                                      size: 100,
+                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    ),
+                                  );
+                                },
+                              ),
+                              listAbs.length>0?
                         ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0),
@@ -1002,7 +1074,20 @@ class Modal {
                               ),
                             );
                           },
-                        ),
+                        ):ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 100),
+                                    alignment: Alignment.topCenter,
+                                    child: Icon(
+                                      Icons.playlist_add_check,
+                                      size: 100,
+                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    ),
+                                  );
+                                },
+                              ),
                         //  Text("2"),
                       ],
                     ),

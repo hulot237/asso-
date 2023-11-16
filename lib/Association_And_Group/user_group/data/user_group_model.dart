@@ -1,6 +1,4 @@
-import 'package:faroty_association_1/Association_And_Group/association/data/association_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/data/association_tontine_model.dart';
-import 'dart:convert';
 
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/association_tournoi_model.dart';
 

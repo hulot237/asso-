@@ -28,6 +28,7 @@ class DetailCotisationPage extends StatefulWidget {
     required this.isPassed,
     required this.type,
     required this.lienDePaiement,
+    required this.codeCotisation,
   });
   int montantCotisations;
   String motifCotisations;
@@ -40,6 +41,7 @@ class DetailCotisationPage extends StatefulWidget {
   String type;
   String lienDePaiement;
   int isPassed;
+  String codeCotisation;
 
   @override
   State<DetailCotisationPage> createState() => _DetailCotisationPageState();
@@ -83,9 +85,22 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
   int _pageIndex = 0;
   var Tab = [true, false, false, true, false, true];
 
-  // Map<String, dynamic>? get currentDetailCotisation {
-  //   return context.read<CotisationDetailCubit>().state.detailCotisation;
-  // }
+  Future<void> handleDetailCotisation(codeCotisation) async {
+    // final detailTournoiCourant = await context
+    //     .read<DetailTournoiCourantCubit>()
+    //     .detailTournoiCourantCubit();
+    final detailCotisation = await context
+        .read<CotisationDetailCubit>()
+        .detailCotisationCubit(codeCotisation);
+
+    if (detailCotisation != null) {
+      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
+      print(
+          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
+    } else {
+      print("userGroupDefault null");
+    }
+  }
 
   Future<void> handleAllCotisationAssTournoi(codeTournoi) async {
     final allCotisationAss = await context
@@ -97,6 +112,10 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
     } else {
       print("handleAllCotisationAss null");
     }
+  }
+
+  Future refresh() async {
+    handleDetailCotisation(widget.codeCotisation);
   }
 
   @override
@@ -393,20 +412,21 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                 );
                               },
                             )
-                          : Container(
-                              padding: EdgeInsets.only(top: 100),
-                              alignment: Alignment.topCenter,
-                              // child: Text(
-                              //   "personne_n'a_cotisé".tr(),
-                              //   style: TextStyle(
-                              //       color: Color.fromRGBO(20, 45, 99, 0.26),
-                              //       fontWeight: FontWeight.w100,
-                              //       fontSize: 20),
-                              // ),
-                              child: Icon(
-                                Icons.playlist_remove,
-                                size: 100,
-                                color: Color.fromRGBO(20, 45, 99, 0.26),
+                          : RefreshIndicator(
+                              onRefresh: refresh,
+                              child: ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 100),
+                                    alignment: Alignment.topCenter,
+                                    child: Icon(
+                                      Icons.playlist_remove,
+                                      size: 100,
+                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                     },
@@ -425,75 +445,88 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                               .state
                               .detailCotisation;
 
-                      return 
-                      
-                      currentDetailCotisation!["members"].length>0?
-                      ListView.builder(
-                        padding: EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        itemCount: currentDetailCotisation!["members"].length,
-                        itemBuilder: (context, index) {
-                          final currentDetailPersonNonCotis =
-                              currentDetailCotisation!["members"][index];
+                      return currentDetailCotisation!["members"].length > 0
+                          ? RefreshIndicator(
+                              onRefresh: refresh,
+                              child: ListView.builder(
+                                padding: EdgeInsets.all(0),
+                                shrinkWrap: true,
+                                itemCount:
+                                    currentDetailCotisation!["members"].length,
+                                itemBuilder: (context, index) {
+                                  final currentDetailPersonNonCotis =
+                                      currentDetailCotisation!["members"]
+                                          [index];
 
-                          return WidgetHistoriqueCotisation(
-                            is_versement_finished:
-                                currentDetailPersonNonCotis["membre"]
-                                                ["versement"]
-                                            .length ==
-                                        0
-                                    ? 0
-                                    : currentDetailPersonNonCotis["membre"]
-                                            ["versement"][0]
-                                        ["is_versement_finished"],
-                            matricule: currentDetailPersonNonCotis["membre"]
-                                        ["matricule"] ==
-                                    null
-                                ? ""
-                                : currentDetailPersonNonCotis["membre"]
-                                    ["matricule"],
-                            montantTotalAVerser:
-                                currentDetailPersonNonCotis["membre"]
-                                                ["versement"]
-                                            .length ==
-                                        0
-                                    ? "0"
-                                    : currentDetailPersonNonCotis["membre"]
-                                        ["versement"][0]["source_amount"],
-                            montantVersee: currentDetailPersonNonCotis["membre"]
-                                            ["versement"]
-                                        .length ==
-                                    0
-                                ? "0"
-                                : currentDetailPersonNonCotis["membre"]
-                                    ["versement"][0]["balance_after"],
-                            nom: currentDetailPersonNonCotis["membre"]
-                                        ["first_name"] ==
-                                    null
-                                ? ""
-                                : currentDetailPersonNonCotis["membre"]
-                                    ["first_name"],
-                            photoProfil: currentDetailPersonNonCotis["membre"]
-                                        ["photo_profil"] ==
-                                    null
-                                ? ""
-                                : currentDetailPersonNonCotis["membre"]
-                                    ["photo_profil"],
-                            prenom: currentDetailPersonNonCotis["membre"]
-                                        ["last_name"] ==
-                                    null
-                                ? ""
-                                : currentDetailPersonNonCotis["membre"]
-                                    ["last_name"],
-                          );
-                        },
-                      ):Container(
-                              padding: EdgeInsets.only(top: 100),
-                              alignment: Alignment.topCenter,
-                              child: Icon(
-                                Icons.playlist_add_check,
-                                size: 100,
-                                color: Color.fromRGBO(20, 45, 99, 0.26),
+                                  return WidgetHistoriqueCotisation(
+                                    is_versement_finished:
+                                        currentDetailPersonNonCotis["membre"]
+                                                        ["versement"]
+                                                    .length ==
+                                                0
+                                            ? 0
+                                            : currentDetailPersonNonCotis[
+                                                    "membre"]["versement"][0]
+                                                ["is_versement_finished"],
+                                    matricule: currentDetailPersonNonCotis[
+                                                "membre"]["matricule"] ==
+                                            null
+                                        ? ""
+                                        : currentDetailPersonNonCotis["membre"]
+                                            ["matricule"],
+                                    montantTotalAVerser:
+                                        currentDetailPersonNonCotis["membre"]
+                                                        ["versement"]
+                                                    .length ==
+                                                0
+                                            ? "0"
+                                            : currentDetailPersonNonCotis[
+                                                    "membre"]["versement"][0]
+                                                ["source_amount"],
+                                    montantVersee: currentDetailPersonNonCotis[
+                                                    "membre"]["versement"]
+                                                .length ==
+                                            0
+                                        ? "0"
+                                        : currentDetailPersonNonCotis["membre"]
+                                            ["versement"][0]["balance_after"],
+                                    nom: currentDetailPersonNonCotis["membre"]
+                                                ["first_name"] ==
+                                            null
+                                        ? ""
+                                        : currentDetailPersonNonCotis["membre"]
+                                            ["first_name"],
+                                    photoProfil: currentDetailPersonNonCotis[
+                                                "membre"]["photo_profil"] ==
+                                            null
+                                        ? ""
+                                        : currentDetailPersonNonCotis["membre"]
+                                            ["photo_profil"],
+                                    prenom: currentDetailPersonNonCotis[
+                                                "membre"]["last_name"] ==
+                                            null
+                                        ? ""
+                                        : currentDetailPersonNonCotis["membre"]
+                                            ["last_name"],
+                                  );
+                                },
+                              ),
+                            )
+                          : RefreshIndicator(
+                              onRefresh: refresh,
+                              child: ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 100),
+                                    alignment: Alignment.topCenter,
+                                    child: Icon(
+                                      Icons.playlist_add_check,
+                                      size: 100,
+                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                     },

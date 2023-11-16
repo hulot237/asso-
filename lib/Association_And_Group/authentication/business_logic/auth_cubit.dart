@@ -9,26 +9,25 @@ class AuthCubit extends Cubit<AuthState> {
             detailUser: null,
             loginInfo: null,
             isLoading: false,
+            isLoadingDetailUser: false,
             isTrueNomber: null,
           ),
         );
 
   Future<bool> detailAuthCubit(userCode) async {
-    emit(state.copyWith(isloading: true));
+    emit(state.copyWith(isloadingdetailuser: true, isloading: true));
     try {
       final data = await AuthRepository().UserDetail(userCode);
 
       if (data != null) {
-        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-        // print("data in cubit ${data.length}");
-
         emit(
           state.copyWith(
-              detailuser: data,
-              logininfo: state.loginInfo,
-              isloading: false,
-              istruenomber: state.isTrueNomber),
+            detailuser: data,
+            logininfo: state.loginInfo,
+            isloading: false,
+            istruenomber: state.isTrueNomber,
+            isloadingdetailuser: false,
+          ),
         );
 
         print("detailAuthCubit Cubit ok");
@@ -36,27 +35,31 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         emit(
           state.copyWith(
-              detailuser: {},
-              logininfo: state.loginInfo,
-              isloading: false,
-              istruenomber: state.isTrueNomber),
+            detailuser: {},
+            logininfo: state.loginInfo,
+            isloading: false,
+            istruenomber: state.isTrueNomber,
+            isloadingdetailuser: false,
+          ),
         );
         return false;
       }
     } catch (e) {
       emit(
         state.copyWith(
-            detailuser: {},
-            logininfo: state.loginInfo,
-            isloading: false,
-            istruenomber: state.isTrueNomber),
+          detailuser: {},
+          logininfo: state.loginInfo,
+          isloading: false,
+          istruenomber: state.isTrueNomber,
+          isloadingdetailuser: false,
+        ),
       );
       return false;
     }
   }
 
   Future<bool> ConfirmationCubit(codeConfirmation) async {
-    emit(state.copyWith(isloading: true));
+    emit(state.copyWith(isloading: true, isloadingdetailuser: false));
     try {
       final data =
           await AuthRepository().ConfirmationRepository(codeConfirmation);
@@ -64,10 +67,12 @@ class AuthCubit extends Cubit<AuthState> {
       if (data != null) {
         emit(
           state.copyWith(
-              logininfo: data,
-              detailuser: state.detailUser,
-              isloading: false,
-              istruenomber: state.isTrueNomber),
+            logininfo: data,
+            detailuser: state.detailUser,
+            isloading: false,
+            istruenomber: state.isTrueNomber,
+            isloadingdetailuser: false,
+          ),
         );
 
         print("detailAuthCubittttttttttttttttttt Cubit ok");
@@ -75,27 +80,34 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         emit(
           state.copyWith(
-              logininfo: {},
-              detailuser: state.detailUser,
-              isloading: false,
-              istruenomber: state.isTrueNomber),
+            logininfo: {},
+            detailuser: state.detailUser,
+            isloading: false,
+            istruenomber: state.isTrueNomber,
+            isloadingdetailuser: false,
+          ),
         );
         return false;
       }
     } catch (e) {
       emit(
         state.copyWith(
-            logininfo: {},
-            detailuser: state.detailUser,
-            isloading: false,
-            istruenomber: state.isTrueNomber),
+          logininfo: {},
+          detailuser: state.detailUser,
+          isloading: false,
+          istruenomber: state.isTrueNomber,
+          isloadingdetailuser: false,
+        ),
       );
       return false;
     }
   }
 
   Future<bool> loginFirstCubit(phoneNumber) async {
-    emit(state.copyWith(isloading: true));
+    emit(state.copyWith(
+      isloading: true,
+      isloadingdetailuser: false,
+    ));
     try {
       final data = await AuthRepository().LoginRepository(phoneNumber);
 
@@ -106,6 +118,7 @@ class AuthCubit extends Cubit<AuthState> {
             logininfo: state.loginInfo,
             detailuser: state.detailUser,
             isloading: false,
+            isloadingdetailuser: false,
           ),
         );
 
@@ -118,6 +131,7 @@ class AuthCubit extends Cubit<AuthState> {
             detailuser: state.detailUser,
             istruenomber: true,
             isloading: false,
+            isloadingdetailuser: false,
           ),
         );
         return false;
@@ -129,6 +143,7 @@ class AuthCubit extends Cubit<AuthState> {
           detailuser: state.detailUser,
           istruenomber: true,
           isloading: false,
+          isloadingdetailuser: false,
         ),
       );
       return false;

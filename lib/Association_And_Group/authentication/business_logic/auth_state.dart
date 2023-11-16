@@ -5,12 +5,14 @@ class AuthState extends Equatable {
   final Map<String, dynamic>? loginInfo;
   final bool isLoading;
   final bool? isTrueNomber;
+  final bool?isLoadingDetailUser;
 
   AuthState({
     this.detailUser,
     this.loginInfo,
     this.isLoading = false,
     this.isTrueNomber,
+    this.isLoadingDetailUser,
   });
 
   @override
@@ -19,6 +21,7 @@ class AuthState extends Equatable {
         loginInfo,
         isLoading,
         isTrueNomber,
+        isLoadingDetailUser,
       ];
 
   AuthState copyWith({
@@ -27,13 +30,14 @@ class AuthState extends Equatable {
     Map<String, dynamic>? logininfo,
     required bool isloading,
     bool? istruenomber,
+    required bool isloadingdetailuser,
   }) {
     return AuthState(
       detailUser: detailuser,
       loginInfo: logininfo,
       isLoading: isloading,
       isTrueNomber: istruenomber,
-
+isLoadingDetailUser: isloadingdetailuser,
     );
   }
 }

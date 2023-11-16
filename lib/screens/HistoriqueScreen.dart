@@ -76,7 +76,10 @@ Widget PageScaffold({
   );
 }
 
-class _HistoriqueScreenState extends State<HistoriqueScreen> {
+class _HistoriqueScreenState extends State<HistoriqueScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   Future<void> handleAllCotisationAssTournoi(codeTournoi) async {
     final allCotisationAss = await context
         .read<CotisationCubit>()
@@ -123,30 +126,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
       print("userGroupDefault null");
     }
   }
-
-  // Map<String, dynamic>? get currentDetailUser {
-  //   return context.read<AuthCubit>().state.detailUser;
-  // }
-  // final currentDetailUser = context.read<AuthCubit>().state.detailUser;
-
-  // final currentDetailUser = context.read<AuthCubit>().state.detailUser;
-
-  // Map<String, dynamic>? get currentDetailtournoiCourant {
-  //   return context.read<DetailTournoiCourantCubit>().state.detailtournoiCourant;
-  // }
-
-  // Future<void> handleDetailUser(userCode) async {
-  //   final allCotisationAss =
-  //       await context.read<AuthCubit>().detailAuthCubit(userCode);
-
-  //   if (allCotisationAss != null) {
-  //     print("objec===============tttddddddddddddddddddd  ${allCotisationAss}");
-  //     print(
-  //         "éé22==============ssssssssssssssssssssssssss=222ddddddddddddddddddddddddddddd  ${context.read<AuthCubit>().state.detailUser}");
-  //   } else {
-  //     print("handleDetailUser null");
-  //   }
-  // }
 
   Future<void> handleDetailTontine(codeTournoi, codeTontine) async {
     final detailTontine = await context
@@ -195,6 +174,14 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
     handleAllSeanceAss(AppCubitStorage().state.codeAssDefaul);
     // handleChangeAss(AppCubitStorage().state.codeAssDefaul);
+  }
+
+  Future refresh() async {
+    handleTournoiDefault();
+    // handleAllUserGroup();
+    handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois);
+    handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+    handleAllSeanceAss(AppCubitStorage().state.codeAssDefaul);
   }
 
   List<Color> listeDeCouleurs = [
@@ -275,10 +262,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(360),
                           ),
-                          // height: 30,
-                          // width: 30,
                           child: Image.network(
-                            // "zz",
                             "${Variables.LienAIP}${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"]}",
                             fit: BoxFit.cover,
                           ),
@@ -287,9 +271,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                     ),
                   ),
                 ),
-                //   WidgetActionAppBArChangeAss(
-                //     ListAss: context.read<UserGroupCubit>().state.userGroup,
-                //   ),
               ],
               elevation: 0,
               backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
@@ -388,74 +369,80 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                             ? Expanded(
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.all(0),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        currentDetailtournoiCourant["tournois"]
-                                                ["seance"]
-                                            .length,
-                                    itemBuilder: (context, index) {
-                                      final itemSeance =
-                                          currentDetailtournoiCourant[
-                                              "tournois"]["seance"][index];
+                                  child: RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.all(0),
+                                      shrinkWrap: true,
+                                      itemCount: currentDetailtournoiCourant[
+                                              "tournois"]["seance"]
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        final itemSeance =
+                                            currentDetailtournoiCourant[
+                                                "tournois"]["seance"][index];
 
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                            left: 7,
-                                            right: 7,
-                                            top: 3,
-                                            bottom: 7),
-                                        child: WidgetRencontreCard(
-                                          codeSeance: itemSeance["seance_code"],
-                                          photoProfilRecepteur: "",
-                                          dateRencontre: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatDateToFrench(
-                                                  itemSeance["date_seance"])
-                                              : formatDateToEnglish(
-                                                  itemSeance["date_seance"]),
-                                          descriptionRencontre:
-                                              'Le rencontre du ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemSeance["date_seance"]) : formatDateToEnglish(itemSeance["date_seance"])} se tiendra à ${itemSeance["heure_debut"]}',
-                                          heureRencontre:
-                                              itemSeance["heure_debut"],
-                                          identifiantRencontre:
-                                              itemSeance["matricule"],
-                                          lieuRencontre:
-                                              itemSeance["localisation"],
-                                          nomRecepteurRencontre:
-                                              itemSeance["membre"]
-                                                          ["first_name"] ==
-                                                      null
-                                                  ? ""
-                                                  : itemSeance["membre"]
-                                                      ["first_name"],
-                                          isActiveRencontre:
-                                              itemSeance["status"],
-                                          prenomRecepteurRencontre:
-                                              itemSeance["membre"]
-                                                          ["last_name"] ==
-                                                      null
-                                                  ? ""
-                                                  : itemSeance["membre"]
-                                                      ["last_name"],
-                                        ),
-                                      );
-                                    },
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              left: 7,
+                                              right: 7,
+                                              top: 3,
+                                              bottom: 7),
+                                          child: WidgetRencontreCard(
+                                            codeSeance:
+                                                itemSeance["seance_code"],
+                                            photoProfilRecepteur: "",
+                                            dateRencontre: AppCubitStorage()
+                                                        .state
+                                                        .Language ==
+                                                    "fr"
+                                                ? formatDateToFrench(
+                                                    itemSeance["date_seance"])
+                                                : formatDateToEnglish(
+                                                    itemSeance["date_seance"]),
+                                            descriptionRencontre:
+                                                'Le rencontre du ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemSeance["date_seance"]) : formatDateToEnglish(itemSeance["date_seance"])} se tiendra à ${itemSeance["heure_debut"]}',
+                                            heureRencontre:
+                                                itemSeance["heure_debut"],
+                                            identifiantRencontre:
+                                                itemSeance["matricule"],
+                                            lieuRencontre:
+                                                itemSeance["localisation"],
+                                            nomRecepteurRencontre:
+                                                itemSeance["membre"]
+                                                            ["first_name"] ==
+                                                        null
+                                                    ? ""
+                                                    : itemSeance["membre"]
+                                                        ["first_name"],
+                                            isActiveRencontre:
+                                                itemSeance["status"],
+                                            prenomRecepteurRencontre:
+                                                itemSeance["membre"]
+                                                            ["last_name"] ==
+                                                        null
+                                                    ? ""
+                                                    : itemSeance["membre"]
+                                                        ["last_name"],
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               )
-                            : Container(
-                                padding: EdgeInsets.only(top: 200),
-                                alignment: Alignment.topCenter,
-                                child: Text(
-                                  "aucune_rencontre".tr(),
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
-                                      fontWeight: FontWeight.w100,
-                                      fontSize: 20),
+                            : RefreshIndicator(
+                                onRefresh: refresh,
+                                child: Container(
+                                  padding: EdgeInsets.only(top: 200),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "aucune_rencontre".tr(),
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20),
+                                  ),
                                 ),
                               );
                       }),
@@ -507,109 +494,117 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                               ? Expanded(
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.all(0),
-                                      shrinkWrap: true,
-                                      itemCount: currentDetailtournoiCourant[
-                                              "tontines"]
-                                          .length,
-                                      itemBuilder: (context, index) {
-                                        print(currentDetailtournoiCourant[
-                                            "tontines"]);
-                                        final itemTontine =
-                                            currentDetailtournoiCourant[
-                                                "tontines"][index];
+                                    child: RefreshIndicator(
+                                      onRefresh: refresh,
+                                      child: ListView.builder(
+                                        padding: EdgeInsets.all(0),
+                                        shrinkWrap: true,
+                                        itemCount: currentDetailtournoiCourant[
+                                                "tontines"]
+                                            .length,
+                                        itemBuilder: (context, index) {
+                                          print(currentDetailtournoiCourant[
+                                              "tontines"]);
+                                          final itemTontine =
+                                              currentDetailtournoiCourant[
+                                                  "tontines"][index];
 
-                                        for (var item in itemTontine["membres"])
-                                          if (item["membre"]["membre_code"] ==
-                                              AppCubitStorage()
-                                                  .state
-                                                  .membreCode)
-                                            return GestureDetector(
-                                              onTap: () {
-                                                handleDetailTontine(
-                                                    AppCubitStorage()
-                                                        .state
-                                                        .codeTournois,
-                                                    itemTontine[
-                                                        "tontine_code"]);
-
-                                                print(
-                                                    "${itemTontine["tontine_code"]}");
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DetailTontinePage(
-                                                      isActive: itemTontine[
-                                                          "is_active"],
-                                                      dateCreaTontine: AppCubitStorage()
-                                                                  .state
-                                                                  .Language ==
-                                                              "fr"
-                                                          ? formatDateToFrench(
-                                                              itemTontine[
-                                                                  "created_at"])
-                                                          : formatDateToEnglish(
-                                                              itemTontine[
-                                                                  "created_at"]),
-                                                      nomTontine:
-                                                          "${itemTontine["libele"]}",
-                                                      montantTontine:
-                                                          "${itemTontine["amount"]}",
-                                                      positionBeneficiaire: "0",
-                                                      nbrMembreTontine:
-                                                          "${itemTontine["membres"].length}",
-                                                      listMembre: itemTontine[
-                                                          "membres"],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 7,
-                                                    right: 7,
-                                                    top: 3,
-                                                    bottom: 7),
-                                                child:
-                                                    widgetTontineHistoriqueCard(
-                                                  isActive:
-                                                      itemTontine["is_active"],
-                                                  dateCreaTontine:
+                                          for (var item
+                                              in itemTontine["membres"])
+                                            if (item["membre"]["membre_code"] ==
+                                                AppCubitStorage()
+                                                    .state
+                                                    .membreCode)
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  handleDetailTontine(
                                                       AppCubitStorage()
-                                                                  .state
-                                                                  .Language ==
-                                                              "fr"
-                                                          ? formatDateToFrench(
-                                                              itemTontine[
-                                                                  "created_at"])
-                                                          : formatDateToEnglish(
-                                                              itemTontine[
-                                                                  "created_at"]),
-                                                  nomTontine:
-                                                      "${itemTontine["libele"]}",
-                                                  montantTontine:
-                                                      "${itemTontine["amount"]}",
-                                                  positionBeneficiaire: "0",
-                                                  nbrMembreTontine:
-                                                      "${itemTontine["membres"].length}",
+                                                          .state
+                                                          .codeTournois,
+                                                      itemTontine[
+                                                          "tontine_code"]);
+
+                                                  print(
+                                                      "${itemTontine["tontine_code"]}");
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailTontinePage(
+                                                        isActive: itemTontine[
+                                                            "is_active"],
+                                                        dateCreaTontine: AppCubitStorage()
+                                                                    .state
+                                                                    .Language ==
+                                                                "fr"
+                                                            ? formatDateToFrench(
+                                                                itemTontine[
+                                                                    "created_at"])
+                                                            : formatDateToEnglish(
+                                                                itemTontine[
+                                                                    "created_at"]),
+                                                        nomTontine:
+                                                            "${itemTontine["libele"]}",
+                                                        montantTontine:
+                                                            "${itemTontine["amount"]}",
+                                                        positionBeneficiaire:
+                                                            "${itemTontine["membres"].where((objet) => objet["is_passed"] == 1).length}",
+                                                        nbrMembreTontine:
+                                                            "${itemTontine["membres"].length}",
+                                                        listMembre: itemTontine[
+                                                            "membres"],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 7,
+                                                      right: 7,
+                                                      top: 3,
+                                                      bottom: 7),
+                                                  child:
+                                                      widgetTontineHistoriqueCard(
+                                                    isActive: itemTontine[
+                                                        "is_active"],
+                                                    dateCreaTontine: AppCubitStorage()
+                                                                .state
+                                                                .Language ==
+                                                            "fr"
+                                                        ? formatDateToFrench(
+                                                            itemTontine[
+                                                                "created_at"])
+                                                        : formatDateToEnglish(
+                                                            itemTontine[
+                                                                "created_at"]),
+                                                    nomTontine:
+                                                        "${itemTontine["libele"]}",
+                                                    montantTontine:
+                                                        "${itemTontine["amount"]}",
+                                                    positionBeneficiaire: "0",
+                                                    nbrMembreTontine:
+                                                        "${itemTontine["membres"].length}",
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                      },
+                                              );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 )
-                              : Container(
-                                  padding: EdgeInsets.only(top: 200),
-                                  alignment: Alignment.topCenter,
-                                  child: Text(
-                                    "Aucune tontine",
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(20, 45, 99, 0.26),
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 20),
+                              : RefreshIndicator(
+                                  onRefresh: refresh,
+                                  child: Container(
+                                    padding: EdgeInsets.only(top: 200),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "Aucune tontine",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(20, 45, 99, 0.26),
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 20),
+                                    ),
                                   ),
                                 );
                         }),
@@ -660,69 +655,87 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
 
                           return objetCotisationUniquement.length > 0
                               ? Expanded(
-                                child: ListView.builder(
-                                    itemCount: objetCotisationUniquement.length,
-                                    // physics: NeverScrollableScrollPhysics(),
-                                    padding: EdgeInsets.all(0),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      final ItemDetailCotisation =
-                                          objetCotisationUniquement[index];
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                            left: 7, right: 7, top: 3, bottom: 7),
-                                        child: WidgetCotisation(
-                                          montantCotisations:
-                                              ItemDetailCotisation["amount"],
-                                          motifCotisations:
-                                              ItemDetailCotisation["name"],
-                                          dateCotisation:
-                                              AppCubitStorage().state.Language ==
-                                                      "fr"
-                                                  ? formatDateToFrench(
-                                                      ItemDetailCotisation[
-                                                          "start_date"])
-                                                  : formatDateToEnglish(
-                                                      ItemDetailCotisation[
-                                                          "start_date"]),
-                                          heureCotisation:
-                                              AppCubitStorage().state.Language ==
-                                                      "fr"
-                                                  ? formatTimeToFrench(
-                                                      ItemDetailCotisation[
-                                                          "start_date"])
-                                                  : formatTimeToEnglish(
-                                                      ItemDetailCotisation[
-                                                          "start_date"]),
-                                          soldeCotisation: ItemDetailCotisation[
-                                              "cotisation_balance"],
-                                          contributionOneUser: "2",
-                                          nbreParticipant: 23,
-                                          nbreParticipantCotisationOK: 11,
-                                          codeCotisation: ItemDetailCotisation[
-                                              "cotisation_code"],
-                                          type: ItemDetailCotisation["type"],
-                                          lienDePaiement: ItemDetailCotisation[
-                                              "cotisation_pay_link"]==null? "le lien n'a pas été généré":ItemDetailCotisation[
-                                              "cotisation_pay_link"],
-                                          is_passed:
-                                              ItemDetailCotisation["is_passed"],
-                                          is_tontine:
-                                              ItemDetailCotisation["is_tontine"],
-                                        ),
-                                      );
-                                    },
+                                  child: RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.builder(
+                                      itemCount:
+                                          objetCotisationUniquement.length,
+                                      // physics: NeverScrollableScrollPhysics(),
+                                      padding: EdgeInsets.all(0),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        final ItemDetailCotisation =
+                                            objetCotisationUniquement[index];
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              left: 7,
+                                              right: 7,
+                                              top: 3,
+                                              bottom: 7),
+                                          child: WidgetCotisation(
+                                            montantCotisations:
+                                                ItemDetailCotisation["amount"],
+                                            motifCotisations:
+                                                ItemDetailCotisation["name"],
+                                            dateCotisation: AppCubitStorage()
+                                                        .state
+                                                        .Language ==
+                                                    "fr"
+                                                ? formatDateToFrench(
+                                                    ItemDetailCotisation[
+                                                        "start_date"])
+                                                : formatDateToEnglish(
+                                                    ItemDetailCotisation[
+                                                        "start_date"]),
+                                            heureCotisation: AppCubitStorage()
+                                                        .state
+                                                        .Language ==
+                                                    "fr"
+                                                ? formatTimeToFrench(
+                                                    ItemDetailCotisation[
+                                                        "start_date"])
+                                                : formatTimeToEnglish(
+                                                    ItemDetailCotisation[
+                                                        "start_date"]),
+                                            soldeCotisation:
+                                                ItemDetailCotisation[
+                                                    "cotisation_balance"],
+                                            contributionOneUser: "2",
+                                            nbreParticipant: 23,
+                                            nbreParticipantCotisationOK: 11,
+                                            codeCotisation:
+                                                ItemDetailCotisation[
+                                                    "cotisation_code"],
+                                            type: ItemDetailCotisation["type"],
+                                            lienDePaiement: ItemDetailCotisation[
+                                                        "cotisation_pay_link"] ==
+                                                    null
+                                                ? "le lien n'a pas été généré"
+                                                : ItemDetailCotisation[
+                                                    "cotisation_pay_link"],
+                                            is_passed: ItemDetailCotisation[
+                                                "is_passed"],
+                                            is_tontine: ItemDetailCotisation[
+                                                "is_tontine"],
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
-                              )
-                              : Container(
-                                  padding: EdgeInsets.only(top: 100),
-                                  alignment: Alignment.topCenter,
-                                  child: Text(
-                                    "aucune_cotisation".tr(),
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(20, 45, 99, 0.26),
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 20),
+                                )
+                              : RefreshIndicator(
+                                  onRefresh: refresh,
+                                  child: Container(
+                                    padding: EdgeInsets.only(top: 100),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "aucune_cotisation".tr(),
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(20, 45, 99, 0.26),
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 20),
+                                    ),
                                   ),
                                 );
                         },
@@ -768,221 +781,235 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                             ? Expanded(
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.all(0),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        currentDetailUser!["sanctions"].length,
-                                    itemBuilder: (context, index) {
-                                      final ItemDetailUserSanction =
-                                          currentDetailUser!["sanctions"]
-                                              [index];
+                                  child: RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.all(0),
+                                      shrinkWrap: true,
+                                      itemCount: currentDetailUser!["sanctions"]
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        final ItemDetailUserSanction =
+                                            currentDetailUser!["sanctions"]
+                                                [index];
 
-                                      if (ItemDetailUserSanction["type"] ==
-                                              "1" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              0 &&
-                                          ItemDetailUserSanction[
-                                                  "association_seance_id"] ==
-                                              null) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionNonPayeeIsMoney(
-                                            versement: ItemDetailUserSanction[
-                                                "versement"],
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            montantPayeeSanction:
-                                                ItemDetailUserSanction[
-                                                    "sanction_balance"],
-                                            montantSanction:
-                                                ItemDetailUserSanction["amount"]
-                                                    .toString(),
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                            lienPaiement: ItemDetailUserSanction[
-                                                        "sanction_pay_link"] ==
-                                                    null
-                                                ? " "
-                                                : ItemDetailUserSanction[
-                                                    "sanction_pay_link"],
-                                          ),
-                                        );
-                                      } else if (ItemDetailUserSanction[
-                                                  "type"] ==
-                                              "0" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              0 &&
-                                          ItemDetailUserSanction[
-                                                  "association_seance_id"] ==
-                                              null) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionNonPayeeIsOther(
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            objetSanction:
-                                                ItemDetailUserSanction[
-                                                    "libelle"],
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                          ),
-                                        );
-                                      } else if (ItemDetailUserSanction[
-                                                  "type"] ==
-                                              "1" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              1 &&
-                                          ItemDetailUserSanction[
-                                                  "association_seance_id"] ==
-                                              null) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionPayeeIsMoney(
-                                            versement: ItemDetailUserSanction[
-                                                "versement"],
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            montantPayeeSanction:
-                                                ItemDetailUserSanction[
-                                                    "sanction_balance"],
-                                            montantSanction:
-                                                ItemDetailUserSanction["amount"]
-                                                    .toString(),
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                          ),
-                                        );
-                                      } else if (ItemDetailUserSanction[
-                                                  "type"] ==
-                                              "0" &&
-                                          ItemDetailUserSanction[
-                                                  "is_sanction_payed"] ==
-                                              1 &&
-                                          ItemDetailUserSanction[
-                                                  "association_seance_id"] ==
-                                              null) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanctionPayeeIsOther(
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    ItemDetailUserSanction[
-                                                        "start_date"]),
-                                            motifSanction:
-                                                ItemDetailUserSanction["motif"],
-                                            objetSanction:
-                                                ItemDetailUserSanction[
-                                                    "libelle"],
-                                          ),
-                                        );
-                                      } else {
-                                        return Center(
-                                            // child: Text("aucune_sanction".tr()),
-                                            );
-                                      }
-                                    },
+                                        if (ItemDetailUserSanction["type"] ==
+                                                "1" &&
+                                            ItemDetailUserSanction[
+                                                    "is_sanction_payed"] ==
+                                                0 &&
+                                            ItemDetailUserSanction[
+                                                    "association_seance_id"] ==
+                                                null) {
+                                          return Container(
+                                            margin: EdgeInsets.only(
+                                                left: 7,
+                                                right: 7,
+                                                top: 3,
+                                                bottom: 7),
+                                            child:
+                                                WidgetSanctionNonPayeeIsMoney(
+                                              versement: ItemDetailUserSanction[
+                                                  "versement"],
+                                              dateSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatDateToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              heureSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatTimeToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatTimeToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              montantPayeeSanction:
+                                                  ItemDetailUserSanction[
+                                                      "sanction_balance"],
+                                              montantSanction:
+                                                  ItemDetailUserSanction[
+                                                          "amount"]
+                                                      .toString(),
+                                              motifSanction:
+                                                  ItemDetailUserSanction[
+                                                      "motif"],
+                                              lienPaiement: ItemDetailUserSanction[
+                                                          "sanction_pay_link"] ==
+                                                      null
+                                                  ? " "
+                                                  : ItemDetailUserSanction[
+                                                      "sanction_pay_link"],
+                                            ),
+                                          );
+                                        } else if (ItemDetailUserSanction[
+                                                    "type"] ==
+                                                "0" &&
+                                            ItemDetailUserSanction[
+                                                    "is_sanction_payed"] ==
+                                                0 &&
+                                            ItemDetailUserSanction[
+                                                    "association_seance_id"] ==
+                                                null) {
+                                          return Container(
+                                            margin: EdgeInsets.only(
+                                                left: 7,
+                                                right: 7,
+                                                top: 3,
+                                                bottom: 7),
+                                            child:
+                                                WidgetSanctionNonPayeeIsOther(
+                                              dateSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatDateToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              heureSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatTimeToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatTimeToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              objetSanction:
+                                                  ItemDetailUserSanction[
+                                                      "libelle"],
+                                              motifSanction:
+                                                  ItemDetailUserSanction[
+                                                      "motif"],
+                                            ),
+                                          );
+                                        } else if (ItemDetailUserSanction[
+                                                    "type"] ==
+                                                "1" &&
+                                            ItemDetailUserSanction[
+                                                    "is_sanction_payed"] ==
+                                                1 &&
+                                            ItemDetailUserSanction[
+                                                    "association_seance_id"] ==
+                                                null) {
+                                          return Container(
+                                            margin: EdgeInsets.only(
+                                                left: 7,
+                                                right: 7,
+                                                top: 3,
+                                                bottom: 7),
+                                            child: WidgetSanctionPayeeIsMoney(
+                                              versement: ItemDetailUserSanction[
+                                                  "versement"],
+                                              dateSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatDateToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              heureSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatTimeToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatTimeToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              montantPayeeSanction:
+                                                  ItemDetailUserSanction[
+                                                      "sanction_balance"],
+                                              montantSanction:
+                                                  ItemDetailUserSanction[
+                                                          "amount"]
+                                                      .toString(),
+                                              motifSanction:
+                                                  ItemDetailUserSanction[
+                                                      "motif"],
+                                            ),
+                                          );
+                                        } else if (ItemDetailUserSanction[
+                                                    "type"] ==
+                                                "0" &&
+                                            ItemDetailUserSanction[
+                                                    "is_sanction_payed"] ==
+                                                1 &&
+                                            ItemDetailUserSanction[
+                                                    "association_seance_id"] ==
+                                                null) {
+                                          return Container(
+                                            margin: EdgeInsets.only(
+                                                left: 7,
+                                                right: 7,
+                                                top: 3,
+                                                bottom: 7),
+                                            child: WidgetSanctionPayeeIsOther(
+                                              dateSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatDateToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              heureSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatTimeToFrench(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"])
+                                                  : formatTimeToEnglish(
+                                                      ItemDetailUserSanction[
+                                                          "start_date"]),
+                                              motifSanction:
+                                                  ItemDetailUserSanction[
+                                                      "motif"],
+                                              objetSanction:
+                                                  ItemDetailUserSanction[
+                                                      "libelle"],
+                                            ),
+                                          );
+                                        } else {
+                                          return Center(
+                                            child: Text("aucune_sanction".tr()),
+                                          );
+                                        }
+                                      },
+                                    ),
                                   ),
                                 ),
                               )
-                            : Container(
-                                padding: EdgeInsets.only(top: 200),
-                                alignment: Alignment.topCenter,
-                                child: Text(
-                                  "aucune_sanction".tr(),
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
-                                      fontWeight: FontWeight.w100,
-                                      fontSize: 20),
+                            : RefreshIndicator(
+                                onRefresh: refresh,
+                                child: Container(
+                                  padding: EdgeInsets.only(top: 200),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "aucune_sanction".tr(),
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20),
+                                  ),
                                 ),
                               );
                       }),
@@ -1030,28 +1057,31 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
                           };
                         }).toList();
                         return Expanded(
-                          child: SingleChildScrollView(
-                            child: Container(
-                              child: Wrap(
-                                alignment: WrapAlignment.spaceBetween,
-                                children: [
-                                  for (var item in comptePlusColor)
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        bottom: 7,
-                                        right: 5,
-                                        top: 5,
-                                        left: 5,
+                          child: RefreshIndicator(
+                            onRefresh: refresh,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                child: Wrap(
+                                  alignment: WrapAlignment.spaceBetween,
+                                  children: [
+                                    for (var item in comptePlusColor)
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                          bottom: 7,
+                                          right: 5,
+                                          top: 5,
+                                          left: 5,
+                                        ),
+                                        child: WidgetCompteCard(
+                                          montantCompte:
+                                              "${int.parse(item["balance"]) + int.parse(item["faroti_balance"])}",
+                                          nomCompte: item["name"],
+                                          numeroCompte: item["id"].toString(),
+                                          couleur: item["color"],
+                                        ),
                                       ),
-                                      child: WidgetCompteCard(
-                                        montantCompte:
-                                            "${int.parse(item["balance"]) + int.parse(item["faroti_balance"])}",
-                                        nomCompte: item["name"],
-                                        numeroCompte: item["id"].toString(),
-                                        couleur: item["color"],
-                                      ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),

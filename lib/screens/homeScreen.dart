@@ -173,6 +173,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
   }
 
+    Future refresh() async {
+    handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois);
+  }
+
   var Tab = [true, false, false, true, false, true, 'expi', 'expi'];
 
   @override
@@ -428,6 +432,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
                   SliverToBoxAdapter(
+                    
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 2,
@@ -451,45 +456,56 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                               List<dynamic> objetCotisationUniquement = currentAllCotisationAssTournoi!.where((objet) => objet["is_tontine"] == 0).toList();
                               return objetCotisationUniquement.length > 0
-                                  ? ListView.builder(
-                                      itemCount: objetCotisationUniquement.length,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      padding: EdgeInsets.all(0),
-                                      itemBuilder: (BuildContext context, int index) {
-                                        final ItemDetailCotisation = objetCotisationUniquement[index];
-
-                                        return Container(
-                                          margin: EdgeInsets.only(left: 7, right: 7, top: 3, bottom: 7),
-                                          child: WidgetCotisation(
-                                            montantCotisations: ItemDetailCotisation["amount"],
-                                            motifCotisations: ItemDetailCotisation["name"],
-                                            dateCotisation: AppCubitStorage().state.Language == "fr" ? formatDateToFrench( ItemDetailCotisation["start_date"]) : formatDateToEnglish(ItemDetailCotisation["start_date"]),
-                                            heureCotisation: AppCubitStorage().state.Language == "fr" ? formatTimeToFrench(ItemDetailCotisation["start_date"]): formatTimeToEnglish(ItemDetailCotisation["start_date"]),
-                                            soldeCotisation: ItemDetailCotisation["cotisation_balance"],
-                                            contributionOneUser: "2",
-                                            nbreParticipant: 23,
-                                            nbreParticipantCotisationOK: 11,
-                                            codeCotisation: ItemDetailCotisation["cotisation_code"],
-                                            type: ItemDetailCotisation["type"],
-                                            lienDePaiement: ItemDetailCotisation["cotisation_pay_link"] == null ? "le lien n'a pas été généré" : ItemDetailCotisation["cotisation_pay_link"],
-                                            is_passed: ItemDetailCotisation["is_passed"],
-                                            is_tontine: ItemDetailCotisation["is_tontine"],
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  : Container(
-                                      padding: EdgeInsets.only(top: 100),
-                                      alignment: Alignment.topCenter,
-                                      child: Text(
-                                        "aucune_cotisation".tr(),
-                                        style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                20, 45, 99, 0.26),
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 20),
+                                  ? Container(
+                                    // color: Colors.cyan,
+                                    child: RefreshIndicator(
+                                    onRefresh: refresh,
+                                      child: ListView.builder(
+                                          itemCount: objetCotisationUniquement.length,
+                                          physics: NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.all(0),
+                                          itemBuilder: (BuildContext context, int index) {
+                                            final ItemDetailCotisation = objetCotisationUniquement[index];
+                                                                      
+                                            return Container(
+                                              margin: EdgeInsets.only(left: 7, right: 7, top: 3, bottom: 7),
+                                              child: WidgetCotisation(
+                                                montantCotisations: ItemDetailCotisation["amount"],
+                                                motifCotisations: ItemDetailCotisation["name"],
+                                                dateCotisation: AppCubitStorage().state.Language == "fr" ? formatDateToFrench( ItemDetailCotisation["start_date"]) : formatDateToEnglish(ItemDetailCotisation["start_date"]),
+                                                heureCotisation: AppCubitStorage().state.Language == "fr" ? formatTimeToFrench(ItemDetailCotisation["start_date"]): formatTimeToEnglish(ItemDetailCotisation["start_date"]),
+                                                soldeCotisation: ItemDetailCotisation["cotisation_balance"],
+                                                contributionOneUser: "2",
+                                                nbreParticipant: 23,
+                                                nbreParticipantCotisationOK: 11,
+                                                codeCotisation: ItemDetailCotisation["cotisation_code"],
+                                                type: ItemDetailCotisation["type"],
+                                                lienDePaiement: ItemDetailCotisation["cotisation_pay_link"] == null ? "le lien n'a pas été généré" : ItemDetailCotisation["cotisation_pay_link"],
+                                                is_passed: ItemDetailCotisation["is_passed"],
+                                                is_tontine: ItemDetailCotisation["is_tontine"],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                    ),
+                                  )
+                                  : RefreshIndicator(
+                                    onRefresh: ()async{ 
+                                      refresh;
+                                    },
+                                    child: Container(
+                                        padding: EdgeInsets.only(top: 100),
+                                        alignment: Alignment.topCenter,
+                                        child: Text(
+                                          "aucune_cotisation".tr(),
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  20, 45, 99, 0.26),
+                                              fontWeight: FontWeight.w100,
+                                              fontSize: 20),
+                                        ),
                                       ),
-                                    );
+                                  );
                             },
                           ),
 

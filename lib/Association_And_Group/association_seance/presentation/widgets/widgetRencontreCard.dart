@@ -64,6 +64,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
             context,
             MaterialPageRoute(
               builder: (context) => detailRencontrePage(
+                codeSeance: widget.codeSeance,
                 dateRencontre: widget.dateRencontre,
                 descriptionRencontre: widget.descriptionRencontre,
                 heureRencontre: widget.heureRencontre,

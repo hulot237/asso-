@@ -88,6 +88,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
             context,
             MaterialPageRoute(
               builder: (context) => DetailCotisationPage(
+                codeCotisation: widget.codeCotisation,
                 lienDePaiement: widget.lienDePaiement,
                 contributionOneUser: widget.contributionOneUser,
                 dateCotisation: widget.dateCotisation,

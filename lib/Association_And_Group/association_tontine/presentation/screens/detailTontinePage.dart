@@ -178,7 +178,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                                             "is_passed"] ==
                                                         0
                                                     ? Text(
-                                                        "${itemListMembre["order"]}",
+                                                        "${itemListMembre["position"]}",
                                                         style: TextStyle(
                                                           fontSize: 8,
                                                           fontWeight:

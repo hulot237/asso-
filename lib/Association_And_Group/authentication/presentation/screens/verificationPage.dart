@@ -98,6 +98,8 @@ class _VerificationPageState extends State<VerificationPage> {
 
   final codeController = TextEditingController();
 
+  bool isLoading = false;
+
   Future<void> handleConfirmation() async {
     final codeConfirmation = codeController.text;
 
@@ -243,23 +245,12 @@ class _VerificationPageState extends State<VerificationPage> {
                         SizedBox(
                           width: double.infinity,
                           height: 40,
-                          child: BlocBuilder<UserGroupCubit, UserGroupState>(
-                              builder: (UserGroupContext, UserGroupState) {
-                            if (UserGroupState.isLoading == null ||
-                                UserGroupState.isLoading == true)
-                              return Container(
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: Color(0xFF9bc43f),
-                                  ),
-                                ),
-                              );
-                            return BlocBuilder<DetailTournoiCourantCubit,
-                                    DetailTournoiCourantState>(
-                                builder: (DetailTournoiCourantContext,
-                                    DetailTournoiCourantState) {
-                              if (DetailTournoiCourantState.isLoading == null ||
-                                  DetailTournoiCourantState.isLoading == true)
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (Authcontext, Authstate) {
+                              if (Authstate.isLoading == null ||
+                                  Authstate.isLoading == true ||
+                                  Authstate.isLoadingDetailUser == true ||
+                                  Authstate.isLoading == null)
                                 return Container(
                                   child: Center(
                                     child: CircularProgressIndicator(
@@ -267,36 +258,40 @@ class _VerificationPageState extends State<VerificationPage> {
                                     ),
                                   ),
                                 );
-                              return BlocBuilder<AuthCubit, AuthState>(
-                                  builder: (Authcontext, Authstate) {
-                                if (Authstate.isLoading == null ||
-                                    Authstate.isLoading == true)
-                                  return Container(
-                                    child: Center(
+
+                              return isLoading
+                                  ? Center(
                                       child: CircularProgressIndicator(
                                         color: Color(0xFF9bc43f),
                                       ),
-                                    ),
-                                  );
-                                return ElevatedButton(
-                                  onPressed: () {
-                                    handleConfirmation();
-                                  },
-                                  child: Text(
-                                    "vérifier".tr(),
-                                    style: TextStyle(fontSize: 19),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF9bc43f),
-                                    // primary: Color(0xFF6FA629),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                );
-                              });
-                            });
-                          }),
+                                    )
+                                  : ElevatedButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          isLoading =
+                                              true; // Démarre l'indicateur de chargement
+                                        });
+                                        await handleConfirmation();
+                                        setState(() {
+                                          isLoading =
+                                              false; // Arrête l'indicateur de chargement
+                                        });
+                                      },
+                                      child: Text(
+                                        "vérifier".tr(),
+                                        style: TextStyle(fontSize: 19),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFF9bc43f),
+                                        // primary: Color(0xFF6FA629),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    );
+                            },
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.only(
