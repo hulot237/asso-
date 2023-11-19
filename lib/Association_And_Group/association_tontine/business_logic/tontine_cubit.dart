@@ -20,9 +20,8 @@ class TontineCubit extends Cubit<TontineState> {
       if (data != null) {
         emit(
           state.copyWith(
-            detailtontine: data,
-            isloading: false,
-          ),
+              detailtontine: data,
+              isloading: false,),
         );
 
         print("DetailSeance Cubit ok");
@@ -30,20 +29,19 @@ class TontineCubit extends Cubit<TontineState> {
       } else {
         emit(
           state.copyWith(
-            detailtontine: [],
-            isloading: false,
-          ),
+              detailtontine: [],
+              isloading: false,),
         );
         return false;
       }
     } catch (e) {
       emit(
         state.copyWith(
-          detailtontine: [],
-          isloading: false,
-        ),
+            detailtontine: [],
+            isloading: false,),
       );
       return true;
     }
   }
+
 }

@@ -635,16 +635,16 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // print(
-                      //     "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
-                      // print(
-                      //     "success password   ${AppCubitStorage().state.passwordKey}");
-                      // print(
-                      //     "success username   ${AppCubitStorage().state.userNameKey}");
-                      // print(
-                      //     "success membre_code   ${AppCubitStorage().state.membreCode}");
-                      // print(
-                      //     "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
+                      print(
+                          "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
+                      print(
+                          "success password   ${AppCubitStorage().state.passwordKey}");
+                      print(
+                          "success username   ${AppCubitStorage().state.userNameKey}");
+                      print(
+                          "success membre_code   ${AppCubitStorage().state.membreCode}");
+                      print(
+                          "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
                       print("object");
                       showDialog(
                           context: context,

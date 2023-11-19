@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailHistoriqueTontineCard.dart';
@@ -72,10 +73,10 @@ Widget PageScaffold({
 
 class _DetailTontinePageState extends State<DetailTontinePage>
     with TickerProviderStateMixin {
-  Future<void> handleDetailCotisation(codeCotisation) async {
+  Future<void> handleDetailContributionTontine(codeContribution) async {
     final detailCotisation = await context
-        .read<CotisationDetailCubit>()
-        .detailCotisationCubit(codeCotisation);
+        .read<DetailContributionCubit>()
+        .detailContributionTontineCubit(codeContribution);
 
     if (detailCotisation != null) {
       print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
@@ -262,62 +263,63 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                   tontineContext.read<TontineCubit>().state.detailTontine;
               return Expanded(
                 child: Container(
-                    margin: EdgeInsets.only(top: 0, left: 5, right: 5),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                      width: 1,
-                      color: Color.fromARGB(85, 9, 185, 255),
-                    )),
-                    child: ListView.builder(
-                      padding: EdgeInsets.all(0),
-                      shrinkWrap: true,
-                      itemCount: currentDetailTontineCard!.length,
-                      itemBuilder: (context, index) {
-                        final itemTontine = currentDetailTontineCard[index];
+                  margin: EdgeInsets.only(top: 0, left: 5, right: 5),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                    width: 1,
+                    color: Color.fromARGB(85, 9, 185, 255),
+                  )),
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(0),
+                    shrinkWrap: true,
+                    itemCount: currentDetailTontineCard!.length,
+                    itemBuilder: (context, index) {
+                      final itemTontine = currentDetailTontineCard[index];
 
-                        return GestureDetector(
-                          onTap: () {
-                            handleDetailCotisation(
-                              itemTontine["cotisation_code"],
-                            );
+                      return GestureDetector(
+                        // onTap: (){
+                        //   print(itemTontine["code"],);
+                        // },
 
-                            Modal().showBottomSheetHistTontine(
-                              tontineContext,
-                              _tabController,
-                            );
-                          },
-                          child: Container(
-                              margin: EdgeInsets.all(5),
-                              child: widgetDetailHistoriqueTontineCard(
-                                nomTontine: widget.nomTontine,
-                                lienDePaiement:
-                                    itemTontine['cotisation_pay_link'],
-                                dateClose:
-                                    AppCubitStorage().state.Language == "fr"
-                                        ? formatDateToFrench(
-                                            itemTontine['end_date'])
-                                        : formatDateToEnglish(
-                                            itemTontine['end_date']),
-                                dateOpen:
-                                    AppCubitStorage().state.Language == "fr"
-                                        ? formatDateToFrench(
-                                            itemTontine['start_date'])
-                                        : formatDateToEnglish(
-                                            itemTontine['start_date']),
-                                montantCollecte:
-                                    itemTontine['cotisation_balance'],
-                                montantTontine: itemTontine['amount'],
-                                nomBeneficiaire: itemTontine["membre"]
-                                    ["first_name"],
-                                prenomBeneficiaire:
-                                    itemTontine["membre"]["last_name"] == null
-                                        ? ""
-                                        : itemTontine["membre"]["last_name"],
-                                codeCotisation: itemTontine["cotisation_code"],
-                              )),
-                        );
-                      },
-                    )),
+                        onTap: () {
+                          handleDetailContributionTontine(
+                            itemTontine["code"],
+                          );
+
+                          Modal().showBottomSheetHistTontine(
+                            tontineContext,
+                            _tabController,
+                          );
+                        },
+                        child: Container(
+                            margin: EdgeInsets.all(5),
+                            child: widgetDetailHistoriqueTontineCard(
+                              nomTontine: widget.nomTontine,
+                              lienDePaiement: itemTontine['tontine_pay_link'],
+                              dateClose: AppCubitStorage().state.Language ==
+                                      "fr"
+                                  ? formatDateToFrench(itemTontine['end_date'])
+                                  : formatDateToEnglish(
+                                      itemTontine['end_date']),
+                              dateOpen: AppCubitStorage().state.Language == "fr"
+                                  ? formatDateToFrench(
+                                      itemTontine['start_date'])
+                                  : formatDateToEnglish(
+                                      itemTontine['start_date']),
+                              montantCollecte: itemTontine['tontine_balance'],
+                              montantTontine: itemTontine['amount'],
+                              nomBeneficiaire: itemTontine["membre"]
+                                  ["first_name"],
+                              prenomBeneficiaire:
+                                  itemTontine["membre"]["last_name"] == null
+                                      ? ""
+                                      : itemTontine["membre"]["last_name"],
+                              codeCotisation: itemTontine["code"],
+                            )),
+                      );
+                    },
+                  ),
+                ),
               );
             }),
           ],

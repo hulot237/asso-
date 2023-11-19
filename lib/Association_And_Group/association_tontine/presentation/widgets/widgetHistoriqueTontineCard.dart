@@ -65,7 +65,7 @@ class _widgetHistoriqueTontineCardState
                         "${widget.nom} ${widget.prenom}",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: Color.fromARGB(255, 20, 45, 99),
                         ),

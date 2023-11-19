@@ -7,6 +7,10 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
@@ -333,9 +337,6 @@ class Modal {
   }
 
   void showBottomSheetHistTontine(BuildContext context, _tabController) {
-    final currentDetailCotisation =
-        context.read<CotisationDetailCubit>().state.detailCotisation;
-
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -402,11 +403,16 @@ class Modal {
                               Container(
                                 child: Text("Tontiné"),
                               ),
-                              BlocBuilder<CotisationDetailCubit,
-                                  CotisationDetailState>(
-                                builder: (context, state) {
-                                  if (state.isLoading == null ||
-                                      state.isLoading == true)
+                              BlocBuilder<DetailContributionCubit,
+                                  ContributionState>(
+                                builder: (DetailContributionContext,
+                                    DetailContributionState) {
+                                  if (DetailContributionState
+                                              .isLoadingContibutionTontine ==
+                                          null ||
+                                      DetailContributionState
+                                              .isLoadingContibutionTontine ==
+                                          true)
                                     return Container(
                                       width: 10,
                                       height: 10,
@@ -417,10 +423,10 @@ class Modal {
                                       ),
                                     );
 
-                                  final okayTontine = context
-                                      .read<CotisationDetailCubit>()
+                                  final okayTontine = DetailContributionContext
+                                          .read<DetailContributionCubit>()
                                       .state
-                                      .detailCotisation!["versements"];
+                                      .detailContributionTontine!["versements"];
                                   return Container(
                                     child: Text(
                                       " (${okayTontine.length})",
@@ -438,14 +444,17 @@ class Modal {
                               Container(
                                 child: Text("Non tontiné"),
                               ),
-                              BlocBuilder<CotisationDetailCubit,
-                                  CotisationDetailState>(
-                                builder: (context, state) {
-                                  if (state.isLoading == null ||
-                                      state.isLoading == true)
+                              BlocBuilder<DetailContributionCubit,
+                                  ContributionState>(
+                                builder: (DetailContributionContext,
+                                    DetailContributionState) {
+                                  if (DetailContributionState
+                                              .isLoadingContibutionTontine ==
+                                          null ||
+                                      DetailContributionState
+                                              .isLoadingContibutionTontine ==
+                                          true)
                                     return Container(
-                                      // color: Colors.white,
-                                      // margin: EdgeInsets.only(top: 15),
                                       width: 10,
                                       height: 10,
                                       child: Center(
@@ -454,10 +463,10 @@ class Modal {
                                         ),
                                       ),
                                     );
-                                  final nonTontine = context
-                                      .read<CotisationDetailCubit>()
+                                  final nonTontine = DetailContributionContext
+                                          .read<DetailContributionCubit>()
                                       .state
-                                      .detailCotisation!["members"];
+                                      .detailContributionTontine!["members"];
                                   return Container(
                                     child: Text(
                                       " (${nonTontine.length})",
@@ -474,9 +483,11 @@ class Modal {
                   ),
                 ],
               ),
-              BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                  builder: (context, state) {
-                if (state.isLoading == null || state.isLoading == true)
+              BlocBuilder<DetailContributionCubit, ContributionState>(builder:
+                  (DetailContributionContext, DetailContributionState) {
+                if (DetailContributionState.isLoadingContibutionTontine ==
+                        null ||
+                    DetailContributionState.isLoadingContibutionTontine == true)
                   return Container(
                     // color: Colors.white,
                     margin: EdgeInsets.only(top: 15),
@@ -484,117 +495,162 @@ class Modal {
                       child: CircularProgressIndicator(),
                     ),
                   );
-                final nonTontine = context
-                    .read<CotisationDetailCubit>()
-                    .state
-                    .detailCotisation!["members"];
+                final nonTontine =
+                    DetailContributionContext.read<DetailContributionCubit>()
+                        .state
+                        .detailContributionTontine!["members"];
 
-                final okayTontine = context
-                    .read<CotisationDetailCubit>()
-                    .state
-                    .detailCotisation!["versements"];
+                final okayTontine =
+                    DetailContributionContext.read<DetailContributionCubit>()
+                        .state
+                        .detailContributionTontine!["versements"];
+
                 return Expanded(
                   child: Container(
                     color: Color.fromARGB(120, 226, 226, 226),
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0),
-                          itemCount: okayTontine.length,
-                          itemBuilder: (context, index) {
-                            final currentDetailPersonCotis = okayTontine[index];
-                            return Container(
-                              child: widgetHistoriqueTontineCard(
-                                date: AppCubitStorage().state.Language == "fr"
-                                    ? formatDateToFrench(
-                                        currentDetailPersonCotis["updated_at"])
-                                    : formatDateToEnglish(
-                                        currentDetailPersonCotis["updated_at"]),
-                                imageProfil: currentDetailPersonCotis[
-                                            "photo_profil"] ==
-                                        null
-                                    ? ""
-                                    : currentDetailPersonCotis["photo_profil"],
-                                is_versement_finished:
-                                    currentDetailPersonCotis["versement"][0]
-                                        ["is_versement_finished"],
-                                montantVersee:
-                                    currentDetailPersonCotis["versement"][0]
-                                        ["balance_after"],
-                                nom: currentDetailPersonCotis["first_name"] ==
-                                        null
-                                    ? ""
-                                    : currentDetailPersonCotis["first_name"],
-                                prenom: currentDetailPersonCotis["last_name"] ==
-                                        null
-                                    ? ""
-                                    : currentDetailPersonCotis["last_name"],
+                        okayTontine.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                padding: EdgeInsets.all(0),
+                                itemCount: okayTontine.length,
+                                itemBuilder: (context, index) {
+                                  final currentDetailPersonCotis =
+                                      okayTontine[index];
+                                  print(okayTontine.length);
+                                  return Container(
+                                    child: widgetHistoriqueTontineCard(
+                                      date: AppCubitStorage().state.Language ==
+                                              "fr"
+                                          ? formatDateToFrench(
+                                              currentDetailPersonCotis[
+                                                  "updated_at"])
+                                          : formatDateToEnglish(
+                                              currentDetailPersonCotis[
+                                                  "updated_at"]),
+                                      imageProfil: currentDetailPersonCotis[
+                                                  "photo_profil"] ==
+                                              null
+                                          ? ""
+                                          : currentDetailPersonCotis[
+                                              "photo_profil"],
+                                      is_versement_finished:
+                                          currentDetailPersonCotis["versements"]
+                                              [0]["is_versement_finished"],
+                                      montantVersee:
+                                          currentDetailPersonCotis["versements"]
+                                              [0]["balance_after"],
+                                      nom: currentDetailPersonCotis["membre"]
+                                                  ["first_name"] ==
+                                              null
+                                          ? ""
+                                          : currentDetailPersonCotis["membre"]
+                                              ["first_name"],
+                                      prenom: currentDetailPersonCotis["membre"]
+                                                  ["last_name"] ==
+                                              null
+                                          ? ""
+                                          : currentDetailPersonCotis["membre"]
+                                              ["last_name"],
+                                    ),
+                                    margin: EdgeInsets.only(
+                                        top: 3, bottom: 7, left: 10, right: 10),
+                                  );
+                                },
+                              )
+                            : ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 100),
+                                    alignment: Alignment.topCenter,
+                                    child: Icon(
+                                      Icons.playlist_remove,
+                                      size: 100,
+                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    ),
+                                  );
+                                },
                               ),
-                              margin: EdgeInsets.only(
-                                  top: 3, bottom: 7, left: 10, right: 10),
-                            );
-                          },
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0),
-                          itemCount: nonTontine.length,
-                          itemBuilder: (context, index) {
-                            final currentDetailPersonNonCotis =
-                                nonTontine![index];
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  top: 3, bottom: 7, left: 10, right: 10),
-                              child: widgetHistoriqueTontineCard(
-                                date: AppCubitStorage().state.Language == "fr"
-                                    ? formatDateToFrench(
-                                        currentDetailPersonNonCotis[
-                                            "updated_at"])
-                                    : formatDateToEnglish(
-                                        currentDetailPersonNonCotis[
-                                            "updated_at"]),
-                                imageProfil:
-                                    currentDetailPersonNonCotis["membre"]
-                                                ["photo_profil"] ==
-                                            null
-                                        ? ""
-                                        : currentDetailPersonNonCotis["membre"]
-                                            ["photo_profil"],
-                                is_versement_finished:
-                                    currentDetailPersonNonCotis["membre"]
-                                                    ["versement"]
-                                                .length ==
-                                            0
-                                        ? 0
-                                        : currentDetailPersonNonCotis["membre"]
-                                                ["versement"][0]
-                                            ["is_versement_finished"],
-                                montantVersee:
-                                    currentDetailPersonNonCotis["membre"]
-                                                    ["versement"]
-                                                .length ==
-                                            0
-                                        ? "0"
-                                        : currentDetailPersonNonCotis["membre"]
-                                            ["versement"][0]["balance_after"],
-                                nom: currentDetailPersonNonCotis["membre"]
-                                            ["first_name"] ==
-                                        null
-                                    ? ""
-                                    : currentDetailPersonNonCotis["membre"]
-                                        ["first_name"],
-                                prenom: currentDetailPersonNonCotis["membre"]
-                                            ["last_name"] ==
-                                        null
-                                    ? ""
-                                    : currentDetailPersonNonCotis["membre"]
-                                        ["last_name"],
+                        nonTontine.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                padding: EdgeInsets.all(0),
+                                itemCount: nonTontine.length,
+                                itemBuilder: (context, index) {
+                                  // print(nonTontine.length);
+                                  final currentDetailPersonNonCotis =
+                                      nonTontine![index];
+                                  return Container(
+                                    margin: EdgeInsets.only(
+                                        top: 3, bottom: 7, left: 10, right: 10),
+                                    child: widgetHistoriqueTontineCard(
+                                      date: AppCubitStorage().state.Language ==
+                                              "fr"
+                                          ? formatDateToFrench(
+                                              currentDetailPersonNonCotis[
+                                                  "updated_at"])
+                                          : formatDateToEnglish(
+                                              currentDetailPersonNonCotis[
+                                                  "updated_at"]),
+                                      imageProfil:
+                                          currentDetailPersonNonCotis["membre"]
+                                                      ["photo_profil"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonNonCotis[
+                                                  "membre"]["photo_profil"],
+                                      is_versement_finished:
+                                          currentDetailPersonNonCotis[
+                                                          "versements"]
+                                                      .length ==
+                                                  0
+                                              ? 0
+                                              : currentDetailPersonNonCotis[
+                                                      "versements"][0]
+                                                  ["is_versement_finished"],
+                                      montantVersee:
+                                          currentDetailPersonNonCotis[
+                                                          "versements"]
+                                                      .length ==
+                                                  0
+                                              ? "0"
+                                              : currentDetailPersonNonCotis[
+                                                      "versements"][0]
+                                                  ["balance_after"],
+                                      nom: currentDetailPersonNonCotis["membre"]
+                                                  ["first_name"] ==
+                                              null
+                                          ? ""
+                                          : currentDetailPersonNonCotis[
+                                              "membre"]["first_name"],
+                                      prenom:
+                                          currentDetailPersonNonCotis["membre"]
+                                                      ["last_name"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonNonCotis[
+                                                  "membre"]["last_name"],
+                                    ),
+                                  );
+                                },
+                              )
+                            : ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 100),
+                                    alignment: Alignment.topCenter,
+                                    child: Icon(
+                                      Icons.playlist_add_check,
+                                      size: 100,
+                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
                       ],
                     ),
                   ),
@@ -722,7 +778,6 @@ class Modal {
                 // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
                 child: Container(
                   margin: EdgeInsets.only(top: 7, right: 5, left: 5),
-
                   color: Colors.white,
                   child: Column(
                     children: [
@@ -1011,31 +1066,35 @@ class Modal {
                     child: TabBarView(
                       controller: tabController,
                       children: [
-                        listPrsent.length>0?
-                        ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0),
-                          itemCount: listPrsent.length,
-                          itemBuilder: (context, index) {
-                            final currentListPrsent = listPrsent[index];
-                            return Container(
-                              padding: EdgeInsets.all(5),
-                              child: widgetListPresenceCard(
-                                imageProfil:
-                                    currentListPrsent["photo_profil"] == null
-                                        ? ""
-                                        : currentListPrsent['photo_profil'],
-                                nom: currentListPrsent['first_name'] == null
-                                    ? ""
-                                    : currentListPrsent['first_name'],
-                                prenom: currentListPrsent['last_name'] == null
-                                    ? ""
-                                    : currentListPrsent['last_name'],
-                                presence: '1',
-                              ),
-                            );
-                          },
-                        ):ListView.builder(
+                        listPrsent.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                padding: EdgeInsets.all(0),
+                                itemCount: listPrsent.length,
+                                itemBuilder: (context, index) {
+                                  final currentListPrsent = listPrsent[index];
+                                  return Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: widgetListPresenceCard(
+                                      imageProfil: currentListPrsent[
+                                                  "photo_profil"] ==
+                                              null
+                                          ? ""
+                                          : currentListPrsent['photo_profil'],
+                                      nom: currentListPrsent['first_name'] ==
+                                              null
+                                          ? ""
+                                          : currentListPrsent['first_name'],
+                                      prenom:
+                                          currentListPrsent['last_name'] == null
+                                              ? ""
+                                              : currentListPrsent['last_name'],
+                                      presence: '1',
+                                    ),
+                                  );
+                                },
+                              )
+                            : ListView.builder(
                                 itemCount: 1,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(
@@ -1049,32 +1108,34 @@ class Modal {
                                   );
                                 },
                               ),
-                              listAbs.length>0?
-                        ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0),
-                          itemCount: listAbs.length,
-                          itemBuilder: (context, index) {
-                            final currentListAbs = listAbs[index];
+                        listAbs.length > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                padding: EdgeInsets.all(0),
+                                itemCount: listAbs.length,
+                                itemBuilder: (context, index) {
+                                  final currentListAbs = listAbs[index];
 
-                            return Container(
-                              padding: EdgeInsets.all(5),
-                              child: widgetListPresenceCard(
-                                imageProfil:
-                                    currentListAbs["photo_profil"] == null
-                                        ? ""
-                                        : currentListAbs['photo_profil'],
-                                nom: currentListAbs['first_name'] == null
-                                    ? " "
-                                    : currentListAbs['first_name'],
-                                prenom: currentListAbs['last_name'] == null
-                                    ? " "
-                                    : currentListAbs['last_name'],
-                                presence: '0',
-                              ),
-                            );
-                          },
-                        ):ListView.builder(
+                                  return Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: widgetListPresenceCard(
+                                      imageProfil:
+                                          currentListAbs["photo_profil"] == null
+                                              ? ""
+                                              : currentListAbs['photo_profil'],
+                                      nom: currentListAbs['first_name'] == null
+                                          ? " "
+                                          : currentListAbs['first_name'],
+                                      prenom:
+                                          currentListAbs['last_name'] == null
+                                              ? " "
+                                              : currentListAbs['last_name'],
+                                      presence: '0',
+                                    ),
+                                  );
+                                },
+                              )
+                            : ListView.builder(
                                 itemCount: 1,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(

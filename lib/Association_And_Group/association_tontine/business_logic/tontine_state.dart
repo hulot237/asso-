@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 class TontineState extends Equatable {
   final List<dynamic>? detailTontine;
   final bool isLoading;
+  
 
   TontineState({
     this.detailTontine,

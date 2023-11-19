@@ -12,8 +12,7 @@ class TontineRepository {
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/tontine/$codeTontine/all',
       );
-      print(
-          "DetailTontineDetailTontine      ${response.data["data"]}");
+      print("DetailTontineDetailTontine      ${response.data["data"]}");
 
       final List<dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
@@ -23,6 +22,26 @@ class TontineRepository {
       log('erreur DetailTontineDetailTontine rep');
       print(e);
       return [];
+    }
+  }
+
+  Future<Map<dynamic, dynamic>> DetailContributionTontine(codeContribution) async {
+    try {
+      print("DetailContributionTontine $codeContribution");
+      log("response DetailContributionTontine");
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/contribution/$codeContribution/show',
+      );
+      print("DetailContributionTontine      ${response.data["data"]}");
+
+      final Map<dynamic, dynamic> dataJson = response.data["data"];
+      // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
+      log('Okay DetailContributionTontine rep');
+      return dataJson;
+    } catch (e) {
+      log('erreur DetailContributionTontine rep');
+      print(e);
+      return {};
     }
   }
 
