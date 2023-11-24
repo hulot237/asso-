@@ -3,6 +3,8 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -45,6 +47,26 @@ class widgetDetailCotisationCard extends StatefulWidget {
 
 class _widgetDetailCotisationCardState
     extends State<widgetDetailCotisationCard> {
+  checkTransparenceStatus() {
+    // Recherche de l'objet dans le tableau avec name == "has_transparence"
+
+    List<dynamic> transparenceObject = context
+        .read<UserGroupCubit>()
+        .state
+        .ChangeAssData!["user_group"]["configs"]
+        .where((objet) => objet["name"] == "has_transparence")
+        .toList();
+
+    // Vérification si l'objet a été trouvé et si is_check est égal à true
+    if (transparenceObject[0]["is_check"] == true &&
+        context.read<AuthCubit>().state.detailUser!["isMember"] == true) {
+      //on masque les details
+      return false;
+    } else {
+      //on affiche les details
+      return true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +116,12 @@ class _widgetDetailCotisationCardState
                             ),
                           ),
                         ),
-                        BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                        BlocBuilder<CotisationDetailCubit,
+                            CotisationDetailState>(
                           builder: (CotisationContext, CotisationState) {
                             if (CotisationState.isLoading == null ||
-                                CotisationState.isLoading == true || CotisationState.detailCotisation == null)
+                                CotisationState.isLoading == true ||
+                                CotisationState.detailCotisation == null)
                               return Container(
                                 width: 60,
                                 height: 25,
@@ -119,17 +143,15 @@ class _widgetDetailCotisationCardState
                                 ),
                               );
 
-                            final currentDetailCotisation = CotisationContext.read<CotisationDetailCubit>()
+                            final currentDetailCotisation =
+                                CotisationContext.read<CotisationDetailCubit>()
                                     .state
                                     .detailCotisation;
                             return Column(
                               children: [
-                                if (currentDetailCotisation!["members"].length > 0)
-                                  for (var itemDetailCotisation
-                                      in currentDetailCotisation!["members"])
-                                    if (itemDetailCotisation["membre"]
-                                            ["membre_code"] ==
-                                        AppCubitStorage().state.membreCode)
+                                if (currentDetailCotisation!["members"].length >0)
+                                  for (var itemDetailCotisation in currentDetailCotisation!["members"])
+                                    if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
                                       GestureDetector(
                                         onTap: () async {
                                           String msg =
@@ -226,13 +248,9 @@ class _widgetDetailCotisationCardState
                                                 ],
                                               ),
                                       ),
-                                if (currentDetailCotisation!["versements"]
-                                        .length >
-                                    0)
-                                  for (var itemDetailCotisation
-                                      in currentDetailCotisation!["versements"])
-                                    if (itemDetailCotisation["membre_code"] ==
-                                        AppCubitStorage().state.membreCode)
+                                if (currentDetailCotisation!["versements"].length > 0)
+                                  for (var itemDetailCotisation in currentDetailCotisation!["versements"])
+                                    if (itemDetailCotisation["membre_code"] == AppCubitStorage().state.membreCode)
                                       GestureDetector(
                                         // onTap: () {
                                         //   Modal()
@@ -370,24 +388,161 @@ class _widgetDetailCotisationCardState
                     ),
                   ),
                   Container(
-                      // width: MediaQuery.of(context).size.width / 1.1,
-                      margin: EdgeInsets.only(bottom: 7),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BlocBuilder<CotisationDetailCubit,
-                                  CotisationDetailState>(
-                              builder: (CotisationContext, CotisationState) {
-                            if (CotisationState.isLoading == null || CotisationState.isLoading == true || CotisationState.detailCotisation == null)
-                              return GestureDetector(
+                    // width: MediaQuery.of(context).size.width / 1.1,
+                    margin: EdgeInsets.only(bottom: 7),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        BlocBuilder<CotisationDetailCubit,
+                                CotisationDetailState>(
+                            builder: (CotisationContext, CotisationState) {
+                          if (CotisationState.isLoading == null ||
+                              CotisationState.isLoading == true ||
+                              CotisationState.detailCotisation == null)
+                            return GestureDetector(
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        "vous_avez_cotisé".tr(),
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                      margin: EdgeInsets.only(right: 5),
+                                    ),
+                                    Container(
+                                      width: 12,
+                                      height: 12,
+                                      color: Colors.white,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 0.5,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          final currentDetailCotisation =
+                              CotisationContext.read<CotisationDetailCubit>()
+                                  .state
+                                  .detailCotisation;
+                          return Column(
+                            children: [
+                              if (currentDetailCotisation!["versements"].length > 0)
+                                for (var itemDetailCotisation in currentDetailCotisation!["versements"])
+                                  if (itemDetailCotisation["membre_code"] == AppCubitStorage().state.membreCode)
+                                    GestureDetector(
+                                      onTap: () {
+                                        Modal().showModalTransactionByEvent(
+                                          context,
+                                          itemDetailCotisation["versement"] !=
+                                                  null
+                                              ? itemDetailCotisation[
+                                                  "versement"]
+                                              : [],
+                                          '${widget.montantCotisations}',
+                                        );
+                                      },
+                                      child: Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              child: Text(
+                                                "vous_avez_cotisé".tr(),
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromARGB(
+                                                      255, 20, 45, 99),
+                                                ),
+                                              ),
+                                              margin: EdgeInsets.only(right: 5),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                "${formatMontantFrancais(double.parse(itemDetailCotisation["versement"] != null ? itemDetailCotisation["versement"][0]["balance_after"] : "0"))} FCFA",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Color.fromARGB(
+                                                        255, 20, 45, 99)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                              if (currentDetailCotisation!["members"].length > 0)
+                                for (var itemDetailCotisation in currentDetailCotisation!["members"])
+                                  if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
+                                    GestureDetector(
+                                      onTap: () {
+                                        Modal().showModalTransactionByEvent(
+                                            // context, itemDetailCotisation["members"]["versement"]!=null? itemDetailCotisation["members"]["versement"] : [], '${widget.montantCotisations}');
+                                            // context, itemDetailCotisation["versement"]!=null? itemDetailCotisation["versement"] : [], '${widget.montantCotisations}');
+                                            context,
+                                            itemDetailCotisation["membre"]["versement"] == null ? [] : itemDetailCotisation["membre"]["versement"],
+                                            '${widget.montantCotisations}');
+                                      },
+                                      child: Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              child: Text(
+                                                "vous_avez_cotisé".tr(),
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromARGB(
+                                                      255, 20, 45, 99),
+                                                ),
+                                              ),
+                                              margin: EdgeInsets.only(right: 5),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                "${formatMontantFrancais(double.parse(itemDetailCotisation["membre"]["versement"].length > 0 ? "${itemDetailCotisation["membre"]["versement"][0]["balance_after"]}" : "0"))} FCFA",
+                                                // "${itemDetailCotisation["membre"]["versement"].length}",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Color.fromARGB(
+                                                        255, 20, 45, 99)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                            ],
+                          );
+                        }),
+                        checkTransparenceStatus()
+                            ? GestureDetector(
+                                // onTap: () {
+                                //   Modal()
+                                //       .showModalAllTransactionCotisation(context);
+                                // },
                                 child: Container(
+                                  alignment: Alignment.centerRight,
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Container(
                                         child: Text(
-                                          "vous_avez_cotisé".tr(),
+                                          "solde".tr(),
                                           style: TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
@@ -395,277 +550,252 @@ class _widgetDetailCotisationCardState
                                                 Color.fromARGB(255, 20, 45, 99),
                                           ),
                                         ),
-                                        margin: EdgeInsets.only(right: 5),
                                       ),
                                       Container(
-                                        width: 12,
-                                        height: 12,
-                                        color: Colors.white,
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 0.5,
-                                          ),
+                                        child: Text(
+                                          "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w800,
+                                              color: Colors.green),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
-                              );
-                            final currentDetailCotisation =
-                                CotisationContext.read<CotisationDetailCubit>()
-                                    .state
-                                    .detailCotisation;
-                            return Column(
-                              children: [
-                                if (currentDetailCotisation!["versements"]
-                                        .length >
-                                    0)
-                                  for (var itemDetailCotisation
-                                      in currentDetailCotisation!["versements"])
-                                    if (itemDetailCotisation["membre_code"] ==
-                                        AppCubitStorage().state.membreCode)
-                                      GestureDetector(
-                                        onTap: () {
-                                          Modal().showModalTransactionByEvent(
-                                              context,
-                                              itemDetailCotisation[
-                                                          "versement"] !=
-                                                      null
-                                                  ? itemDetailCotisation[
-                                                      "versement"]
-                                                  : [],
-                                              '${widget.montantCotisations}');
-                                        },
-                                        child: Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  "vous_avez_cotisé".tr(),
-                                                  style: TextStyle(
+                              )
+                            : Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      // onTap: () {
+                                      //   Modal().showModalPersonSanctionner(context, [], "");
+                                      // },
+                                      child: Container(
+                                        margin: EdgeInsets.only(bottom: 3),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Text(
+                                                "montant".tr(),
+                                                overflow: TextOverflow.clip,
+                                                style: TextStyle(
                                                     fontSize: 11,
-                                                    fontWeight: FontWeight.bold,
                                                     color: Color.fromARGB(
-                                                        255, 20, 45, 99),
-                                                  ),
-                                                ),
-                                                margin:
-                                                    EdgeInsets.only(right: 5),
+                                                        160, 20, 45, 99),
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                               ),
-                                              Container(
-                                                child: Text(
-                                                  "${formatMontantFrancais(double.parse(itemDetailCotisation["versement"] != null ? itemDetailCotisation["versement"][0]["balance_after"] : "0"))} FCFA",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: Color.fromARGB(
-                                                          255, 20, 45, 99)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                widget.type == "1"
+                                                    ? Container(
+                                                        child: Text(
+                                                          " : Volontaire",
+                                                          overflow:
+                                                              TextOverflow.clip,
+                                                          style: TextStyle(
+                                                              fontSize: 11,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        child: Text(
+                                                          " : ${formatMontantFrancais(double.parse("${widget.montantCotisations}"))} FCFA",
+                                                          overflow:
+                                                              TextOverflow.clip,
+                                                          style: TextStyle(
+                                                              fontSize: 11,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      20,
+                                                                      45,
+                                                                      99),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                      ),
+                                                // Container(
+                                                //   child: Text(
+                                                //     " Min",
+                                                //     overflow: TextOverflow.clip,
+                                                //     style: TextStyle(
+                                                //         fontSize: 7,
+                                                //         color: Color.fromARGB(
+                                                //             255, 20, 45, 99),
+                                                //         fontWeight: FontWeight.w300),
+                                                //   ),
+                                                // ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                if (currentDetailCotisation!["members"].length >
-                                    0)
-                                  for (var itemDetailCotisation
-                                      in currentDetailCotisation!["members"])
-                                    if (itemDetailCotisation["membre"]
-                                            ["membre_code"] ==
-                                        AppCubitStorage().state.membreCode)
-                                      GestureDetector(
-                                        onTap: () {
-                                          Modal().showModalTransactionByEvent(
-                                              // context, itemDetailCotisation["members"]["versement"]!=null? itemDetailCotisation["members"]["versement"] : [], '${widget.montantCotisations}');
-                                              // context, itemDetailCotisation["versement"]!=null? itemDetailCotisation["versement"] : [], '${widget.montantCotisations}');
-                                              context,
-                                              itemDetailCotisation["membre"]
-                                                          ["versement"] ==
-                                                      null
-                                                  ? []
-                                                  : itemDetailCotisation[
-                                                      "membre"]["versement"],
-                                              '${widget.montantCotisations}');
-                                        },
-                                        child: Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  "vous_avez_cotisé".tr(),
-                                                  style: TextStyle(
-                                                    fontSize: 11,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color.fromARGB(
-                                                        255, 20, 45, 99),
-                                                  ),
-                                                ),
-                                                margin:
-                                                    EdgeInsets.only(right: 5),
-                                              ),
-                                              Container(
-                                                child: Text(
-                                                  "${formatMontantFrancais(double.parse(itemDetailCotisation["membre"]["versement"].length > 0 ? "${itemDetailCotisation["membre"]["versement"][0]["balance_after"]}" : "0"))} FCFA",
-                                                  // "${itemDetailCotisation["membre"]["versement"].length}",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: Color.fromARGB(
-                                                          255, 20, 45, 99)),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                              ],
-                            );
-                          }),
+                                    ),
+                                    // Container(
+                                    //   child: GestureDetector(
+                                    //     onTap: () {
+                                    //       Modal()
+                                    //           .showModalAllTransactionCotisation(context);
+                                    //     },
+                                    //     child: Container(
+                                    //       decoration: BoxDecoration(
+                                    //           color: Color.fromARGB(38, 20, 45, 99),
+                                    //           borderRadius: BorderRadius.circular(7)),
+                                    //       padding: EdgeInsets.only(
+                                    //           top: 3, left: 5, right: 2, bottom: 3),
+                                    //       child: Row(
+                                    //         crossAxisAlignment: CrossAxisAlignment.end,
+                                    //         children: [
+                                    //           Container(
+                                    //             child: Text(
+                                    //               "transactions".tr(),
+                                    //               style: TextStyle(
+                                    //                 fontSize: 10,
+                                    //                 fontWeight: FontWeight.w800,
+                                    //                 color: Color.fromARGB(255, 20, 45, 99),
+                                    //               ),
+                                    //             ),
+                                    //           ),
+                                    //           Container(
+                                    //             child: Icon(
+                                    //               Icons.keyboard_double_arrow_right_rounded,
+                                    //               size: 13,
+                                    //               color: Color.fromARGB(255, 20, 45, 99),
+                                    //             ),
+                                    //           )
+                                    //         ],
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                  if (checkTransparenceStatus())
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           GestureDetector(
                             // onTap: () {
-                            //   Modal()
-                            //       .showModalAllTransactionCotisation(context);
+                            //   Modal().showModalPersonSanctionner(context, [], "");
                             // },
                             child: Container(
-                              alignment: Alignment.centerRight,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                              margin: EdgeInsets.only(bottom: 3),
+                              child: Row(
                                 children: [
                                   Container(
                                     child: Text(
-                                      "solde".tr(),
+                                      "montant".tr(),
+                                      overflow: TextOverflow.clip,
                                       style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 20, 45, 99),
-                                      ),
+                                          fontSize: 11,
+                                          color:
+                                              Color.fromARGB(160, 20, 45, 99),
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
-                                  Container(
-                                    child: Text(
-                                      "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w800,
-                                          color: Colors.green),
-                                    ),
+                                  Row(
+                                    children: [
+                                      widget.type == "1"
+                                          ? Container(
+                                              child: Text(
+                                                " : Volontaire",
+                                                overflow: TextOverflow.clip,
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: Color.fromARGB(
+                                                        255, 20, 45, 99),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            )
+                                          : Container(
+                                              child: Text(
+                                                " : ${formatMontantFrancais(double.parse("${widget.montantCotisations}"))} FCFA",
+                                                overflow: TextOverflow.clip,
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: Color.fromARGB(
+                                                        255, 20, 45, 99),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                      // Container(
+                                      //   child: Text(
+                                      //     " Min",
+                                      //     overflow: TextOverflow.clip,
+                                      //     style: TextStyle(
+                                      //         fontSize: 7,
+                                      //         color: Color.fromARGB(
+                                      //             255, 20, 45, 99),
+                                      //         fontWeight: FontWeight.w300),
+                                      //   ),
+                                      // ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
                           ),
+                          // Container(
+                          //   child: GestureDetector(
+                          //     onTap: () {
+                          //       Modal()
+                          //           .showModalAllTransactionCotisation(context);
+                          //     },
+                          //     child: Container(
+                          //       decoration: BoxDecoration(
+                          //           color: Color.fromARGB(38, 20, 45, 99),
+                          //           borderRadius: BorderRadius.circular(7)),
+                          //       padding: EdgeInsets.only(
+                          //           top: 3, left: 5, right: 2, bottom: 3),
+                          //       child: Row(
+                          //         crossAxisAlignment: CrossAxisAlignment.end,
+                          //         children: [
+                          //           Container(
+                          //             child: Text(
+                          //               "transactions".tr(),
+                          //               style: TextStyle(
+                          //                 fontSize: 10,
+                          //                 fontWeight: FontWeight.w800,
+                          //                 color: Color.fromARGB(255, 20, 45, 99),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //           Container(
+                          //             child: Icon(
+                          //               Icons.keyboard_double_arrow_right_rounded,
+                          //               size: 13,
+                          //               color: Color.fromARGB(255, 20, 45, 99),
+                          //             ),
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
-                      )),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          // onTap: () {
-                          //   Modal().showModalPersonSanctionner(context, [], "");
-                          // },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 3),
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "montant".tr(),
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        fontSize: 11,
-                                        color: Color.fromARGB(160, 20, 45, 99),
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    widget.type == "1"
-                                        ? Container(
-                                            child: Text(
-                                              " : Volontaire",
-                                              overflow: TextOverflow.clip,
-                                              style: TextStyle(
-                                                  fontSize: 11,
-                                                  color: Color.fromARGB(
-                                                      255, 20, 45, 99),
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          )
-                                        : Container(
-                                            child: Text(
-                                              " : ${formatMontantFrancais(double.parse("${widget.montantCotisations}"))} FCFA",
-                                              overflow: TextOverflow.clip,
-                                              style: TextStyle(
-                                                  fontSize: 11,
-                                                  color: Color.fromARGB(
-                                                      255, 20, 45, 99),
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                    // Container(
-                                    //   child: Text(
-                                    //     " Min",
-                                    //     overflow: TextOverflow.clip,
-                                    //     style: TextStyle(
-                                    //         fontSize: 7,
-                                    //         color: Color.fromARGB(
-                                    //             255, 20, 45, 99),
-                                    //         fontWeight: FontWeight.w300),
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Container(
-                        //   child: GestureDetector(
-                        //     onTap: () {
-                        //       Modal()
-                        //           .showModalAllTransactionCotisation(context);
-                        //     },
-                        //     child: Container(
-                        //       decoration: BoxDecoration(
-                        //           color: Color.fromARGB(38, 20, 45, 99),
-                        //           borderRadius: BorderRadius.circular(7)),
-                        //       padding: EdgeInsets.only(
-                        //           top: 3, left: 5, right: 2, bottom: 3),
-                        //       child: Row(
-                        //         crossAxisAlignment: CrossAxisAlignment.end,
-                        //         children: [
-                        //           Container(
-                        //             child: Text(
-                        //               "transactions".tr(),
-                        //               style: TextStyle(
-                        //                 fontSize: 10,
-                        //                 fontWeight: FontWeight.w800,
-                        //                 color: Color.fromARGB(255, 20, 45, 99),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //           Container(
-                        //             child: Icon(
-                        //               Icons.keyboard_double_arrow_right_rounded,
-                        //               size: 13,
-                        //               color: Color.fromARGB(255, 20, 45, 99),
-                        //             ),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

@@ -112,18 +112,14 @@ class _VerificationPageState extends State<VerificationPage> {
         context.read<AuthCubit>().state.loginInfo!["error"] == false) {
       var loginInfo = context.read<AuthCubit>().state.loginInfo;
 
-      await AppCubitStorage()
-          .updateCodeAssDefaul(loginInfo!["data"]["user_groups"][0]["urlcode"]);
-      await AppCubitStorage().updatepasswordKey(loginInfo!["data"]["password"]);
-      await AppCubitStorage().updateuserNameKey(loginInfo!["data"]["username"]);
-      await AppCubitStorage()
-          .updatemembreCode(loginInfo["data"]["membre"]["membre_code"]);
+      await AppCubitStorage().updateCodeAssDefaul(loginInfo!["data"]["user_groups"][0]["urlcode"]);
+      await AppCubitStorage().updateTokenUser(loginInfo!["data"]["token"]);
+      await AppCubitStorage().updatemembreCode(loginInfo["data"]["membre"]["membre_code"]);
       await AppCubitStorage().updateCodeTournoisDefault(
           loginInfo["data"]["tournois"]["tournois_code"]);
 
-      if (AppCubitStorage().state.codeAssDefaul != null &&
-          AppCubitStorage().state.passwordKey != null &&
-          AppCubitStorage().state.userNameKey != null) {
+      if (AppCubitStorage().state.codeAssDefaul != null && 
+          AppCubitStorage().state.tokenUser != null) {
         Navigator.pop(context);
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -137,8 +133,7 @@ class _VerificationPageState extends State<VerificationPage> {
       print(
           "success loginnnnZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ   ${context.read<AuthCubit>().state.loginInfo}");
       print("success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
-      print("success password   ${AppCubitStorage().state.passwordKey}");
-      print("success username   ${AppCubitStorage().state.userNameKey}");
+      print("success token   ${AppCubitStorage().state.tokenUser}");
       print("success membre_code   ${AppCubitStorage().state.membreCode}");
       print("success tournoi_code   ${AppCubitStorage().state.codeTournois}");
 

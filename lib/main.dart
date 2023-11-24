@@ -27,20 +27,14 @@ import 'package:path_provider/path_provider.dart';
 
 
 //function to lisen to background changes
-Future _firebaseBackgroundMessage(RemoteMessage message) async{
-  if (message.notification != null) {
-    print("Some notifications received");
-  }
-}
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  PushNotifications.init();
+  PushNotifications().init();
   
-  //Listen to background notifications 
-  FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
 
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
@@ -112,8 +106,7 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         routes: {
-          "/": (context) => AppCubitStorage().state.userNameKey == null &&
-                  AppCubitStorage().state.passwordKey == null &&
+          "/": (context) => AppCubitStorage().state.tokenUser == null  &&
                   AppCubitStorage().state.codeAssDefaul == null
               ? LoginPage()
               : HomePage(),

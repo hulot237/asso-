@@ -18,8 +18,7 @@ class UserGroupRepository {
         '${Variables.LienAIP}/api/v1/usergroupe/userpages',
         options: Options(
           headers: {
-            "password": AppCubitStorage().state.passwordKey,
-            "username": AppCubitStorage().state.userNameKey,
+            "token": AppCubitStorage().state.tokenUser,
           },
         ),
       );
@@ -49,8 +48,7 @@ class UserGroupRepository {
         },
         options: Options(
           headers: {
-            "password": AppCubitStorage().state.passwordKey,
-            "username": AppCubitStorage().state.userNameKey,
+            "token": AppCubitStorage().state.tokenUser,
           },
         ),
       );
@@ -78,8 +76,7 @@ class UserGroupRepository {
         '${Variables.LienAIP}/api/v1/usergroupe/$codeAss/show',
         options: Options(
           headers: {
-            "password": AppCubitStorage().state.passwordKey,
-            "username": AppCubitStorage().state.userNameKey,
+            "token": AppCubitStorage().state.tokenUser,
           },
         ),
       );

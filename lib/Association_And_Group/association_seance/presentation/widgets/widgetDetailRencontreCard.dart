@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -308,6 +311,15 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .detailSeance!["sanctions"];
                           return GestureDetector(
                             onTap: () {
+                           if (checkTransparenceStatus(
+                          context
+                              .read<UserGroupCubit>()
+                              .state
+                              .ChangeAssData!["user_group"]["configs"],
+                          context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"]))
                               Modal().showModalPersonSanctionner(
                                   context, currentDetailSeanceSanction);
                             },
@@ -348,6 +360,15 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
+                            if(checkTransparenceStatus(
+                          context
+                              .read<UserGroupCubit>()
+                              .state
+                              .ChangeAssData!["user_group"]["configs"],
+                          context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"]))
                             Modal().showModalPersonPresent(
                                 context,
                                 _tabController2,

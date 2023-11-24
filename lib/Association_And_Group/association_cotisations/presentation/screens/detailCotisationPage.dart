@@ -9,7 +9,11 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetHistoriqueCotisation.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -144,395 +148,788 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                 isPassed: widget.isPassed,
               ),
             ),
-            Container(
-              // color: Colors.deepOrange,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 20),
-              child: Text(
-                "historique_des_cotisations".tr(),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(20, 45, 99, 1),
-                ),
-              ),
-            ),
-            // Container(
-            //   // color: Colors.black26,
-            //   alignment: Alignment.center,
-            //   width: MediaQuery.of(context).size.width,
-            //   margin: EdgeInsets.only(top: 10),
-            //   height: 30,
-            //   child: CustomSlidingSegmentedControl<int>(
-            //     padding: 10,
-            //     // height: 25,
-            //     initialValue: 0,
-            //     children: {
-            //       0: Row(
-            //         children: [
-            //           Text(
-            //             'cotisé'.tr(),
-            //             style: TextStyle(
-            //                 color: Colors.white,
-            //                 fontWeight: FontWeight.bold,
-            //                 fontSize: 15),
-            //           ),
-            //           Container(
-            //             child: Text(
-            //               // "(${currentDetailCotisation!["versements"].length == null ? 0 : currentDetailCotisation!["versements"].length})",
-            //               "2",
-            //               style: TextStyle(
-            //                   color: Colors.white,
-            //                   fontSize: 11,
-            //                   fontWeight: FontWeight.bold),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       1: Row(
-            //         children: [
-            //           Text(
-            //             'non_cotisé'.tr(),
-            //             style: TextStyle(
-            //                 color: Colors.white,
-            //                 fontWeight: FontWeight.bold,
-            //                 fontSize: 15),
-            //           ),
-            //           Container(
-            //             alignment: Alignment.center,
-            //             child: Text(
-            //               // " (${currentDetailCotisation!["members"].length == null ? 0 : currentDetailCotisation!["members"].length})",
-            //               "1",
-            //               style: TextStyle(
-            //                   color: Colors.white,
-            //                   fontSize: 11,
-            //                   fontWeight: FontWeight.bold),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     },
-            //     decoration: BoxDecoration(
-            //       color: Color.fromARGB(85, 9, 185, 255),
-            //       borderRadius: BorderRadius.circular(15),
-            //     ),
-            //     thumbDecoration: BoxDecoration(
-            //       color: Color.fromARGB(255, 9, 185, 255),
-            //       borderRadius: BorderRadius.circular(15),
-            //     ),
-            //     duration: Duration(milliseconds: 300),
-            //     curve: Curves.ease,
-            //     onValueChanged: (index) {
-            //       setState(() {
-            //         _pageIndex = index;
-            //         print(_pageIndex);
-            //       });
-            //     },
-            //   ),
-            // ),
+            checkTransparenceStatus(
+                    context
+                        .read<UserGroupCubit>()
+                        .state
+                        .ChangeAssData!["user_group"]["configs"],
+                    context.read<AuthCubit>().state.detailUser!["isMember"])
+                ? Container(
+                    // color: Colors.deepOrange,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text(
+                      "historique_des_cotisations".tr(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(20, 45, 99, 1),
+                      ),
+                    ),
+                  )
+                : Container(
+                    // color: Colors.deepOrange,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text(
+                      "liste_de_vos_transactions".tr(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(20, 45, 99, 1),
+                      ),
+                    ),
+                  ),
             Container(
               margin: EdgeInsets.only(top: 15, bottom: 15),
               padding: EdgeInsets.only(top: 15, bottom: 15),
               color: Color.fromARGB(120, 226, 226, 226),
               alignment: Alignment.center,
-              child: TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                labelColor: Color.fromARGB(255, 20, 45, 99),
-                labelStyle:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                padding: EdgeInsets.all(0),
-                indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(
-                    color: Color.fromARGB(255, 20, 45, 99),
-                    width: 5.0,
-                  ),
-                  insets: EdgeInsets.symmetric(horizontal: 36.0),
-                ),
-                tabs: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          "${"cotisé".tr()}",
-                        ),
-                        BlocBuilder<CotisationDetailCubit,
-                                CotisationDetailState>(
-                            builder: (CotisationContext, CotisationState) {
-                          if (CotisationState.isLoading == null ||
-                              CotisationState.isLoading == true ||
-                              CotisationState.detailCotisation == null)
-                            return Container(
-                              width: 10,
-                              height: 10,
-                              child: Center(
-                                child: Container(
-                                  width: 10,
-                                  height: 10,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 0.5,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                  ),
-                                ),
-                              ),
-                            );
-                          final currentDetailCotisation =
-                              CotisationContext.read<CotisationDetailCubit>()
-                                  .state
-                                  .detailCotisation;
-                          return Text(
-                            "(${currentDetailCotisation!["versements"].length == null ? 0 : currentDetailCotisation!["versements"].length})",
-                            style: TextStyle(fontSize: 10),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          'non_cotisé'.tr(),
-                        ),
-                        BlocBuilder<CotisationDetailCubit,
-                                CotisationDetailState>(
-                            builder: (CotisationContext, CotisationState) {
-                          if (CotisationState.isLoading == null ||
-                              CotisationState.isLoading == true ||
-                              CotisationState.detailCotisation == null)
-                            return Container(
-                              width: 10,
-                              height: 10,
-                              child: Center(
-                                child: Container(
-                                  width: 10,
-                                  height: 10,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 0.5,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                  ),
-                                ),
-                              ),
-                            );
-                          final currentDetailCotisation =
-                              CotisationContext.read<CotisationDetailCubit>()
-                                  .state
-                                  .detailCotisation;
-                          return Text(
-                            "(${currentDetailCotisation!["members"].length == null ? 0 : currentDetailCotisation!["members"].length})",
-                            style: TextStyle(fontSize: 10),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                    builder: (CotisationDetailcontext, CotisationDetailstate) {
-                      if (CotisationDetailstate.isLoading == null ||
-                          CotisationDetailstate.isLoading == true ||
-                          CotisationDetailstate.detailCotisation == null)
-                        return Container(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      final currentDetailCotisation =
-                          CotisationDetailcontext.read<CotisationDetailCubit>()
+              child: checkTransparenceStatus(
+                          context
+                              .read<UserGroupCubit>()
                               .state
-                              .detailCotisation;
-                      return currentDetailCotisation!["versements"].length > 0
-                          ? ListView.builder(
-                              padding: EdgeInsets.all(0),
-                              shrinkWrap: true,
-                              itemCount:
-                                  currentDetailCotisation!["versements"].length,
-                              itemBuilder: (context, index) {
-                                final currentDetailPersonCotis =
-                                    currentDetailCotisation!["versements"];
-
-                                return WidgetHistoriqueCotisation(
-                                  is_versement_finished:
-                                      currentDetailPersonCotis[index]
-                                                      ["versement"]
-                                                  .length ==
-                                              0
-                                          ? 0
-                                          : currentDetailPersonCotis[index]
-                                                  ["versement"][0]
-                                              ["is_versement_finished"],
-                                  matricule: currentDetailPersonCotis[index]
-                                              ["matricule"] ==
-                                          null
-                                      ? ""
-                                      : currentDetailPersonCotis[index]
-                                          ["matricule"],
-                                  montantTotalAVerser:
-                                      currentDetailPersonCotis[index]
-                                                      ["versement"]
-                                                  .length ==
-                                              0
-                                          ? "0"
-                                          : currentDetailPersonCotis[index]
-                                              ["versement"][0]["source_amount"],
-                                  montantVersee: currentDetailPersonCotis[index]
-                                                  ["versement"]
-                                              .length ==
-                                          0
-                                      ? "0"
-                                      : currentDetailPersonCotis[index]
-                                          ["versement"][0]["balance_after"],
-                                  nom: currentDetailPersonCotis[index]
-                                              ["first_name"] ==
-                                          null
-                                      ? ""
-                                      : currentDetailPersonCotis[index]
-                                          ["first_name"],
-                                  photoProfil: currentDetailPersonCotis[index]
-                                              ["photo_profil"] ==
-                                          null
-                                      ? ""
-                                      : currentDetailPersonCotis[index]
-                                          ["photo_profil"],
-                                  prenom: currentDetailPersonCotis[index]
-                                              ["last_name"] ==
-                                          null
-                                      ? ""
-                                      : currentDetailPersonCotis[index]
-                                          ["last_name"],
+                              .ChangeAssData!["user_group"]["configs"],
+                          context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"])
+                  ? TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      labelColor: Color.fromARGB(255, 20, 45, 99),
+                      labelStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                      padding: EdgeInsets.all(0),
+                      indicator: UnderlineTabIndicator(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 20, 45, 99),
+                          width: 5.0,
+                        ),
+                        insets: EdgeInsets.symmetric(horizontal: 36.0),
+                      ),
+                      tabs: [
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: Row(
+                            children: [
+                              Text(
+                                "${"cotisé".tr()}",
+                              ),
+                              BlocBuilder<CotisationDetailCubit,
+                                      CotisationDetailState>(
+                                  builder:
+                                      (CotisationContext, CotisationState) {
+                                if (CotisationState.isLoading == null ||
+                                    CotisationState.isLoading == true ||
+                                    CotisationState.detailCotisation == null)
+                                  return Container(
+                                    width: 10,
+                                    height: 10,
+                                    child: Center(
+                                      child: Container(
+                                        width: 10,
+                                        height: 10,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 0.5,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                final currentDetailCotisation =
+                                    CotisationContext.read<
+                                            CotisationDetailCubit>()
+                                        .state
+                                        .detailCotisation;
+                                return Text(
+                                  "(${currentDetailCotisation!["versements"].length == null ? 0 : currentDetailCotisation!["versements"].length})",
+                                  style: TextStyle(fontSize: 10),
                                 );
-                              },
-                            )
-                          : RefreshIndicator(
-                              onRefresh: refresh,
-                              child: ListView.builder(
-                                itemCount: 1,
-                                itemBuilder: (BuildContext context, int index) {
+                              }),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: Row(
+                            children: [
+                              Text(
+                                'non_cotisé'.tr(),
+                              ),
+                              BlocBuilder<CotisationDetailCubit,
+                                      CotisationDetailState>(
+                                  builder:
+                                      (CotisationContext, CotisationState) {
+                                if (CotisationState.isLoading == null ||
+                                    CotisationState.isLoading == true ||
+                                    CotisationState.detailCotisation == null)
                                   return Container(
-                                    padding: EdgeInsets.only(top: 100),
-                                    alignment: Alignment.topCenter,
-                                    child: Icon(
-                                      Icons.playlist_remove,
-                                      size: 100,
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    width: 10,
+                                    height: 10,
+                                    child: Center(
+                                      child: Container(
+                                        width: 10,
+                                        height: 10,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 0.5,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
                                     ),
                                   );
+                                final currentDetailCotisation =
+                                    CotisationContext.read<
+                                            CotisationDetailCubit>()
+                                        .state
+                                        .detailCotisation;
+                                return Text(
+                                  "(${currentDetailCotisation!["members"].length == null ? 0 : currentDetailCotisation!["members"].length})",
+                                  style: TextStyle(fontSize: 10),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  : 
+                  
+                  Container(
+                      margin: EdgeInsets.only(left: 5, right: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 2),
+                                child: Text(
+                                  "a_payer".tr(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                    color: Color.fromARGB(255, 20, 45, 99),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  widget.type == "0"
+                                      ? "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA"
+                                      : "Volontaire",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(255, 20, 45, 99),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 2),
+                                child: Text(
+                                  "déjà_payé".tr(),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ),
+                              BlocBuilder<CotisationDetailCubit,
+                                  CotisationDetailState>(
+                                builder: (CotisationContext, CotisationState) {
+                                  if (CotisationState.isLoading == null ||
+                                      CotisationState.isLoading == true ||
+                                      CotisationState.detailCotisation == null)
+                                    return Container(
+                                      width: 10,
+                                      height: 10,
+                                      child: Center(
+                                        child: Container(
+                                          width: 10,
+                                          height: 10,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 0.5,
+                                            color:
+                                                Color.fromARGB(255, 20, 45, 99),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+
+                                  final currentDetailCotisation =
+                                      CotisationContext.read<
+                                              CotisationDetailCubit>()
+                                          .state
+                                          .detailCotisation;
+
+                                  var detailCotisationMemberNoOkay =
+                                      currentDetailCotisation!["members"]
+                                          .firstWhere(
+                                    (member) =>
+                                        member['membre']['membre_code'] ==
+                                        AppCubitStorage().state.membreCode,
+                                    orElse: () => null,
+                                  );
+
+                                  var detailCotisationMemberIsOkay =
+                                      currentDetailCotisation!["versements"]
+                                          .firstWhere(
+                                    (member) =>
+                                        member['membre_code'] ==
+                                        AppCubitStorage().state.membreCode,
+                                    orElse: () => null,
+                                  );
+
+                                  if (currentDetailCotisation!["members"]
+                                              .length >
+                                          0 &&
+                                      detailCotisationMemberNoOkay != null) {
+                                    // print("memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556 ${memberWithCodeM79556['membre']['versement'][0]['balance_after']}");
+                                    return Container(
+                                      child: Text(
+                                        "${formatMontantFrancais(double.parse(detailCotisationMemberNoOkay['membre']['versement'].length > 0 ? detailCotisationMemberNoOkay['membre']['versement'][0]['balance_after'] : "0"))} FCFA",
+                                        // "FCFA",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                    );
+                                  } else if( detailCotisationMemberIsOkay != null && detailCotisationMemberIsOkay!["versement"].length > 0) {
+                                    return Container(
+                                      child: Text(
+                                        "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 != null ? detailCotisationMemberIsOkay['versement'][0]['balance_after'] : "0"))} FCFA",
+                                        // "FCFA",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                    );
+                                  }else{
+                                    return Container(
+                                      child: Text(
+                                        // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
+                                        "0 FCFA",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 },
                               ),
-                            );
-                    },
-                  ),
-                  BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                    builder: (CotisationDetailcontext, CotisationDetailstate) {
-                      if (CotisationDetailstate.isLoading == null ||
-                          CotisationDetailstate.isLoading == true)
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 2),
+                                child: Text(
+                                  "reste".tr(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color.fromARGB(255, 20, 45, 99),
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ),
+                              BlocBuilder<CotisationDetailCubit,
+                                  CotisationDetailState>(
+                                builder: (CotisationContext, CotisationState) {
+                                  if (CotisationState.isLoading == null ||
+                                      CotisationState.isLoading == true ||
+                                      CotisationState.detailCotisation == null)
+                                    return Container(
+                                      width: 10,
+                                      height: 10,
+                                      child: Center(
+                                        child: Container(
+                                          width: 10,
+                                          height: 10,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 0.5,
+                                            color:
+                                                Color.fromARGB(255, 20, 45, 99),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+
+                                  final currentDetailCotisation =
+                                      CotisationContext.read<
+                                              CotisationDetailCubit>()
+                                          .state
+                                          .detailCotisation;
+
+                                  var detailCotisationMemberNoOkay =
+                                      currentDetailCotisation!["members"]
+                                          .firstWhere(
+                                    (member) =>
+                                        member['membre']['membre_code'] ==
+                                        AppCubitStorage().state.membreCode,
+                                    orElse: () => null,
+                                  );
+
+                                  var detailCotisationMemberIsOkay =
+                                      currentDetailCotisation!["versements"]
+                                          .firstWhere(
+                                    (member) =>
+                                        member['membre_code'] ==
+                                        AppCubitStorage().state.membreCode,
+                                    orElse: () => null,
+                                  );
+
+                                  if (currentDetailCotisation!["members"]
+                                              .length >
+                                          0 &&
+                                      detailCotisationMemberNoOkay != null) {
+                                    // print("memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556 ${memberWithCodeM79556['membre']['versement'][0]['balance_after']}");
+                                    return Container(
+                                      child: Text(
+                                        "${formatMontantFrancais(double.parse(detailCotisationMemberNoOkay['membre']['versement'].length > 0 ? detailCotisationMemberNoOkay['membre']['versement'][0]['balance_remaining'] : "${widget.montantCotisations}"))} FCFA",
+                                        // "FCFA",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                    );
+                                  } else if( detailCotisationMemberIsOkay != null && detailCotisationMemberIsOkay!['versement'].length > 0 ){
+                                    return Container(
+                                      child: Text(
+                                        "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
+                                        // "FCFA",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                    );
+                                  }else{
+                                    return Container(
+                                      child: Text(
+                                        // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
+                                        "0 FCFA",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
+            Expanded(
+              child: checkTransparenceStatus(
+                          context
+                              .read<UserGroupCubit>()
+                              .state
+                              .ChangeAssData!["user_group"]["configs"],
+                          context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"]) 
+                  ? TabBarView(
+                      controller: _tabController,
+                      children: [
+                        BlocBuilder<CotisationDetailCubit,
+                            CotisationDetailState>(
+                          builder:
+                              (CotisationDetailcontext, CotisationDetailstate) {
+                            if (CotisationDetailstate.isLoading == null ||
+                                CotisationDetailstate.isLoading == true ||
+                                CotisationDetailstate.detailCotisation == null)
+                              return Container(
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            final currentDetailCotisation =
+                                CotisationDetailcontext.read<
+                                        CotisationDetailCubit>()
+                                    .state
+                                    .detailCotisation;
+                            return currentDetailCotisation!["versements"]
+                                        .length >
+                                    0
+                                ? RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.all(0),
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          currentDetailCotisation!["versements"]
+                                              .length,
+                                      itemBuilder: (context, index) {
+                                        final currentDetailPersonCotis =
+                                            currentDetailCotisation![
+                                                "versements"];
+
+                                        return WidgetHistoriqueCotisation(
+                                          is_versement_finished:
+                                              currentDetailPersonCotis[index]
+                                                              ["versement"]
+                                                          .length ==
+                                                      0
+                                                  ? 0
+                                                  : currentDetailPersonCotis[
+                                                          index]["versement"][0]
+                                                      ["is_versement_finished"],
+                                          matricule: currentDetailPersonCotis[
+                                                      index]["matricule"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonCotis[index]
+                                                  ["matricule"],
+                                          montantTotalAVerser:
+                                              currentDetailPersonCotis[index]
+                                                              ["versement"]
+                                                          .length ==
+                                                      0
+                                                  ? "0"
+                                                  : currentDetailPersonCotis[
+                                                          index]["versement"][0]
+                                                      ["source_amount"],
+                                          montantVersee:
+                                              currentDetailPersonCotis[index]
+                                                              ["versement"]
+                                                          .length ==
+                                                      0
+                                                  ? "0"
+                                                  : currentDetailPersonCotis[
+                                                          index]["versement"][0]
+                                                      ["balance_after"],
+                                          nom: currentDetailPersonCotis[index]
+                                                      ["first_name"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonCotis[index]
+                                                  ["first_name"],
+                                          photoProfil: currentDetailPersonCotis[
+                                                      index]["photo_profil"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonCotis[index]
+                                                  ["photo_profil"],
+                                          prenom: currentDetailPersonCotis[
+                                                      index]["last_name"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonCotis[index]
+                                                  ["last_name"],
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.builder(
+                                      itemCount: 1,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Container(
+                                          padding: EdgeInsets.only(top: 100),
+                                          alignment: Alignment.topCenter,
+                                          child: Icon(
+                                            Icons.playlist_remove,
+                                            size: 100,
+                                            color: Color.fromRGBO(
+                                                20, 45, 99, 0.26),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                          },
+                        ),
+                        BlocBuilder<CotisationDetailCubit,
+                            CotisationDetailState>(
+                          builder:
+                              (CotisationDetailcontext, CotisationDetailstate) {
+                            if (CotisationDetailstate.isLoading == null ||
+                                CotisationDetailstate.isLoading == true)
+                              return Container(
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            final currentDetailCotisation =
+                                CotisationDetailcontext.read<
+                                        CotisationDetailCubit>()
+                                    .state
+                                    .detailCotisation;
+
+                            return currentDetailCotisation!["members"].length >
+                                    0
+                                ? RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.all(0),
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          currentDetailCotisation!["members"]
+                                              .length,
+                                      itemBuilder: (context, index) {
+                                        final currentDetailPersonNonCotis =
+                                            currentDetailCotisation!["members"]
+                                                [index];
+
+                                        return WidgetHistoriqueCotisation(
+                                          is_versement_finished:
+                                              currentDetailPersonNonCotis[
+                                                                  "membre"]
+                                                              ["versement"]
+                                                          .length ==
+                                                      0
+                                                  ? 0
+                                                  : currentDetailPersonNonCotis[
+                                                              "membre"]
+                                                          ["versement"][0]
+                                                      ["is_versement_finished"],
+                                          matricule:
+                                              currentDetailPersonNonCotis[
+                                                              "membre"]
+                                                          ["matricule"] ==
+                                                      null
+                                                  ? ""
+                                                  : currentDetailPersonNonCotis[
+                                                      "membre"]["matricule"],
+                                          montantTotalAVerser:
+                                              currentDetailPersonNonCotis[
+                                                                  "membre"]
+                                                              ["versement"]
+                                                          .length ==
+                                                      0
+                                                  ? "0"
+                                                  : currentDetailPersonNonCotis[
+                                                          "membre"]["versement"]
+                                                      [0]["source_amount"],
+                                          montantVersee:
+                                              currentDetailPersonNonCotis[
+                                                                  "membre"]
+                                                              ["versement"]
+                                                          .length ==
+                                                      0
+                                                  ? "0"
+                                                  : currentDetailPersonNonCotis[
+                                                          "membre"]["versement"]
+                                                      [0]["balance_after"],
+                                          nom: currentDetailPersonNonCotis[
+                                                      "membre"]["first_name"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonNonCotis[
+                                                  "membre"]["first_name"],
+                                          photoProfil:
+                                              currentDetailPersonNonCotis[
+                                                              "membre"]
+                                                          ["photo_profil"] ==
+                                                      null
+                                                  ? ""
+                                                  : currentDetailPersonNonCotis[
+                                                      "membre"]["photo_profil"],
+                                          prenom: currentDetailPersonNonCotis[
+                                                      "membre"]["last_name"] ==
+                                                  null
+                                              ? ""
+                                              : currentDetailPersonNonCotis[
+                                                  "membre"]["last_name"],
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.builder(
+                                      itemCount: 1,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Container(
+                                          padding: EdgeInsets.only(top: 100),
+                                          alignment: Alignment.topCenter,
+                                          child: Icon(
+                                            Icons.playlist_add_check,
+                                            size: 100,
+                                            color: Color.fromRGBO(
+                                                20, 45, 99, 0.26),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                          },
+                        ),
+                      ],
+                    )
+                  : BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                      builder: (CotisationContext, CotisationState) {
+                      if (CotisationState.isLoading == null ||
+                          CotisationState.isLoading == true ||
+                          CotisationState.detailCotisation == null)
                         return Container(
+                          // width: 10,
+                          // height: 10,
                           child: Center(
-                            child: CircularProgressIndicator(),
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                  // strokeWidth: 0.5,
+                                  // color:
+                                  //     Color.fromARGB(255, 20, 45, 99),
+                                  ),
+                            ),
                           ),
                         );
+
                       final currentDetailCotisation =
-                          CotisationDetailcontext.read<CotisationDetailCubit>()
+                          CotisationContext.read<CotisationDetailCubit>()
                               .state
                               .detailCotisation;
 
-                      return currentDetailCotisation!["members"].length > 0
-                          ? RefreshIndicator(
-                              onRefresh: refresh,
-                              child: ListView.builder(
-                                padding: EdgeInsets.all(0),
-                                shrinkWrap: true,
-                                itemCount:
-                                    currentDetailCotisation!["members"].length,
-                                itemBuilder: (context, index) {
-                                  final currentDetailPersonNonCotis =
-                                      currentDetailCotisation!["members"]
-                                          [index];
+                      var detailCotisationMemberNoOkay =
+                          currentDetailCotisation!["members"].firstWhere(
+                        (member) =>
+                            member['membre']['membre_code'] ==
+                            AppCubitStorage().state.membreCode,
+                        orElse: () => null,
+                      );
 
-                                  return WidgetHistoriqueCotisation(
-                                    is_versement_finished:
-                                        currentDetailPersonNonCotis["membre"]
-                                                        ["versement"]
-                                                    .length ==
-                                                0
-                                            ? 0
-                                            : currentDetailPersonNonCotis[
-                                                    "membre"]["versement"][0]
-                                                ["is_versement_finished"],
-                                    matricule: currentDetailPersonNonCotis[
-                                                "membre"]["matricule"] ==
-                                            null
-                                        ? ""
-                                        : currentDetailPersonNonCotis["membre"]
-                                            ["matricule"],
-                                    montantTotalAVerser:
-                                        currentDetailPersonNonCotis["membre"]
-                                                        ["versement"]
-                                                    .length ==
-                                                0
-                                            ? "0"
-                                            : currentDetailPersonNonCotis[
-                                                    "membre"]["versement"][0]
-                                                ["source_amount"],
-                                    montantVersee: currentDetailPersonNonCotis[
-                                                    "membre"]["versement"]
-                                                .length ==
-                                            0
-                                        ? "0"
-                                        : currentDetailPersonNonCotis["membre"]
-                                            ["versement"][0]["balance_after"],
-                                    nom: currentDetailPersonNonCotis["membre"]
-                                                ["first_name"] ==
-                                            null
-                                        ? ""
-                                        : currentDetailPersonNonCotis["membre"]
-                                            ["first_name"],
-                                    photoProfil: currentDetailPersonNonCotis[
-                                                "membre"]["photo_profil"] ==
-                                            null
-                                        ? ""
-                                        : currentDetailPersonNonCotis["membre"]
-                                            ["photo_profil"],
-                                    prenom: currentDetailPersonNonCotis[
-                                                "membre"]["last_name"] ==
-                                            null
-                                        ? ""
-                                        : currentDetailPersonNonCotis["membre"]
-                                            ["last_name"],
-                                  );
-                                },
-                              ),
-                            )
-                          : RefreshIndicator(
+                      var detailCotisationMemberIsOkay =
+                          currentDetailCotisation!["versements"].firstWhere(
+                        (member) =>
+                            member['membre_code'] ==
+                            AppCubitStorage().state.membreCode,
+                        orElse: () => null,
+                      );
+                      return Container(
+                        padding: EdgeInsets.only(right: 7, left: 7),
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Expanded(
+                                child: RefreshIndicator(
                               onRefresh: refresh,
-                              child: ListView.builder(
+                              child: detailCotisationMemberNoOkay != null &&
+                                      detailCotisationMemberNoOkay['membre']
+                                                  ['versement']
+                                              .length >
+                                          0
+                                  ? ListView.builder(
+                                      itemCount:
+                                          detailCotisationMemberNoOkay['membre']
+                                                      ['versement'][0]
+                                                  ["transanctions"]
+                                              .length,
+                                      itemBuilder: (context, index) {
+                                        final detailVersement =
+                                            detailCotisationMemberNoOkay[
+                                                    'membre']['versement'][0]
+                                                ["transanctions"][index];
+
+                                        return Container(
+                                            child:
+                                                widgetListTransactionByEventCard(
+                                          date: AppCubitStorage()
+                                                      .state
+                                                      .Language ==
+                                                  "fr"
+                                              ? formatDateToFrench(
+                                                  detailVersement["created_at"])
+                                              : formatDateToEnglish(
+                                                  detailVersement[
+                                                      "created_at"]),
+                                          //  formatDateString(
+                                          // detailVersement["created_at"]),
+                                          montant: detailVersement["amount"],
+                                        ));
+                                      },
+                                    )
+                                  : detailCotisationMemberIsOkay != null &&
+                                          detailCotisationMemberIsOkay[
+                                                  'versement'] !=
+                                              null
+                                      ? ListView.builder(
+                                          itemCount:
+                                              detailCotisationMemberIsOkay[
+                                                          'versement'][0]
+                                                      ["transanctions"]
+                                                  .length,
+                                          itemBuilder: (context, index) {
+                                            final detailVersement =
+                                                detailCotisationMemberIsOkay[
+                                                        'versement'][0]
+                                                    ["transanctions"][index];
+
+                                            return Container(
+                                                child:
+                                                    widgetListTransactionByEventCard(
+                                              date: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      detailVersement[
+                                                          "created_at"])
+                                                  : formatDateToEnglish(
+                                                      detailVersement[
+                                                          "created_at"]),
+                                              //  formatDateString(
+                                              // detailVersement["created_at"]),
+                                              montant:
+                                                  detailVersement["amount"],
+                                            ));
+                                          },
+                                        )
+                                      : ListView.builder(
                                 itemCount: 1,
-                                itemBuilder: (BuildContext context, int index) {
+                                itemBuilder:
+                                    (BuildContext context, int index) {
                                   return Container(
-                                    padding: EdgeInsets.only(top: 100),
+                                    padding: EdgeInsets.only(top: 200),
                                     alignment: Alignment.topCenter,
-                                    child: Icon(
-                                      Icons.playlist_add_check,
-                                      size: 100,
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    child: Text(
+                                      "aucune_transaction".tr(),
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(
+                                              20, 45, 99, 0.26),
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 20),
                                     ),
                                   );
-                                },
-                              ),
-                            );
-                    },
-                  ),
-                ],
-              ),
+                                }),
+                            ))
+                          ],
+                        ),
+                      );
+                    }),
             ),
           ],
         ),

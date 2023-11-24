@@ -3,6 +3,8 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
@@ -60,6 +62,27 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
           "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
     } else {
       print("userGroupDefault null");
+    }
+  }
+
+  checkTransparenceStatus() {
+    // Recherche de l'objet dans le tableau avec name == "has_transparence"
+
+    List<dynamic> transparenceObject = context
+        .read<UserGroupCubit>()
+        .state
+        .ChangeAssData!["user_group"]["configs"]
+        .where((objet) => objet["name"] == "has_transparence")
+        .toList();
+
+    // Vérification si l'objet a été trouvé et si is_check est égal à true
+    if (transparenceObject[0]["is_check"] == true &&
+        context.read<AuthCubit>().state.detailUser!["isMember"] == true) {
+      //on masque les details
+      return false;
+    } else {
+      //on affiche les details
+      return true;
     }
   }
 
@@ -351,59 +374,60 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               ],
                             ),
                           ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5),
-                      width: MediaQuery.of(context).size.width / 1.1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: Icon(
-                                    Icons.wallet_rounded,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                    size: 16,
+                    if (checkTransparenceStatus())
+                      Container(
+                        margin: EdgeInsets.only(bottom: 5),
+                        width: MediaQuery.of(context).size.width / 1.1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    child: Icon(
+                                      Icons.wallet_rounded,
+                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      size: 16,
+                                    ),
+                                    margin: EdgeInsets.only(right: 5),
                                   ),
-                                  margin: EdgeInsets.only(right: 5),
-                                ),
-                                Container(
-                                    child: Text(
-                                  "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.green),
-                                ))
-                              ],
+                                  Container(
+                                      child: Text(
+                                    "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.green),
+                                  ))
+                                ],
+                              ),
                             ),
-                          ),
-                          // Container(
-                          //   child: Row(
-                          //     children: [
-                          //       Container(
-                          //         child: Icon(
-                          //           Icons.people_alt_rounded,
-                          //           size: 16,
-                          //           color: Color.fromARGB(255, 20, 45, 99),
-                          //         ),
-                          //         margin: EdgeInsets.only(right: 5),
-                          //       ),
-                          //       Container(
-                          //           child: Text(
-                          //         "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
-                          //         style: TextStyle(
-                          //             fontSize: 12,
-                          //             fontWeight: FontWeight.w800,
-                          //             color: Color.fromARGB(255, 20, 45, 99)),
-                          //       ))
-                          //     ],
-                          //   ),
-                          // ),
-                        ],
+                            // Container(
+                            //   child: Row(
+                            //     children: [
+                            //       Container(
+                            //         child: Icon(
+                            //           Icons.people_alt_rounded,
+                            //           size: 16,
+                            //           color: Color.fromARGB(255, 20, 45, 99),
+                            //         ),
+                            //         margin: EdgeInsets.only(right: 5),
+                            //       ),
+                            //       Container(
+                            //           child: Text(
+                            //         "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
+                            //         style: TextStyle(
+                            //             fontSize: 12,
+                            //             fontWeight: FontWeight.w800,
+                            //             color: Color.fromARGB(255, 20, 45, 99)),
+                            //       ))
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
-                    ),
                     // GestureDetector(
                     //   onTap: () {
                     //             Modal().showModalTransactionByEvent(context, [], widget.montantCotisations);

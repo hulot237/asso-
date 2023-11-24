@@ -69,7 +69,9 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserGroupCubit, UserGroupState>(
         builder: (userGroupContext, userGroupState) {
-      if (userGroupState.isLoading == null || userGroupState.isLoading == true ||   userGroupState.ChangeAssData == null)
+      if (userGroupState.isLoading == null ||
+          userGroupState.isLoading == true ||
+          userGroupState.ChangeAssData == null)
         return Container(
           color: Colors.white,
           width: 10,
@@ -89,7 +91,8 @@ class _SettingScreenState extends State<SettingScreen> {
               child: CircularProgressIndicator(),
             ),
           );
-        final currentDetailUser = authContext.read<AuthCubit>().state.detailUser;
+        final currentDetailUser =
+            authContext.read<AuthCubit>().state.detailUser;
         return WillPopScope(
           onWillPop: () async {
             Navigator.of(context).pushAndRemoveUntil(
@@ -190,8 +193,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             child: Column(
                               children: [
                                 Container(
-                                  padding:
-                                      EdgeInsets.only(left: 5, right: 5, top: 5),
+                                  padding: EdgeInsets.only(
+                                      left: 5, right: 5, top: 5),
                                   child: Text(
                                     "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                     overflow: TextOverflow.ellipsis,
@@ -253,7 +256,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: Color.fromARGB(12, 0, 0, 0)),
+                                    width: 1,
+                                    color: Color.fromARGB(12, 0, 0, 0)),
                               ),
                             ),
                             child: Row(
@@ -263,7 +267,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   child: Row(
                                     children: [
                                       Container(
-                                        child: Icon(Icons.phone_android_outlined,
+                                        child: Icon(
+                                            Icons.phone_android_outlined,
                                             color: Colors.blue),
                                         margin: EdgeInsets.only(right: 10),
                                       ),
@@ -271,7 +276,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "votre_compte".tr(),
                                         style: TextStyle(
                                           fontSize: 15,
-                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -318,7 +324,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                       children: [
                                         Container(
                                           child: Icon(
-                                            Icons.account_balance_wallet_outlined,
+                                            Icons
+                                                .account_balance_wallet_outlined,
                                             color: Colors.black,
                                           ),
                                           margin: EdgeInsets.only(right: 10),
@@ -362,7 +369,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               // color: Colors.black12,
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: Color.fromARGB(12, 0, 0, 0)),
+                                    width: 1,
+                                    color: Color.fromARGB(12, 0, 0, 0)),
                               ),
                             ),
                             child: Row(
@@ -380,15 +388,17 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "tournoi".tr(),
                                         style: TextStyle(
                                           fontSize: 15,
-                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                for (var item in currentInfoAllTournoiAssCourant![
-                                    "user_group"]["tournois"])
+                                for (var item
+                                    in currentInfoAllTournoiAssCourant![
+                                        "user_group"]["tournois"])
                                   if (item["tournois_code"] ==
                                       AppCubitStorage().state.codeTournois)
                                     Text(
@@ -425,7 +435,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               // color: Colors.black12,
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: Color.fromARGB(12, 0, 0, 0)),
+                                    width: 1,
+                                    color: Color.fromARGB(12, 0, 0, 0)),
                               ),
                             ),
                             child: Row(
@@ -445,7 +456,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "groupe_et_association".tr(),
                                         style: TextStyle(
                                           fontSize: 15,
-                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -487,7 +499,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               // color: Colors.black12,
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: Color.fromARGB(12, 0, 0, 0)),
+                                    width: 1,
+                                    color: Color.fromARGB(12, 0, 0, 0)),
                               ),
                             ),
                             child: Row(
@@ -507,7 +520,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "paramètres".tr(),
                                         style: TextStyle(
                                           fontSize: 15,
-                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -541,7 +555,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               // color: Colors.black12,
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: Color.fromARGB(12, 0, 0, 0)),
+                                    width: 1,
+                                    color: Color.fromARGB(12, 0, 0, 0)),
                               ),
                             ),
                             child: Row(
@@ -561,7 +576,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "a_propos_et_aide".tr(),
                                         style: TextStyle(
                                           fontSize: 15,
-                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -590,7 +606,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               // color: Colors.black12,
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 1, color: Color.fromARGB(12, 0, 0, 0)),
+                                    width: 1,
+                                    color: Color.fromARGB(12, 0, 0, 0)),
                               ),
                             ),
                             child: Row(
@@ -610,7 +627,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "partager_l'application".tr(),
                                         style: TextStyle(
                                           fontSize: 15,
-                                          color: Color.fromARGB(255, 20, 45, 99),
+                                          color:
+                                              Color.fromARGB(255, 20, 45, 99),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -638,88 +656,89 @@ class _SettingScreenState extends State<SettingScreen> {
                       print(
                           "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
                       print(
-                          "success password   ${AppCubitStorage().state.passwordKey}");
-                      print(
-                          "success username   ${AppCubitStorage().state.userNameKey}");
+                          "success token   ${AppCubitStorage().state.tokenUser}");
                       print(
                           "success membre_code   ${AppCubitStorage().state.membreCode}");
                       print(
                           "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
-                      print("object");
+                      print("membre is_member ${currentDetailUser["isMember"]}");
+                      print("membre configs group ${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["configs"]}");
+
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("etes_vous_sur?".tr()),
-                              titleTextStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 20, 45, 99),
-                                  fontSize: 20),
-                              actionsOverflowButtonSpacing: 20,
-                              actions: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
-                                      right: 20,
-                                      left: 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: Color.fromRGBO(0, 162, 255, 0.815),
-                                        borderRadius: BorderRadius.circular(10)),
-                                    child: Text(
-                                      "non".tr(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("etes_vous_sur?".tr()),
+                            titleTextStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 20, 45, 99),
+                                fontSize: 20),
+                            actionsOverflowButtonSpacing: 20,
+                            actions: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 10,
+                                    bottom: 10,
+                                    right: 20,
+                                    left: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(0, 162, 255, 0.815),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(
+                                    "non".tr(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            LoginPage(),
-                                      ),
-                                      (route) => false,
-                                    );
-                                    HydratedBloc.storage.clear();
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
-                                      right: 20,
-                                      left: 20,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          LoginPage(),
                                     ),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: 1,
-                                          color:
-                                              Color.fromRGBO(0, 162, 255, 0.815),
-                                        ),
-                                        borderRadius: BorderRadius.circular(10)),
-                                    child: Text(
-                                      "oui".tr(),
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(0, 162, 255, 0.815),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
+                                    (route) => false,
+                                  );
+                                  HydratedBloc.storage.clear();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 10,
+                                    bottom: 10,
+                                    right: 20,
+                                    left: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color:
+                                            Color.fromRGBO(0, 162, 255, 0.815),
                                       ),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(
+                                    "oui".tr(),
+                                    style: TextStyle(
+                                      color: Color.fromRGBO(0, 162, 255, 0.815),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ),
-                              ],
-                              // content: Text("Saved successfully"),
-                            );
-                          });
+                              ),
+                            ],
+                            // content: Text("Saved successfully"),
+                          );
+                        },
+                      );
                     },
                     child: Container(
                       margin: EdgeInsets.only(bottom: 10),

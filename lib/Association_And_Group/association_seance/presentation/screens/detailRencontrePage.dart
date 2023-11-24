@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotistion.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/WidgetSanctionNonPayeeIsOther.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionNonPayeeIsMoney.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionPayeeIsMoney.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionPayeeIsOther.dart';
+import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanction.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetDetailRencontreCard.dart';
@@ -126,7 +123,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
     final TabController _tabController = TabController(
         length: currentAssCourant!['user_group']['is_tontine'] == true ? 3 : 2,
         vsync: this);
-        final TabController _tabController1 = TabController(length: 2 ,      vsync: this);
+    final TabController _tabController1 = TabController(length: 2, vsync: this);
     // final currentDetailSeance =
 
     // return BlocBuilder<SeanceCubit, SeanceState>(builder: (context, state) {
@@ -180,6 +177,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                   insets: EdgeInsets.symmetric(horizontal: 36.0),
                 ),
                 tabs: [
+                  if (currentAssCourant!['user_group']['is_tontine'] == true)
                   Container(
                     margin: EdgeInsets.only(bottom: 5),
                     child: Text("Tontines"),
@@ -296,26 +294,26 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 ),
                               )
                             : RefreshIndicator(
-                                onRefresh: refresh,
-                                child: ListView.builder(
-                                  itemCount: 1,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                      padding: EdgeInsets.only(top: 100),
-                                      alignment: Alignment.topCenter,
-                                      child: Text(
-                                        "aucune_cotisation".tr(),
-                                        style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                20, 45, 99, 0.26),
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 20),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
+                              onRefresh: refresh,
+                              child: ListView.builder(
+                                itemCount: 1,
+                                itemBuilder:
+                                    (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 200),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "Aucune Tontine".tr(),
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(
+                                              20, 45, 99, 0.26),
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 20),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
                       },
                     ),
                   BlocBuilder<SeanceCubit, SeanceState>(
@@ -393,25 +391,25 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                               ),
                             )
                           : RefreshIndicator(
-                              onRefresh: refresh,
-                              child: ListView.builder(
+                            onRefresh: refresh,
+                            child: ListView.builder(
                                 itemCount: 1,
-                                itemBuilder: (BuildContext context, int index) {
+                                itemBuilder:
+                                    (BuildContext context, int index) {
                                   return Container(
-                                    padding: EdgeInsets.only(top: 100),
+                                    padding: EdgeInsets.only(top: 200),
                                     alignment: Alignment.topCenter,
                                     child: Text(
                                       "aucune_cotisation".tr(),
                                       style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.26),
+                                          color: Color.fromRGBO(
+                                              20, 45, 99, 0.26),
                                           fontWeight: FontWeight.w100,
                                           fontSize: 20),
                                     ),
                                   );
-                                },
-                              ),
-                            );
+                                }),
+                          );
                     },
                   ),
                   BlocBuilder<SeanceCubit, SeanceState>(
@@ -422,128 +420,83 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                             child: CircularProgressIndicator(),
                           ),
                         );
-                      final currentDetailSeance =
-                          context.read<SeanceCubit>().state.detailSeance;
-                      return Column(
-                        children: [
-                          for (var currentDetail
-                              in currentDetailSeance!["sanctions"])
-                            if (currentDetail["type"] == "1" &&
-                                currentDetail["membre"]["membre_code"] ==
-                                    AppCubitStorage().state.membreCode &&
-                                currentDetail["is_sanction_payed"] == 0)
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: 7, right: 7, top: 3, bottom: 7),
-                                child: WidgetSanctionNonPayeeIsMoney(
-                                  dateSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatDateToFrench(
-                                              currentDetail["start_date"])
-                                          : formatDateToEnglish(
-                                              currentDetail["start_date"]),
-                                  versement: currentDetail["versement"],
-                                  heureSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatTimeToFrench(
-                                              currentDetail["start_date"])
-                                          : formatTimeToEnglish(
-                                              currentDetail["start_date"]),
-                                  montantPayeeSanction:
-                                      currentDetail["sanction_balance"],
-                                  montantSanction:
-                                      currentDetail["amount"].toString(),
-                                  motifSanction: currentDetail["motif"],
-                                  lienPaiement:
-                                      currentDetail["sanction_pay_link"] == null
-                                          ? " "
-                                          : currentDetail["sanction_pay_link"],
-                                ),
-                              ),
-                          for (var currentDetail
-                              in currentDetailSeance!["sanctions"])
-                            if (currentDetail["type"] == "0" &&
-                                currentDetail["membre"]["membre_code"] ==
-                                    AppCubitStorage().state.membreCode &&
-                                currentDetail["is_sanction_payed"] == 0)
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: 7, right: 7, top: 3, bottom: 7),
-                                child: WidgetSanctionNonPayeeIsOther(
-                                  dateSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatDateToFrench(
-                                              currentDetail["start_date"])
-                                          : formatDateToEnglish(
-                                              currentDetail["start_date"]),
-                                  heureSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatTimeToFrench(
-                                              currentDetail["start_date"])
-                                          : formatTimeToEnglish(
-                                              currentDetail["start_date"]),
-                                  objetSanction: currentDetail["libelle"],
-                                  motifSanction: currentDetail["motif"],
-                                ),
-                              ),
-                          for (var currentDetail
-                              in currentDetailSeance!["sanctions"])
-                            if (currentDetail["type"] == "1" &&
-                                currentDetail["is_sanction_payed"] == 1 &&
-                                currentDetail["membre"]["membre_code"] ==
-                                    Variables().codeMembre)
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: 7, right: 7, top: 3, bottom: 7),
-                                child: WidgetSanctionPayeeIsMoney(
-                                  versement: currentDetail["versement"],
-                                  dateSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatDateToFrench(
-                                              currentDetail["start_date"])
-                                          : formatDateToEnglish(
-                                              currentDetail["start_date"]),
-                                  heureSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatTimeToFrench(
-                                              currentDetail["start_date"])
-                                          : formatTimeToEnglish(
-                                              currentDetail["start_date"]),
-                                  montantPayeeSanction:
-                                      currentDetail["sanction_balance"],
-                                  montantSanction:
-                                      currentDetail["amount"].toString(),
-                                  motifSanction: currentDetail["motif"],
-                                ),
-                              ),
-                          for (var currentDetail
-                              in currentDetailSeance!["sanctions"])
-                            if (currentDetail["type"] == "0" &&
-                                currentDetail["is_sanction_payed"] == 1 &&
-                                currentDetail["membre"]["membre_code"] ==
-                                    Variables().codeMembre)
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: 7, right: 7, top: 3, bottom: 7),
-                                child: WidgetSanctionPayeeIsOther(
-                                  dateSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatDateToFrench(
-                                              currentDetail["start_date"])
-                                          : formatDateToEnglish(
-                                              currentDetail["start_date"]),
-                                  heureSanction:
-                                      AppCubitStorage().state.Language == "fr"
-                                          ? formatTimeToFrench(
-                                              currentDetail["start_date"])
-                                          : formatTimeToEnglish(
-                                              currentDetail["start_date"]),
-                                  motifSanction: currentDetail["motif"],
-                                  objetSanction: currentDetail["libelle"],
-                                ),
-                              )
-                        ],
-                      );
+                      final allCurrentDetailSeanceSanction = context
+                          .read<SeanceCubit>()
+                          .state
+                          .detailSeance!["sanctions"];
+
+                      List<dynamic> allSanctionUserConnect =
+                          allCurrentDetailSeanceSanction
+                              .where((sanctions) =>
+                                  sanctions["membre"]["membre_code"] ==
+                                  AppCubitStorage().state.membreCode)
+                              .toList();
+
+                      return allSanctionUserConnect.length > 0
+                          ? ListView.builder(
+                              itemCount: allSanctionUserConnect.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final currentSaction =
+                                    allSanctionUserConnect[index];
+                                return Container(
+                                  margin: EdgeInsets.only(
+                                      left: 7, right: 7, top: 3, bottom: 7),
+                                  child: WidgetSanction(
+                                    objetSanction:
+                                        currentSaction["libelle"] == null
+                                            ? " "
+                                            : currentSaction["libelle"],
+                                    heureSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatTimeToFrench(
+                                                currentSaction["start_date"])
+                                            : formatTimeToEnglish(
+                                                currentSaction["start_date"]),
+                                    dateSanction:
+                                        AppCubitStorage().state.Language == "fr"
+                                            ? formatDateToFrench(
+                                                currentSaction["start_date"])
+                                            : formatDateToEnglish(
+                                                currentSaction["start_date"]),
+                                    motifSanction: currentSaction["motif"],
+                                    montantSanction:
+                                        currentSaction["amount"].toString(),
+                                    montantPayeeSanction:
+                                        currentSaction["sanction_balance"],
+                                    lienPaiement: currentSaction[
+                                                "sanction_pay_link"] ==
+                                            null
+                                        ? " "
+                                        : currentSaction["sanction_pay_link"],
+                                    versement: currentSaction["versement"],
+                                    isSanctionPayed:
+                                        currentSaction["is_sanction_payed"],
+                                    typeSaction: currentSaction["type"],
+                                  ),
+                                );
+                              },
+                            )
+                          : RefreshIndicator(
+                            onRefresh: refresh,
+                            child: ListView.builder(
+                              itemCount: 1,
+                              itemBuilder:
+                                  (BuildContext context, int index) {
+                                return Container(
+                                  padding: EdgeInsets.only(top: 200),
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "aucune_sanction".tr(),
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            20, 45, 99, 0.26),
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
                     },
                   ),
                 ],

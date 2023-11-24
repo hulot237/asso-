@@ -4,8 +4,9 @@ class AppStorageModel {
   String? ValTest;
   String? codeAssDefaul;
   String? membreCode;
-  String? userNameKey;
-  String? passwordKey;
+  // String? userNameKey;
+  // String? passwordKey;
+  String? tokenUser;
     final bool isLoading;
 
 
@@ -16,9 +17,10 @@ class AppStorageModel {
     this.ValTest,
     this.codeAssDefaul,
     this.membreCode,
-    this.userNameKey,
+    this.tokenUser,
+    // this.userNameKey,
+    // this.passwordKey,
     this.isLoading = false,
-    this.passwordKey,
 
   });
 
@@ -28,8 +30,9 @@ class AppStorageModel {
     String? ValTest,
     String? codeAssDefaul,
     String? membreCode,
-    String? userNameKey,
-    String? passwordKey,
+    String? tokenUser,
+    // String? userNameKey,
+    // String? passwordKey,
     required bool isloading,
 
 
@@ -40,8 +43,9 @@ class AppStorageModel {
       ValTest: ValTest ?? this.ValTest,
       codeAssDefaul: codeAssDefaul ?? this.codeAssDefaul,
       membreCode: membreCode ?? this.membreCode,
-      userNameKey: userNameKey?? this.userNameKey,
-      passwordKey: passwordKey?? this.passwordKey,
+      tokenUser: tokenUser ?? this.tokenUser,
+      // userNameKey: userNameKey?? this.userNameKey,
+      // passwordKey: passwordKey?? this.passwordKey,
           isLoading: isloading,
 
 

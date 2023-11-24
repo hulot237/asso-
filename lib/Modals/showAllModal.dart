@@ -806,6 +806,7 @@ class Modal {
                 ),
               )
             : Container(
+              height: 350,
                 child: Center(
                   child: Text("aucune_transaction".tr()),
                 ),

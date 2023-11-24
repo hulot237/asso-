@@ -10,9 +10,10 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
               ValTest: "zzzzzz",
               codeAssDefaul: null,
               membreCode: null,
-              userNameKey: null,
-              passwordKey: null,
-              isLoading: false),
+              tokenUser: null,
+              // userNameKey: null,
+              // passwordKey: null,
+              isLoading: false,),
         );
 
   @override
@@ -23,8 +24,9 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       ValTest: json['ValTest'],
       codeAssDefaul: json['codeAssDefaul'],
       membreCode: json["membreCode"],
-      userNameKey: json["userNameKey"],
-      passwordKey: json["passwordKey"],
+      tokenUser: json["tokenUser"],
+      // userNameKey: json["userNameKey"],
+      // passwordKey: json["passwordKey"],
       isLoading: json["isLoading"],
     );
   }
@@ -37,8 +39,9 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       'ValTest': state.ValTest,
       'codeAssDefaul': state.codeAssDefaul,
       'membreCode': state.membreCode,
-      'userNameKey': state.userNameKey,
-      'passwordKey': state.passwordKey,
+      'tokenUser': state.tokenUser,
+      // 'userNameKey': state.userNameKey,
+      // 'passwordKey': state.passwordKey,
       'isLoading': state.isLoading,
 
       
@@ -129,7 +132,8 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     );
   }
 
-  Future<void> updateuserNameKey(String newValue) async {
+
+    Future<void> updateTokenUser(String newValue) async {
     bool donneesChargees = false;
     emit(state.copyWith(isloading: true));
 
@@ -142,28 +146,49 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
 
     emit(
       state.copyWith(
-        userNameKey: newValue,
+        tokenUser: newValue,
         isloading: false,
       ),
     );
   }
 
-  Future<void> updatepasswordKey(String newValue) async {
-    bool donneesChargees = false;
-    emit(state.copyWith(isloading: true));
 
-    do {
-      await Future.delayed(Duration(seconds: 1));
-      if (newValue != null) {
-        donneesChargees = true;
-      }
-    } while (!donneesChargees);
 
-    emit(
-      state.copyWith(
-        passwordKey: newValue,
-        isloading: false,
-      ),
-    );
-  }
+  // Future<void> updateuserNameKey(String newValue) async {
+  //   bool donneesChargees = false;
+  //   emit(state.copyWith(isloading: true));
+
+  //   do {
+  //     await Future.delayed(Duration(seconds: 1));
+  //     if (newValue != null) {
+  //       donneesChargees = true;
+  //     }
+  //   } while (!donneesChargees);
+
+  //   emit(
+  //     state.copyWith(
+  //       userNameKey: newValue,
+  //       isloading: false,
+  //     ),
+  //   );
+  // }
+
+  // Future<void> updatepasswordKey(String newValue) async {
+  //   bool donneesChargees = false;
+  //   emit(state.copyWith(isloading: true));
+
+  //   do {
+  //     await Future.delayed(Duration(seconds: 1));
+  //     if (newValue != null) {
+  //       donneesChargees = true;
+  //     }
+  //   } while (!donneesChargees);
+
+  //   emit(
+  //     state.copyWith(
+  //       passwordKey: newValue,
+  //       isloading: false,
+  //     ),
+  //   );
+  // }
 }

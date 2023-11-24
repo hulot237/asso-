@@ -5,10 +5,7 @@ import 'package:faroty_association_1/Association_And_Group/association_compte/bu
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotistion.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/WidgetSanctionNonPayeeIsOther.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionNonPayeeIsMoney.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionPayeeIsMoney.dart';
-import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanctionPayeeIsOther.dart';
+import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanction.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetRencontreCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
@@ -173,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
   }
 
-    Future refresh() async {
+  Future refresh() async {
     handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois);
   }
 
@@ -432,7 +429,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 2,
@@ -454,46 +450,94 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   .state
                                   .allCotisationAss;
 
-                              List<dynamic> objetCotisationUniquement = currentAllCotisationAssTournoi!.where((objet) => objet["is_tontine"] == 0).toList();
+                              List<dynamic> objetCotisationUniquement =
+                                  currentAllCotisationAssTournoi!
+                                      .where(
+                                          (objet) => objet["is_tontine"] == 0)
+                                      .toList();
                               return objetCotisationUniquement.length > 0
                                   ? Container(
-                                    // color: Colors.cyan,
-                                    child: RefreshIndicator(
-                                    onRefresh: refresh,
-                                      child: ListView.builder(
-                                          itemCount: objetCotisationUniquement.length,
-                                          physics: NeverScrollableScrollPhysics(),
+                                      // color: Colors.cyan,
+                                      child: RefreshIndicator(
+                                        onRefresh: refresh,
+                                        child: ListView.builder(
+                                          itemCount:
+                                              objetCotisationUniquement.length,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           padding: EdgeInsets.all(0),
-                                          itemBuilder: (BuildContext context, int index) {
-                                            final ItemDetailCotisation = objetCotisationUniquement[index];
-                                                                      
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final ItemDetailCotisation =
+                                                objetCotisationUniquement[
+                                                    index];
+
                                             return Container(
-                                              margin: EdgeInsets.only(left: 7, right: 7, top: 3, bottom: 7),
+                                              margin: EdgeInsets.only(
+                                                  left: 7,
+                                                  right: 7,
+                                                  top: 3,
+                                                  bottom: 7),
                                               child: WidgetCotisation(
-                                                montantCotisations: ItemDetailCotisation["amount"],
-                                                motifCotisations: ItemDetailCotisation["name"],
-                                                dateCotisation: AppCubitStorage().state.Language == "fr" ? formatDateToFrench( ItemDetailCotisation["start_date"]) : formatDateToEnglish(ItemDetailCotisation["start_date"]),
-                                                heureCotisation: AppCubitStorage().state.Language == "fr" ? formatTimeToFrench(ItemDetailCotisation["start_date"]): formatTimeToEnglish(ItemDetailCotisation["start_date"]),
-                                                soldeCotisation: ItemDetailCotisation["cotisation_balance"],
+                                                montantCotisations:
+                                                    ItemDetailCotisation[
+                                                        "amount"],
+                                                motifCotisations:
+                                                    ItemDetailCotisation[
+                                                        "name"],
+                                                dateCotisation: AppCubitStorage()
+                                                            .state
+                                                            .Language ==
+                                                        "fr"
+                                                    ? formatDateToFrench(
+                                                        ItemDetailCotisation[
+                                                            "start_date"])
+                                                    : formatDateToEnglish(
+                                                        ItemDetailCotisation[
+                                                            "start_date"]),
+                                                heureCotisation: AppCubitStorage()
+                                                            .state
+                                                            .Language ==
+                                                        "fr"
+                                                    ? formatTimeToFrench(
+                                                        ItemDetailCotisation[
+                                                            "start_date"])
+                                                    : formatTimeToEnglish(
+                                                        ItemDetailCotisation[
+                                                            "start_date"]),
+                                                soldeCotisation:
+                                                    ItemDetailCotisation[
+                                                        "cotisation_balance"],
                                                 contributionOneUser: "2",
                                                 nbreParticipant: 23,
                                                 nbreParticipantCotisationOK: 11,
-                                                codeCotisation: ItemDetailCotisation["cotisation_code"],
-                                                type: ItemDetailCotisation["type"],
-                                                lienDePaiement: ItemDetailCotisation["cotisation_pay_link"] == null ? "le lien n'a pas été généré" : ItemDetailCotisation["cotisation_pay_link"],
-                                                is_passed: ItemDetailCotisation["is_passed"],
-                                                is_tontine: ItemDetailCotisation["is_tontine"],
+                                                codeCotisation:
+                                                    ItemDetailCotisation[
+                                                        "cotisation_code"],
+                                                type: ItemDetailCotisation[
+                                                    "type"],
+                                                lienDePaiement: ItemDetailCotisation[
+                                                            "cotisation_pay_link"] ==
+                                                        null
+                                                    ? "le lien n'a pas été généré"
+                                                    : ItemDetailCotisation[
+                                                        "cotisation_pay_link"],
+                                                is_passed: ItemDetailCotisation[
+                                                    "is_passed"],
+                                                is_tontine:
+                                                    ItemDetailCotisation[
+                                                        "is_tontine"],
                                               ),
                                             );
                                           },
                                         ),
-                                    ),
-                                  )
+                                      ),
+                                    )
                                   : RefreshIndicator(
-                                    onRefresh: ()async{ 
-                                      refresh;
-                                    },
-                                    child: Container(
+                                      onRefresh: () async {
+                                        refresh;
+                                      },
+                                      child: Container(
                                         padding: EdgeInsets.only(top: 100),
                                         alignment: Alignment.topCenter,
                                         child: Text(
@@ -505,197 +549,57 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               fontSize: 20),
                                         ),
                                       ),
-                                  );
+                                    );
                             },
                           ),
-
                           currentDetailUser!["sanctions"].length > 0
-                              ?
-                              // if(false)
-                              ListView.builder(
-                                  // shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-
+                              ? ListView.builder(
                                   padding: EdgeInsets.all(0),
+                                  physics: NeverScrollableScrollPhysics(),
                                   itemCount:
-                                      currentDetailUser!["sanctions"].length,
-                                  itemBuilder: (context, index) {
-                                    final ItemDetailUserSanction =
-                                        currentDetailUser["sanctions"][index];
-
-                                    print(
-                                        "################ ${ItemDetailUserSanction}");
-
-                                    if (ItemDetailUserSanction["type"] == "1" &&
-                                        ItemDetailUserSanction[
-                                                "is_sanction_payed"] ==
-                                            0) {
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                            left: 7,
-                                            right: 7,
-                                            top: 3,
-                                            bottom: 7),
-                                        child: WidgetSanctionNonPayeeIsMoney(
-                                          versement: ItemDetailUserSanction[
-                                              "versement"],
-                                          dateSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatDateToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatDateToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          heureSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatTimeToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatTimeToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          montantPayeeSanction:
-                                              ItemDetailUserSanction[
-                                                  "sanction_balance"],
-                                          montantSanction:
-                                              ItemDetailUserSanction["amount"]
-                                                  .toString(),
-                                          motifSanction:
-                                              ItemDetailUserSanction["motif"],
-                                          lienPaiement: ItemDetailUserSanction[
-                                                      "sanction_pay_link"] ==
-                                                  null
-                                              ? " "
-                                              : ItemDetailUserSanction[
-                                                  "sanction_pay_link"],
-                                        ),
-                                      );
-                                    } else if (ItemDetailUserSanction["type"] ==
-                                            "0" &&
-                                        ItemDetailUserSanction[
-                                                "is_sanction_payed"] ==
-                                            0) {
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                            left: 7,
-                                            right: 7,
-                                            top: 3,
-                                            bottom: 7),
-                                        child: WidgetSanctionNonPayeeIsOther(
-                                          dateSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatDateToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatDateToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          heureSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatTimeToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatTimeToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          objetSanction:
-                                              ItemDetailUserSanction["libelle"],
-                                          motifSanction:
-                                              ItemDetailUserSanction["motif"],
-                                        ),
-                                      );
-                                    } else if (ItemDetailUserSanction["type"] ==
-                                            "1" &&
-                                        ItemDetailUserSanction[
-                                                "is_sanction_payed"] ==
-                                            1) {
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                            left: 7,
-                                            right: 7,
-                                            top: 3,
-                                            bottom: 7),
-                                        child: WidgetSanctionPayeeIsMoney(
-                                          versement: ItemDetailUserSanction[
-                                              "versement"],
-                                          dateSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatDateToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatDateToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          heureSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatTimeToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatTimeToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          montantPayeeSanction:
-                                              ItemDetailUserSanction[
-                                                  "sanction_balance"],
-                                          montantSanction:
-                                              ItemDetailUserSanction["amount"]
-                                                  .toString(),
-                                          motifSanction:
-                                              ItemDetailUserSanction["motif"],
-                                        ),
-                                      );
-                                    } else if (ItemDetailUserSanction["type"] ==
-                                            "0" &&
-                                        ItemDetailUserSanction[
-                                                "is_sanction_payed"] ==
-                                            1) {
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                            left: 7,
-                                            right: 7,
-                                            top: 3,
-                                            bottom: 7),
-                                        child: WidgetSanctionPayeeIsOther(
-                                          dateSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatDateToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatDateToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          heureSanction: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatTimeToFrench(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"])
-                                              : formatTimeToEnglish(
-                                                  ItemDetailUserSanction[
-                                                      "start_date"]),
-                                          motifSanction:
-                                              ItemDetailUserSanction["motif"],
-                                          objetSanction:
-                                              ItemDetailUserSanction["libelle"],
-                                        ),
-                                      );
-                                    }
+                                      currentDetailUser["sanctions"].length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final currentSaction =
+                                        currentDetailUser!["sanctions"][index];
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                          left: 7, right: 7, top: 3, bottom: 7),
+                                      child: WidgetSanction(
+                                        objetSanction: currentSaction["libelle"] == null ? " " : currentSaction["libelle"],
+                                        heureSanction: AppCubitStorage()
+                                                    .state
+                                                    .Language ==
+                                                "fr"
+                                            ? formatTimeToFrench(
+                                                currentSaction["start_date"])
+                                            : formatTimeToEnglish(
+                                                currentSaction["start_date"]),
+                                        dateSanction: AppCubitStorage()
+                                                    .state
+                                                    .Language ==
+                                                "fr"
+                                            ? formatDateToFrench(
+                                                currentSaction["start_date"])
+                                            : formatDateToEnglish(
+                                                currentSaction["start_date"]),
+                                        motifSanction: currentSaction["motif"],
+                                        montantSanction:
+                                            currentSaction["amount"].toString(),
+                                        montantPayeeSanction:
+                                            currentSaction["sanction_balance"],
+                                        lienPaiement: currentSaction[
+                                                    "sanction_pay_link"] ==
+                                                null
+                                            ? " "
+                                            : currentSaction[
+                                                "sanction_pay_link"],
+                                        versement: currentSaction["versement"],
+                                        isSanctionPayed:
+                                            currentSaction["is_sanction_payed"],
+                                        typeSaction: currentSaction["type"],
+                                      ),
+                                    );
                                   },
                                 )
                               : Container(
@@ -708,8 +612,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         fontWeight: FontWeight.w100,
                                         fontSize: 20),
                                   ),
-                                )
-                          //  Text("2"),
+                                ),
                         ],
                       ),
                     ),
