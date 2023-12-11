@@ -5,6 +5,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +24,13 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     body: child,
   );
 }
@@ -54,7 +55,7 @@ class _AccountPageState extends State<AccountPage> {
                   bottomLeft: Radius.circular(50),
                   bottomRight: Radius.circular(50),
                 ),
-                color: Color.fromARGB(255, 20, 45, 99),
+                color: AppColors.blackBlue,
               ),
               height: 160,
               child: Column(
@@ -65,7 +66,7 @@ class _AccountPageState extends State<AccountPage> {
                         margin: EdgeInsets.only(top: 20),
                         padding: EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.white,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: ClipRRect(
@@ -92,7 +93,7 @@ class _AccountPageState extends State<AccountPage> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w300,
-                                  color: Colors.white,
+                                  color: AppColors.white,
                                 ),
                               ),
                             ),
@@ -113,7 +114,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: const Color.fromARGB(127, 255, 255, 255),
+                                color: AppColors.whiteAccent1,
                               ),
                             ),
                             Text(
@@ -121,7 +122,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.green,
+                                color: AppColors.green,
                               ),
                             )
                           ],
@@ -133,7 +134,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: const Color.fromARGB(127, 255, 255, 255),
+                                color: AppColors.whiteAccent1,
                               ),
                             ),
                             Text(
@@ -141,7 +142,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.green,
+                                color: AppColors.green,
                               ),
                             )
                           ],
@@ -153,7 +154,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: const Color.fromARGB(127, 255, 255, 255),
+                                color: AppColors.whiteAccent1,
                               ),
                             ),
                             currentDetailUser["is_inscription_payed"] == 1
@@ -162,7 +163,7 @@ class _AccountPageState extends State<AccountPage> {
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.green,
+                                      color: AppColors.green,
                                     ),
                                   )
                                 : GestureDetector(
@@ -183,14 +184,14 @@ class _AccountPageState extends State<AccountPage> {
                                           style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.red,
+                                            color: AppColors.red,
                                           ),
                                         ),
                                         Container(
                                             margin: EdgeInsets.only(left: 2),
                                             child: Icon(
                                               Icons.open_in_new,
-                                              color: Colors.red,
+                                              color: AppColors.red,
                                               size: 10,
                                             ))
                                       ],
@@ -222,7 +223,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(141, 20, 45, 99),
+                                color: AppColors.blackBlueAccent1
                               ),
                             ),
                           ),
@@ -230,7 +231,7 @@ class _AccountPageState extends State<AccountPage> {
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(7),
                             decoration: BoxDecoration(
-                                color: Color.fromARGB(19, 20, 45, 99),
+                                color: AppColors.blackBlueAccent2,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -417,7 +418,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(141, 20, 45, 99),
+                                color: AppColors.blackBlueAccent1
                               ),
                             ),
                           ),
@@ -634,7 +635,7 @@ class _AccountPageState extends State<AccountPage> {
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(141, 20, 45, 99),
+                                color: AppColors.blackBlueAccent1
                               ),
                             ),
                           ),
@@ -871,7 +872,7 @@ class _AccountPageState extends State<AccountPage> {
                     //           style: TextStyle(
                     //             fontSize: 15,
                     //             fontWeight: FontWeight.w500,
-                    //             color: Color.fromARGB(141, 20, 45, 99),
+                    //             color: AppColors.blackBlueAccent1
                     //           ),
                     //         ),
                     //       ),

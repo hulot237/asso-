@@ -5,6 +5,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +54,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         boxShadow: [
           BoxShadow(
               color: Color.fromARGB(69, 0, 0, 0),
@@ -91,7 +92,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w300,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -101,7 +102,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -123,7 +124,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 child: Text(
                                   "en_cours".tr(),
                                   style: TextStyle(
-                                      color: Colors.green,
+                                      color: AppColors.green,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10),
                                 ),
@@ -170,7 +171,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               fontSize: 12,
                               overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.w400,
-                              color: Color.fromARGB(255, 20, 45, 99)),
+                              color: AppColors.blackBlue,),
                         ),
                       ),
                     ],
@@ -210,7 +211,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                         style: TextStyle(
                                             fontSize: 12,
                                             color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                                AppColors.blackBlue,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -220,7 +221,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     child: Icon(
                                       Icons.maps_home_work_rounded,
                                       size: 13,
-                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      color: AppColors.blackBlue,
                                     ),
                                   )
                                 ],
@@ -249,7 +250,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 "${widget.dateRencontre} : ${widget.heureRencontre}",
                                 style: TextStyle(
                                     fontSize: 12,
-                                    color: Color.fromARGB(255, 20, 45, 99),
+                                    color: AppColors.blackBlue,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),
@@ -297,6 +298,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                       height: 16,
                                       child: Center(
                                         child: CircularProgressIndicator(
+                                          color: AppColors.bleuLight,
                                           strokeWidth: 0.1,
                                         ),
                                       ),
@@ -348,7 +350,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                           fontSize: 16,
                                           fontWeight: FontWeight.w800,
                                           color:
-                                              Color.fromARGB(255, 20, 45, 99)),
+                                              AppColors.blackBlue,),
                                     ),
                                   ),
                                 ],
@@ -386,7 +388,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               border: Border(
                                 left: BorderSide(
                                   width: 2,
-                                  color: Colors.white,
+                                  color: AppColors.white,
                                 ),
                               ),
                             ),
@@ -416,6 +418,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                       height: 16,
                                       child: Center(
                                         child: CircularProgressIndicator(
+                                          color: AppColors.bleuLight,
                                           strokeWidth: 0.1,
                                         ),
                                       ),
@@ -429,7 +432,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                           fontSize: 16,
                                           fontWeight: FontWeight.w800,
                                           color:
-                                              Color.fromARGB(255, 20, 45, 99)),
+                                              AppColors.blackBlue,),
                                     ),
                                   );
                                 }),

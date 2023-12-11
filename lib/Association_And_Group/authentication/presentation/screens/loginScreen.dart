@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/verificationPage.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/screens/homeScreen.dart';
@@ -26,13 +27,13 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     body: child,
   );
 }
@@ -55,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => VerificationPage(numeroPhone:numeroPhone),
+            builder: (context) => VerificationPage(numeroPhone: numeroPhone),
           ),
         );
       }
@@ -98,51 +99,59 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
-                            color: Color.fromARGB(255, 20, 45, 99),
+                            color: AppColors.blackBlue,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 25),
                         Container(
-                          padding: EdgeInsets.all(12),
+                          // padding: EdgeInsets.all(5),
+                          padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                           // alignment: Alignment.center,
                           height: 55,
                           decoration: BoxDecoration(
                               border: Border.all(
                                 width: 1,
-                                color: Color.fromARGB(255, 20, 45, 99),
+                                color: AppColors.blackBlue,
                               ),
                               borderRadius: BorderRadius.circular(10)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                  // width: 90,
-                                  child: Text(
-                                "+237",
-                                style: TextStyle(
+                                // color: Colors.deepOrange,
+                                alignment: Alignment.center,
+                                // width: 90,
+                                height: MediaQuery.of(context).size.height,
+                                child: Text(
+                                  "+237",
+                                  style: TextStyle(
                                     color: Color.fromARGB(142, 20, 45, 99),
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 17),
-                              )),
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
                               Container(
+                                // color: AppColors.greenAccent,
                                 width: MediaQuery.sizeOf(context).width / 1.5,
-                                margin: EdgeInsets.only(top: 12),
-                                alignment: Alignment.center,
+                                // margin: EdgeInsets.only(top: 12),
+                                // alignment: Alignment.center,
                                 child: TextField(
                                   controller: numeroPhoneController,
                                   keyboardType: TextInputType.number,
                                   style: TextStyle(
                                     fontSize: 17,
-                                    color: Color.fromARGB(255, 20, 45, 99),
+                                    color: AppColors.blackBlue,
                                   ),
                                   decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "numero_de_téléphone".tr(),
-                                      hintStyle: TextStyle(
-                                        color: Color.fromARGB(122, 20, 45, 99),
-                                      )),
+                                    border: InputBorder.none,
+                                    hintText: "numero_de_téléphone".tr(),
+                                    hintStyle: TextStyle(
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -177,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                               return Container(
                                 child: Center(
                                   child: CircularProgressIndicator(
-                                    color: Color(0xFF9bc43f),
+                                    color: AppColors.greenAssociation,
                                   ),
                                 ),
                               );
@@ -188,10 +197,10 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: Text(
                                 "vérification".tr(),
-                                style: TextStyle(fontSize: 19),
+                                style: TextStyle(fontSize: 19, color: AppColors.white),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF9bc43f),
+                                backgroundColor: AppColors.greenAssociation,
                                 // primary: Color(0xFF6FA629),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -214,7 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                     "msg_condition_utilisation".tr(),
                     style: TextStyle(
                       fontSize: 10,
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                     ),
                     textAlign: TextAlign.center,
                   ),

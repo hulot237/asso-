@@ -3,6 +3,7 @@ import 'package:faroty_association_1/Association_And_Group/association_compte/bu
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
@@ -16,14 +17,11 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/pages/push_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-
-
-
 
 
 //function to lisen to background changes
@@ -59,8 +57,10 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -99,8 +99,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => DetailContributionCubit(),
         ),
+        BlocProvider(
+          create: (context) => RecentEventCubit(),
+        ),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          useMaterial3: false,
+          
+        ),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,

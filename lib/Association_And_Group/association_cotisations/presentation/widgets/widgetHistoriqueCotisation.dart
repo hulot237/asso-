@@ -1,5 +1,6 @@
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 
 class WidgetHistoriqueCotisation extends StatefulWidget {
@@ -37,7 +38,7 @@ class _WidgetHistoriqueCotisationState
     return Container(
         padding: EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             border: Border(
                 bottom: BorderSide(
               width: 1,
@@ -79,7 +80,7 @@ class _WidgetHistoriqueCotisationState
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w800,
-                              color: Color.fromRGBO(20, 45, 99, 1),
+                              color: AppColors.blackBlue,
                             ),
                           ),
                         ),
@@ -211,7 +212,7 @@ class _WidgetHistoriqueCotisationState
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w800,
-                                  color: Colors.green),
+                                  color: AppColors.green),
                             ),
                           ),
                           // Container(
@@ -235,7 +236,7 @@ class _WidgetHistoriqueCotisationState
                       ),
                       child: Icon(
                         Icons.done,
-                        color: Colors.green,
+                        color: AppColors.green,
                         size: 10,
                       ),
                     ),

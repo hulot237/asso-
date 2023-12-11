@@ -15,11 +15,13 @@ import 'package:faroty_association_1/Association_And_Group/association_tontine/p
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/screens/detailTontinePage.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
@@ -42,13 +44,13 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "historiques".tr(),
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color: AppColors.white),
         ),
-        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+        backgroundColor: AppColors.backgroundAppBAr,
         trailing: widgetAction,
       ),
       child: child,
@@ -56,15 +58,21 @@ Widget PageScaffold({
   }
 
   return Scaffold(
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.white,
     appBar: AppBar(
       title: Text(
         "historiques".tr(),
+        style: TextStyle(fontSize: 16, color: AppColors.white),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
       actions: [widgetAction],
-      leading: Container(),
     ),
     body: child,
   );
@@ -160,8 +168,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
     }
   }
 
-
-
   Future refresh() async {
     handleTournoiDefault();
     // handleAllUserGroup();
@@ -222,7 +228,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
   List<Color> listeDeCouleurs = [
     Colors.red, // Rouge
     Colors.blue, // Bleu
-    Colors.green, // Vert
+    AppColors.green, // Vert
     Colors.brown, // Jaune
     Colors.purple, // Violet
   ];
@@ -239,9 +245,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
             UserGroupState.isLoading == true ||
             UserGroupState.ChangeAssData == null)
           return Container(
-            color: Colors.white,
+            color: AppColors.white,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: AppColors.bleuLight,
+              ),
             ),
           );
         _dataLoaded = true;
@@ -264,11 +272,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
             return false;
           },
           child: Scaffold(
-            backgroundColor: Color(0xFFEFEFEF),
+            backgroundColor: AppColors.pageBackground,
             appBar: AppBar(
               title: Text(
                 "historiques".tr(),
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: AppColors.white),
               ),
               actions: [
                 GestureDetector(
@@ -311,7 +319,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                 ),
               ],
               elevation: 0,
-              backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+              backgroundColor: AppColors.backgroundAppBAr,
               leading: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushAndRemoveUntil(
@@ -321,22 +329,27 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                     (route) => false,
                   );
                 },
-                child: Icon(Icons.arrow_back),
+                child: Icon(Icons.arrow_back, color: AppColors.white),
               ),
               bottom: TabBar(
                   controller: _tabController,
                   isScrollable: true,
+                  labelColor: AppColors.white,
                   labelStyle:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  unselectedLabelStyle:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
                   padding: EdgeInsets.all(0),
+                  unselectedLabelStyle: TextStyle(
+                    color: AppColors.whiteAccent1,
+                    fontWeight: FontWeight.bold,
+                  ),
                   indicator: UnderlineTabIndicator(
                     borderSide: BorderSide(
-                      color: Colors.white,
+                      color: AppColors.white,
                       width: 5.0,
                     ),
-                    insets: EdgeInsets.symmetric(horizontal: 36.0),
+                    insets: EdgeInsets.symmetric(
+                      horizontal: 36.0,
+                    ),
                   ),
                   indicatorWeight: 0,
                   tabs: [
@@ -353,15 +366,15 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                     Tab(
                       text: "Sanctions",
                     ),
-                    if(checkTransparenceStatus(
-                          context
-                              .read<UserGroupCubit>()
-                              .state
-                              .ChangeAssData!["user_group"]["configs"],
-                          context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"]))
+                    if (checkTransparenceStatus(
+                        context
+                            .read<UserGroupCubit>()
+                            .state
+                            .ChangeAssData!["user_group"]["configs"],
+                        context
+                            .read<AuthCubit>()
+                            .state
+                            .detailUser!["isMember"]))
                       Tab(
                         text: "comptes".tr(),
                       ),
@@ -389,7 +402,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                         child: Text(
                           "toutes_les_rencontres".tr(),
                           style: TextStyle(
-                            color: const Color.fromRGBO(20, 45, 99, 1),
+                            color: AppColors.blackBlue,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                             letterSpacing: 0.2,
@@ -404,7 +417,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                             DetailTournoiState.detailtournoiCourant == null)
                           return Container(
                             child: Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                color: AppColors.bleuLight,
+                              ),
                             ),
                           );
                         final currentDetailtournoiCourant = context
@@ -481,27 +496,27 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                 ),
                               )
                             : Expanded(
-                                  child: RefreshIndicator(
-                                    onRefresh: refresh,
-                                    child: ListView.builder(
-                                        itemCount: 1,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            padding: EdgeInsets.only(top: 200),
-                                            alignment: Alignment.topCenter,
-                                            child: Text(
-                                              "aucune_rencontre".tr(),
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      20, 45, 99, 0.26),
-                                                  fontWeight: FontWeight.w100,
-                                                  fontSize: 20),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                );
+                                child: RefreshIndicator(
+                                  onRefresh: refresh,
+                                  child: ListView.builder(
+                                      itemCount: 1,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Container(
+                                          padding: EdgeInsets.only(top: 200),
+                                          alignment: Alignment.topCenter,
+                                          child: Text(
+                                            "aucune_rencontre".tr(),
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    20, 45, 99, 0.26),
+                                                fontWeight: FontWeight.w100,
+                                                fontSize: 20),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              );
                       }),
                     ],
                   ),
@@ -523,7 +538,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                           child: Text(
                             "Toutes vos tontines",
                             style: TextStyle(
-                                color: const Color.fromRGBO(20, 45, 99, 1),
+                                color: AppColors.blackBlue,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                                 letterSpacing: 0.2),
@@ -538,7 +553,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                               DetailTournoiState.detailtournoiCourant == null)
                             return Container(
                               child: Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                  color: AppColors.bleuLight,
+                                ),
                               ),
                             );
                           final currentDetailtournoiCourant = context
@@ -692,7 +709,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                         child: Text(
                           "toutes_vos_cotisations".tr(),
                           style: TextStyle(
-                              color: const Color.fromRGBO(20, 45, 99, 1),
+                              color: AppColors.blackBlue,
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               letterSpacing: 0.2),
@@ -706,7 +723,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                               CotisationState.allCotisationAss == null)
                             return Container(
                               child: Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                  color: AppColors.bleuLight,
+                                ),
                               ),
                             );
                           final currentAllCotisationAssTournoi = context
@@ -766,9 +785,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                             soldeCotisation:
                                                 ItemDetailCotisation[
                                                     "cotisation_balance"],
-                                            contributionOneUser: "2",
-                                            nbreParticipant: 23,
-                                            nbreParticipantCotisationOK: 11,
                                             codeCotisation:
                                                 ItemDetailCotisation[
                                                     "cotisation_code"],
@@ -811,7 +827,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         }),
                                   ),
                                 );
-                              
                         },
                       ),
                     ],
@@ -830,209 +845,214 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                         child: Text(
                           "toutes_vos_sanctions".tr(),
                           style: TextStyle(
-                              color: const Color.fromRGBO(20, 45, 99, 1),
+                              color: AppColors.blackBlue,
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               letterSpacing: 0.2),
                         ),
                       ),
-                      BlocBuilder<CotisationCubit, CotisationState>(
-                          builder: (CotisationContext, CotisationState) {
-                        if (CotisationState.isLoading == null ||
-                            CotisationState.isLoading == true ||
-                            CotisationState.allCotisationAss == null)
-                          return Container(
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        final currentDetailUser =
-                            context.read<AuthCubit>().state.detailUser;
-                        //                       Map<String, dynamic>? get currentDetailUser {
-                        // return context.read<AuthCubit>().state.detailUser;
-                        // }b
-                        return currentDetailUser!["sanctions"].length > 0
-                            ? Expanded(
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (AuthContext, AuthState) {
+                          if (AuthState.isLoading == null ||
+                              AuthState.isLoading == true ||
+                              AuthState.detailUser == null)
+                            return Container(
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.bleuLight,
+                                ),
+                              ),
+                            );
+                          final currentDetailUser =
+                              context.read<AuthCubit>().state.detailUser;
+                          //                       Map<String, dynamic>? get currentDetailUser {
+                          // return context.read<AuthCubit>().state.detailUser;
+                          // }b
+                          return currentDetailUser!["sanctions"].length > 0
+                              ? Expanded(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: RefreshIndicator(
+                                      onRefresh: refresh,
+                                      child: ListView.builder(
+                                        itemCount:
+                                            currentDetailUser["sanctions"]
+                                                .length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          final currentSaction =
+                                              currentDetailUser!["sanctions"]
+                                                  [index];
+                                          return Container(
+                                            margin: EdgeInsets.only(
+                                                left: 7,
+                                                right: 7,
+                                                top: 3,
+                                                bottom: 7),
+                                            child: WidgetSanction(
+                                              objetSanction: currentSaction[
+                                                          "libelle"] ==
+                                                      null
+                                                  ? " "
+                                                  : currentSaction["libelle"],
+                                              heureSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatTimeToFrench(
+                                                      currentSaction[
+                                                          "start_date"])
+                                                  : formatTimeToEnglish(
+                                                      currentSaction[
+                                                          "start_date"]),
+                                              dateSanction: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      currentSaction[
+                                                          "start_date"])
+                                                  : formatDateToEnglish(
+                                                      currentSaction[
+                                                          "start_date"]),
+                                              motifSanction:
+                                                  currentSaction["motif"],
+                                              montantSanction:
+                                                  currentSaction["amount"]
+                                                      .toString(),
+                                              montantPayeeSanction:
+                                                  currentSaction[
+                                                      "sanction_balance"],
+                                              lienPaiement: currentSaction[
+                                                          "sanction_pay_link"] ==
+                                                      null
+                                                  ? " "
+                                                  : currentSaction[
+                                                      "sanction_pay_link"],
+                                              versement:
+                                                  currentSaction["versement"],
+                                              isSanctionPayed: currentSaction[
+                                                  "is_sanction_payed"],
+                                              typeSaction:
+                                                  currentSaction["type"],
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
                                   child: RefreshIndicator(
                                     onRefresh: refresh,
                                     child: ListView.builder(
-                                      itemCount:
-                                          currentDetailUser["sanctions"].length,
+                                      itemCount: 1,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        final currentSaction =
-                                            currentDetailUser!["sanctions"]
-                                                [index];
                                         return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetSanction(
-                                            objetSanction:
-                                                currentSaction["libelle"] ==
-                                                        null
-                                                    ? " "
-                                                    : currentSaction["libelle"],
-                                            heureSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatTimeToFrench(
-                                                    currentSaction[
-                                                        "start_date"])
-                                                : formatTimeToEnglish(
-                                                    currentSaction[
-                                                        "start_date"]),
-                                            dateSanction: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    currentSaction[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    currentSaction[
-                                                        "start_date"]),
-                                            motifSanction:
-                                                currentSaction["motif"],
-                                            montantSanction:
-                                                currentSaction["amount"]
-                                                    .toString(),
-                                            montantPayeeSanction:
-                                                currentSaction[
-                                                    "sanction_balance"],
-                                            lienPaiement: currentSaction[
-                                                        "sanction_pay_link"] ==
-                                                    null
-                                                ? " "
-                                                : currentSaction[
-                                                    "sanction_pay_link"],
-                                            versement:
-                                                currentSaction["versement"],
-                                            isSanctionPayed: currentSaction[
-                                                "is_sanction_payed"],
-                                            typeSaction: currentSaction["type"],
+                                          padding: EdgeInsets.only(top: 200),
+                                          alignment: Alignment.topCenter,
+                                          child: Text(
+                                            "aucune_sanction".tr(),
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    20, 45, 99, 0.26),
+                                                fontWeight: FontWeight.w100,
+                                                fontSize: 20),
                                           ),
                                         );
                                       },
                                     ),
                                   ),
-                                ),
-                              )
-                            : Expanded(
-                                  child: RefreshIndicator(
-                                    onRefresh: refresh,
-                                    child: ListView.builder(
-                                        itemCount: 1,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            padding: EdgeInsets.only(top: 200),
-                                            alignment: Alignment.topCenter,
-                                            child: Text(
-                                              "aucune_sanction".tr(),
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      20, 45, 99, 0.26),
-                                                  fontWeight: FontWeight.w100,
-                                                  fontSize: 20),
-                                            ),
-                                          );
-                                        }),
-                                  ),
                                 );
-                            
-                      }),
+                        },
+                      ),
                     ],
                   ),
                 ),
                 if (checkTransparenceStatus(
-                          context
-                              .read<UserGroupCubit>()
-                              .state
-                              .ChangeAssData!["user_group"]["configs"],
-                          context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"]))
-                Container(
-                  padding: EdgeInsets.only(top: 1.5, left: 1.5, right: 1.5),
-                  width: MediaQuery.of(context).size.width,
-                  // decoration:
-                  // BoxDecoration(color: Color.fromARGB(255, 240, 35, 35),),
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.only(top: 10, left: 5, bottom: 15),
-                        child: Text(
-                          "les_comptes_de_l'association".tr(),
-                          style: TextStyle(
-                              color: const Color.fromRGBO(20, 45, 99, 1),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              letterSpacing: 0.2),
+                    context
+                        .read<UserGroupCubit>()
+                        .state
+                        .ChangeAssData!["user_group"]["configs"],
+                    context.read<AuthCubit>().state.detailUser!["isMember"]))
+                  Container(
+                    padding: EdgeInsets.only(top: 1.5, left: 1.5, right: 1.5),
+                    width: MediaQuery.of(context).size.width,
+                    // decoration:
+                    // BoxDecoration(color: Color.fromARGB(255, 240, 35, 35),),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          padding:
+                              EdgeInsets.only(top: 10, left: 5, bottom: 15),
+                          child: Text(
+                            "les_comptes_de_l'association".tr(),
+                            style: TextStyle(
+                                color: AppColors.blackBlue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                letterSpacing: 0.2),
+                          ),
                         ),
-                      ),
-                      BlocBuilder<CompteCubit, CompteState>(
-                          builder: (CompteContext, CompteState) {
-                        if (CompteState.isLoading == null ||
-                            CompteState.isLoading == true)
-                          return Container(
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        final currentCompteAss =
-                            context.read<CompteCubit>().state.allCompteAss;
+                        BlocBuilder<CompteCubit, CompteState>(
+                            builder: (CompteContext, CompteState) {
+                          if (CompteState.isLoading == null ||
+                              CompteState.isLoading == true)
+                            return Container(
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.bleuLight,
+                                ),
+                              ),
+                            );
+                          final currentCompteAss =
+                              context.read<CompteCubit>().state.allCompteAss;
 
-                        List<Map<String, dynamic>> comptePlusColor =
-                            currentCompteAss!.asMap().entries.map((entry) {
-                          final int index = entry.key;
-                          final Map<String, dynamic> e = entry.value;
-                          return {
-                            ...e,
-                            'color': listeDeCouleurs[index],
-                          };
-                        }).toList();
-                        return Expanded(
-                          child: RefreshIndicator(
-                            onRefresh: refresh,
-                            child: SingleChildScrollView(
-                              child: Container(
-                                child: Wrap(
-                                  alignment: WrapAlignment.spaceBetween,
-                                  children: [
-                                    for (var item in comptePlusColor)
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          bottom: 7,
-                                          right: 5,
-                                          top: 5,
-                                          left: 5,
+                          List<Map<String, dynamic>> comptePlusColor =
+                              currentCompteAss!.asMap().entries.map((entry) {
+                            final int index = entry.key;
+                            final Map<String, dynamic> e = entry.value;
+                            return {
+                              ...e,
+                              'color': listeDeCouleurs[index],
+                            };
+                          }).toList();
+                          return Expanded(
+                            child: RefreshIndicator(
+                              onRefresh: refresh,
+                              child: SingleChildScrollView(
+                                child: Container(
+                                  child: Wrap(
+                                    alignment: WrapAlignment.spaceBetween,
+                                    children: [
+                                      for (var item in comptePlusColor)
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            bottom: 7,
+                                            right: 5,
+                                            top: 5,
+                                            left: 5,
+                                          ),
+                                          child: WidgetCompteCard(
+                                            montantCompte:
+                                                "${int.parse(item["balance"]) + int.parse(item["faroti_balance"])}",
+                                            nomCompte: item["name"],
+                                            numeroCompte: item["id"].toString(),
+                                            couleur: item["color"],
+                                          ),
                                         ),
-                                        child: WidgetCompteCard(
-                                          montantCompte:
-                                              "${int.parse(item["balance"]) + int.parse(item["faroti_balance"])}",
-                                          nomCompte: item["name"],
-                                          numeroCompte: item["id"].toString(),
-                                          couleur: item["color"],
-                                        ),
-                                      ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
-                    ],
+                          );
+                        }),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),

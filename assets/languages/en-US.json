@@ -1,7 +1,7 @@
 {
     "msg_condition_utilisation":"By creating your account, you agree to the terms of service and our data management policy",
     "montant":"Amount",
-    "rencontre":"Gathering",
+    "rencontre":"Meeting ",
     "recepteur":"Host",
     "lieu":"Location",
     "lieu_de_la_réception":"Location",
@@ -50,7 +50,7 @@
 "payer_vous_même":"Pay yourself",
 "partager_le_lien_de_paiement":"Provide the payment link",
 "historiques":"Historical records",
-"rencontres":"Gatherings",
+"rencontres":"Meetings",
 "cotisations":"Contributions",
 "cotisation":"Contribution",
 "comptes":"Accounts",
@@ -102,7 +102,8 @@
 "vérifier":"To check",
 "code_à_5_chiffres":"5-digit code",
 "renvoyer": "To bounce",
-"vous_n'avez_pas_reçu_le_code?":"You did not receive the code?"
+"vous_n'avez_pas_reçu_le_code?":"You did not receive the code?",
+"Effectuer_le_paiement":"Make a payment"
 
 
 

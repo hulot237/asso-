@@ -28,13 +28,11 @@ String formatDate(String dateString) {
   return outputFormat.format(date);
 }
 
-
 String formatTimeToFrench(String isoDate) {
   final dateTime = DateTime.parse(isoDate);
   final formattedTime = DateFormat.Hm('fr_FR').format(dateTime);
   return formattedTime;
 }
-
 
 String formatTimeToEnglish(String isoDate) {
   final dateTime = DateTime.parse(isoDate);
@@ -42,17 +40,11 @@ String formatTimeToEnglish(String isoDate) {
   return formattedTime;
 }
 
-
-
 String formatDateToEnglish(String isoDate) {
   final dateTime = DateTime.parse(isoDate);
   final formattedDate = DateFormat('yyyy/MM/dd').format(dateTime);
   return formattedDate;
 }
-
-
-
-
 
 String formatDateToFrench(String isoDate) {
   final dateTime = DateTime.parse(isoDate);
@@ -60,15 +52,11 @@ String formatDateToFrench(String isoDate) {
   return formattedDate;
 }
 
-
-
-
 String formatDateString(String dateStr) {
   DateTime dateTime = DateTime.parse(dateStr); // Analyser la date initiale
   String formattedDate = "${dateTime.year}/${dateTime.month}/${dateTime.day}";
   return formattedDate;
 }
-
 
 String formatTime(String dateTimeString) {
   final inputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -77,13 +65,13 @@ String formatTime(String dateTimeString) {
   return outputFormat.format(dateTime);
 }
 
+checkTransparenceStatus(var ListConfigs, var UserIsMember) {
+  // Recherche de l'objet dans le tableau avec name == "has_transparence"
 
-  checkTransparenceStatus(var ListConfigs, var UserIsMember) {
-    // Recherche de l'objet dans le tableau avec name == "has_transparence"
-
-    List<dynamic> transparenceObject = ListConfigs.where((objet) => objet["name"] == "has_transparence")
-        .toList();
-
+  List<dynamic> transparenceObject =
+      ListConfigs.where((objet) => objet["name"] == "has_transparence")
+          .toList();
+  if (transparenceObject.length < 0) {
     // Vérification si l'objet a été trouvé et si is_check est égal à true
     if (transparenceObject[0]["is_check"] == true && UserIsMember == true) {
       //on masque les details
@@ -92,4 +80,5 @@ String formatTime(String dateTimeString) {
       //on affiche les details
       return true;
     }
-  }
+  } return true;
+}

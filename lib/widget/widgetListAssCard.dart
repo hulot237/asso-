@@ -1,3 +1,4 @@
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class _widgetListAssCardState extends State<widgetListAssCard> {
 
     Color? colorSelectText(code_ass) {
       if (code_ass == AppCubitStorage().state.codeAssDefaul) {
-        return Colors.white;
+        return AppColors.white;
       } else {
         return Color.fromARGB(139, 20, 45, 99);
       }

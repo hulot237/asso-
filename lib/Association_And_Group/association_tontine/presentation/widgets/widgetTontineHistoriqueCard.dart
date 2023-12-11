@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -36,7 +37,7 @@ class _widgetTontineHistoriqueCardState
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: widget.isActive ==1? Colors.white: Color.fromARGB(12, 0, 0, 0),
+        color: widget.isActive ==1? AppColors.white: Color.fromARGB(12, 0, 0, 0),
         borderRadius: BorderRadius.circular(15),
       ),
       alignment: Alignment.center,
@@ -68,7 +69,7 @@ class _widgetTontineHistoriqueCardState
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -107,7 +108,7 @@ class _widgetTontineHistoriqueCardState
                         child: Text(
                           "en_cours".tr(),
                           style: TextStyle(
-                            color: Colors.green,
+                            color: AppColors.green,
                             fontWeight: FontWeight.w400,
                             fontSize: 10,
                           ),
@@ -141,7 +142,7 @@ class _widgetTontineHistoriqueCardState
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(20, 45, 99, 1),
+                                  color: AppColors.blackBlue,
                                 ),
                               ),
                             ),
@@ -173,7 +174,7 @@ class _widgetTontineHistoriqueCardState
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w800,
-                                      color: Color.fromRGBO(20, 45, 99, 1),
+                                      color: AppColors.blackBlue,
                                     ),
                                   ),
                                 ),

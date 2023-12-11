@@ -8,6 +8,7 @@ import 'package:faroty_association_1/Association_And_Group/user_group/business_l
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,9 +21,6 @@ class WidgetCotisation extends StatefulWidget {
     required this.dateCotisation,
     required this.heureCotisation,
     required this.soldeCotisation,
-    required this.contributionOneUser,
-    required this.nbreParticipant,
-    required this.nbreParticipantCotisationOK,
     required this.codeCotisation,
     required this.type,
     required this.lienDePaiement,
@@ -34,9 +32,6 @@ class WidgetCotisation extends StatefulWidget {
   String dateCotisation;
   String heureCotisation;
   String soldeCotisation;
-  String contributionOneUser;
-  int nbreParticipant;
-  int nbreParticipantCotisationOK;
   String codeCotisation;
   String type;
   String lienDePaiement;
@@ -65,26 +60,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
     }
   }
 
-  checkTransparenceStatus() {
-    // Recherche de l'objet dans le tableau avec name == "has_transparence"
-
-    List<dynamic> transparenceObject = context
-        .read<UserGroupCubit>()
-        .state
-        .ChangeAssData!["user_group"]["configs"]
-        .where((objet) => objet["name"] == "has_transparence")
-        .toList();
-
-    // Vérification si l'objet a été trouvé et si is_check est égal à true
-    if (transparenceObject[0]["is_check"] == true &&
-        context.read<AuthCubit>().state.detailUser!["isMember"] == true) {
-      //on masque les details
-      return false;
-    } else {
-      //on affiche les details
-      return true;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,13 +88,10 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
               builder: (context) => DetailCotisationPage(
                 codeCotisation: widget.codeCotisation,
                 lienDePaiement: widget.lienDePaiement,
-                contributionOneUser: widget.contributionOneUser,
                 dateCotisation: widget.dateCotisation,
                 heureCotisation: widget.heureCotisation,
                 montantCotisations: widget.montantCotisations,
                 motifCotisations: widget.motifCotisations,
-                nbreParticipant: widget.nbreParticipant,
-                nbreParticipantCotisationOK: widget.nbreParticipantCotisationOK,
                 soldeCotisation: widget.soldeCotisation,
                 type: widget.type,
                 isPassed: widget.is_passed,
@@ -133,14 +105,14 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
           decoration: widget.is_passed == 0
               ? BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
+                  color: AppColors.white,
                 )
               : BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Color.fromARGB(255, 230, 230, 230),
+                  color: AppColors.whiteAccent,
                   border: Border.all(
                     width: 1,
-                    color: Colors.white,
+                    color: AppColors.white,
                   ),
                 ),
           padding: EdgeInsets.only(left: 10, top: 5, bottom: 10, right: 10),
@@ -171,7 +143,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
-                                        color: Color.fromRGBO(20, 45, 99, 1),
+                                        color: AppColors.blackBlue,
                                       ),
                                     ),
                                   ),
@@ -181,8 +153,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
                                           fontSize: 10,
-                                          color:
-                                              Color.fromARGB(160, 20, 45, 99),
+                                          color:AppColors.blackBlueAccent1,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   )
@@ -190,90 +161,56 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               ),
                             ),
                           ),
-                          widget.is_passed == 1
-                              ? Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () async {
-                                        String msg =
-                                            "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                        Modal().showModalActionPayement(
-                                          context,
-                                          msg,
-                                          widget.lienDePaiement,
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 8,
-                                            right: 8,
-                                            top: 5,
-                                            bottom: 5),
-                                        decoration: BoxDecoration(
-                                          color: Color.fromRGBO(0, 162, 255, 1),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: Container(
-                                          child: Text(
-                                            "cotiser".tr(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7),
-                                      ),
-                                      child: Container(
-                                        child: Text(
-                                          "expiré".tr(),
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 8,
-                                            color:
-                                                Color.fromARGB(255, 255, 0, 0),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : GestureDetector(
-                                  onTap: () async {
-                                    String msg =
-                                        "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                    Modal().showModalActionPayement(
-                                      context,
-                                      msg,
-                                      widget.lienDePaiement,
-                                    );
-                                  },
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  String msg =
+                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                  Modal().showModalActionPayement(
+                                    context,
+                                    msg,
+                                    widget.lienDePaiement,
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 8, right: 8, top: 5, bottom: 5),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.colorButton,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   child: Container(
-                                    padding: EdgeInsets.only(
-                                        left: 8, right: 8, top: 5, bottom: 5),
-                                    decoration: BoxDecoration(
-                                      color: Color.fromRGBO(0, 162, 255, 1),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Container(
-                                      child: Text(
-                                        "cotiser".tr(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                        ),
+                                    child: Text(
+                                      "cotiser".tr(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        color: AppColors.white,
                                       ),
                                     ),
                                   ),
                                 ),
+                              ),
+                              if (widget.is_passed == 1)
+                                Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  child: Container(
+                                    child: Text(
+                                      "expiré".tr(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 8,
+                                        color: AppColors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -293,7 +230,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   child: Text(
                                     "type_volontaire".tr(),
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      color: AppColors.blackBlue,
                                     ),
                                   ),
                                 ),
@@ -307,8 +244,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                           style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold,
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -316,8 +252,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                         child: Text(
                                           "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
                                           style: TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -340,7 +275,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   child: Text(
                                     "type_fixe".tr(),
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      color: AppColors.blackBlue,
                                     ),
                                   ),
                                 ),
@@ -354,8 +289,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                           style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold,
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -363,8 +297,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                         child: Text(
                                           "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
                                           style: TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -374,7 +307,12 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               ],
                             ),
                           ),
-                    if (checkTransparenceStatus())
+                    if (checkTransparenceStatus(
+                    context
+                        .read<UserGroupCubit>()
+                        .state
+                        .ChangeAssData!["user_group"]["configs"],
+                    context.read<AuthCubit>().state.detailUser!["isMember"]))
                       Container(
                         margin: EdgeInsets.only(bottom: 5),
                         width: MediaQuery.of(context).size.width / 1.1,
@@ -387,7 +325,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   Container(
                                     child: Icon(
                                       Icons.wallet_rounded,
-                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      color: AppColors.blackBlue,
                                       size: 16,
                                     ),
                                     margin: EdgeInsets.only(right: 5),
@@ -398,7 +336,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                     style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w800,
-                                        color: Colors.green),
+                                        color: AppColors.green),
                                   ))
                                 ],
                               ),
@@ -410,7 +348,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             //         child: Icon(
                             //           Icons.people_alt_rounded,
                             //           size: 16,
-                            //           color: Color.fromARGB(255, 20, 45, 99),
+                            //           color: AppColors.blackBlue,
                             //         ),
                             //         margin: EdgeInsets.only(right: 5),
                             //       ),
@@ -420,7 +358,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             //         style: TextStyle(
                             //             fontSize: 12,
                             //             fontWeight: FontWeight.w800,
-                            //             color: Color.fromARGB(255, 20, 45, 99)),
+                            //             color: AppColors.blackBlue,),
                             //       ))
                             //     ],
                             //   ),
@@ -446,7 +384,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                     //               style: TextStyle(
                     //                 fontSize: 11,
                     //                 fontWeight: FontWeight.bold,
-                    //                 color: Color.fromARGB(255, 20, 45, 99),
+                    //                 color: AppColors.blackBlue,
                     //               ),
                     //             ),
                     //             margin: EdgeInsets.only(right: 5),
@@ -457,7 +395,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                     //               style: TextStyle(
                     //                 fontSize: 12,
                     //                 fontWeight: FontWeight.w800,
-                    //                 color: Color.fromARGB(255, 20, 45, 99),
+                    //                 color: AppColors.blackBlue,
                     //               ),
                     //             ),
                     //           ),

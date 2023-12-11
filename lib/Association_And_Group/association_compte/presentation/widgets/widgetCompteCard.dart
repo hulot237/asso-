@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class WidgetCompteCard extends StatefulWidget {
   const WidgetCompteCard({super.key,
@@ -27,7 +27,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
       width: MediaQuery.of(context).size.width / 2.15,
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15),
         // boxShadow: [
         //   BoxShadow(
@@ -98,7 +98,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
-                          color: const Color.fromRGBO(20, 45, 99, 1),
+                          color: AppColors.blackBlue,
                         ),
                       ),
                     ),
@@ -109,7 +109,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
-                          color: const Color.fromRGBO(20, 45, 99, 1),
+                          color: AppColors.blackBlue,
                         ),
                       ),
                     ),
@@ -125,7 +125,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: const Color.fromRGBO(20, 45, 99, 1),
+                    color: AppColors.blackBlue,
                   ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,27 +19,33 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "a_propos_et_aide".tr(),
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color : AppColors.white),
         ),
-        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+        backgroundColor: AppColors.backgroundAppBAr,
       ),
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.white,
     appBar: AppBar(
       title: Text(
         "a_propos_et_aide".tr(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 16, color : AppColors.white),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
     body: child,
   );
@@ -63,7 +70,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                     child: Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 12,
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                     ),
                   ),
                   Container(
@@ -72,7 +79,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                       "utilisation_et_confidentialité".tr(),
                       style: TextStyle(
                         fontSize: 15,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -88,7 +95,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                     child: Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 12,
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                     ),
                   ),
                   Container(
@@ -98,7 +105,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                       "a_propos_de_l'application".tr(),
                       style: TextStyle(
                         fontSize: 15,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -115,7 +122,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   child: Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 12,
-                    color: Color.fromARGB(255, 20, 45, 99),
+                    color: AppColors.blackBlue,
                   ),
                 ),
                 Container(
@@ -125,7 +132,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                     "centre_d'aide".tr(),
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -143,7 +150,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   child: Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 12,
-                    color: Color.fromARGB(255, 20, 45, 99),
+                    color: AppColors.blackBlue,
                   ),
                 ),
                 Container(
@@ -153,7 +160,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                     "nous_contacter".tr(),
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 
 class widgetListTransactionByEventCard extends StatefulWidget {
@@ -22,7 +23,7 @@ class _widgetListTransactionByEventCardState
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           border: Border(
             bottom: BorderSide(
               width: 0.5,
@@ -43,7 +44,7 @@ class _widgetListTransactionByEventCardState
                     child: Text(
                       "Date",
                       style: TextStyle(
-                          fontSize: 11, color: Color.fromARGB(255, 20, 45, 99)),
+                          fontSize: 11, color: AppColors.blackBlue,),
                     ),
                   ),
                   Container(
@@ -53,7 +54,7 @@ class _widgetListTransactionByEventCardState
                       style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 20, 45, 99)),
+                          color: AppColors.blackBlue,),
                     ),
                   ),
                 ],
@@ -67,7 +68,7 @@ class _widgetListTransactionByEventCardState
                     child: Text(
                       "montant".tr(),
                       style: TextStyle(
-                          fontSize: 11, color: Color.fromARGB(255, 20, 45, 99)),
+                          fontSize: 11, color: AppColors.blackBlue,),
                     ),
                   ),
                   Container(
@@ -77,7 +78,7 @@ class _widgetListTransactionByEventCardState
                       style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green),
+                          color: AppColors.green),
                     ),
                   ),
                 ],

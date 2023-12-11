@@ -12,6 +12,7 @@ import 'package:faroty_association_1/Association_And_Group/association_tournoi/b
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,9 +27,6 @@ class DetailCotisationPage extends StatefulWidget {
     required this.dateCotisation,
     required this.heureCotisation,
     required this.soldeCotisation,
-    required this.contributionOneUser,
-    required this.nbreParticipant,
-    required this.nbreParticipantCotisationOK,
     required this.isPassed,
     required this.type,
     required this.lienDePaiement,
@@ -39,9 +37,6 @@ class DetailCotisationPage extends StatefulWidget {
   String dateCotisation;
   String heureCotisation;
   String soldeCotisation;
-  String contributionOneUser;
-  int nbreParticipant;
-  int nbreParticipantCotisationOK;
   String type;
   String lienDePaiement;
   int isPassed;
@@ -57,12 +52,13 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "detail_de_la_cotisations".tr(),
           style: TextStyle(
             fontSize: 16,
+            color: AppColors.white,
           ),
         ),
       ),
@@ -71,14 +67,23 @@ Widget PageScaffold({
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     appBar: AppBar(
       title: Text(
         "detail_de_la_cotisations".tr(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(
+          fontSize: 16,
+          color: AppColors.white,
+        ),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
     body: child,
   );
@@ -136,13 +141,10 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               margin: EdgeInsets.only(top: 10),
               child: widgetDetailCotisationCard(
                 type: widget.type,
-                contributionOneUser: widget.contributionOneUser,
                 dateCotisation: widget.dateCotisation,
                 heureCotisation: widget.heureCotisation,
                 montantCotisations: widget.montantCotisations,
                 motifCotisations: widget.motifCotisations,
-                nbreParticipant: widget.nbreParticipant,
-                nbreParticipantCotisationOK: widget.nbreParticipantCotisationOK,
                 soldeCotisation: widget.soldeCotisation,
                 lienDePaiement: widget.lienDePaiement,
                 isPassed: widget.isPassed,
@@ -163,7 +165,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(20, 45, 99, 1),
+                        color: AppColors.blackBlue,
                       ),
                     ),
                   )
@@ -176,7 +178,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(20, 45, 99, 1),
+                        color: AppColors.blackBlue,
                       ),
                     ),
                   ),
@@ -186,27 +188,30 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               color: Color.fromARGB(120, 226, 226, 226),
               alignment: Alignment.center,
               child: checkTransparenceStatus(
-                          context
-                              .read<UserGroupCubit>()
-                              .state
-                              .ChangeAssData!["user_group"]["configs"],
-                          context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"])
+                      context
+                          .read<UserGroupCubit>()
+                          .state
+                          .ChangeAssData!["user_group"]["configs"],
+                      context.read<AuthCubit>().state.detailUser!["isMember"])
                   ? TabBar(
                       controller: _tabController,
                       isScrollable: true,
-                      labelColor: Color.fromARGB(255, 20, 45, 99),
+                      labelColor: AppColors.blackBlue,
                       labelStyle:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                       padding: EdgeInsets.all(0),
+                      unselectedLabelStyle: TextStyle(
+                        color: AppColors.blackBlueAccent1,
+                        fontWeight: FontWeight.bold,
+                      ),
                       indicator: UnderlineTabIndicator(
                         borderSide: BorderSide(
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           width: 5.0,
                         ),
-                        insets: EdgeInsets.symmetric(horizontal: 36.0),
+                        insets: EdgeInsets.symmetric(
+                          horizontal: 36.0,
+                        ),
                       ),
                       tabs: [
                         Container(
@@ -232,8 +237,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         height: 10,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 0.5,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -274,8 +278,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         height: 10,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 0.5,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -295,9 +298,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                         ),
                       ],
                     )
-                  : 
-                  
-                  Container(
+                  : Container(
                       margin: EdgeInsets.only(left: 5, right: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,7 +312,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
-                                    color: Color.fromARGB(255, 20, 45, 99),
+                                    color: AppColors.blackBlue,
                                   ),
                                 ),
                               ),
@@ -323,7 +324,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w500,
-                                    color: Color.fromARGB(255, 20, 45, 99),
+                                    color: AppColors.blackBlue,
                                   ),
                                 ),
                               ),
@@ -337,7 +338,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                   "déjà_payé".tr(),
                                   style: TextStyle(
                                       fontSize: 12,
-                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      color: AppColors.blackBlue,
                                       fontWeight: FontWeight.w300),
                                 ),
                               ),
@@ -356,8 +357,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                           height: 10,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 0.5,
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -399,12 +399,15 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     );
-                                  } else if( detailCotisationMemberIsOkay != null && detailCotisationMemberIsOkay!["versement"].length > 0) {
+                                  } else if (detailCotisationMemberIsOkay !=
+                                          null &&
+                                      detailCotisationMemberIsOkay!["versement"]
+                                              .length >
+                                          0) {
                                     return Container(
                                       child: Text(
                                         "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 != null ? detailCotisationMemberIsOkay['versement'][0]['balance_after'] : "0"))} FCFA",
@@ -412,12 +415,11 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     );
-                                  }else{
+                                  } else {
                                     return Container(
                                       child: Text(
                                         // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
@@ -425,8 +427,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     );
@@ -443,7 +444,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                   "reste".tr(),
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color.fromARGB(255, 20, 45, 99),
+                                    color: AppColors.blackBlue,
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
@@ -463,8 +464,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                           height: 10,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 0.5,
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -506,12 +506,15 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     );
-                                  } else if( detailCotisationMemberIsOkay != null && detailCotisationMemberIsOkay!['versement'].length > 0 ){
+                                  } else if (detailCotisationMemberIsOkay !=
+                                          null &&
+                                      detailCotisationMemberIsOkay!['versement']
+                                              .length >
+                                          0) {
                                     return Container(
                                       child: Text(
                                         "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
@@ -519,12 +522,11 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     );
-                                  }else{
+                                  } else {
                                     return Container(
                                       child: Text(
                                         // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
@@ -532,8 +534,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,
-                                          color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     );
@@ -548,14 +549,11 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
             ),
             Expanded(
               child: checkTransparenceStatus(
-                          context
-                              .read<UserGroupCubit>()
-                              .state
-                              .ChangeAssData!["user_group"]["configs"],
-                          context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"]) 
+                      context
+                          .read<UserGroupCubit>()
+                          .state
+                          .ChangeAssData!["user_group"]["configs"],
+                      context.read<AuthCubit>().state.detailUser!["isMember"])
                   ? TabBarView(
                       controller: _tabController,
                       children: [
@@ -568,7 +566,9 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                 CotisationDetailstate.detailCotisation == null)
                               return Container(
                                 child: Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CircularProgressIndicator(
+                                    color:           AppColors.bleuLight,
+                                  ),
                                 ),
                               );
                             final currentDetailCotisation =
@@ -677,7 +677,9 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                 CotisationDetailstate.isLoading == true)
                               return Container(
                                 child: Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.bleuLight,
+                                  ),
                                 ),
                               );
                             final currentDetailCotisation =
@@ -801,9 +803,10 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                               width: 30,
                               height: 30,
                               child: CircularProgressIndicator(
+                                color: AppColors.bleuLight,
                                   // strokeWidth: 0.5,
                                   // color:
-                                  //     Color.fromARGB(255, 20, 45, 99),
+                                  //     AppColors.blackBlue,
                                   ),
                             ),
                           ),
@@ -831,7 +834,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                       );
                       return Container(
                         padding: EdgeInsets.only(right: 7, left: 7),
-                        color: Colors.white,
+                        color: AppColors.white,
                         child: Column(
                           children: [
                             Expanded(
@@ -909,22 +912,23 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                           },
                                         )
                                       : ListView.builder(
-                                itemCount: 1,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 200),
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                      "aucune_transaction".tr(),
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(
-                                              20, 45, 99, 0.26),
-                                          fontWeight: FontWeight.w100,
-                                          fontSize: 20),
-                                    ),
-                                  );
-                                }),
+                                          itemCount: 1,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Container(
+                                              padding:
+                                                  EdgeInsets.only(top: 200),
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                "aucune_transaction".tr(),
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        20, 45, 99, 0.26),
+                                                    fontWeight: FontWeight.w100,
+                                                    fontSize: 20),
+                                              ),
+                                            );
+                                          }),
                             ))
                           ],
                         ),

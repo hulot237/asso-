@@ -1,13 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class widgetDetailTontine extends StatefulWidget {
-  widgetDetailTontine({
+class widgetRecentEventTontine extends StatefulWidget {
+  widgetRecentEventTontine({
     super.key,
     required this.nomBeneficiaire,
     required this.prenomBeneficiaire,
@@ -30,10 +32,10 @@ class widgetDetailTontine extends StatefulWidget {
   String nomTontine;
 
   @override
-  State<widgetDetailTontine> createState() => _widgetDetailTontineState();
+  State<widgetRecentEventTontine> createState() => _widgetRecentEventTontineState();
 }
 
-class _widgetDetailTontineState extends State<widgetDetailTontine> {
+class _widgetRecentEventTontineState extends State<widgetRecentEventTontine> {
   Future<void> handleDetailCotisation(codeCotisation) async {
     final detailCotisation = await context
         .read<CotisationDetailCubit>()
@@ -63,7 +65,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.only(top: 7),
                   width: MediaQuery.of(context).size.width / 1.1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,10 +83,10 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        "${"Tontine".tr()} :",
+                                        "${"Date".tr()} :",
                                         style: TextStyle(
                                           fontSize: 10,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w500,
                                           color:
                                               Color.fromRGBO(20, 45, 99, 0.534),
                                         ),
@@ -94,14 +96,17 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 ),
                               ),
                               Container(
-                                child: Row(
+                                // margin: EdgeInsets.only(top: 10, bottom: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
+                                      // margin: EdgeInsets.only(top: 3),
                                       child: Text(
-                                        "${widget.nomTontine}",
+                                        "${formatDateToFrench(widget.dateOpen)} - ${ formatDateToFrench(widget.dateClose)}",
                                         style: TextStyle(
                                           fontSize: 12,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
                                           color: AppColors.blackBlue,
                                         ),
                                       ),
@@ -111,6 +116,144 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              child: Text(
+                                "Tontine ${widget.nomTontine}".tr(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w900,
+                                  color: AppColors.blackBlue,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 7),
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          // margin: EdgeInsets.only(right: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                // margin: EdgeInsets.only(top: 3),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        "${"Bénéficiaire".tr()} :",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Color.fromRGBO(20, 45, 99, 0.534),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "${widget.nomBeneficiaire}",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.blackBlue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              child: Text(
+                                "montant_collecté".tr(),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.green,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  // width: MediaQuery.of(context).size.width / 1.1,
+                  margin: EdgeInsets.only(bottom: 7, top: 7),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                "montant".tr(),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    child: Container(
+                                      child: Text(
+                                        "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AppColors.blackBlue,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       GestureDetector(
@@ -140,197 +283,6 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      // Container(
-                      //   child: Row(
-                      //     children: [
-                      //       Container(
-                      //         child: Text(
-                      //           "rencontre".tr(),
-                      //           style: TextStyle(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.w300,
-                      //             color: AppColors.blackBlue,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       Container(
-                      //         child: Text(
-                      //           " 01S01",
-                      //           style: TextStyle(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.bold,
-                      //             color: AppColors.blackBlue,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-                Container(
-                  // width: MediaQuery.of(context).size.width / 1.1,
-                  margin: EdgeInsets.only(bottom: 7, top: 7),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          // margin: EdgeInsets.only(right: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                // margin: EdgeInsets.only(top: 3),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "${"Bénéficiaire".tr()} :",
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.534),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        "${widget.nomBeneficiaire}",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.blackBlue,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          // margin: EdgeInsets.only(right: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                // margin: EdgeInsets.only(top: 3),
-                                child: Container(
-                                  child: Text(
-                                    "${"Date".tr()} :",
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(20, 45, 99, 0.534),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 3),
-                                  child: Text(
-                                    "${widget.dateOpen} - ${widget.dateClose}",
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      overflow: TextOverflow.ellipsis,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.blackBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  // width: MediaQuery.of(context).size.width / 1.1,
-                  margin: EdgeInsets.only(bottom: 7),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Text(
-                                "${"montant".tr()} :",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(125, 20, 45, 99),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color:
-                                                AppColors.blackBlue,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              child: Text(
-                                "${"montant_collecté".tr()} :",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(125, 20, 45, 99),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 3),
-                              child: Text(
-                                "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ],

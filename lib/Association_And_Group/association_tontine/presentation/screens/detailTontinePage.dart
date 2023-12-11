@@ -11,6 +11,7 @@ import 'package:faroty_association_1/Association_And_Group/association_tontine/p
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailTontineCard.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +45,13 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "Detail de la tontine",
           style: TextStyle(
             fontSize: 16,
+            color : AppColors.white
           ),
         ),
       ),
@@ -58,14 +60,20 @@ Widget PageScaffold({
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     appBar: AppBar(
       title: Text(
         "Detail de la tontine",
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 16,color : AppColors.white),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
     body: child,
   );
@@ -120,24 +128,24 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(20, 45, 99, 1),
+                        color: AppColors.blackBlue,
                       ),
                     ),
                   ),
                   Container(
-                    color: Colors.white,
+                    color: AppColors.white,
                     width: MediaQuery.of(context).size.width,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Container(
-                        color: Colors.white,
+                        color: AppColors.white,
                         padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             for (var itemListMembre in widget.listMembre)
                               Container(
-                                // color: Colors.white,
+                                // color: AppColors.white,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +160,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                         style: TextStyle(
                                           fontSize: 8,
                                           fontWeight: FontWeight.w800,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -191,7 +199,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                                     : Icon(
                                                         Icons.check,
                                                         size: 10,
-                                                        color: Colors.white,
+                                                        color: AppColors.white,
                                                       )),
                                           ),
                                           Container(
@@ -214,7 +222,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                     //     style: TextStyle(
                                     //       fontSize: 8,
                                     //       fontWeight: FontWeight.w600,
-                                    //       color: Color.fromRGBO(20, 45, 99, 1),
+                                    //       color: AppColors.blackBlue,
                                     //     ),
                                     //   ),
                                     // ),
@@ -242,7 +250,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(20, 45, 99, 1),
+                    color: AppColors.blackBlue,
                   ),
                 ),
               ),
@@ -253,10 +261,12 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                   tontineState.isLoading == true ||
                   tontineState.detailTontine == null)
                 return Container(
-                  // color: Colors.white,
+                  // color: AppColors.white,
                   margin: EdgeInsets.only(top: 25),
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: AppColors.bleuLight,
+                    ),
                   ),
                 );
               final currentDetailTontineCard =

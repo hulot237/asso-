@@ -5,6 +5,7 @@ import 'package:faroty_association_1/Association_And_Group/association_payements
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -24,28 +25,35 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "active_de_retrait".tr(),
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color : AppColors.white),
         ),
-        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+        backgroundColor: AppColors.backgroundAppBAr,
       ),
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     appBar: AppBar(
       title: Text(
         "active_de_retrait".tr(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 16, color : AppColors.white),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
+    
     body: child,
   );
 }
@@ -92,9 +100,11 @@ class _RetraitPageState extends State<RetraitPage> {
               builder: (authContext, authState) {
             if (authState.isLoading == null || authState.isLoading == true)
               return Container(
-                color: Colors.white,
+                color: AppColors.white,
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: AppColors.bleuLight,
+                  ),
                 ),
               );
             final currentDetailUser =
@@ -168,7 +178,7 @@ class widgetRetraitCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
+        color: AppColors.white,
       ),
       margin: EdgeInsets.only(bottom: 10, left: 5, right: 5),
       padding: EdgeInsets.all(15),
@@ -186,7 +196,7 @@ class widgetRetraitCard extends StatelessWidget {
                       "Date : ",
                       style: TextStyle(
                         fontSize: 12,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -196,7 +206,7 @@ class widgetRetraitCard extends StatelessWidget {
                       "${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(date) : formatDateToEnglish(date)}",
                       style: TextStyle(
                         fontSize: 10,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -219,7 +229,7 @@ class widgetRetraitCard extends StatelessWidget {
                         "Approuvé (${nbrApprouvee}/${nbrMembre})",
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.green,
+                          color: AppColors.green,
                           fontWeight: FontWeight.w300,
                         ),
                       ),
@@ -240,7 +250,7 @@ class widgetRetraitCard extends StatelessWidget {
                         "Compte",
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           fontWeight: FontWeight.w300,
                         ),
                       ),
@@ -252,7 +262,7 @@ class widgetRetraitCard extends StatelessWidget {
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -267,7 +277,7 @@ class widgetRetraitCard extends StatelessWidget {
                         "Montant",
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           fontWeight: FontWeight.w300,
                         ),
                       ),
@@ -279,7 +289,7 @@ class widgetRetraitCard extends StatelessWidget {
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -300,7 +310,7 @@ class widgetRetraitCard extends StatelessWidget {
                       "Initié par:",
                       style: TextStyle(
                         fontSize: 12,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -310,7 +320,7 @@ class widgetRetraitCard extends StatelessWidget {
                       "${nomInitiateur}",
                       style: TextStyle(
                         fontSize: 12,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -322,7 +332,7 @@ class widgetRetraitCard extends StatelessWidget {
                       padding:
                           EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(0, 162, 255, 1),
+                        color: AppColors.colorButton,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Container(
@@ -331,7 +341,7 @@ class widgetRetraitCard extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
-                            color: Colors.white,
+                            color: AppColors.white,
                           ),
                         ),
                       ),
@@ -341,7 +351,7 @@ class widgetRetraitCard extends StatelessWidget {
                         "Approuvé",
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.green,
+                          color: AppColors.green,
                           fontWeight: FontWeight.w300,
                         ),
                       ),

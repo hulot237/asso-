@@ -1,5 +1,6 @@
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 
 class widgetHistoriqueTontineCard extends StatefulWidget {
@@ -34,7 +35,9 @@ class _widgetHistoriqueTontineCardState
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(7)),
+          color: AppColors.blackBlueAccent2,
+          borderRadius: BorderRadius.circular(7),
+        ),
         // margin: EdgeInsets.all(5),
         // padding: EdgeInsets.all(15),
         child: Row(
@@ -67,7 +70,7 @@ class _widgetHistoriqueTontineCardState
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                         ),
                       ),
                     ),
@@ -79,47 +82,47 @@ class _widgetHistoriqueTontineCardState
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(164, 20, 45, 99)),
+                            color: AppColors.blackBlueAccent1),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            if(widget.is_versement_finished == 1)
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: Text(
-                "${widget.date}",
-                overflow: TextOverflow.clip,
-                style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: Color.fromARGB(164, 20, 45, 99)),
+            if (widget.is_versement_finished == 1)
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: Text(
+                  "${widget.date}",
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.blackBlueAccent1),
+                ),
               ),
-            ),
             widget.is_versement_finished == 0
                 ? Container(
                     padding: EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(48, 213, 0, 0),
+                      color: AppColors.redAccent,
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Icon(
                       Icons.done,
-                      color: Color.fromARGB(255, 213, 0, 0),
+                      color: AppColors.red,
                       size: 11,
                     ),
                   )
                 : Container(
                     padding: EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(125, 76, 175, 79),
+                      color: AppColors.greenAccent,
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Icon(
                       Icons.check,
-                      color: Color.fromARGB(255, 0, 126, 4),
+                      color: AppColors.green,
                       size: 11,
                     ),
                   ),

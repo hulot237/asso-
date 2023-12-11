@@ -13,6 +13,7 @@ import 'package:faroty_association_1/Association_And_Group/user_group/business_l
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,13 +54,11 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "detail_de_la_rencontre".tr(),
-          style: TextStyle(
-            fontSize: 16,
-          ),
+          style: TextStyle(fontSize: 16, color: AppColors.white),
         ),
       ),
       child: child,
@@ -67,14 +66,20 @@ Widget PageScaffold({
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     appBar: AppBar(
       title: Text(
         "detail_de_la_rencontre".tr(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 16, color: AppColors.white),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
     body: child,
   );
@@ -129,7 +134,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
     // return BlocBuilder<SeanceCubit, SeanceState>(builder: (context, state) {
     //   if (state.isLoading == null || state.isLoading == true)
     //     return Container(
-    //       color: Colors.white,
+    //       color: AppColors.white,
     //       child: Center(
     //         child: CircularProgressIndicator(),
     //       ),
@@ -165,23 +170,29 @@ class _detailRencontrePageState extends State<detailRencontrePage>
               child: TabBar(
                 controller: _tabController,
                 isScrollable: true,
-                labelColor: Color.fromARGB(255, 20, 45, 99),
+                labelColor: AppColors.blackBlue,
                 labelStyle:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                 padding: EdgeInsets.all(0),
+                unselectedLabelStyle: TextStyle(
+                  color: AppColors.blackBlueAccent1,
+                  fontWeight: FontWeight.bold,
+                ),
                 indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(
-                    color: Color.fromARGB(255, 20, 45, 99),
+                    color: AppColors.blackBlue,
                     width: 5.0,
                   ),
-                  insets: EdgeInsets.symmetric(horizontal: 36.0),
+                  insets: EdgeInsets.symmetric(
+                    horizontal: 36.0,
+                  ),
                 ),
                 tabs: [
                   if (currentAssCourant!['user_group']['is_tontine'] == true)
-                  Container(
-                    margin: EdgeInsets.only(bottom: 5),
-                    child: Text("Tontines"),
-                  ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: Text("Tontines"),
+                    ),
                   Container(
                     margin: EdgeInsets.only(bottom: 5),
                     child: Text("Cotisations"),
@@ -203,7 +214,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                         if (state.isLoading == null || state.isLoading == true)
                           return Container(
                             child: Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                color: AppColors.bleuLight,
+                              ),
                             ),
                           );
                         final currentDetailSeance = context
@@ -294,26 +307,26 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 ),
                               )
                             : RefreshIndicator(
-                              onRefresh: refresh,
-                              child: ListView.builder(
-                                itemCount: 1,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 200),
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                      "Aucune Tontine".tr(),
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(
-                                              20, 45, 99, 0.26),
-                                          fontWeight: FontWeight.w100,
-                                          fontSize: 20),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
+                                onRefresh: refresh,
+                                child: ListView.builder(
+                                  itemCount: 1,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      padding: EdgeInsets.only(top: 200),
+                                      alignment: Alignment.topCenter,
+                                      child: Text(
+                                        "Aucune Tontine".tr(),
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                20, 45, 99, 0.26),
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 20),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
                       },
                     ),
                   BlocBuilder<SeanceCubit, SeanceState>(
@@ -321,7 +334,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                       if (state.isLoading == null || state.isLoading == true)
                         return Container(
                           child: Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: AppColors.bleuLight,
+                            ),
                           ),
                         );
                       final currentDetailSeance =
@@ -369,9 +384,6 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                   "start_date"]),
                                       soldeCotisation: ItemDetailCotisation[
                                           "cotisation_balance"],
-                                      contributionOneUser: "2",
-                                      nbreParticipant: 23,
-                                      nbreParticipantCotisationOK: 11,
                                       codeCotisation: ItemDetailCotisation[
                                           "cotisation_code"],
                                       type: ItemDetailCotisation["type"],
@@ -391,25 +403,25 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                               ),
                             )
                           : RefreshIndicator(
-                            onRefresh: refresh,
-                            child: ListView.builder(
-                                itemCount: 1,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 200),
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                      "aucune_cotisation".tr(),
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(
-                                              20, 45, 99, 0.26),
-                                          fontWeight: FontWeight.w100,
-                                          fontSize: 20),
-                                    ),
-                                  );
-                                }),
-                          );
+                              onRefresh: refresh,
+                              child: ListView.builder(
+                                  itemCount: 1,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      padding: EdgeInsets.only(top: 200),
+                                      alignment: Alignment.topCenter,
+                                      child: Text(
+                                        "aucune_cotisation".tr(),
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                20, 45, 99, 0.26),
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 20),
+                                      ),
+                                    );
+                                  }),
+                            );
                     },
                   ),
                   BlocBuilder<SeanceCubit, SeanceState>(
@@ -417,7 +429,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                       if (state.isLoading == null || state.isLoading == true)
                         return Container(
                           child: Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: AppColors.bleuLight,
+                            ),
                           ),
                         );
                       final allCurrentDetailSeanceSanction = context
@@ -477,26 +491,25 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                               },
                             )
                           : RefreshIndicator(
-                            onRefresh: refresh,
-                            child: ListView.builder(
-                              itemCount: 1,
-                              itemBuilder:
-                                  (BuildContext context, int index) {
-                                return Container(
-                                  padding: EdgeInsets.only(top: 200),
-                                  alignment: Alignment.topCenter,
-                                  child: Text(
-                                    "aucune_sanction".tr(),
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(
-                                            20, 45, 99, 0.26),
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 20),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
+                              onRefresh: refresh,
+                              child: ListView.builder(
+                                itemCount: 1,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 200),
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "aucune_sanction".tr(),
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(20, 45, 99, 0.26),
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 20),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
                     },
                   ),
                 ],

@@ -1,16 +1,9 @@
-import 'dart:io';
+
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
-import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
@@ -18,9 +11,9 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
-import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/pages/paiementPage.dart';
@@ -28,9 +21,7 @@ import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Modal {
   void showBottomSheetListAss(BuildContext context, List? listAllAss) {
@@ -88,7 +79,7 @@ class Modal {
                       height: 5,
                       width: 55,
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           borderRadius: BorderRadius.circular(50)),
                     ),
                     Container(
@@ -98,7 +89,7 @@ class Modal {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: Color.fromARGB(164, 20, 45, 99),
+                          color: AppColors.blackBlueAccent1,
                         ),
                       ),
                     ),
@@ -148,7 +139,9 @@ class Modal {
                   return Container(
                     color: Color.fromARGB(91, 0, 0, 0),
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: AppColors.bleuLight,
+                      ),
                     ),
                   );
 
@@ -156,7 +149,9 @@ class Modal {
                     ? Container(
                         color: Color.fromARGB(91, 0, 0, 0),
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            color: AppColors.bleuLight,
+                          ),
                         ),
                       )
                     : Container();
@@ -183,7 +178,7 @@ class Modal {
 
     Color? colorSelectText(tournois_code) {
       if (tournois_code == AppCubitStorage().state.codeTournois) {
-        return Colors.white;
+        return AppColors.white;
       } else {
         return Color.fromARGB(139, 20, 45, 99);
       }
@@ -245,7 +240,7 @@ class Modal {
                       width: 55,
                       decoration: BoxDecoration(
                           // if (item["tournois_code"] == AppCubitStorage().state.codeTournois)
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           borderRadius: BorderRadius.circular(50)),
                     ),
                     Container(
@@ -255,7 +250,7 @@ class Modal {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                         ),
                       ),
                     ),
@@ -316,7 +311,9 @@ class Modal {
                   return Container(
                     color: Color.fromARGB(91, 0, 0, 0),
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: AppColors.bleuLight,
+                      ),
                     ),
                   );
 
@@ -324,7 +321,9 @@ class Modal {
                     ? Container(
                         color: Color.fromARGB(91, 0, 0, 0),
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            color: AppColors.bleuLight,
+                          ),
                         ),
                       )
                     : Container();
@@ -358,7 +357,7 @@ class Modal {
                 height: 5,
                 width: 55,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 20, 45, 99),
+                    color: AppColors.blackBlue,
                     borderRadius: BorderRadius.circular(50)),
               ),
               Column(
@@ -370,7 +369,7 @@ class Modal {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
-                        color: Color.fromARGB(164, 20, 45, 99),
+                        color: AppColors.blackBlueAccent1,
                       ),
                     ),
                   ),
@@ -379,21 +378,28 @@ class Modal {
               Column(
                 children: [
                   Container(
-                    color: Color.fromARGB(120, 226, 226, 226),
+                    color: AppColors.blackBlueAccent2,
                     alignment: Alignment.center,
                     child: TabBar(
-                      isScrollable: true,
-                      labelColor: Color.fromARGB(255, 20, 45, 99),
+                      labelColor: AppColors.blackBlue,
                       labelStyle:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                       padding: EdgeInsets.all(0),
+                      unselectedLabelStyle: TextStyle(
+                        color: AppColors.blackBlueAccent1,
+                        fontWeight: FontWeight.bold,
+                      ),
                       indicator: UnderlineTabIndicator(
                         borderSide: BorderSide(
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                           width: 5.0,
                         ),
-                        insets: EdgeInsets.symmetric(horizontal: 36.0),
+                        insets: EdgeInsets.symmetric(
+                          horizontal: 36.0,
+                        ),
                       ),
+
+                      isScrollable: true,
                       // indicatorWeight: 0,
                       controller: _tabController,
                       tabs: [
@@ -418,6 +424,7 @@ class Modal {
                                       height: 10,
                                       child: Center(
                                         child: CircularProgressIndicator(
+                                          color: AppColors.bleuLight,
                                           strokeWidth: 0.3,
                                         ),
                                       ),
@@ -459,6 +466,7 @@ class Modal {
                                       height: 10,
                                       child: Center(
                                         child: CircularProgressIndicator(
+                                          color: AppColors.bleuLight,
                                           strokeWidth: 0.3,
                                         ),
                                       ),
@@ -489,10 +497,12 @@ class Modal {
                         null ||
                     DetailContributionState.isLoadingContibutionTontine == true)
                   return Container(
-                    // color: Colors.white,
+                    // color: AppColors.white,
                     margin: EdgeInsets.only(top: 15),
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: AppColors.bleuLight,
+                      ),
                     ),
                   );
                 final nonTontine =
@@ -507,7 +517,7 @@ class Modal {
 
                 return Expanded(
                   child: Container(
-                    color: Color.fromARGB(120, 226, 226, 226),
+                    color: AppColors.white,
                     child: TabBarView(
                       controller: _tabController,
                       children: [
@@ -670,156 +680,170 @@ class Modal {
         titlePadding: EdgeInsets.all(0),
         actionsPadding: EdgeInsets.all(10),
         contentPadding: EdgeInsets.only(top: 0),
-        title: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 15),
-              child: Text(
-                "liste_de_vos_transactions".tr(),
-                style: TextStyle(
-                  color: Color.fromARGB(255, 20, 45, 99),
-                ),
-              ),
-              padding: EdgeInsets.only(top: 15),
-            ),
-            Container(
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.only(top: 15, bottom: 10, left: 2, right: 2),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                border: Border.all(
-                  width: 0.5,
-                  color: Color.fromARGB(255, 20, 45, 99),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        content: Container(
+          // padding: EdgeInsets.only(left: 20, right: 20),
+          height: 450,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: AppColors.white, borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            children: [
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        child: Text(
-                          "a_payer".tr(),
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w300,
-                            // color: Color.fromARGB(255, 20, 45, 99),
-                          ),
-                        ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    child: Text(
+                      "liste_de_vos_transactions".tr(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: AppColors.blackBlue,
                       ),
-                      Container(
-                        child: Text(
-                          "${formatMontantFrancais(double.parse(montantAPayer))} FCFA",
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 20, 45, 99),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
+                    padding: EdgeInsets.only(top: 15),
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        child: Text(
-                          "déjà_payé".tr(),
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.green,
-                              fontWeight: FontWeight.w300),
-                        ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    margin:
+                        EdgeInsets.only(top: 15, bottom: 10, left: 2, right: 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      border: Border.all(
+                        width: 0.5,
+                        color: AppColors.blackBlue,
                       ),
-                      Container(
-                        child: Text(
-                          "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_after"] : "0"))} FCFA",
-                          style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              child: Text(
+                                "a_payer".tr(),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w300,
+                                  // color: AppColors.blackBlue,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "${formatMontantFrancais(double.parse(montantAPayer))} FCFA",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.blackBlue,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        child: Text(
-                          "reste".tr(),
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w300),
+                        Column(
+                          children: [
+                            Container(
+                              child: Text(
+                                "déjà_payé".tr(),
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_after"] : "0"))} FCFA",
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.green),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Container(
-                        child: Text(
-                          "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_remaining"] : "0"))} FCFA",
-                          style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red),
+                        Column(
+                          children: [
+                            Container(
+                              child: Text(
+                                "reste".tr(),
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_remaining"] : "0"))} FCFA",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.red,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-        content: versement.length > 0
-            ? Container(
-                // color: Colors.white,
-                color: Color.fromARGB(120, 226, 226, 226),
-                height: 350,
-                width: MediaQuery.of(context).size.width,
-                // padding: EdgeInsets.only(top: 10),
-                // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
-                child: Container(
-                  margin: EdgeInsets.only(top: 7, right: 5, left: 5),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: versement[0]["transanctions"].length,
-                          itemBuilder: (context, index) {
-                            final detailVersement =
-                                versement[0]["transanctions"][index];
-                            return Container(
-                                child: widgetListTransactionByEventCard(
-                              date: AppCubitStorage().state.Language == "fr"
-                                  ? formatDateToFrench(
-                                      detailVersement["created_at"])
-                                  : formatDateToEnglish(
-                                      detailVersement["created_at"]),
-                              //  formatDateString(
-                              // detailVersement["created_at"]),
-                              montant: detailVersement["amount"],
-                            ));
-                          },
+              versement.length > 0
+                  ? Expanded(
+                      child: Container(
+                        // color: AppColors.white,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromARGB(120, 226, 226, 226),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            : Container(
-              height: 350,
-                child: Center(
-                  child: Text("aucune_transaction".tr()),
-                ),
-              ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: Text(
-              'fermer'.tr(),
-              style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
-            ),
+                        // height: 350,
+                        width: MediaQuery.of(context).size.width,
+                        // padding: EdgeInsets.only(top: 10),
+                        // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: 7, right: 5, left: 5, bottom: 7),
+                          color: AppColors.white,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount:
+                                      versement[0]["transanctions"].length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    final detailVersement =
+                                        versement[0]["transanctions"][index];
+                                    return Container(
+                                        child: widgetListTransactionByEventCard(
+                                      date: AppCubitStorage().state.Language ==
+                                              "fr"
+                                          ? formatDateToFrench(
+                                              detailVersement["created_at"])
+                                          : formatDateToEnglish(
+                                              detailVersement["created_at"]),
+                                      //  formatDateString(
+                                      // detailVersement["created_at"]),
+                                      montant: detailVersement["amount"],
+                                    ));
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      // height: 350,
+                      child: Center(
+                        child: Text("aucune_transaction".tr()),
+                      ),
+                    ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -840,7 +864,7 @@ class Modal {
                 'les_transactions_sur_la_cotisation'.tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 20, 45, 99),
+                  color: AppColors.blackBlue,
                 ),
               ),
               padding: EdgeInsets.only(top: 15),
@@ -877,7 +901,9 @@ class Modal {
             onPressed: () => Navigator.pop(context, 'Cancel'),
             child: Text(
               'fermer'.tr(),
-              style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
+              style: TextStyle(
+                color: AppColors.blackBlue,
+              ),
             ),
           ),
         ],
@@ -892,24 +918,31 @@ class Modal {
         titlePadding: EdgeInsets.all(0),
         actionsPadding: EdgeInsets.all(10),
         contentPadding: EdgeInsets.only(top: 0),
-        title: Container(
-          padding: EdgeInsets.only(top: 15, bottom: 15),
-          alignment: Alignment.center,
-          child: Text(
-            'les_personnes_sanctionnées'.tr(),
-            style: TextStyle(
-              color: Color.fromARGB(255, 20, 45, 99),
-            ),
-          ),
-        ),
         content: Container(
           height: 450,
           width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          // height: 450,
+          // width: MediaQuery.of(context).size.width,
           // padding: EdgeInsets.only(top: 10),
-          color: Color.fromARGB(120, 226, 226, 226),
+          // color: Color.fromARGB(120, 226, 226, 226),
           padding: EdgeInsets.only(top: 5),
           child: Column(
             children: [
+              Container(
+                padding: EdgeInsets.only(top: 15, bottom: 15),
+                alignment: Alignment.center,
+                child: Text(
+                  'les_personnes_sanctionnées'.tr(),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: AppColors.blackBlue,
+                  ),
+                ),
+              ),
               Expanded(
                 child: listSanction.length > 0
                     ? ListView.builder(
@@ -919,31 +952,30 @@ class Modal {
 
                           print("@@@@@@@@@@@@@ ${itemLListSanction}");
                           return Container(
-                              margin: EdgeInsets.only(left: 5, right: 5),
-                              child: WidgetPersonSanctionner(
-                                motif: itemLListSanction["motif"],
-                                nom: itemLListSanction["membre"]
-                                            ["first_name"] ==
-                                        null
-                                    ? ""
-                                    : itemLListSanction["membre"]["first_name"],
-                                outilSanction: itemLListSanction["amount"]
-                                            .toString() ==
-                                        "null"
-                                    ? itemLListSanction["libelle"]
-                                    : "${formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()))} FCFA",
-                                photoProfil: itemLListSanction["membre"]
-                                            ["photo_profil"] ==
-                                        null
-                                    ? ""
-                                    : itemLListSanction["membre"]
-                                        ["photo_profil"],
-                                prenom: itemLListSanction["membre"]
-                                            ["last_name"] ==
-                                        null
-                                    ? ""
-                                    : itemLListSanction["membre"]["last_name"],
-                              ));
+                            margin: EdgeInsets.only(left: 5, right: 5),
+                            child: WidgetPersonSanctionner(
+                              motif: itemLListSanction["motif"],
+                              nom: itemLListSanction["membre"]["first_name"] ==
+                                      null
+                                  ? ""
+                                  : itemLListSanction["membre"]["first_name"],
+                              outilSanction: itemLListSanction["amount"]
+                                          .toString() ==
+                                      "null"
+                                  ? itemLListSanction["libelle"]
+                                  : "${formatMontantFrancais(double.parse(itemLListSanction["amount"].toString()))} FCFA",
+                              photoProfil: itemLListSanction["membre"]
+                                          ["photo_profil"] ==
+                                      null
+                                  ? ""
+                                  : itemLListSanction["membre"]["photo_profil"],
+                              prenom: itemLListSanction["membre"]
+                                          ["last_name"] ==
+                                      null
+                                  ? ""
+                                  : itemLListSanction["membre"]["last_name"],
+                            ),
+                          );
                         },
                       )
                     : Container(
@@ -957,19 +989,10 @@ class Modal {
                               fontSize: 20),
                         ),
                       ),
-              )
+              ),
             ],
           ),
         ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: Text(
-              'fermer'.tr(),
-              style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -982,36 +1005,47 @@ class Modal {
         titlePadding: EdgeInsets.all(0),
         actionsPadding: EdgeInsets.all(10),
         contentPadding: EdgeInsets.only(top: 0),
-        title: Container(
-          padding: EdgeInsets.only(top: 15, bottom: 15),
-          alignment: Alignment.center,
-          child: Text(
-            'liste_de_presence'.tr(),
-            style: TextStyle(
-              color: Color.fromARGB(255, 20, 45, 99),
-            ),
-          ),
-        ),
         content: Container(
-          height: 450,
+          height: 550,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Column(
             children: [
               Container(
-                color: Color.fromARGB(120, 226, 226, 226),
+                padding: EdgeInsets.only(top: 15, bottom: 15),
                 alignment: Alignment.center,
+                child: Text(
+                  'liste_de_presence'.tr(),
+                  style: TextStyle(color: AppColors.blackBlue, fontSize: 18),
+                ),
+              ),
+              Container(
+                color: AppColors.blackBlueAccent2,
+
+                // transformAlignment: AlignmentDirectional.center,
                 child: TabBar(
                   isScrollable: true,
-                  labelColor: Color.fromARGB(255, 20, 45, 99),
+                  labelColor: AppColors.blackBlue,
                   labelStyle:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   padding: EdgeInsets.all(0),
+                  unselectedLabelStyle: TextStyle(
+                    color: AppColors.blackBlueAccent1,
+                    fontWeight: FontWeight.bold,
+                  ),
                   indicator: UnderlineTabIndicator(
                     borderSide: BorderSide(
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                       width: 5.0,
                     ),
-                    insets: EdgeInsets.symmetric(horizontal: 36.0),
+                    insets: EdgeInsets.symmetric(
+                      horizontal: 36.0,
+                    ),
                   ),
+
                   // indicatorWeight: 0,
                   controller: tabController,
                   tabs: [
@@ -1050,9 +1084,23 @@ class Modal {
               ),
               Expanded(
                 child: Container(
-                  color: Color.fromARGB(120, 226, 226, 226),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    color: AppColors.blackBlueAccent2,
+                  ),
+                  padding: EdgeInsets.only(bottom: 5),
                   child: Container(
-                    color: Colors.white,
+                    
+                    decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    color: AppColors.white,
+                  ),
                     padding: EdgeInsets.only(
                       top: 2,
                       bottom: 3,
@@ -1159,15 +1207,6 @@ class Modal {
             ],
           ),
         ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: Text(
-              'fermer'.tr(),
-              style: TextStyle(color: Color.fromARGB(255, 20, 45, 99)),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -1209,7 +1248,7 @@ class Modal {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           child: Container(
-            color: Colors.white,
+            color: AppColors.white,
             child: Padding(
               padding: const EdgeInsets.only(top: 15, bottom: 15),
               child: Column(
@@ -1220,7 +1259,7 @@ class Modal {
                     width: 55,
                     margin: EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
@@ -1241,7 +1280,7 @@ class Modal {
                         children: [
                           Icon(
                             Icons.add_a_photo_outlined,
-                            color: Color.fromARGB(255, 20, 45, 99),
+                            color: AppColors.blackBlue,
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 20),
@@ -1249,7 +1288,7 @@ class Modal {
                               "Camera",
                               style: TextStyle(
                                   fontSize: 20,
-                                  color: Color.fromARGB(255, 20, 45, 99),
+                                  color: AppColors.blackBlue,
                                   fontWeight: FontWeight.w400),
                             ),
                           )
@@ -1272,7 +1311,7 @@ class Modal {
                       children: [
                         Icon(
                           Icons.add_photo_alternate_outlined,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 20),
@@ -1280,7 +1319,7 @@ class Modal {
                             "Galerie",
                             style: TextStyle(
                                 fontSize: 20,
-                                color: Color.fromARGB(255, 20, 45, 99),
+                                color: AppColors.blackBlue,
                                 fontWeight: FontWeight.w400),
                           ),
                         )
@@ -1333,7 +1372,7 @@ class Modal {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           child: Container(
-            color: Colors.white,
+            color: AppColors.white,
             child: Padding(
               padding: const EdgeInsets.only(top: 15, bottom: 15),
               child: Column(
@@ -1343,7 +1382,7 @@ class Modal {
                     height: 5,
                     width: 55,
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                         borderRadius: BorderRadius.circular(50)),
                   ),
                   Container(
@@ -1353,7 +1392,7 @@ class Modal {
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(164, 20, 45, 99),
+                        color: AppColors.blackBlueAccent1,
                       ),
                     ),
                   ),
@@ -1399,7 +1438,7 @@ class Modal {
                       child: Text(
                         "confirmer".tr(),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                         ),
                       ),
                     ),
@@ -1417,33 +1456,25 @@ class Modal {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        titlePadding: EdgeInsets.all(0),
-        actionsPadding: EdgeInsets.all(3),
         contentPadding: EdgeInsets.only(top: 0),
-        title: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Text(
-                'effectuer_le_paiement'.tr(),
-                style: TextStyle(
-                  color: Color.fromARGB(255, 185, 200, 233),
-                ),
-              ),
-              padding: EdgeInsets.only(top: 15),
-            ),
-          ],
-        ),
         content: Container(
-          // color: Color.fromARGB(120, 226, 226, 226),
-          // width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.only(left: 20, right: 20),
-          height: 73,
-          margin: EdgeInsets.only(top: 7, right: 5, left: 5, bottom: 22),
-          // color: const Color.fromARGB(255, 255, 2, 2),
-
+          height: 150,
+          decoration: BoxDecoration(
+              color: AppColors.white, borderRadius: BorderRadius.circular(10)),
           child: Column(
             children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 10),
+                child: Text(
+                  'effectuer_le_paiement'.tr(),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: AppColors.blackBlue,
+                  ),
+                ),
+                padding: EdgeInsets.only(top: 15),
+              ),
               GestureDetector(
                 onTap: () async {
                   Navigator.pop(
@@ -1464,7 +1495,7 @@ class Modal {
                   width: MediaQuery.of(context).size.width,
                   margin: EdgeInsets.only(bottom: 11),
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(0, 162, 255, 1),
+                    color: AppColors.colorButton,
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Text(
@@ -1472,7 +1503,7 @@ class Modal {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: AppColors.white,
                     ),
                   ),
                 ),
@@ -1492,7 +1523,7 @@ class Modal {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                        color: Color.fromRGBO(0, 162, 255, 1),
+                        color: AppColors.colorButton,
                       )),
                   // height: 20,
                   child: Text(
@@ -1500,7 +1531,7 @@ class Modal {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Color.fromRGBO(0, 162, 255, 1),
+                      color: AppColors.colorButton,
                     ),
                   ),
                 ),
@@ -1564,7 +1595,7 @@ class widgetListPresenceCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: Color.fromARGB(255, 20, 45, 99),
+                    color: AppColors.blackBlue,
                   ),
                 ),
               ),
@@ -1583,7 +1614,7 @@ class widgetListPresenceCard extends StatelessWidget {
                   padding: EdgeInsets.all(3),
                   child: Icon(
                     Icons.check,
-                    color: Color.fromARGB(255, 0, 126, 4),
+                    color: AppColors.green,
                     size: 14,
                   ),
                 ),
@@ -1611,12 +1642,12 @@ class WidgetPersonSanctionner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: AppColors.white,
       padding: EdgeInsets.all(5),
       child: Container(
         padding: EdgeInsets.only(top: 2, bottom: 5, left: 5),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           border: Border(
             bottom: BorderSide(
               width: 0.5,
@@ -1653,7 +1684,7 @@ class WidgetPersonSanctionner extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                         ),
                       ),
                     ),
@@ -1665,7 +1696,7 @@ class WidgetPersonSanctionner extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(164, 20, 45, 99)),
+                            color: AppColors.blackBlueAccent1),
                       ),
                     ),
                     Container(

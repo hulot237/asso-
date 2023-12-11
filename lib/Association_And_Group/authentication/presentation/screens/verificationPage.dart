@@ -8,6 +8,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
@@ -31,13 +32,13 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     body: child,
   );
 }
@@ -112,13 +113,15 @@ class _VerificationPageState extends State<VerificationPage> {
         context.read<AuthCubit>().state.loginInfo!["error"] == false) {
       var loginInfo = context.read<AuthCubit>().state.loginInfo;
 
-      await AppCubitStorage().updateCodeAssDefaul(loginInfo!["data"]["user_groups"][0]["urlcode"]);
+      await AppCubitStorage()
+          .updateCodeAssDefaul(loginInfo!["data"]["user_groups"][0]["urlcode"]);
       await AppCubitStorage().updateTokenUser(loginInfo!["data"]["token"]);
-      await AppCubitStorage().updatemembreCode(loginInfo["data"]["membre"]["membre_code"]);
+      await AppCubitStorage()
+          .updatemembreCode(loginInfo["data"]["membre"]["membre_code"]);
       await AppCubitStorage().updateCodeTournoisDefault(
           loginInfo["data"]["tournois"]["tournois_code"]);
 
-      if (AppCubitStorage().state.codeAssDefaul != null && 
+      if (AppCubitStorage().state.codeAssDefaul != null &&
           AppCubitStorage().state.tokenUser != null) {
         Navigator.pop(context);
         Navigator.of(context).pushAndRemoveUntil(
@@ -177,7 +180,7 @@ class _VerificationPageState extends State<VerificationPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 27,
-                            color: Color.fromARGB(255, 20, 45, 99),
+                            color: AppColors.blackBlue,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
@@ -192,7 +195,7 @@ class _VerificationPageState extends State<VerificationPage> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
-                                color: Color.fromARGB(255, 20, 45, 99),
+                                color: AppColors.blackBlue,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -200,40 +203,30 @@ class _VerificationPageState extends State<VerificationPage> {
                         ),
                         SizedBox(height: 20),
                         Container(
-                          padding: EdgeInsets.all(12),
-                          // alignment: Alignment.center,
-                          height: 55,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Color.fromARGB(255, 20, 45, 99),
-                              ),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: MediaQuery.sizeOf(context).width / 1.23,
-                                margin: EdgeInsets.only(top: 12),
-                                alignment: Alignment.center,
-                                child: TextField(
-                                  textAlign: TextAlign.center,
+                          child: Container(
+                            height: 55,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: AppColors.blackBlue,
+                                ),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: TextField(
+                              textAlign: TextAlign.center,
                                   controller: codeController,
                                   keyboardType: TextInputType.number,
                                   style: TextStyle(
                                     fontSize: 17,
-                                    color: Color.fromARGB(255, 20, 45, 99),
+                                    color: AppColors.blackBlue,
                                   ),
                                   decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "code_à_5_chiffres".tr(),
-                                      hintStyle: TextStyle(
-                                        color: Color.fromARGB(122, 20, 45, 99),
-                                      )),
+                                    border: InputBorder.none,
+                                    hintText: "code_à_5_chiffres".tr(),
+                                    hintStyle: TextStyle(
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
                           ),
                         ),
                         SizedBox(height: 25),
@@ -249,7 +242,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                 return Container(
                                   child: Center(
                                     child: CircularProgressIndicator(
-                                      color: Color(0xFF9bc43f),
+                                      color: AppColors.greenAssociation,
                                     ),
                                   ),
                                 );
@@ -257,7 +250,7 @@ class _VerificationPageState extends State<VerificationPage> {
                               return isLoading
                                   ? Center(
                                       child: CircularProgressIndicator(
-                                        color: Color(0xFF9bc43f),
+                                        color: AppColors.greenAssociation,
                                       ),
                                     )
                                   : ElevatedButton(
@@ -274,10 +267,14 @@ class _VerificationPageState extends State<VerificationPage> {
                                       },
                                       child: Text(
                                         "vérifier".tr(),
-                                        style: TextStyle(fontSize: 19),
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                          color: AppColors.white,
+                                        ),
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF9bc43f),
+                                        backgroundColor:
+                                            AppColors.greenAssociation,
                                         // primary: Color(0xFF6FA629),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -300,7 +297,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
-                                  color: Color.fromARGB(255, 20, 45, 99),
+                                  color: AppColors.blackBlue,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -317,14 +314,14 @@ class _VerificationPageState extends State<VerificationPage> {
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w800,
-                                              color: Color(0xFF9bc43f),
+                                              color: AppColors.greenAssociation,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
                                           Icon(
                                             Icons.double_arrow_outlined,
                                             size: 8,
-                                            color: Color(0xFF9bc43f),
+                                            color: AppColors.greenAssociation,
                                           )
                                         ],
                                       ),
@@ -334,7 +331,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                       style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
-                                        color: Color.fromARGB(255, 20, 45, 99),
+                                        color: AppColors.blackBlue,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),

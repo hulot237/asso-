@@ -19,7 +19,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       backgroundColor: Color(0xFFEFEFEF),
+//       backgroundColor: AppColors.pageBackground,
 //       appBar: AppBar(
 //         title: Text("Cotisations"),
 //         backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
@@ -39,7 +39,7 @@
 //                     Text(
 //                       'Cotisations en cours',
 //                       style: TextStyle(
-//                           color: Colors.white,
+//                           color: AppColors.white,
 //                           fontWeight: FontWeight.bold,
 //                           fontSize: 15),
 //                     ),
@@ -54,7 +54,7 @@
 //                       child: Text(
 //                         "${Tab.length}",
 //                         style: TextStyle(
-//                             color: Colors.white,
+//                             color: AppColors.white,
 //                             fontSize: 8,
 //                             fontWeight: FontWeight.bold),
 //                       ),

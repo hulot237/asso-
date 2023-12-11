@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 
 class WidgetSanction extends StatefulWidget {
@@ -45,12 +46,12 @@ class _WidgetSanctionState extends State<WidgetSanction> {
         borderRadius: BorderRadius.circular(15),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             border: Border(
               left: BorderSide(
                   width: 8,
                   color:
-                      widget.isSanctionPayed == 0 ? Colors.red : Colors.green),
+                      widget.isSanctionPayed == 0 ? AppColors.red : AppColors.green),
             ),
           ),
           padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
@@ -83,7 +84,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                       style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(160, 20, 45, 99),
+                                        color: AppColors.blackBlueAccent1,
                                       ),
                                     ),
                                   ),
@@ -93,8 +94,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: const Color.fromRGBO(
-                                              20, 45, 99, 1),
+                                          color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   )
@@ -112,7 +112,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                     padding: EdgeInsets.only(bottom: 5),
                                     child: Text(
                                       "a_payer".tr(),
-                                      style: TextStyle(fontSize: 12),
+                                      style: TextStyle(fontSize: 12, color: AppColors.blackBlue),
                                     ),
                                   ),
                                   Container(
@@ -121,7 +121,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w800,
-                                          color: Colors.red),
+                                          color: AppColors.red,),
                                     ),
                                   )
                                 ],
@@ -135,8 +135,8 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                       margin: EdgeInsets.only(top: 8, bottom: 8),
                       width: MediaQuery.of(context).size.width / 1.1,
                       color: widget.isSanctionPayed == 0
-                          ? Colors.red
-                          : Colors.green,
+                          ? AppColors.red
+                          : AppColors.green,
                     ),
                     widget.typeSaction == "1" && widget.isSanctionPayed == 0
                         ? Container(
@@ -160,7 +160,9 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                       children: [
                                         Container(
                                           child:
-                                              Text("voulez_vous_payer?".tr()),
+                                              Text("voulez_vous_payer?".tr(), style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                              ),),
                                           margin: EdgeInsets.only(right: 10),
                                         ),
                                         Container(
@@ -170,15 +172,14 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                               top: 5,
                                               bottom: 5),
                                           decoration: BoxDecoration(
-                                            color:
-                                                Color.fromRGBO(0, 162, 255, 1),
+                                            color: AppColors.colorButton,
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                           ),
                                           child: Text(
                                             "oui".tr(),
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color: AppColors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12),
                                           ),
@@ -194,7 +195,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                         padding: EdgeInsets.only(bottom: 5),
                                         child: Text(
                                           "déjà_payé".tr(),
-                                          style: TextStyle(fontSize: 12),
+                                          style: TextStyle(fontSize: 12, color: AppColors.blackBlue),
                                         ),
                                       ),
                                       Container(
@@ -203,7 +204,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w800,
-                                              color: Colors.green),
+                                              color: AppColors.green),
                                         ),
                                       )
                                     ],
@@ -239,7 +240,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w800,
-                                                  color: Colors.green),
+                                                  color: AppColors.green),
                                             ),
                                           )
                                         ],
@@ -263,7 +264,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w800,
-                                                  color: Colors.green),
+                                                  color: AppColors.green),
                                             ),
                                           )
                                         ],

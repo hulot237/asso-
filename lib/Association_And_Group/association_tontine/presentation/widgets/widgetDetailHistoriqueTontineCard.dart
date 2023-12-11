@@ -3,6 +3,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,7 @@ class _widgetDetailHistoriqueTontineCardState
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15),
       ),
       alignment: Alignment.center,
@@ -105,7 +106,7 @@ class _widgetDetailHistoriqueTontineCardState
                                         style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -130,7 +131,7 @@ class _widgetDetailHistoriqueTontineCardState
                           padding: EdgeInsets.only(
                               left: 8, right: 8, top: 5, bottom: 5),
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(0, 162, 255, 1),
+                            color: AppColors.colorButton,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Container(
@@ -139,7 +140,7 @@ class _widgetDetailHistoriqueTontineCardState
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
-                                color: Colors.white,
+                                color: AppColors.white,
                               ),
                             ),
                           ),
@@ -154,7 +155,7 @@ class _widgetDetailHistoriqueTontineCardState
                       //           style: TextStyle(
                       //             fontSize: 12,
                       //             fontWeight: FontWeight.w300,
-                      //             color: Color.fromRGBO(20, 45, 99, 1),
+                      //             color: AppColors.blackBlue,
                       //           ),
                       //         ),
                       //       ),
@@ -164,7 +165,7 @@ class _widgetDetailHistoriqueTontineCardState
                       //           style: TextStyle(
                       //             fontSize: 12,
                       //             fontWeight: FontWeight.bold,
-                      //             color: Color.fromRGBO(20, 45, 99, 1),
+                      //             color: AppColors.blackBlue,
                       //           ),
                       //         ),
                       //       ),
@@ -185,7 +186,7 @@ class _widgetDetailHistoriqueTontineCardState
                       //     style: TextStyle(
                       //       fontSize: 12,
                       //       fontWeight: FontWeight.w500,
-                      //       color: Color.fromARGB(255, 20, 45, 99),
+                      //       color: AppColors.blackBlue,
                       //     ),
                       //   ),
                       // ),
@@ -234,10 +235,10 @@ class _widgetDetailHistoriqueTontineCardState
                                         "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            fontSize: 12,
-                                            color:
-                                                Color.fromARGB(255, 20, 45, 99),
-                                            fontWeight: FontWeight.w600),
+                                          fontSize: 12,
+                                          color: AppColors.blackBlue,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -267,7 +268,7 @@ class _widgetDetailHistoriqueTontineCardState
                                 "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
                                 style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.green,
+                                    color: AppColors.green,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),

@@ -1,4 +1,5 @@
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 
 class widgetListTransactionCotisationAllCard extends StatefulWidget {
@@ -16,11 +17,11 @@ class _widgetListTransactionCotisationAllCardState
     return Container(
       // margin: EdgeInsets.all(8),
       padding: EdgeInsets.all(5),
-      color: Colors.white,
+      color: AppColors.white,
       child: Container(
         padding: EdgeInsets.only(top: 7, bottom: 5, left: 3, right: 3),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           // borderRadius: BorderRadius.circular(7),
           border: Border(
             bottom: BorderSide(
@@ -61,7 +62,7 @@ class _widgetListTransactionCotisationAllCardState
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: Color.fromARGB(255, 20, 45, 99),
+                          color: AppColors.blackBlue,
                         ),
                       ),
                     ),
@@ -73,7 +74,7 @@ class _widgetListTransactionCotisationAllCardState
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(164, 20, 45, 99)),
+                            color: AppColors.blackBlueAccent1),
                       ),
                     ),
                     Container(
@@ -84,7 +85,7 @@ class _widgetListTransactionCotisationAllCardState
                         style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
-                            color: Color.fromARGB(164, 20, 45, 99)),
+                            color: AppColors.blackBlueAccent1),
                       ),
                     ),
                   ],
@@ -94,12 +95,12 @@ class _widgetListTransactionCotisationAllCardState
             Container(
                 padding: EdgeInsets.all(3),
                 // decoration: BoxDecoration(
-                //   color: Color.fromARGB(125, 76, 175, 79),
+                //   color: AppColors.greenAccent
                 //   borderRadius: BorderRadius.circular(50),
                 // ),
                 child: Icon(
                   Icons.call_received_outlined,
-                  color: Color.fromARGB(255, 0, 126, 4),
+                  color: AppColors.green,
                   size: 14,
                 )),
           ],

@@ -25,7 +25,7 @@
 //               style: TextStyle(
 //                 fontSize: 25,
 //                 fontWeight: FontWeight.bold,
-//                 color: Color.fromARGB(255, 20, 45, 99),
+//                 color: AppColors.blackBlue,
 //               ),
 //             ),
 //           ),
@@ -36,7 +36,7 @@
 //             width: 15,
 //             padding: EdgeInsets.only(left: 20, top: 20),
 //             decoration: BoxDecoration(
-//               color: Colors.green,
+//               color: AppColors.green,
 //               // color: Color.fromARGB(33, 20, 45, 99),
 //               borderRadius: BorderRadius.circular(50),
 //             ),
@@ -44,7 +44,7 @@
 //             child: Icon(
 //               Icons.arrow_back,
 //               size: 25,
-//               color: Color.fromARGB(255, 20, 45, 99),
+//               color: AppColors.blackBlue,
 //             ),
 //           ),
 //           bottom: TabBar(
@@ -100,7 +100,7 @@
 //                     child: Text(
 //                       "La liste de vos tournois en cours",
 //                       style: TextStyle(
-//                           color: const Color.fromRGBO(20, 45, 99, 1),
+//                           color: AppColors.blackBlue,
 //                           fontWeight: FontWeight.bold,
 //                           fontSize: 20,
 //                           letterSpacing: 0.2),
@@ -155,7 +155,7 @@
 //                     child: Text(
 //                       "Liste des comptes de l'association",
 //                       style: TextStyle(
-//                           color: const Color.fromRGBO(20, 45, 99, 1),
+//                           color: AppColors.blackBlue,
 //                           fontWeight: FontWeight.bold,
 //                           fontSize: 14,
 //                           letterSpacing: 0.2),
@@ -185,7 +185,7 @@
 //                                 child: Text(
 //                                   "Fonds de caisse",
 //                                   style: TextStyle(
-//                                       fontSize: 10, color: Colors.white),
+//                                       fontSize: 10, color: AppColors.white),
 //                                   overflow: TextOverflow.ellipsis,
 //                                 ),
 //                               ),

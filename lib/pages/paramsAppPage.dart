@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,27 +23,33 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "paramètres".tr(),
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color : AppColors.white),
         ),
-        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+        backgroundColor: AppColors.backgroundAppBAr,
       ),
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     appBar: AppBar(
       title: Text(
         "paramètres".tr(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 16, color : AppColors.white),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
     body: child,
   );
@@ -95,12 +102,12 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Color.fromARGB(255, 20, 45, 99),
+                      color: AppColors.blackBlue,
                     ),
                   ),
                 ),
                 trailing: Icon(
-                  color: Color.fromARGB(255, 20, 45, 99),
+                  color: AppColors.blackBlue,
                   size: 12,
                   _customIconLangue
                       ? Icons.keyboard_double_arrow_down
@@ -134,7 +141,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         "${"francais".tr()} ${AppCubitStorage().state.Language}",
                         style: AppCubitStorage().state.Language == "fr"
                             ? TextStyle(
-                                color: Colors.white,
+                                color: AppColors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
                               )
@@ -179,7 +186,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         "anglais".tr(),
                         style: AppCubitStorage().state.Language == "en"
                             ? TextStyle(
-                                color: Colors.white,
+                                color: AppColors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
                               )
@@ -212,7 +219,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                       ),
                     ),
                   ),
@@ -234,7 +241,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             Text(
                               "jour".tr(),
                               style: TextStyle(
-                                color: Color.fromARGB(255, 20, 45, 99),
+                                color: AppColors.blackBlue,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
                               ),
@@ -244,7 +251,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                               child: Icon(
                                 Icons.light_mode_outlined,
                                 size: 15,
-                                color: Color.fromARGB(255, 20, 45, 99),
+                                color: AppColors.blackBlue,
                               ),
                             ),
                           ],
@@ -254,7 +261,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             Text(
                               "nuit".tr(),
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 20, 45, 99),
+                                  color: AppColors.blackBlue,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12),
                             ),
@@ -263,7 +270,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                               child: Icon(
                                 Icons.dark_mode_outlined,
                                 size: 15,
-                                color: Color.fromARGB(255, 20, 45, 99),
+                                color: AppColors.blackBlue,
                               ),
                             ),
                           ],
@@ -312,7 +319,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Color.fromARGB(255, 20, 45, 99),
+                        color: AppColors.blackBlue,
                       ),
                     ),
                   ),
@@ -328,7 +335,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: Color.fromARGB(255, 20, 45, 99),
+                                  color: AppColors.blackBlue,
                                 ),
                               ),
                             ),
@@ -432,7 +439,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: Color.fromARGB(255, 20, 45, 99),
+                                  color: AppColors.blackBlue,
                                 ),
                               ),
                             ),

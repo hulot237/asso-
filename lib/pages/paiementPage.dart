@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:linear_step_indicator/linear_step_indicator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaiementPage extends StatefulWidget {
@@ -20,26 +21,33 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "Effectuer_le_paiement".tr(),
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: 16, color : AppColors.white),
         ),
-        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+        backgroundColor: AppColors.backgroundAppBAr,
       ),
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.white,
     appBar: AppBar(
       title: Text(
         "Effectuer_le_paiement".tr(),
+        style: TextStyle(fontSize: 16, color : AppColors.white),
       ),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
     body: child,
   );
@@ -75,7 +83,7 @@ class _PaiementPageState extends State<PaiementPage> {
           // },
         ),
       )
-      ..loadRequest(Uri.parse("https://${widget.lienDePaiement}"));
+      ..loadRequest(Uri.parse("https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}"));
   }
 
   @override

@@ -6,11 +6,11 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilPersonnelPage extends StatefulWidget {
@@ -26,24 +26,30 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "votre_profil".tr(),
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color : AppColors.white),
         ),
-        backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+        backgroundColor:AppColors.backgroundAppBAr,
       ),
       child: child,
     );
   }
 
   return Scaffold(
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.white,
     appBar: AppBar(
-      title: Text("votre_profil".tr()),
-      backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
+      title: Text("votre_profil".tr(), style: TextStyle(fontSize: 16, color : AppColors.white),),
+      backgroundColor:AppColors.backgroundAppBAr,
       elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back, color: AppColors.white),
+      ),
     ),
     body: child,
   );
@@ -65,8 +71,8 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
     }
   }
 
-  Future<void> handleUpdateInfoUser({
-      key, value, partner_urlcode, membre_code}) async {
+  Future<void> handleUpdateInfoUser(
+      {key, value, partner_urlcode, membre_code}) async {
     final allCotisationAss = await context
         .read<AuthUpdateCubit>()
         .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
@@ -90,11 +96,10 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
       });
 
       handleUpdateInfoUser(
-       key: "photo_profil",
-       value: pickedImage,
-       partner_urlcode: AppCubitStorage().state.codeAssDefaul,
-        membre_code:AppCubitStorage().state.membreCode
-      );
+          key: "photo_profil",
+          value: pickedImage,
+          partner_urlcode: AppCubitStorage().state.codeAssDefaul,
+          membre_code: AppCubitStorage().state.membreCode);
       handleDetailUser(
         AppCubitStorage().state.membreCode,
       );
@@ -118,9 +123,9 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
             authState.isLoading == true ||
             authState.detailUser == null)
           return Container(
-            color: Colors.white,
+            color: AppColors.white,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: AppColors.bleuLight,),
             ),
           );
         final currentDetailUser =
@@ -181,19 +186,19 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                 top: 20,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: AppColors.white,
                                     borderRadius: BorderRadius.circular(360),
                                   ),
                                   padding: EdgeInsets.all(2),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(0, 162, 255, 1),
+                                      color: AppColors.bleuLight,
                                       borderRadius: BorderRadius.circular(360),
                                     ),
                                     width: 30,
                                     height: 30,
                                     child: Icon(Icons.mode_edit_rounded,
-                                        color: Colors.white, size: 14),
+                                        color: AppColors.white, size: 14),
                                   ),
                                 ),
                               ),
@@ -299,7 +304,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                         ),
                                         Icon(Icons.mode_edit_rounded,
                                             color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                                AppColors.blackBlue,
                                             size: 14),
                                       ],
                                     ),
@@ -397,7 +402,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                         ),
                                         Icon(Icons.mode_edit_rounded,
                                             color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                                AppColors.blackBlue,
                                             size: 14),
                                       ],
                                     ),
@@ -569,7 +574,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                         ),
                                         Icon(Icons.mode_edit_rounded,
                                             color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                                AppColors.blackBlue,
                                             size: 14),
                                       ],
                                     ),
@@ -597,7 +602,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                         //             Icon(Icons.lock_outline, color: Colors.red),
                         //       ),
                         //       Container(
-                        //         // color: Colors.greenAccent,
+                        //         // color: AppColors.greenAccent,
                         //         child: Text(
                         //           "Changer de PIN",
                         //           style: TextStyle(

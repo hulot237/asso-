@@ -6,6 +6,7 @@ import 'package:faroty_association_1/Association_And_Group/association_tournoi/b
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/screens/homeScreen.dart';
 import 'package:faroty_association_1/screens/settingsScreen.dart';
@@ -31,7 +32,7 @@ Widget PageScaffold({
 }) {
   if (Platform.isIOS) {
     return CupertinoTabScaffold(
-      backgroundColor: Color(0xFFEFEFEF),
+      backgroundColor: AppColors.pageBackground,
       tabBar: CupertinoTabBar(
         items: itemListIos,
       ),
@@ -46,7 +47,7 @@ Widget PageScaffold({
   }
 
   return Scaffold(
-    backgroundColor: Color(0xFFEFEFEF),
+    backgroundColor: AppColors.pageBackground,
     bottomNavigationBar: childBottomNavBar,
     body: child[indexPage],
   );
@@ -135,7 +136,7 @@ class _HomePageState extends State<HomePage> {
           selectedIconTheme: IconThemeData(size: 25),
           unselectedIconTheme: IconThemeData(size: 15),
           selectedFontSize: 12,
-          unselectedItemColor: Color.fromARGB(255, 20, 45, 99),
+          unselectedItemColor: AppColors.blackBlue,
           selectedItemColor: Color.fromRGBO(0, 162, 255, 0.815),
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           items: itemListAndroid,

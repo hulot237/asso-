@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -35,7 +36,7 @@ class _WidgetTontineRencontreCardState
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15),
       ),
       alignment: Alignment.center,
@@ -67,7 +68,7 @@ class _WidgetTontineRencontreCardState
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: Color.fromRGBO(20, 45, 99, 1),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -109,14 +110,14 @@ class _WidgetTontineRencontreCardState
                         child: Container(
                           padding: EdgeInsets.only(left: 8, right: 8, top:5, bottom: 5 ),
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(0, 162, 255, 1),
+                            color: AppColors.colorButton,
                             borderRadius: BorderRadius.circular(15),
                             
                           ),
                           child: Text(
                             "Tontiner",
                             style: TextStyle(
-                                color: Colors.white,
+                                color: AppColors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13),
                           ),
@@ -148,7 +149,7 @@ class _WidgetTontineRencontreCardState
                               fontSize: 12,
                               overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.w400,
-                              color: Color.fromARGB(255, 20, 45, 99)),
+                              color: AppColors.blackBlue,),
                         ),
                       ),
                     ],
@@ -187,7 +188,7 @@ class _WidgetTontineRencontreCardState
                                         style: TextStyle(
                                             fontSize: 12,
                                             color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                                AppColors.blackBlue,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -218,7 +219,7 @@ class _WidgetTontineRencontreCardState
                                 "${formatMontantFrancais(double.parse(widget.montantCollecte))} FCFA",
                                 style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.green,
+                                    color: AppColors.green,
                                     fontWeight: FontWeight.w600),
                               ),
                             ),

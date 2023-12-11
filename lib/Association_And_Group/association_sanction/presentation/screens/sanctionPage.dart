@@ -24,7 +24,7 @@
 //     var Tab = [true, false, false, true, false, true];
 
 //     return Scaffold(
-//             backgroundColor: Color(0xFFEFEFEF),
+//             backgroundColor: AppColors.pageBackground,
 //       appBar: AppBar(
 //         title: Text("Saction"),
 //         backgroundColor: Color.fromRGBO(0, 162, 255, 0.815),
@@ -45,7 +45,7 @@
 //                     Text(
 //                       'Sanctions non payées',
 //                       style: TextStyle(
-//                           color: Colors.white,
+//                           color: AppColors.white,
 //                           fontWeight: FontWeight.bold,
 //                           fontSize: 15),
 //                     ),
@@ -60,7 +60,7 @@
 //                       child: Text(
 //                         "${Tab.length}",
 //                         style: TextStyle(
-//                             color: Colors.white,
+//                             color: AppColors.white,
 //                             fontSize: 8,
 //                             fontWeight: FontWeight.bold),
 //                       ),

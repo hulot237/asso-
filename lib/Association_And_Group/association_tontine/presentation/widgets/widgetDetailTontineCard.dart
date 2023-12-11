@@ -1,37 +1,38 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 
 class WidgetDetailTontineCard extends StatefulWidget {
-WidgetDetailTontineCard({super.key, 
+  WidgetDetailTontineCard({
+    super.key,
     required this.nomTontine,
-  required this.montantTontine,
-  required this.positionBeneficiaire,
-  required this.nbrMembreTontine,
-  required this.dateCreaTontine,
-  required this.isActive,
+    required this.montantTontine,
+    required this.positionBeneficiaire,
+    required this.nbrMembreTontine,
+    required this.dateCreaTontine,
+    required this.isActive,
   });
 
-String dateCreaTontine;
-String nomTontine;
-String montantTontine;
+  String dateCreaTontine;
+  String nomTontine;
+  String montantTontine;
   String positionBeneficiaire;
-String nbrMembreTontine;
-int isActive;
+  String nbrMembreTontine;
+  int isActive;
 
   @override
   State<WidgetDetailTontineCard> createState() =>
       _WidgetDetailTontineCardState();
 }
 
-class _WidgetDetailTontineCardState
-    extends State<WidgetDetailTontineCard> {
+class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         boxShadow: [
           BoxShadow(
               color: Color.fromARGB(69, 0, 0, 0),
@@ -40,7 +41,6 @@ class _WidgetDetailTontineCardState
         ],
         borderRadius: BorderRadius.circular(15),
       ),
-
 
       // decoration: BoxDecoration(
       //   color: Color.fromARGB(255, 255, 255, 255),
@@ -75,34 +75,34 @@ class _WidgetDetailTontineCardState
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(20, 45, 99, 1),
+                                color: AppColors.blackBlue,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      widget.isActive==1?
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(61, 76, 175, 79),
-                          borderRadius: BorderRadius.circular(5),
-                          
-                        ),
-                        child: Text(
-                          "en_cours".tr(),
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13),
-                        ),
-                      ):Text(
-                          "terminé".tr(),
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13),
-                        ),
+                      widget.isActive == 1
+                          ? Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(61, 76, 175, 79),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                "en_cours".tr(),
+                                style: TextStyle(
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13),
+                              ),
+                            )
+                          : Text(
+                              "terminé".tr(),
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13),
+                            ),
                     ],
                   ),
                 ),
@@ -130,9 +130,10 @@ class _WidgetDetailTontineCardState
                                 widget.dateCreaTontine,
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    color: Color.fromARGB(255, 20, 45, 99),
-                                    fontWeight: FontWeight.w600),
+                                  fontSize: 10,
+                                  color: AppColors.blackBlue,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -181,11 +182,12 @@ class _WidgetDetailTontineCardState
                             ),
                             Container(
                               child: Text(
-                                "${formatMontantFrancais(double.parse(widget.montantTontine) )} FCFA",
+                                "${formatMontantFrancais(double.parse(widget.montantTontine))} FCFA",
                                 style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color.fromARGB(255, 20, 45, 99),),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.blackBlue,
+                                ),
                               ),
                             ),
                           ],
@@ -194,7 +196,6 @@ class _WidgetDetailTontineCardState
                     ],
                   ),
                 ),
-                
               ],
             ),
           ),

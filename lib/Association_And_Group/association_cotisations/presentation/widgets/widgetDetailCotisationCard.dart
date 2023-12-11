@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,9 +20,6 @@ class widgetDetailCotisationCard extends StatefulWidget {
     required this.dateCotisation,
     required this.heureCotisation,
     required this.soldeCotisation,
-    required this.contributionOneUser,
-    required this.nbreParticipant,
-    required this.nbreParticipantCotisationOK,
     // required this.montantSanctionCollectee,
     required this.isPassed,
     required this.type,
@@ -32,9 +30,6 @@ class widgetDetailCotisationCard extends StatefulWidget {
   String dateCotisation;
   String heureCotisation;
   String soldeCotisation;
-  String contributionOneUser;
-  int nbreParticipant;
-  int nbreParticipantCotisationOK;
   String type;
   String lienDePaiement;
   // String montantSanctionCollectee;
@@ -47,26 +42,7 @@ class widgetDetailCotisationCard extends StatefulWidget {
 
 class _widgetDetailCotisationCardState
     extends State<widgetDetailCotisationCard> {
-  checkTransparenceStatus() {
-    // Recherche de l'objet dans le tableau avec name == "has_transparence"
 
-    List<dynamic> transparenceObject = context
-        .read<UserGroupCubit>()
-        .state
-        .ChangeAssData!["user_group"]["configs"]
-        .where((objet) => objet["name"] == "has_transparence")
-        .toList();
-
-    // Vérification si l'objet a été trouvé et si is_check est égal à true
-    if (transparenceObject[0]["is_check"] == true &&
-        context.read<AuthCubit>().state.detailUser!["isMember"] == true) {
-      //on masque les details
-      return false;
-    } else {
-      //on affiche les details
-      return true;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +50,7 @@ class _widgetDetailCotisationCardState
       onTap: () {},
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           boxShadow: [
             BoxShadow(
                 color: Color.fromARGB(69, 0, 0, 0),
@@ -108,7 +84,7 @@ class _widgetDetailCotisationCardState
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(20, 45, 99, 1),
+                                      color: AppColors.blackBlue,
                                     ),
                                   ),
                                 ),
@@ -128,7 +104,7 @@ class _widgetDetailCotisationCardState
                                 padding: EdgeInsets.only(
                                     left: 8, right: 8, top: 5, bottom: 5),
                                 decoration: BoxDecoration(
-                                  color: Color.fromRGBO(0, 162, 255, 1),
+                                  color: AppColors.bleuLight,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Center(
@@ -137,7 +113,7 @@ class _widgetDetailCotisationCardState
                                     height: 10,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 0.5,
-                                      color: Colors.white,
+                                      color: AppColors.white,
                                     ),
                                   ),
                                 ),
@@ -171,15 +147,14 @@ class _widgetDetailCotisationCardState
                                                   bottom: 5,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      0, 162, 255, 1),
+                                                  color: AppColors.colorButton,
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                 ),
                                                 child: Text(
                                                   "cotiser".tr(),
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: AppColors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 13),
@@ -206,8 +181,7 @@ class _widgetDetailCotisationCardState
                                                         bottom: 5,
                                                       ),
                                                       decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
-                                                            0, 162, 255, 1),
+                                                        color: AppColors.colorButton,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15),
@@ -219,7 +193,7 @@ class _widgetDetailCotisationCardState
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontSize: 12,
-                                                            color: Colors.white,
+                                                            color: AppColors.white,
                                                           ),
                                                         ),
                                                       ),
@@ -264,15 +238,14 @@ class _widgetDetailCotisationCardState
                                                     top: 5,
                                                     bottom: 5),
                                                 decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      0, 162, 255, 0.288),
+                                                  color: AppColors.colorButtonAccent,
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                 ),
                                                 child: Text(
                                                   "cotiser".tr(),
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: AppColors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 13),
@@ -287,8 +260,7 @@ class _widgetDetailCotisationCardState
                                                         top: 5,
                                                         bottom: 5),
                                                     decoration: BoxDecoration(
-                                                      color: Color.fromRGBO(
-                                                          0, 162, 255, 0.288),
+                                                      color: AppColors.colorButtonAccent,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               15),
@@ -296,7 +268,7 @@ class _widgetDetailCotisationCardState
                                                     child: Text(
                                                       "cotiser".tr(),
                                                       style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: AppColors.white,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 13),
@@ -352,7 +324,7 @@ class _widgetDetailCotisationCardState
                                   ? "type_volontaire".tr()
                                   : "type_fixe".tr(),
                               style: TextStyle(
-                                color: Color.fromARGB(255, 20, 45, 99),
+                                color: AppColors.blackBlue,
                               ),
                             ),
                           ),
@@ -377,7 +349,7 @@ class _widgetDetailCotisationCardState
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
                                       fontSize: 10,
-                                      color: Color.fromARGB(255, 20, 45, 99),
+                                      color: AppColors.blackBlue,
                                       fontWeight: FontWeight.w600),
                                 ),
                               ),
@@ -411,7 +383,7 @@ class _widgetDetailCotisationCardState
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold,
                                           color:
-                                              Color.fromARGB(255, 20, 45, 99),
+                                              AppColors.blackBlue,
                                         ),
                                       ),
                                       margin: EdgeInsets.only(right: 5),
@@ -419,9 +391,10 @@ class _widgetDetailCotisationCardState
                                     Container(
                                       width: 12,
                                       height: 12,
-                                      color: Colors.white,
+                                      color: AppColors.white,
                                       child: Center(
                                         child: CircularProgressIndicator(
+                                          color: AppColors.bleuLight,
                                           strokeWidth: 0.5,
                                         ),
                                       ),
@@ -529,7 +502,12 @@ class _widgetDetailCotisationCardState
                             ],
                           );
                         }),
-                        checkTransparenceStatus()
+                        checkTransparenceStatus(
+                    context
+                        .read<UserGroupCubit>()
+                        .state
+                        .ChangeAssData!["user_group"]["configs"],
+                    context.read<AuthCubit>().state.detailUser!["isMember"])
                             ? GestureDetector(
                                 // onTap: () {
                                 //   Modal()
@@ -547,7 +525,7 @@ class _widgetDetailCotisationCardState
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
                                             color:
-                                                Color.fromARGB(255, 20, 45, 99),
+                                                AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -557,7 +535,7 @@ class _widgetDetailCotisationCardState
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w800,
-                                              color: Colors.green),
+                                              color: AppColors.green),
                                         ),
                                       ),
                                     ],
@@ -666,7 +644,7 @@ class _widgetDetailCotisationCardState
                                     //               style: TextStyle(
                                     //                 fontSize: 10,
                                     //                 fontWeight: FontWeight.w800,
-                                    //                 color: Color.fromARGB(255, 20, 45, 99),
+                                    //                 color: AppColors.blackBlue,
                                     //               ),
                                     //             ),
                                     //           ),
@@ -674,7 +652,7 @@ class _widgetDetailCotisationCardState
                                     //             child: Icon(
                                     //               Icons.keyboard_double_arrow_right_rounded,
                                     //               size: 13,
-                                    //               color: Color.fromARGB(255, 20, 45, 99),
+                                    //               color: AppColors.blackBlue,
                                     //             ),
                                     //           )
                                     //         ],
@@ -688,7 +666,12 @@ class _widgetDetailCotisationCardState
                       ],
                     ),
                   ),
-                  if (checkTransparenceStatus())
+                  if (checkTransparenceStatus(
+                    context
+                        .read<UserGroupCubit>()
+                        .state
+                        .ChangeAssData!["user_group"]["configs"],
+                    context.read<AuthCubit>().state.detailUser!["isMember"]))
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -777,7 +760,7 @@ class _widgetDetailCotisationCardState
                           //               style: TextStyle(
                           //                 fontSize: 10,
                           //                 fontWeight: FontWeight.w800,
-                          //                 color: Color.fromARGB(255, 20, 45, 99),
+                          //                 color: AppColors.blackBlue,
                           //               ),
                           //             ),
                           //           ),
@@ -785,7 +768,7 @@ class _widgetDetailCotisationCardState
                           //             child: Icon(
                           //               Icons.keyboard_double_arrow_right_rounded,
                           //               size: 13,
-                          //               color: Color.fromARGB(255, 20, 45, 99),
+                          //               color: AppColors.blackBlue,
                           //             ),
                           //           )
                           //         ],
