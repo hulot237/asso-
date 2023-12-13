@@ -257,7 +257,15 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
             context.read<UserGroupCubit>().state.ChangeAssData;
         _tabController = TabController(
           length:
-              currentAssCourant!['user_group']['is_tontine'] == true ? 5 : 4,
+              currentAssCourant!['user_group']['is_tontine'] == true || !checkTransparenceStatus(
+                        context
+                            .read<UserGroupCubit>()
+                            .state
+                            .ChangeAssData!["user_group"]["configs"],
+                        context
+                            .read<AuthCubit>()
+                            .state
+                            .detailUser!["isMember"]) ? 5 : 4,
           vsync: this,
         );
 
@@ -487,7 +495,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                         null
                                                     ? ""
                                                     : itemSeance["membre"]
-                                                        ["last_name"],
+                                                        ["last_name"], 
+                                                        dateRencontreAPI: itemSeance["date_seance"],
                                           ),
                                         );
                                       },

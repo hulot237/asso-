@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WidgetTontineRencontreCard extends StatefulWidget {
   WidgetTontineRencontreCard({
@@ -108,11 +111,11 @@ class _WidgetTontineRencontreCardState
                         //           );
                         //         },
                         child: Container(
-                          padding: EdgeInsets.only(left: 8, right: 8, top:5, bottom: 5 ),
+                          padding: EdgeInsets.only(
+                              left: 8, right: 8, top: 5, bottom: 5),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton,
                             borderRadius: BorderRadius.circular(15),
-                            
                           ),
                           child: Text(
                             "Tontiner",
@@ -146,10 +149,11 @@ class _WidgetTontineRencontreCardState
                         child: Text(
                           widget.nomBeneficiaire,
                           style: TextStyle(
-                              fontSize: 12,
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blackBlue,),
+                            fontSize: 12,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.blackBlue,
+                          ),
                         ),
                       ),
                     ],
@@ -187,8 +191,7 @@ class _WidgetTontineRencontreCardState
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color:
-                                                AppColors.blackBlue,
+                                            color: AppColors.blackBlue,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -199,33 +202,42 @@ class _WidgetTontineRencontreCardState
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              child: Text(
-                                "montant_collecté".tr(),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(125, 20, 45, 99),
+                      if (checkTransparenceStatus(
+                          context
+                              .read<UserGroupCubit>()
+                              .state
+                              .ChangeAssData!["user_group"]["configs"],
+                          context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"]))
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "montant_collecté".tr(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(125, 20, 45, 99),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 3),
-                              child: Text(
-                                "${formatMontantFrancais(double.parse(widget.montantCollecte))} FCFA",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.w600),
+                              Container(
+                                margin: EdgeInsets.only(top: 3),
+                                child: Text(
+                                  "${formatMontantFrancais(double.parse(widget.montantCollecte))} FCFA",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.green,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

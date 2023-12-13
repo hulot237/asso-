@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/association_seance/bu
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetDetailRencontreCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetDetailTontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
@@ -32,6 +33,7 @@ class detailRencontrePage extends StatefulWidget {
     required this.prenomRecepteurRencontre,
     required this.photoProfilRecepteur,
     required this.codeSeance,
+    required this.dateRencontreAPI,
   });
 
   String nomRecepteurRencontre;
@@ -44,6 +46,7 @@ class detailRencontrePage extends StatefulWidget {
   String prenomRecepteurRencontre;
   String photoProfilRecepteur;
   String codeSeance;
+  String dateRencontreAPI;
   @override
   State<detailRencontrePage> createState() => _detailRencontrePageState();
 }
@@ -160,6 +163,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                 lieuRencontre: widget.lieuRencontre,
                 nomRecepteurRencontre: widget.nomRecepteurRencontre,
                 prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
+                dateRencontreAPI: widget.dateRencontreAPI,
               ),
             ),
             Container(
@@ -240,14 +244,25 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                       // },
 
                                       onTap: () {
-                                        handleDetailContributionTontine(
-                                          ItemDetailCotisation["code"],
-                                        );
+                                        if (checkTransparenceStatus(
+                                            context
+                                                    .read<UserGroupCubit>()
+                                                    .state
+                                                    .ChangeAssData![
+                                                "user_group"]["configs"],
+                                            context
+                                                .read<AuthCubit>()
+                                                .state
+                                                .detailUser!["isMember"])) {
+                                          handleDetailContributionTontine(
+                                            ItemDetailCotisation["code"],
+                                          );
 
-                                        Modal().showBottomSheetHistTontine(
-                                          context,
-                                          _tabController1,
-                                        );
+                                          Modal().showBottomSheetHistTontine(
+                                            context,
+                                            _tabController1,
+                                          );
+                                        }
                                       },
                                       child: Container(
                                         margin: EdgeInsets.only(

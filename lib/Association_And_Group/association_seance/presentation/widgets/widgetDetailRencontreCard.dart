@@ -23,6 +23,7 @@ class widgetDetailRencontreCard extends StatefulWidget {
     required this.heureRencontre,
     required this.nbrPresence,
     required this.codeSeance,
+    required this.dateRencontreAPI,
   });
 
   String nomRecepteurRencontre;
@@ -35,6 +36,7 @@ class widgetDetailRencontreCard extends StatefulWidget {
   String heureRencontre;
   String nbrPresence;
   String codeSeance;
+  String dateRencontreAPI;
 
   @override
   State<widgetDetailRencontreCard> createState() =>
@@ -46,6 +48,25 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
   @override
   Widget build(BuildContext context) {
     final TabController _tabController2 = TabController(length: 2, vsync: this);
+
+    isPasseDate() {
+      // Date récupérée de l'API (sous forme de String)
+      String apiDateString = widget.dateRencontreAPI;
+
+      // Conversion de la chaîne en un objet DateTime
+      DateTime apiDate = DateTime.parse(apiDateString);
+
+      // Date actuelle
+      DateTime now = DateTime.now();
+
+      // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
+      if (apiDate.isBefore(now)) {
+        print('La date de l\'API est passée par rapport à la date actuelle.');
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     // Map<String, dynamic>? get currentAssCourant {
     //   return context.read<UserGroupCubit>().state.ChangeAssData;
@@ -113,39 +134,60 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           ),
                         ),
                       ),
-                      widget.isActiveRencontre == 1
-                          ? Container(
-                              padding: EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(43, 0, 212, 7),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Container(
-                                padding: EdgeInsets.all(1),
-                                child: Text(
-                                  "en_cours".tr(),
-                                  style: TextStyle(
-                                      color: AppColors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10),
-                                ),
-                              ),
-                            )
-                          : Container(
-                              padding: EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(24, 212, 0, 0),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Container(
-                                padding: EdgeInsets.all(1),
-                                child: Text(
-                                  "terminé".tr(),
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10),
-                                ),
-                              ),
-                            )
+                      if (widget.isActiveRencontre == 0 && isPasseDate())
+                        Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(24, 212, 0, 0),
+                              borderRadius: BorderRadius.circular(7)),
+                          child: Container(
+                            padding: EdgeInsets.all(1),
+                            child: Text(
+                              "Archivé".tr(),
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                          ),
+                        ),
+
+                      if ( widget.isActiveRencontre == 1 && isPasseDate())
+                        Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(24, 212, 0, 0),
+                              borderRadius: BorderRadius.circular(7)),
+                          child: Container(
+                            padding: EdgeInsets.all(1),
+                            child: Text(
+                              "terminé".tr(),
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                          ),
+                        ),
+
+                        if (!isPasseDate())
+                         Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(43, 0, 212, 7),
+                              borderRadius: BorderRadius.circular(7)),
+                          child: Container(
+                            padding: EdgeInsets.all(1),
+                            child: Text(
+                              "en_cours".tr(),
+                              style: TextStyle(
+                                  color: AppColors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                          ),
+                        )
+                      
                     ],
                   ),
                 ),
@@ -168,10 +210,11 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                         child: Text(
                           "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}",
                           style: TextStyle(
-                              fontSize: 12,
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blackBlue,),
+                            fontSize: 12,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.blackBlue,
+                          ),
                         ),
                       ),
                     ],
@@ -210,8 +253,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color:
-                                                AppColors.blackBlue,
+                                            color: AppColors.blackBlue,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -313,17 +355,17 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .detailSeance!["sanctions"];
                           return GestureDetector(
                             onTap: () {
-                           if (checkTransparenceStatus(
-                          context
-                              .read<UserGroupCubit>()
-                              .state
-                              .ChangeAssData!["user_group"]["configs"],
-                          context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"]))
-                              Modal().showModalPersonSanctionner(
-                                  context, currentDetailSeanceSanction);
+                              if (checkTransparenceStatus(
+                                  context
+                                      .read<UserGroupCubit>()
+                                      .state
+                                      .ChangeAssData!["user_group"]["configs"],
+                                  context
+                                      .read<AuthCubit>()
+                                      .state
+                                      .detailUser!["isMember"]))
+                                Modal().showModalPersonSanctionner(
+                                    context, currentDetailSeanceSanction);
                             },
                             child: Container(
                               color: Colors.transparent,
@@ -347,10 +389,10 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     child: Text(
                                       "${currentDetailSeanceSanction.length}",
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w800,
-                                          color:
-                                              AppColors.blackBlue,),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: AppColors.blackBlue,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -362,26 +404,26 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            if(checkTransparenceStatus(
-                          context
-                              .read<UserGroupCubit>()
-                              .state
-                              .ChangeAssData!["user_group"]["configs"],
-                          context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"]))
-                            Modal().showModalPersonPresent(
-                                context,
-                                _tabController2,
+                            if (checkTransparenceStatus(
                                 context
-                                    .read<SeanceCubit>()
+                                    .read<UserGroupCubit>()
                                     .state
-                                    .detailSeance!["abs"],
+                                    .ChangeAssData!["user_group"]["configs"],
                                 context
-                                    .read<SeanceCubit>()
+                                    .read<AuthCubit>()
                                     .state
-                                    .detailSeance!["presents"]);
+                                    .detailUser!["isMember"]))
+                              Modal().showModalPersonPresent(
+                                  context,
+                                  _tabController2,
+                                  context
+                                      .read<SeanceCubit>()
+                                      .state
+                                      .detailSeance!["abs"],
+                                  context
+                                      .read<SeanceCubit>()
+                                      .state
+                                      .detailSeance!["presents"]);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -429,10 +471,10 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     child: Text(
                                       presence,
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w800,
-                                          color:
-                                              AppColors.blackBlue,),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: AppColors.blackBlue,
+                                      ),
                                     ),
                                   );
                                 }),

@@ -71,14 +71,27 @@ checkTransparenceStatus(var ListConfigs, var UserIsMember) {
   List<dynamic> transparenceObject =
       ListConfigs.where((objet) => objet["name"] == "has_transparence")
           .toList();
-  if (transparenceObject.length < 0) {
+  if (transparenceObject.length > 0) {
     // Vérification si l'objet a été trouvé et si is_check est égal à true
-    if (transparenceObject[0]["is_check"] == true && UserIsMember == true) {
+    if (transparenceObject[0]["is_check"] == false && UserIsMember == true) {
       //on masque les details
+      print("+++++++++++++++++++++++++++++++++ ${transparenceObject[0]}");
+      print("+++++++++++++++++++++++++++++++++ ${UserIsMember}");
+
       return false;
     } else {
       //on affiche les details
+      print("-------------=================------------ ${transparenceObject[0]}");
+      print("-------------=================------------  ${UserIsMember}");
+
+
       return true;
     }
-  } return true;
+  } else if (transparenceObject.length == 0){
+      print("--------------------------------- 0");
+      print("+++++++++++++++++++++++++++++++++ ${UserIsMember}");
+
+
+    return true;
+  }
 }

@@ -401,6 +401,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             pinned: false,
                             floating: false,
                             delegate: FixedHeaderBar(
+                              dateRencontreAPI: currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["date_seance"],
                               isActiveRencontre:
                                   currentDetailtournoiCourant["tournois"]
                                       ["seance"][0]["status"],
@@ -470,9 +472,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               margin: EdgeInsets.only(top: 10),
                               child: Center(
                                 // color: AppColors.white,
-                                child: CircularProgressIndicator(
-                                  color: AppColors.bleuLight,
-                                ),
+                                child: Container()
                               ),
                             ),
                           );
@@ -555,7 +555,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       lienDePaiement:
                                           itemCotisation["cotisation_pay_link"],
                                       nomCotisation: itemCotisation["name"],
-                                      type: itemCotisation["type"],
+                                      type: itemCotisation["type"], 
+                                      isPassed: itemCotisation["is_passed"],
                                     ),
                                   );
                                 },
@@ -619,6 +620,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           ? ""
                                           : itemSanction["sanction_pay_link"],
                                       type: itemSanction["type"],
+                                      versement: itemSanction["versement"],
                                     ),
                                   );
                                 },
@@ -673,253 +675,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       },
                     ),
 
-                    // BlocBuilder<RecentEventCubit, RecentEventState>(
-                    //   builder: (context, state) {
-                    //     if (state.isLoading == null ||
-                    //         state.isLoading == true ||
-                    //         state.allRecentEvent == null)
-                    //       return SliverToBoxAdapter(
-                    //         child: Container(
-                    //           margin: EdgeInsets.only(top: 10),
-                    //           child: Center(
-                    //             // color: AppColors.white,
-                    //             child: CircularProgressIndicator(
-                    //               color: AppColors.bleuLight,
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       );
-                    //     final currentRecentEvent = context
-                    //         .read<RecentEventCubit>()
-                    //         .state
-                    //         .allRecentEvent;
-
-                    //     return SliverToBoxAdapter(
-                    //       child: SingleChildScrollView(
-                    //         physics: NeverScrollableScrollPhysics(),
-                    //         child: Container(
-                    //           // height: MediaQuery.of(context).size.height * 2,
-                    //           child: Column(
-                    //             children: [
-                    //               for (var i = 0; i == 1; i++)
-                    //                 Container(
-                    //                   margin: EdgeInsets.all(10),
-                    //                   height: 312,
-                    //                   width: 112,
-                    //                   color: AppColors.red,
-                    //                 ),
-                    //               // Container(
-                    //               //   height: 400,
-                    //               //   child: ListView.builder(
-                    //               //     physics: NeverScrollableScrollPhysics(),
-                    //               //     itemCount: 1,
-                    //               //     itemBuilder:
-                    //               //         (BuildContext context, int index) {
-                    //               //       return Center(
-                    //               //         // color: AppColors.white,
-                    //               //         child: Container(
-                    //               //           height: 312,
-                    //               //           width: 112,
-                    //               //           color: AppColors.backgroundAppBAr,
-                    //               //         ),
-                    //               //       );
-                    //               //     },
-                    //               //   ),
-                    //               // ),
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
-
-                    // SliverToBoxAdapter(
-                    //   child: Container(
-                    //     width: MediaQuery.of(context).size.width,
-                    //     height: MediaQuery.of(context).size.height * 2,
-                    //     margin: EdgeInsets.all(5),
-                    //     child: TabBarView(
-                    //       controller: _tabController,
-                    //       children: [
-                    //         BlocBuilder<CotisationCubit, CotisationState>(
-                    //           builder: (context, state) {
-                    //             if (state.isLoading == null ||
-                    //                 state.isLoading == true ||
-                    //                 state.allCotisationAss == null)
-                    //               return Container(
-                    //                 // color: AppColors.white,
-                    //                 child: CircularProgressIndicator(
-                    //                   color: AppColors.bleuLight,
-                    //                 ),
-                    //               );
-                    //             final currentAllCotisationAssTournoi = context
-                    //                 .read<CotisationCubit>()
-                    //                 .state
-                    //                 .allCotisationAss;
-
-                    //             List<dynamic> objetCotisationUniquement =
-                    //                 currentAllCotisationAssTournoi!
-                    //                     .where(
-                    //                         (objet) => objet["is_tontine"] == 0)
-                    //                     .toList();
-                    //             return objetCotisationUniquement.length > 0
-                    //                 ? Container(
-                    //                   // color: Colors.cyan,
-                    //                   child: ListView.builder(
-                    //                     itemCount:
-                    //                         objetCotisationUniquement.length,
-                    //                     physics:
-                    //                         NeverScrollableScrollPhysics(),
-                    //                     padding: EdgeInsets.all(0),
-                    //                     itemBuilder: (BuildContext context,
-                    //                         int index) {
-                    //                       final ItemDetailCotisation =
-                    //                           objetCotisationUniquement[
-                    //                               index];
-
-                    //                       return Container(
-                    //                           margin: EdgeInsets.only(
-                    //                               left: 7,
-                    //                               right: 7,
-                    //                               top: 3,
-                    //                               bottom: 7),
-                    //                           child: WidgetCotisation(
-                    //                             montantCotisations:
-                    //                                 ItemDetailCotisation[
-                    //                                     "amount"],
-                    //                             motifCotisations:
-                    //                                 ItemDetailCotisation[
-                    //                                     "name"],
-                    //                             dateCotisation: AppCubitStorage()
-                    //                                         .state
-                    //                                         .Language ==
-                    //                                     "fr"
-                    //                                 ? formatDateToFrench(
-                    //                                     ItemDetailCotisation[
-                    //                                         "start_date"])
-                    //                                 : formatDateToEnglish(
-                    //                                     ItemDetailCotisation[
-                    //                                         "start_date"]),
-                    //                             heureCotisation: AppCubitStorage()
-                    //                                         .state
-                    //                                         .Language ==
-                    //                                     "fr"
-                    //                                 ? formatTimeToFrench(
-                    //                                     ItemDetailCotisation[
-                    //                                         "start_date"])
-                    //                                 : formatTimeToEnglish(
-                    //                                     ItemDetailCotisation[
-                    //                                         "start_date"]),
-                    //                             soldeCotisation:
-                    //                                 ItemDetailCotisation[
-                    //                                     "cotisation_balance"],
-                    //                             codeCotisation:
-                    //                                 ItemDetailCotisation[
-                    //                                     "cotisation_code"],
-                    //                             type:
-                    //                                 ItemDetailCotisation[
-                    //                                     "type"],
-                    //                             lienDePaiement: ItemDetailCotisation[
-                    //                                         "cotisation_pay_link"] ==
-                    //                                     null
-                    //                                 ? "le lien n'a pas été généré"
-                    //                                 : ItemDetailCotisation[
-                    //                                     "cotisation_pay_link"],
-                    //                             is_passed:
-                    //                                 ItemDetailCotisation[
-                    //                                     "is_passed"],
-                    //                             is_tontine:
-                    //                                 ItemDetailCotisation[
-                    //                                     "is_tontine"],
-                    //                           ),
-                    //                           );
-                    //                     },
-                    //                   ),
-                    //                 )
-                    //                 : Container(
-                    //                     padding: EdgeInsets.only(top: 100),
-                    //                     alignment: Alignment.topCenter,
-                    //                     child: Text(
-                    //                       "aucune_cotisation".tr(),
-                    //                       style: TextStyle(
-                    //                           color: Color.fromRGBO(
-                    //                               20, 45, 99, 0.26),
-                    //                           fontWeight: FontWeight.w100,
-                    //                           fontSize: 20),
-                    //                     ),
-                    //                   );
-                    //           },
-                    //         ),
-                    //         currentDetailUser!["sanctions"].length > 0
-                    //             ? ListView.builder(
-                    //                 padding: EdgeInsets.all(0),
-                    //                 physics: NeverScrollableScrollPhysics(),
-                    //                 itemCount:
-                    //                     currentDetailUser["sanctions"].length,
-                    //                 itemBuilder:
-                    //                     (BuildContext context, int index) {
-                    //                   final currentSaction =
-                    //                       currentDetailUser!["sanctions"][index];
-                    //                   return Container(
-                    //                     margin: EdgeInsets.only(
-                    //                         left: 7, right: 7, top: 3, bottom: 7),
-                    //                     child: WidgetSanction(
-                    //                       objetSanction:
-                    //                           currentSaction["libelle"] == null
-                    //                               ? " "
-                    //                               : currentSaction["libelle"],
-                    //                       heureSanction: AppCubitStorage()
-                    //                                   .state
-                    //                                   .Language ==
-                    //                               "fr"
-                    //                           ? formatTimeToFrench(
-                    //                               currentSaction["start_date"])
-                    //                           : formatTimeToEnglish(
-                    //                               currentSaction["start_date"]),
-                    //                       dateSanction: AppCubitStorage()
-                    //                                   .state
-                    //                                   .Language ==
-                    //                               "fr"
-                    //                           ? formatDateToFrench(
-                    //                               currentSaction["start_date"])
-                    //                           : formatDateToEnglish(
-                    //                               currentSaction["start_date"]),
-                    //                       motifSanction: currentSaction["motif"],
-                    //                       montantSanction:
-                    //                           currentSaction["amount"].toString(),
-                    //                       montantPayeeSanction:
-                    //                           currentSaction["sanction_balance"],
-                    //                       lienPaiement: currentSaction[
-                    //                                   "sanction_pay_link"] ==
-                    //                               null
-                    //                           ? " "
-                    //                           : currentSaction[
-                    //                               "sanction_pay_link"],
-                    //                       versement: currentSaction["versement"],
-                    //                       isSanctionPayed:
-                    //                           currentSaction["is_sanction_payed"],
-                    //                       typeSaction: currentSaction["type"],
-                    //                     ),
-                    //                   );
-                    //                 },
-                    //               )
-                    //             : Container(
-                    //                 padding: EdgeInsets.only(top: 100),
-                    //                 alignment: Alignment.topCenter,
-                    //                 child: Text(
-                    //                   "aucune_sanction".tr(),
-                    //                   style: TextStyle(
-                    //                     color: Color.fromRGBO(20, 45, 99, 0.26),
-                    //                     fontWeight: FontWeight.w100,
-                    //                     fontSize: 20,
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -1046,6 +801,7 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
     required this.photoProfilRecepteur,
     required this.codeSeance,
     required this.isActiveRencontre,
+    required this.dateRencontreAPI,
   });
   String nomRecepteurRencontre;
   String photoProfilRecepteur;
@@ -1060,6 +816,7 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
   String matriculeRencontre;
   String codeSeance;
   int isActiveRencontre;
+  String dateRencontreAPI;
 
   @override
   final double minExtent;
@@ -1137,6 +894,7 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
                     prenomRecepteurRencontre: prenomRecepteurRencontre,
                     nomRecepteurRencontre: nomRecepteurRencontre,
                     photoProfilRecepteur: photoProfilRecepteur,
+                    dateRencontreAPI: dateRencontreAPI,
                   ),
                 ),
               ],

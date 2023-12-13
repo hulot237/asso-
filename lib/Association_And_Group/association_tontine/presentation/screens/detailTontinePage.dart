@@ -9,6 +9,8 @@ import 'package:faroty_association_1/Association_And_Group/association_tontine/b
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetDetailTontineCard.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
@@ -49,10 +51,7 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "Detail de la tontine",
-          style: TextStyle(
-            fontSize: 16,
-            color : AppColors.white
-          ),
+          style: TextStyle(fontSize: 16, color: AppColors.white),
         ),
       ),
       child: child,
@@ -64,7 +63,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Detail de la tontine",
-        style: TextStyle(fontSize: 16,color : AppColors.white),
+        style: TextStyle(fontSize: 16, color: AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -292,14 +291,24 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                         // },
 
                         onTap: () {
-                          handleDetailContributionTontine(
-                            itemTontine["code"],
-                          );
+                          if (checkTransparenceStatus(
+                              context
+                                  .read<UserGroupCubit>()
+                                  .state
+                                  .ChangeAssData!["user_group"]["configs"],
+                              context
+                                  .read<AuthCubit>()
+                                  .state
+                                  .detailUser!["isMember"])) {
+                            handleDetailContributionTontine(
+                              itemTontine["code"],
+                            );
 
-                          Modal().showBottomSheetHistTontine(
-                            tontineContext,
-                            _tabController,
-                          );
+                            Modal().showBottomSheetHistTontine(
+                              tontineContext,
+                              _tabController,
+                            );
+                          }
                         },
                         child: Container(
                             margin: EdgeInsets.all(5),

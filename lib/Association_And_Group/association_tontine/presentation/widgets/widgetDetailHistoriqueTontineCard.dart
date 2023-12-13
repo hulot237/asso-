@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
@@ -248,6 +250,13 @@ class _widgetDetailHistoriqueTontineCardState
                           ],
                         ),
                       ),
+                      if(checkTransparenceStatus(
+                      context
+                          .read<UserGroupCubit>()
+                          .state
+                          .ChangeAssData!["user_group"]["configs"],
+                      context.read<AuthCubit>().state.detailUser!["isMember"])
+                        )
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,

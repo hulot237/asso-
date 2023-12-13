@@ -39,8 +39,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
     return GestureDetector(
       onTap: () {
         if (widget.typeSaction == "1")
-          Modal().showModalTransactionByEvent(
-              context, widget.versement, widget.montantSanction);
+          Modal().showModalTransactionByEvent(context, widget.versement, widget.montantSanction);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
