@@ -53,24 +53,24 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
     }
   }
 
-      isPasseDate() {
-      // Date récupérée de l'API (sous forme de String)
-      String apiDateString = widget.dateRencontreAPI;
+  isPasseDate() {
+    // Date récupérée de l'API (sous forme de String)
+    String apiDateString = widget.dateRencontreAPI;
 
-      // Conversion de la chaîne en un objet DateTime
-      DateTime apiDate = DateTime.parse(apiDateString);
+    // Conversion de la chaîne en un objet DateTime
+    DateTime apiDate = DateTime.parse(apiDateString);
 
-      // Date actuelle
-      DateTime now = DateTime.now();
+    // Date actuelle
+    DateTime now = DateTime.now();
 
-      // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
-      if (apiDate.isBefore(now)) {
-        print('La date de l\'API est passée par rapport à la date actuelle.');
-        return true;
-      } else {
-        return false;
-      }
+    // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
+    if (apiDate.isBefore(now)) {
+      print('La date de l\'API est passée par rapport à la date actuelle.');
+      return true;
+    } else {
+      return false;
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                 lieuRencontre: widget.lieuRencontre,
                 nomRecepteurRencontre: widget.nomRecepteurRencontre,
                 prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
-                photoProfilRecepteur: widget.photoProfilRecepteur, 
+                photoProfilRecepteur: widget.photoProfilRecepteur,
                 dateRencontreAPI: widget.dateRencontreAPI,
               ),
             ),
@@ -181,8 +181,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
-                                            color:
-                                                AppColors.blackBlue,
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -223,59 +222,58 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               ],
                             ),
                           ),
-                           if (widget.isActiveRencontre == 0 && isPasseDate())
-                        Container(
-                          padding: EdgeInsets.all(7),
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(24, 212, 0, 0),
-                              borderRadius: BorderRadius.circular(7)),
-                          child: Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              "Archivé".tr(),
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10),
-                            ),
-                          ),
-                        ),
+                          if (widget.isActiveRencontre == 0 && isPasseDate())
+                            Container(
+                              padding: EdgeInsets.only(top: 5),
 
-                      if ( widget.isActiveRencontre == 1 && isPasseDate())
-                        Container(
-                          padding: EdgeInsets.all(7),
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(24, 212, 0, 0),
-                              borderRadius: BorderRadius.circular(7)),
-                          child: Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              "terminé".tr(),
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10),
+                              // decoration: BoxDecoration(
+                              // color: Color.fromARGB(24, 212, 0, 0),
+                              // borderRadius: BorderRadius.circular(7)),
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                child: Text(
+                                  "Archivé".tr(),
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-
-                        if (!isPasseDate())
-                         Container(
-                          padding: EdgeInsets.all(7),
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(43, 0, 212, 7),
-                              borderRadius: BorderRadius.circular(7)),
-                          child: Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              "en_cours".tr(),
-                              style: TextStyle(
-                                  color: AppColors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10),
+                          if (widget.isActiveRencontre == 1 && isPasseDate())
+                            Container(
+                              padding: EdgeInsets.only(top: 5),
+                              // decoration: BoxDecoration(
+                              //     color: Color.fromARGB(24, 212, 0, 0),
+                              //     borderRadius: BorderRadius.circular(7)),
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                child: Text(
+                                  "terminé".tr(),
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ),
                             ),
-                          ),
-                        )
+                          if (!isPasseDate())
+                            Container(
+                              padding: EdgeInsets.only(top: 5),
+                              // decoration: BoxDecoration(
+                              //     color: Color.fromARGB(43, 0, 212, 7),
+                              //     borderRadius: BorderRadius.circular(7)),
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                child: Text(
+                                  "en_cours".tr(),
+                                  style: TextStyle(
+                                      color: AppColors.green,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ),
+                            )
                         ],
                       ),
                     ),
@@ -347,8 +345,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontSize: 10,
-                                          color:
-                                              AppColors.blackBlue,
+                                          color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),

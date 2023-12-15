@@ -98,6 +98,7 @@ class _SettingScreenState extends State<SettingScreen> {
           );
         final currentDetailUser =
             authContext.read<AuthCubit>().state.detailUser;
+
         return WillPopScope(
           onWillPop: () async {
             Navigator.of(context).pushAndRemoveUntil(
@@ -164,7 +165,7 @@ class _SettingScreenState extends State<SettingScreen> {
               ],
               // leading: Icon(Icons.arrow_back),
             ),
-            body: Container(
+            body: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
@@ -247,8 +248,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color:
-                                                Color.fromARGB(96, 20, 45, 99),
+                                            color:AppColors.blackBlueAccent1,
                                           ),
                                         ),
                                       ),
@@ -258,95 +258,100 @@ class _SettingScreenState extends State<SettingScreen> {
                                         style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromARGB(96, 20, 45, 99),
+                                          color:AppColors.blackBlueAccent1,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                          top: 5,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.pageBackground,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Text(
-                                          "${"code_membre".tr()}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color:
-                                                Color.fromARGB(96, 20, 45, 99),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.only(right: 5),
-                                            child: Text(
-                                              "${currentDetailUser["membre_code"]}",
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color.fromARGB(
-                                                    96, 20, 45, 99),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Clipboard.setData(ClipboardData(
+                                              text:
+                                                  "${currentDetailUser["membre_code"]}"))
+                                          .then(
+                                        (value) {
+                                          return ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Center(
+                                                child: Text(
+                                                  'Copié : ${currentDetailUser["membre_code"]}',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
                                               ),
+                                              padding: EdgeInsets.only(
+                                                  left: 2,
+                                                  right: 2,
+                                                  top: 7,
+                                                  bottom: 7),
+                                              backgroundColor:
+                                                  AppColors.bleuLight,
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              width: 140,
+                                              shape: StadiumBorder(),
+                                              duration:
+                                                  Duration(milliseconds: 1000),
+                                              elevation: 0,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                            top: 5,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.pageBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Text(
+                                            "${"code_membre".tr()}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color:AppColors.blackBlueAccent1,
                                             ),
                                           ),
-                                          Container(
-                                            width: 12,
-                                            height: 12,
-                                            color: AppColors.whiteAccent1,
-                                            child: IconButton(
-                                              padding: EdgeInsets.all(0),
-                                              onPressed: () async {
-                                                Clipboard.setData(ClipboardData(
-                                                        text:
-                                                            "${currentDetailUser["membre_code"]}"))
-                                                    .then(
-                                                  (value) {
-                                                    return ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        content: Center(
-                                                          child: Text(
-                                                              'Copié : ${currentDetailUser["membre_code"]}',
-                                                              style: TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight: FontWeight.w500
-                                                              ),),
-                                                        ),
-                                                        padding: EdgeInsets.only(left: 2, right: 2, top: 7, bottom: 7),
-                                                        backgroundColor: AppColors.bleuLight,
-                                                        behavior: SnackBarBehavior.floating,
-                                                        width: 140,
-                                                        shape: StadiumBorder(),
-                                                        duration: Duration(milliseconds: 1000),
-                                                        elevation: 0,
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.content_copy,
-                                                size: 12,
-                                                color: Color.fromARGB(
-                                                    96, 20, 45, 99),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 5),
+                                              child: Text(
+                                                "${currentDetailUser["membre_code"]}",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                  color:AppColors.blackBlueAccent1,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                            Container(
+                                              width: 12,
+                                              height: 12,
+                                              color: AppColors.whiteAccent1,
+                                              child: Icon(
+                                                  Icons.content_copy,
+                                                  size: 12,
+                                                  color:AppColors.blackBlueAccent1,
+                                                ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

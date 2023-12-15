@@ -38,7 +38,7 @@ class PushNotifications {
     print("device token for FireBase: $token");
 
     //Listen to background notifications
-    FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
+// FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
     FirebaseMessaging.onMessage.listen(
       (message) {
         final notification = message.notification;
