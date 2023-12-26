@@ -52,17 +52,118 @@ String formatDateToFrench(String isoDate) {
   return formattedDate;
 }
 
-String formatDateString(String dateStr) {
-  DateTime dateTime = DateTime.parse(dateStr); // Analyser la date initiale
-  String formattedDate = "${dateTime.year}/${dateTime.month}/${dateTime.day}";
+String formatDateLiteral(String isoDate) {
+  final dateTime = DateTime.parse(isoDate);
+  final formattedDate = DateFormat("dd MMM yyy '${'à'.tr()}' HH:mm").format(dateTime);
   return formattedDate;
 }
 
-String formatTime(String dateTimeString) {
-  final inputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-  final outputFormat = DateFormat("HH:mm");
-  final dateTime = inputFormat.parse(dateTimeString);
-  return outputFormat.format(dateTime);
+String formatCompareDateReturnWellValue(String endDate, ) {
+  final dateTime = DateTime.parse(endDate);
+  final formattedDate = DateFormat("yyy-MM-dd HH:mm:ss").format(dateTime);
+
+  DateTime endDateApi = DateTime.parse(formattedDate);
+  DateTime dt2 = DateTime.now();
+
+  Duration diff = endDateApi.difference(dt2);
+
+  print(diff.inDays);
+//output (in days): 1198
+
+  print(diff.inHours);
+//output (in hours): 28752
+
+  print(diff.inMinutes);
+//output (in minutes): 1725170
+
+  print(diff.inSeconds);
+//output (in seconds): 103510200
+
+  if (endDateApi.compareTo(dt2) == 0) {
+    return ("À l'instant".tr());
+  }
+
+  if (endDateApi.compareTo(dt2) < 0) {
+    print("DT1 est avant DT2 ${endDateApi.compareTo(dt2)}");
+
+    if (diff.inMinutes * -1 < 1) {
+      return ("À l'instant".tr());
+    } else if (diff.inMinutes * -1 > 1 && (diff.inHours * -1) < 1) {
+      return ("${"Retard de".tr()} ${diff.inMinutes * -1} ${"minutes".tr()}");
+    } else if (diff.inHours * -1 > 1 && (diff.inDays * -1) < 1) {
+      return ("${"Retard de".tr()} ${diff.inHours * -1} ${"heures".tr()}");
+    } else if ((diff.inDays * -1) >= 1 && (diff.inDays * -1) <= 6) {
+      return ("${"Retard de".tr()} ${diff.inDays * -1} ${"jours".tr()}");
+    } else if ((diff.inDays * -1) == 7) {
+      return ("Retard de 1 semaine".tr());
+    } else if ((diff.inDays * -1) > 7) {
+      return ("${"Retard depuis".tr()} ${formatDateLiteral(endDate)}");
+    }
+  }
+
+  if (endDateApi.compareTo(dt2) > 0) {
+    if (diff.inMinutes < 1) {
+      return ("Il vous reste moins d'une minute".tr());
+    } else if (diff.inMinutes > 1 && diff.inHours < 1) {
+      return ("${"Il vous reste".tr()} ${diff.inMinutes} ${"minutes".tr()}");
+    } else if (diff.inHours > 1 && diff.inDays < 1) {
+      return ("${"Il vous reste".tr()} ${diff.inHours} ${"heures".tr()}");
+    } else if (diff.inDays >= 1 && diff.inDays <= 6) {
+      return ("${"Il vous reste".tr()} ${diff.inDays} ${"jours".tr()}");
+    } else if (diff.inDays == 7) {
+      return ("Il vous reste 1 semaine".tr());
+    } else if (diff.inDays > 7) {
+      return ("${"Vous avez jusqu'au".tr()} ${formatDateLiteral(endDate)}");
+    }
+  }
+
+  return formattedDate;
+}
+
+String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
+  final dateTime = DateTime.parse(endDate);
+  final formattedDate = DateFormat("yyy-MM-dd HH:mm:ss").format(dateTime);
+
+  DateTime endDateApi = DateTime.parse(formattedDate);
+  DateTime dt2 = DateTime.now();
+
+  Duration diff = endDateApi.difference(dt2);
+
+  print(diff.inDays);
+//output (in days): 1198
+
+  print(diff.inHours);
+//output (in hours): 28752
+
+  print(diff.inMinutes);
+//output (in minutes): 1725170
+
+  print(diff.inSeconds);
+//output (in seconds): 103510200
+
+  if (endDateApi.compareTo(dt2) == 0) {
+    return ("À l'instant".tr());
+  }
+
+  if (endDateApi.compareTo(dt2) < 0) {
+    print("DT1 est avant DT2");
+
+    if (diff.inMinutes * -1 < 1) {
+      return ("À l'instant".tr());
+    } else if (diff.inMinutes * -1 > 1 && (diff.inHours * -1) < 1) {
+      return ("${"Depuis".tr()} ${diff.inMinutes * -1} ${"minutes".tr()}");
+    } else if (diff.inHours * -1 > 1 && (diff.inDays * -1) < 1) {
+      return ("${"Depuis".tr()} ${diff.inHours * -1} ${"heures".tr()}");
+    } else if ((diff.inDays * -1) >= 1 && (diff.inDays * -1) <= 6) {
+      return ("${"Depuis".tr()} ${diff.inDays * -1} ${"jours".tr()}");
+    } else if ((diff.inDays * -1) == 7) {
+      return ("Depuis 1 semaine".tr());
+    } else if ((diff.inDays * -1) > 7) {
+      return ("${"Depuis".tr()} ${formatDateLiteral(endDate)}");
+    }
+  }
+
+  return formattedDate;
 }
 
 checkTransparenceStatus(var ListConfigs, var UserIsMember) {
@@ -75,23 +176,33 @@ checkTransparenceStatus(var ListConfigs, var UserIsMember) {
     // Vérification si l'objet a été trouvé et si is_check est égal à true
     if (transparenceObject[0]["is_check"] == false && UserIsMember == true) {
       //on masque les details
-      print("+++++++++++++++++++++++++++++++++ ${transparenceObject[0]}");
-      print("+++++++++++++++++++++++++++++++++ ${UserIsMember}");
 
       return false;
     } else {
       //on affiche les details
-      print("-------------=================------------ ${transparenceObject[0]}");
-      print("-------------=================------------  ${UserIsMember}");
-
 
       return true;
     }
-  } else if (transparenceObject.length == 0){
-      print("--------------------------------- 0");
-      print("+++++++++++++++++++++++++++++++++ ${UserIsMember}");
-
-
+  } else if (transparenceObject.length == 0) {
     return true;
   }
 }
+
+    isPasseDate(dateRencontreAPI) {
+      // Date récupérée de l'API (sous forme de String)
+      String apiDateString = dateRencontreAPI;
+
+      // Conversion de la chaîne en un objet DateTime
+      DateTime apiDate = DateTime.parse(apiDateString);
+
+      // Date actuelle
+      DateTime now = DateTime.now();
+
+      // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
+      if (apiDate.isBefore(now)) {
+        print('La date de l\'API est passée par rapport à la date actuelle.');
+        return true;
+      } else {
+        return false;
+      }
+    }

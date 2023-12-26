@@ -49,30 +49,6 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
   Widget build(BuildContext context) {
     final TabController _tabController2 = TabController(length: 2, vsync: this);
 
-    isPasseDate() {
-      // Date récupérée de l'API (sous forme de String)
-      String apiDateString = widget.dateRencontreAPI;
-
-      // Conversion de la chaîne en un objet DateTime
-      DateTime apiDate = DateTime.parse(apiDateString);
-
-      // Date actuelle
-      DateTime now = DateTime.now();
-
-      // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
-      if (apiDate.isBefore(now)) {
-        print('La date de l\'API est passée par rapport à la date actuelle.');
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    // Map<String, dynamic>? get currentAssCourant {
-    //   return context.read<UserGroupCubit>().state.ChangeAssData;
-    // }
-    // ("${currentDetailSeance!["abs"].length + currentDetailSeance!["presents"].length}"),
-
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -134,7 +110,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           ),
                         ),
                       ),
-                      if (widget.isActiveRencontre == 0 && isPasseDate())
+                      if (widget.isActiveRencontre == 0 && isPasseDate(widget.dateRencontreAPI))
                         Container(
                           padding: EdgeInsets.all(7),
                           decoration: BoxDecoration(
@@ -152,7 +128,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           ),
                         ),
 
-                      if ( widget.isActiveRencontre == 1 && isPasseDate())
+                      if ( widget.isActiveRencontre == 1 && isPasseDate(widget.dateRencontreAPI))
                         Container(
                           padding: EdgeInsets.all(7),
                           decoration: BoxDecoration(
@@ -170,7 +146,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           ),
                         ),
 
-                        if (!isPasseDate())
+                        if (!isPasseDate(widget.dateRencontreAPI))
                          Container(
                           padding: EdgeInsets.all(7),
                           decoration: BoxDecoration(
@@ -289,7 +265,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                             Container(
                               margin: EdgeInsets.only(top: 3),
                               child: Text(
-                                "${widget.dateRencontre} : ${widget.heureRencontre}",
+                                formatDateLiteral(widget.dateRencontreAPI),
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: AppColors.blackBlue,

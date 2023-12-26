@@ -30,6 +30,8 @@ class widgetRecentEventSanction extends StatefulWidget {
   String type;
   String libelleSanction;
   List versement;
+
+
    
 
   @override
@@ -56,7 +58,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
     return GestureDetector(
       onTap: () {
         if (widget.type == "1")
-          Modal().showModalTransactionByEvent(context, widget.versement, widget.montantSanction);
+          Modal().showModalTransactionByEvent(context, widget.versement, widget.montantSanction.toString());
       },
       child: Container(
         decoration: BoxDecoration(
@@ -84,24 +86,6 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  // margin: EdgeInsets.only(top: 3),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          "${"Date".tr()} :",
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                            color:
-                                                Color.fromRGBO(20, 45, 99, 0.534),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
                                   // margin: EdgeInsets.only(top: 10, bottom: 10),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,11 +93,11 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                                       Container(
                                         // margin: EdgeInsets.only(top: 3),
                                         child: Text(
-                                          "${formatDateToFrench(widget.dateOpen)}",
+                                          "${formatCompareDateReturnWellValueSanctionRecent(widget.dateOpen)}",
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color: AppColors.blackBlue,
+                                            color: AppColors.blackBlueAccent1,
                                           ),
                                         ),
                                       ),

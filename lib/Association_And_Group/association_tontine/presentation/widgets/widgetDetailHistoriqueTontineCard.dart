@@ -58,7 +58,7 @@ class _widgetDetailHistoriqueTontineCardState
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color:  AppColors.white,
         borderRadius: BorderRadius.circular(15),
       ),
       alignment: Alignment.center,
@@ -148,32 +148,7 @@ class _widgetDetailHistoriqueTontineCardState
                           ),
                         ),
                       ),
-                      // Container(
-                      //   child: Row(
-                      //     children: [
-                      //       Container(
-                      //         child: Text(
-                      //           "rencontre".tr(),
-                      //           style: TextStyle(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.w300,
-                      //             color: AppColors.blackBlue,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       Container(
-                      //         child: Text(
-                      //           " 01S01",
-                      //           style: TextStyle(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.bold,
-                      //             color: AppColors.blackBlue,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+
                     ],
                   ),
                 ),
@@ -182,20 +157,10 @@ class _widgetDetailHistoriqueTontineCardState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Container(
-                      //   child: Text(
-                      //     "Bénéficiaire(3/20)",
-                      //     style: TextStyle(
-                      //       fontSize: 12,
-                      //       fontWeight: FontWeight.w500,
-                      //       color: AppColors.blackBlue,
-                      //     ),
-                      //   ),
-                      // ),
                       Container(
                         margin: EdgeInsets.only(top: 3),
                         child: Text(
-                          "${widget.dateOpen} - ${widget.dateClose}",
+                          formatDateLiteral(widget.dateOpen),
                           style: TextStyle(
                               fontSize: 10,
                               overflow: TextOverflow.ellipsis,

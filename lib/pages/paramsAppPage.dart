@@ -546,7 +546,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                 margin: EdgeInsets.only(bottom: 20),
                 // color: Colors.amber,
                 child: Text(
-                  "Version 1.0.2",
+                  "Version 1.1.0",
                   style: TextStyle(
                       color: Color.fromARGB(52, 20, 45, 99),
                       fontSize: 10,

@@ -168,12 +168,24 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
     }
   }
 
+    Future<void> handleDetailUser(userCode) async {
+    final allCotisationAss =
+        await context.read<AuthCubit>().detailAuthCubit(userCode);
+
+    if (allCotisationAss != null) {
+      print("handleDetailUser");
+    } else {
+      print("handleDetailUser null");
+    }
+  }
+
   Future refresh() async {
     handleTournoiDefault();
     // handleAllUserGroup();
     handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois);
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
     handleAllSeanceAss(AppCubitStorage().state.codeAssDefaul);
+    handleDetailUser(AppCubitStorage().state.membreCode);
   }
 
   @override
@@ -256,16 +268,16 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
         final currentAssCourant =
             context.read<UserGroupCubit>().state.ChangeAssData;
         _tabController = TabController(
-          length:
-              currentAssCourant!['user_group']['is_tontine'] == true || !checkTransparenceStatus(
-                        context
-                            .read<UserGroupCubit>()
-                            .state
-                            .ChangeAssData!["user_group"]["configs"],
-                        context
-                            .read<AuthCubit>()
-                            .state
-                            .detailUser!["isMember"]) ? 5 : 4,
+          length: currentAssCourant!['user_group']['is_tontine'] == true ||
+                  !checkTransparenceStatus(
+                    context
+                        .read<UserGroupCubit>()
+                        .state
+                        .ChangeAssData!["user_group"]["configs"],
+                    context.read<AuthCubit>().state.detailUser!["isMember"],
+                  )
+              ? 5
+              : 4,
           vsync: this,
         );
 
@@ -300,7 +312,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                     child: Container(
                       margin: EdgeInsets.all(15),
 
-                      // width: 25,
+                      width: 25,
                       // height: 15,
                       decoration: BoxDecoration(
                         // color: Colors.grey,
@@ -495,8 +507,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                         null
                                                     ? ""
                                                     : itemSeance["membre"]
-                                                        ["last_name"], 
-                                                        dateRencontreAPI: itemSeance["date_seance"],
+                                                        ["last_name"],
+                                            dateRencontreAPI:
+                                                itemSeance["date_seance"],
                                           ),
                                         );
                                       },
@@ -617,16 +630,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                       DetailTontinePage(
                                                     isActive: itemTontine[
                                                         "is_active"],
-                                                    dateCreaTontine: AppCubitStorage()
-                                                                .state
-                                                                .Language ==
-                                                            "fr"
-                                                        ? formatDateToFrench(
+                                                    dateCreaTontine: 
                                                             itemTontine[
-                                                                "created_at"])
-                                                        : formatDateToEnglish(
-                                                            itemTontine[
-                                                                "created_at"]),
+                                                                "created_at"],
                                                     nomTontine:
                                                         "${itemTontine["libele"]}",
                                                     montantTontine:
@@ -651,17 +657,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                   widgetTontineHistoriqueCard(
                                                 isActive:
                                                     itemTontine["is_active"],
-                                                dateCreaTontine:
-                                                    AppCubitStorage()
-                                                                .state
-                                                                .Language ==
-                                                            "fr"
-                                                        ? formatDateToFrench(
-                                                            itemTontine[
-                                                                "created_at"])
-                                                        : formatDateToEnglish(
-                                                            itemTontine[
-                                                                "created_at"]),
+                                                dateCreaTontine:itemTontine[
+                                                                "created_at"],
                                                 nomTontine:
                                                     "${itemTontine["libele"]}",
                                                 montantTontine:
@@ -771,16 +768,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 ItemDetailCotisation["amount"],
                                             motifCotisations:
                                                 ItemDetailCotisation["name"],
-                                            dateCotisation: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailCotisation[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailCotisation[
-                                                        "start_date"]),
+                                            dateCotisation: ItemDetailCotisation[
+                                                        "start_date"],
                                             heureCotisation: AppCubitStorage()
                                                         .state
                                                         .Language ==
@@ -808,6 +797,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 "is_passed"],
                                             is_tontine: ItemDetailCotisation[
                                                 "is_tontine"],
+                                                                                      source: ItemDetailCotisation["seance"]==null? '' : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
+                                      nomBeneficiaire: ItemDetailCotisation["membre"]==null? '' : ItemDetailCotisation["membre"]["last_name"]==null? "${ItemDetailCotisation["membre"]["first_name"]}":"${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
                                           ),
                                         );
                                       },
@@ -874,9 +865,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                             );
                           final currentDetailUser =
                               context.read<AuthCubit>().state.detailUser;
-                          //                       Map<String, dynamic>? get currentDetailUser {
-                          // return context.read<AuthCubit>().state.detailUser;
-                          // }b
+ 
                           return currentDetailUser!["sanctions"].length > 0
                               ? Expanded(
                                   child: Container(
@@ -914,16 +903,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                   : formatTimeToEnglish(
                                                       currentSaction[
                                                           "start_date"]),
-                                              dateSanction: AppCubitStorage()
-                                                          .state
-                                                          .Language ==
-                                                      "fr"
-                                                  ? formatDateToFrench(
+                                              dateSanction: 
                                                       currentSaction[
-                                                          "start_date"])
-                                                  : formatDateToEnglish(
-                                                      currentSaction[
-                                                          "start_date"]),
+                                                          "start_date"],
                                               motifSanction:
                                                   currentSaction["motif"],
                                               montantSanction:

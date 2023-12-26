@@ -214,17 +214,6 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                         ],
                                       ),
                                     ),
-                                    // Container(
-                                    //   margin: EdgeInsets.only(top: 3),
-                                    //   child: Text(
-                                    //     "21/02/2024",
-                                    //     style: TextStyle(
-                                    //       fontSize: 8,
-                                    //       fontWeight: FontWeight.w600,
-                                    //       color: AppColors.blackBlue,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -315,16 +304,8 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                             child: widgetDetailHistoriqueTontineCard(
                               nomTontine: widget.nomTontine,
                               lienDePaiement: itemTontine['tontine_pay_link'],
-                              dateClose: AppCubitStorage().state.Language ==
-                                      "fr"
-                                  ? formatDateToFrench(itemTontine['end_date'])
-                                  : formatDateToEnglish(
-                                      itemTontine['end_date']),
-                              dateOpen: AppCubitStorage().state.Language == "fr"
-                                  ? formatDateToFrench(
-                                      itemTontine['start_date'])
-                                  : formatDateToEnglish(
-                                      itemTontine['start_date']),
+                              dateClose: itemTontine['end_date'],
+                              dateOpen: itemTontine['start_date'],
                               montantCollecte: itemTontine['tontine_balance'],
                               montantTontine: itemTontine['amount'],
                               nomBeneficiaire: itemTontine["membre"]

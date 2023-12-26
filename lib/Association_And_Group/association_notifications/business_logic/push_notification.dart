@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_token_cubit.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -36,39 +39,31 @@ class PushNotifications {
     //get the device fcm token
     final token = await _firebaseMessaging.getToken();
     print("device token for FireBase: $token");
-
-    //Listen to background notifications
-// FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
-    FirebaseMessaging.onMessage.listen(
-      (message) {
-        final notification = message.notification;
-
-        if (notification == null) return;
-
-        _localNotification.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                _androidChanel.id,
-                _androidChanel.name,
-                channelDescription: _androidChanel.description,
-                icon: "@drawable/ic_launcher",
-              ),
-            ),
-            payload: jsonEncode(message.toMap()));
-      },
-    );
   }
 
-  Future initLocalNotification() async{
+  Future<void> getTokenNotification() async {
+    String? token = await FirebaseMessaging.instance.getAPNSToken();
+    print('FlutterFire Messaging Example: Got APNs token: $token');
+
+    await FirebaseMessaging.instance.getToken().then((value) async {
+      print("this is my token: $value");
+      await saveToken(value!);
+      
+      return null;
+    });
+  }
+
+  saveToken(String token) async {
+    await AppCubitStorage().updatetokenNotification(token);
+  }
+
+  Future initLocalNotification() async {
     const android = AndroidInitializationSettings('@drawable/ic_launcher');
     const settings = InitializationSettings(android: android);
-  
-  // await _localNotification.initialize(
-  //   settings,
-  //   onSel
-  // );
+
+    // await _localNotification.initialize(
+    //   settings,
+    //   onSel
+    // );
   }
 }

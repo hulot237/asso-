@@ -199,7 +199,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                     ),
                   Container(
                     margin: EdgeInsets.only(bottom: 5),
-                    child: Text("Cotisations"),
+                    child: Text("cotisations".tr()),
                   ),
                   Container(
                     margin: EdgeInsets.only(bottom: 5),
@@ -294,16 +294,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                               : formatDateToEnglish(
                                                   ItemDetailCotisation[
                                                       "start_date"]),
-                                          dateClose: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatDateToFrench(
-                                                  ItemDetailCotisation[
-                                                      "end_date"])
-                                              : formatDateToEnglish(
-                                                  ItemDetailCotisation[
-                                                      "end_date"]),
+                                          dateClose: ItemDetailCotisation[
+                                                      "end_date"],
                                           // ItemDetailCotisation["end_date"],
                                           montantTontine:
                                               ItemDetailCotisation["amount"],
@@ -377,16 +369,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                           ItemDetailCotisation["amount"],
                                       motifCotisations:
                                           ItemDetailCotisation["name"],
-                                      dateCotisation: AppCubitStorage()
-                                                  .state
-                                                  .Language ==
-                                              "fr"
-                                          ? formatDateToFrench(
+                                      dateCotisation: 
                                               ItemDetailCotisation[
-                                                  "start_date"])
-                                          : formatDateToEnglish(
-                                              ItemDetailCotisation[
-                                                  "start_date"]),
+                                                  "start_date"],
                                       heureCotisation: AppCubitStorage()
                                                   .state
                                                   .Language ==
@@ -412,6 +397,19 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                           ItemDetailCotisation["is_passed"],
                                       is_tontine:
                                           ItemDetailCotisation["is_tontine"],
+                                      source: ItemDetailCotisation["seance"] ==
+                                              null
+                                          ? ''
+                                          : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
+                                      nomBeneficiaire: ItemDetailCotisation[
+                                                  "membre"] ==
+                                              null
+                                          ? ''
+                                          : ItemDetailCotisation["membre"]
+                                                      ["last_name"] ==
+                                                  null
+                                              ? "${ItemDetailCotisation["membre"]["first_name"]}"
+                                              : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
                                     ),
                                   );
                                 },
@@ -482,11 +480,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                             : formatTimeToEnglish(
                                                 currentSaction["start_date"]),
                                     dateSanction:
-                                        AppCubitStorage().state.Language == "fr"
-                                            ? formatDateToFrench(
-                                                currentSaction["start_date"])
-                                            : formatDateToEnglish(
-                                                currentSaction["start_date"]),
+                                                currentSaction["start_date"],
                                     motifSanction: currentSaction["motif"],
                                     montantSanction:
                                         currentSaction["amount"].toString(),
@@ -494,7 +488,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                         currentSaction["sanction_balance"],
                                     lienPaiement: currentSaction[
                                                 "sanction_pay_link"] ==
-                                            null
+                                            null 
                                         ? " "
                                         : currentSaction["sanction_pay_link"],
                                     versement: currentSaction["versement"],

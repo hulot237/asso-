@@ -15,7 +15,7 @@ import 'package:faroty_association_1/Association_And_Group/user_group/business_l
 import 'package:faroty_association_1/firebase_options.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
-import 'package:faroty_association_1/pages/push_notification.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,17 +29,18 @@ import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  PushNotifications().init();
-  
-
-  WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
 
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  PushNotifications().init();
+
   await EasyLocalization.ensureInitialized();
+
 
   runApp(
     EasyLocalization(
@@ -60,7 +61,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+        SystemChrome.setSystemUIOverlayStyle(
+       SystemUiOverlayStyle(
+                // systemNavigationBarColor: Colors.white, // navigation bar color
+        statusBarColor: Colors.transparent, // status bar color
+        statusBarIconBrightness: Brightness.dark, // status bar icons' color
+        // systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(

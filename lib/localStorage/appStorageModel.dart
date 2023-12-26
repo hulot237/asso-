@@ -4,12 +4,10 @@ class AppStorageModel {
   String? ValTest;
   String? codeAssDefaul;
   String? membreCode;
-  // String? userNameKey;
+  String? tokenNotification;
   // String? passwordKey;
   String? tokenUser;
-    final bool isLoading;
-
-
+  final bool isLoading;
 
   AppStorageModel({
     this.Language,
@@ -18,10 +16,9 @@ class AppStorageModel {
     this.codeAssDefaul,
     this.membreCode,
     this.tokenUser,
-    // this.userNameKey,
+    this.tokenNotification,
     // this.passwordKey,
     this.isLoading = false,
-
   });
 
   AppStorageModel copyWith({
@@ -31,11 +28,10 @@ class AppStorageModel {
     String? codeAssDefaul,
     String? membreCode,
     String? tokenUser,
+    String? tokenNotification,
     // String? userNameKey,
     // String? passwordKey,
     required bool isloading,
-
-
   }) {
     return AppStorageModel(
       Language: Language ?? this.Language,
@@ -44,12 +40,10 @@ class AppStorageModel {
       codeAssDefaul: codeAssDefaul ?? this.codeAssDefaul,
       membreCode: membreCode ?? this.membreCode,
       tokenUser: tokenUser ?? this.tokenUser,
+      tokenNotification: tokenNotification ?? this.tokenNotification,
       // userNameKey: userNameKey?? this.userNameKey,
       // passwordKey: passwordKey?? this.passwordKey,
-          isLoading: isloading,
-
-
-
+      isLoading: isloading,
     );
   }
 }

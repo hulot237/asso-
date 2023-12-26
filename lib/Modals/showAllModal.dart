@@ -532,12 +532,7 @@ class Modal {
                                   print(okayTontine.length);
                                   return Container(
                                     child: widgetHistoriqueTontineCard(
-                                      date: AppCubitStorage().state.Language ==
-                                              "fr"
-                                          ? formatDateToFrench(
-                                              currentDetailPersonCotis[
-                                                  "updated_at"])
-                                          : formatDateToEnglish(
+                                      date: formatDateLiteral(
                                               currentDetailPersonCotis[
                                                   "updated_at"]),
                                       imageProfil: currentDetailPersonCotis[
@@ -809,22 +804,13 @@ class Modal {
                             children: [
                               Expanded(
                                 child: ListView.builder(
-                                  itemCount:
-                                      versement[0]["transanctions"].length,
+                                  itemCount: versement[0]["transanctions"].length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
-                                    final detailVersement =
-                                        versement[0]["transanctions"][index];
+                                    final detailVersement = versement[0]["transanctions"][index];
                                     return Container(
                                         child: widgetListTransactionByEventCard(
-                                      date: AppCubitStorage().state.Language ==
-                                              "fr"
-                                          ? formatDateToFrench(
-                                              detailVersement["created_at"])
-                                          : formatDateToEnglish(
-                                              detailVersement["created_at"]),
-                                      //  formatDateString(
-                                      // detailVersement["created_at"]),
+                                      date: formatDateLiteral(detailVersement["created_at"]),
                                       montant: detailVersement["amount"],
                                     ));
                                   },

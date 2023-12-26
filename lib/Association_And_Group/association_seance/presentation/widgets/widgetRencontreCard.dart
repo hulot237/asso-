@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/detailRencontrePage.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
@@ -382,7 +383,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                           Container(
                             margin: EdgeInsets.only(top: 1),
                             child: Text(
-                              "${widget.dateRencontre} : ${widget.heureRencontre}",
+                              formatDateLiteral(widget.dateRencontreAPI),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 10,

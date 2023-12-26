@@ -1,43 +1,41 @@
+
+
+
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/association_payements_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/data/association_payements_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class PayementCubit extends Cubit<PayementState> {
-  PayementCubit()
+class tokenNotificationCubit extends Cubit<tokenNotificationState> {
+  tokenNotificationCubit()
       : super(
-          PayementState(
-            retraitApprove: null,
-            isLoading: false,
+          tokenNotificationState(
+            tokenNotification: null,
           ),
         );
 
-  Future<bool> approvePayementCubit(withdrawId, codeMembre) async {
-    emit(state.copyWith(isloading: true));
+  Future<bool> tokenNotificationCubitt(token) async {
     try {
-      final data =
-          await PayementRepository().ApprouvePayement(withdrawId, codeMembre);
 
-      if (data != null) {
+      if (token != null) {
         emit(
           state.copyWith(
-            retraitapprove: data,
-            isloading: false,
+            tokennotification: token,
           ),
         );
 
-        print("DetailSeance Cubit ok");
+        print("tokennotification Cubit ok");
 
         return true;
       } else {
         emit(
           state.copyWith(
-            retraitapprove: false,
-            isloading: false,
+            tokennotification: '',
           ),
         );
         return false;
@@ -45,12 +43,10 @@ class PayementCubit extends Cubit<PayementState> {
     } catch (e) {
       emit(
         state.copyWith(
-          retraitapprove: false,
-          isloading: false,
+          tokennotification: '',
         ),
       );
       return true;
     }
   }
 }
-

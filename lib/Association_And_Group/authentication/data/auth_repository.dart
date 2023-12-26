@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class AuthRepository {
   final dio = Dio();
@@ -25,12 +26,13 @@ class AuthRepository {
     }
   }
 
-  Future<bool> LoginRepository(numeroPhone) async {
+  Future<bool> LoginRepository(numeroPhone, countrycode) async {
     try {
       print("zzzeeezzzzz $numeroPhone");
       log("response LoginRepository");
       final response = await dio.post('${Variables.LienAIP}/login', data: {
         "phone": numeroPhone,
+        "countrycode": countrycode,
       });
 
       final bool dataJson = response.data["error"];
@@ -48,7 +50,7 @@ class AuthRepository {
       print("zzzeeezzzzz $codeConfirmation");
       log("response ConfirmationRepository");
       final response = await dio.post(
-        '${Variables.LienAIP}/confirmation',
+        '${Variables.LienAIP}/confirmation?notification_token=${AppCubitStorage().state.tokenNotification}',
         data: {
           "code": codeConfirmation,
         },

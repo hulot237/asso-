@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_token_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/verificationPage.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
@@ -13,6 +16,7 @@ import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
 // import 'package:integration_part_two/pages/homeCoursier.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -39,15 +43,23 @@ Widget PageScaffold({
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController countrycode = TextEditingController();
+  // TextEditingController countrycode = TextEditingController();
+  final countrycode = TextEditingController();
+  String numeroPhoneController = '';
+  String countryCodeController = '237';
 
-  final numeroPhoneController = TextEditingController();
+  String retirerPlus(String indice){
+    if (indice.startsWith('+')){
+      return indice.substring(1);
+    }
+    return indice;
+  }
 
   Future handleLogin() async {
-    final numeroPhone = numeroPhoneController.text;
 
-    final allCotisationAss =
-        await context.read<AuthCubit>().loginFirstCubit(numeroPhone);
+    final allCotisationAss = await context
+        .read<AuthCubit>()
+        .loginFirstCubit(numeroPhoneController, countryCodeController);
 
     if (allCotisationAss != null) {
       print("objec~~~~~~~~~~~~~~é~~  ${allCotisationAss}");
@@ -56,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => VerificationPage(numeroPhone: numeroPhone),
-          ),
+              builder: (context) => VerificationPage(
+                  numeroPhone: numeroPhoneController, countryCode: countryCodeController)),
         );
       }
     } else {
@@ -103,61 +115,40 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 25),
-                        Container(
-                          // padding: EdgeInsets.all(5),
-                          padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
-                          // alignment: Alignment.center,
-                          height: 55,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: AppColors.blackBlue,
-                              ),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                // color: Colors.deepOrange,
-                                alignment: Alignment.center,
-                                // width: 90,
-                                height: MediaQuery.of(context).size.height,
-                                child: Text(
-                                  "+237",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(142, 20, 45, 99),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                // color: AppColors.greenAccent,
-                                width: MediaQuery.sizeOf(context).width / 1.5,
-                                // margin: EdgeInsets.only(top: 12),
-                                // alignment: Alignment.center,
-                                child: TextField(
-                                  controller: numeroPhoneController,
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "numero_de_téléphone".tr(),
-                                    hintStyle: TextStyle(
-                                      color: AppColors.blackBlueAccent1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        SizedBox(height: 50),
+                        IntlPhoneField(
+                          style: TextStyle(
+                              color: AppColors.blackBlue,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18),
+                          dropdownTextStyle: TextStyle(
+                              color: AppColors.blackBlue,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15),
+                          flagsButtonPadding: EdgeInsets.all(8),
+                          dropdownIconPosition: IconPosition.trailing,
+                          decoration: InputDecoration(
+                            labelText: 'numero_de_téléphone'.tr(),
+                            labelStyle: TextStyle(
+                              color: AppColors.blackBlueAccent1,
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                // gapPadding: 10
+                                borderSide: BorderSide(width: 2)),
+                            counterStyle: TextStyle(color: AppColors.blackBlue),
                           ),
+                          controller: countrycode,
+                          initialCountryCode: 'CM',
+                          onChanged: (phone) {
+                            setState(() {
+                              numeroPhoneController = phone.number;
+                              countryCodeController = retirerPlus(phone.countryCode);
+                            });
+                            print(numeroPhoneController);
+                            print(countryCodeController);
+                          },
                         ),
-                        // SizedBox(height: 25),
                         BlocBuilder<AuthCubit, AuthState>(
                             builder: (Authcontext, Authstate) {
                           if (Authstate.isTrueNomber == true)
@@ -191,17 +182,20 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               );
                             return ElevatedButton(
-                              onPressed: () {
-                                // handleLogin();
+                              onPressed: () async {
                                 handleLogin();
+                                print(numeroPhoneController);
+                                print(countryCodeController);
+                                await PushNotifications()
+                                    .getTokenNotification();
                               },
                               child: Text(
                                 "vérification".tr(),
-                                style: TextStyle(fontSize: 19, color: AppColors.white),
+                                style: TextStyle(
+                                    fontSize: 19, color: AppColors.white),
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.greenAssociation,
-                                // primary: Color(0xFF6FA629),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

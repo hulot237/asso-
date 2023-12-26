@@ -12,6 +12,7 @@ import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/FicheMembrePage.dart';
+import 'package:faroty_association_1/pages/administrationPage.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/pages/paramsAppPage.dart';
 import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
@@ -206,14 +207,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProfilPersonnelPage(),
+                                    builder: (context) => ProfilPersonnelPage(),
                                   ),
                                 );
                               },
                               child: Container(
-                                padding: EdgeInsets.only(
-                                    left: 5, right: 5, top: 5),
+                                padding:
+                                    EdgeInsets.only(left: 5, right: 5, top: 5),
                                 child: Text(
                                   "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                   overflow: TextOverflow.ellipsis,
@@ -226,41 +226,54 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Column(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                        left: 8,
-                                        right: 8,
-                                        top: 5,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AdministrationPage(
+                                          lienDePaiement:
+                                              'https://groups.faroty.com/',
+                                        ),
                                       ),
-                                      decoration: BoxDecoration(
-                                          color: AppColors.pageBackground,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Text(
-                                        "${"matricule".tr()}",
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          left: 8,
+                                          right: 8,
+                                          top: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                            color: AppColors.pageBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Text(
+                                          "${"matricule".tr()}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        "${currentDetailUser["matricule"]}",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
-                                          color:AppColors.blackBlueAccent1,
+                                          color: AppColors.blackBlueAccent1,
                                         ),
                                       ),
-                                    ),
-                                    Text(
-                                      "${currentDetailUser["matricule"]}",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color:AppColors.blackBlueAccent1,
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -288,8 +301,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 bottom: 7),
                                             backgroundColor:
                                                 AppColors.bleuLight,
-                                            behavior:
-                                                SnackBarBehavior.floating,
+                                            behavior: SnackBarBehavior.floating,
                                             width: 140,
                                             shape: StadiumBorder(),
                                             duration:
@@ -301,8 +313,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     );
                                   },
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
                                         padding: EdgeInsets.only(
@@ -318,22 +329,22 @@ class _SettingScreenState extends State<SettingScreen> {
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color:AppColors.blackBlueAccent1,
+                                            color: AppColors.blackBlueAccent1,
                                           ),
                                         ),
                                       ),
                                       Row(
                                         children: [
                                           Container(
-                                            padding:
-                                                EdgeInsets.only(right: 5),
+                                            padding: EdgeInsets.only(right: 5),
                                             child: Text(
                                               "${currentDetailUser["membre_code"]}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w600,
-                                                color:AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                               ),
                                             ),
                                           ),
@@ -342,10 +353,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                             height: 12,
                                             color: AppColors.whiteAccent1,
                                             child: Icon(
-                                                Icons.content_copy,
-                                                size: 12,
-                                                color:AppColors.blackBlueAccent1,
-                                              ),
+                                              Icons.content_copy,
+                                              size: 12,
+                                              color: AppColors.blackBlueAccent1,
+                                            ),
                                           ),
                                         ],
                                       )
@@ -388,8 +399,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(12, 0, 0, 0)),
+                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
                             ),
                           ),
                           child: Row(
@@ -399,8 +409,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      child: Icon(
-                                          Icons.phone_android_outlined,
+                                      child: Icon(Icons.phone_android_outlined,
                                           color: Colors.blue),
                                       margin: EdgeInsets.only(right: 10),
                                     ),
@@ -454,8 +463,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     children: [
                                       Container(
                                         child: Icon(
-                                          Icons
-                                              .account_balance_wallet_outlined,
+                                          Icons.account_balance_wallet_outlined,
                                           color: Colors.black,
                                         ),
                                         margin: EdgeInsets.only(right: 10),
@@ -497,8 +505,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             // color: Colors.black12,
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(12, 0, 0, 0)),
+                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
                             ),
                           ),
                           child: Row(
@@ -523,9 +530,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ],
                                 ),
                               ),
-                              for (var item
-                                  in currentInfoAllTournoiAssCourant![
-                                      "user_group"]["tournois"])
+                              for (var item in currentInfoAllTournoiAssCourant![
+                                  "user_group"]["tournois"])
                                 if (item["tournois_code"] ==
                                     AppCubitStorage().state.codeTournois)
                                   Text(
@@ -561,8 +567,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             // color: Colors.black12,
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(12, 0, 0, 0)),
+                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
                             ),
                           ),
                           child: Row(
@@ -579,7 +584,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       margin: EdgeInsets.only(right: 10),
                                     ),
                                     Text(
-                                      "groupe_et_association".tr(),
+                                      "Groups & Associations".tr(),
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: AppColors.blackBlue,
@@ -593,12 +598,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                 "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"]}",
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: Color.fromARGB(125, 20, 45, 99),
+                                  color: Color.fromARGB(
+                                    125,
+                                    20,
+                                    45,
+                                    99,
+                                  ),
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Icon(Icons.arrow_right,
-                                  color: AppColors.blackBlue, size: 12),
+                              Icon(
+                                Icons.arrow_right,
+                                color: AppColors.blackBlue,
+                                size: 12,
+                              ),
                             ],
                           ),
                         ),
@@ -623,8 +636,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             // color: Colors.black12,
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(12, 0, 0, 0)),
+                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
                             ),
                           ),
                           child: Row(
@@ -677,8 +689,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             // color: Colors.black12,
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(12, 0, 0, 0)),
+                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
                             ),
                           ),
                           child: Row(
@@ -726,8 +737,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             // color: Colors.black12,
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(12, 0, 0, 0)),
+                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
                             ),
                           ),
                           child: Row(
@@ -779,11 +789,10 @@ class _SettingScreenState extends State<SettingScreen> {
                         "success membre_code   ${AppCubitStorage().state.membreCode}");
                     print(
                         "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
-                    print(
-                        "membre is_member ${currentDetailUser["isMember"]}");
+                    print("membre is_member ${currentDetailUser["isMember"]}");
                     print(
                         "membre configs group ${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["configs"]}");
-            
+
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -798,8 +807,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   alignment: Alignment.topLeft,

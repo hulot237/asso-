@@ -30,6 +30,7 @@
     "ordre_de_passage": "Order of Appearance",
     "montant_collecté": "Amount collected",
     "bénéficiaires": "Beneficiaries",
+    "Bénéficiaire": "Beneficiary",
     "numero_de_téléphone": "Telephone number",
     "vérification": "verification",
     "vos_associations":"Your associations",
@@ -106,7 +107,29 @@
 "Effectuer_le_paiement":"Make a payment",
 "Archivé": "Archive",
 "Cotisation_fixe": "Fixed contribution",
-"Cotisation_volontaire": "Voluntary contribution"
+"Cotisation_volontaire": "Voluntary contribution",
+"Aucun_evenement_recent": "No recent events",
+"Événements_récents": "Recent events",
+"Accueil":"Home",
+"Historiques":"Historical",
+"Profil":"profile",
+"code_membre":"member code",
+"Avance":"Advance",
+"À l'instant":"just now",
+"Depuis":"Since",
+"minutes":"minutes",
+"heures":"hours",
+"jours":"days",
+"Retard de":"Delay of",
+"Retard depuis":"Delay since",
+"Retard de 1 semaine":"1 week delay",
+"Il vous reste moins d'une minute":"You have less than a minute left",
+"Il vous reste":"You still have",
+"Il vous reste 1 semaine":"You have 1 week left",
+"Vous avez jusqu'au":"You have until",
+"à":"at"
+
+
 
 
 

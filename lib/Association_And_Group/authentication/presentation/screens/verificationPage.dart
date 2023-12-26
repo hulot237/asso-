@@ -19,8 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VerificationPage extends StatefulWidget {
-  VerificationPage({super.key, required this.numeroPhone});
+  VerificationPage({super.key, required this.numeroPhone, required this.countryCode});
   String numeroPhone;
+  String countryCode;
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
@@ -83,9 +84,10 @@ class _VerificationPageState extends State<VerificationPage> {
 
   Future handleLogin() async {
     final numeroPhone = widget.numeroPhone;
+    final countryCode = widget.countryCode;
 
     final allCotisationAss =
-        await context.read<AuthCubit>().loginFirstCubit(numeroPhone);
+        await context.read<AuthCubit>().loginFirstCubit(numeroPhone, countryCode);
 
     if (allCotisationAss != null) {
       print("objec~~~~~~~~~~~~~~é~~  ${allCotisationAss}");
@@ -95,7 +97,7 @@ class _VerificationPageState extends State<VerificationPage> {
     }
   }
 
-  TextEditingController countrycode = TextEditingController();
+  // TextEditingController countrycode = TextEditingController();
 
   final codeController = TextEditingController();
 

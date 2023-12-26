@@ -38,9 +38,10 @@ class _widgetListTransactionByEventCardState
           children: [
             Container(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.only(bottom: 5),
                     child: Text(
                       "Date",
                       style: TextStyle(

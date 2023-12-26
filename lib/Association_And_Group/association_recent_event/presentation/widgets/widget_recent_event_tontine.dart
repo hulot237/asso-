@@ -76,8 +76,14 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: isPasseDate(widget.dateClose)? Color.fromARGB(255, 255, 247, 247): AppColors.white,
           borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: isPasseDate(widget.dateClose)
+                ? Color.fromARGB(255, 243, 1, 1)
+                : AppColors.white,
+            width: 0.5,
+          ),
         ),
         alignment: Alignment.center,
         padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
@@ -98,45 +104,17 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                             // margin: EdgeInsets.only(right: 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  // margin: EdgeInsets.only(top: 3),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          "${"Date".tr()} :",
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color.fromRGBO(
-                                                20, 45, 99, 0.534),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  // margin: EdgeInsets.only(top: 10, bottom: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
+                              children: [                                      Container(
                                         // margin: EdgeInsets.only(top: 3),
                                         child: Text(
-                                          "${formatDateToFrench(widget.dateOpen)} - ${formatDateToFrench(widget.dateClose)}",
+                                          "${formatCompareDateReturnWellValue(widget.dateClose)}",
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color: AppColors.blackBlue,
+                                            color: AppColors.blackBlueAccent1,
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
                               ],
                             ),
                           ),

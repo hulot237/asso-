@@ -8,4 +8,6 @@ class Variables {
   ];
 
   String codeMembre = "${AppCubitStorage().state.membreCode}";
+
+  late String? tokenNotification; 
 }

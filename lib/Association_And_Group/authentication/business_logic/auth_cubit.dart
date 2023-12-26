@@ -103,13 +103,13 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<bool> loginFirstCubit(phoneNumber) async {
+  Future<bool> loginFirstCubit(phoneNumber, countryCode) async {
     emit(state.copyWith(
       isloading: true,
       isloadingdetailuser: false,
     ));
     try {
-      final data = await AuthRepository().LoginRepository(phoneNumber);
+      final data = await AuthRepository().LoginRepository(phoneNumber, countryCode);
 
       if (data != null) {
         emit(

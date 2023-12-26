@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
@@ -79,15 +80,15 @@ class _HomePageState extends State<HomePage> {
       icon: Icon(
         Icons.home_rounded,
       ),
-      label: 'Accueil',
+      label: 'Accueil'.tr(),
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.article_rounded),
-      label: 'Historiques',
+      label: 'Historiques'.tr(),
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.person_2_rounded),
-      label: 'Profil',
+      label: 'Profil'.tr(),
     ),
   ];
 

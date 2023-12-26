@@ -5,15 +5,17 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
   AppCubitStorage()
       : super(
           AppStorageModel(
-              Language: "fr",
-              codeTournois: null,
-              ValTest: "zzzzzz",
-              codeAssDefaul: null,
-              membreCode: null,
-              tokenUser: null,
-              // userNameKey: null,
-              // passwordKey: null,
-              isLoading: false,),
+            Language: "fr",
+            codeTournois: null,
+            ValTest: "zzzzzz",
+            codeAssDefaul: null,
+            membreCode: null,
+            tokenUser: null,
+            tokenNotification: null,
+            // userNameKey: null,
+            // passwordKey: null,
+            isLoading: false,
+          ),
         );
 
   @override
@@ -25,6 +27,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       codeAssDefaul: json['codeAssDefaul'],
       membreCode: json["membreCode"],
       tokenUser: json["tokenUser"],
+      tokenNotification: json["tokenNotification"],
       // userNameKey: json["userNameKey"],
       // passwordKey: json["passwordKey"],
       isLoading: json["isLoading"],
@@ -40,11 +43,10 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       'codeAssDefaul': state.codeAssDefaul,
       'membreCode': state.membreCode,
       'tokenUser': state.tokenUser,
+      'tokenNotification': state.tokenNotification,
       // 'userNameKey': state.userNameKey,
       // 'passwordKey': state.passwordKey,
       'isLoading': state.isLoading,
-
-      
     };
   }
 
@@ -54,6 +56,17 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     emit(
       state.copyWith(
         Language: language,
+        isloading: false,
+      ),
+    );
+  }
+
+  Future<void> updatetokenNotification(String newNotification) async {
+    emit(state.copyWith(isloading: true));
+
+    emit(
+      state.copyWith(
+        tokenNotification: newNotification,
         isloading: false,
       ),
     );
@@ -69,6 +82,10 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       ),
     );
   }
+
+
+  
+
 
   Future<void> updateCodeTournoisDefault(String newValue) async {
     bool donneesChargees = false;
@@ -132,8 +149,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     );
   }
 
-
-    Future<void> updateTokenUser(String newValue) async {
+  Future<void> updateTokenUser(String newValue) async {
     bool donneesChargees = false;
     emit(state.copyWith(isloading: true));
 
@@ -151,8 +167,6 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       ),
     );
   }
-
-
 
   // Future<void> updateuserNameKey(String newValue) async {
   //   bool donneesChargees = false;

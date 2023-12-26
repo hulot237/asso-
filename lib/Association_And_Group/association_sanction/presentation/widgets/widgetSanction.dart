@@ -79,7 +79,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                   Container(
                                     margin: EdgeInsets.only(bottom: 7),
                                     child: Text(
-                                      "${widget.dateSanction} : ${widget.heureSanction}",
+                                    widget.isSanctionPayed == 1 ?  formatDateLiteral(widget.dateSanction) : formatCompareDateReturnWellValueSanctionRecent(widget.dateSanction),
                                       style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,

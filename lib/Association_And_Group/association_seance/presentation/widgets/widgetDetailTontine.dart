@@ -144,44 +144,16 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                           ),
                         ),
                       ),
-                      // Container(
-                      //   child: Row(
-                      //     children: [
-                      //       Container(
-                      //         child: Text(
-                      //           "rencontre".tr(),
-                      //           style: TextStyle(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.w300,
-                      //             color: AppColors.blackBlue,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       Container(
-                      //         child: Text(
-                      //           " 01S01",
-                      //           style: TextStyle(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.bold,
-                      //             color: AppColors.blackBlue,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
                 Container(
-                  // width: MediaQuery.of(context).size.width / 1.1,
                   margin: EdgeInsets.only(bottom: 7, top: 7),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Container(
-                          // margin: EdgeInsets.only(right: 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -230,29 +202,17 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Container(
-                                // margin: EdgeInsets.only(top: 3),
-                                child: Container(
-                                  child: Text(
-                                    "${"Date".tr()} :",
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(20, 45, 99, 0.534),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              
                               Container(
                                 child: Container(
                                   margin: EdgeInsets.only(top: 3),
                                   child: Text(
-                                    "${widget.dateOpen} - ${widget.dateClose}",
+                                    "${formatDateLiteral(widget.dateClose)}",
                                     style: TextStyle(
                                       fontSize: 10,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.w700,
-                                      color: AppColors.blackBlue,
+                                      color: AppColors.blackBlueAccent1,
                                     ),
                                   ),
                                 ),
@@ -296,8 +256,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color:
-                                                AppColors.blackBlue,
+                                            color: AppColors.blackBlue,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -308,40 +267,42 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                           ],
                         ),
                       ),
-                      if(checkTransparenceStatus(
-                      context
-                          .read<UserGroupCubit>()
-                          .state
-                          .ChangeAssData!["user_group"]["configs"],
-                      context.read<AuthCubit>().state.detailUser!["isMember"])
-                        )
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              child: Text(
-                                "${"montant_collecté".tr()} :",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(125, 20, 45, 99),
+                      if (checkTransparenceStatus(
+                          context
+                              .read<UserGroupCubit>()
+                              .state
+                              .ChangeAssData!["user_group"]["configs"],
+                          context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"]))
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "${"montant_collecté".tr()} :",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(125, 20, 45, 99),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 3),
-                              child: Text(
-                                "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.w600),
+                              Container(
+                                margin: EdgeInsets.only(top: 3),
+                                child: Text(
+                                  "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.green,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

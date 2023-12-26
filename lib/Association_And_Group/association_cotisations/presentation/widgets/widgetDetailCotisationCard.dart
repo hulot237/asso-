@@ -226,81 +226,7 @@ class _widgetDetailCotisationCardState
                                   for (var itemDetailCotisation in currentDetailCotisation!["versements"])
                                     if (itemDetailCotisation["membre_code"] == AppCubitStorage().state.membreCode)
                                     Container(),
-                                      // GestureDetector(
-                                      //   // onTap: () {
-                                      //   //   Modal()
-                                      //   //       .showModalActionPayement(context, itemDetailCotisation["cotisation_pay_link"]);
-                                      //   // },
-                                      //   child: widget.isPassed == 1
-                                      //       ? Container(
-                                      //           padding: EdgeInsets.only(
-                                      //               left: 8,
-                                      //               right: 8,
-                                      //               top: 5,
-                                      //               bottom: 5),
-                                      //           decoration: BoxDecoration(
-                                      //             color: AppColors.colorButtonAccent,
-                                      //             borderRadius:
-                                      //                 BorderRadius.circular(15),
-                                      //           ),
-                                      //           child: Text(
-                                      //             "cotiser".tr(),
-                                      //             style: TextStyle(
-                                      //                 color: AppColors.white,
-                                      //                 fontWeight:
-                                      //                     FontWeight.bold,
-                                      //                 fontSize: 13),
-                                      //           ),
-                                      //         )
-                                      //       : Column(
-                                      //           children: [
-                                      //             Container(
-                                      //               padding: EdgeInsets.only(
-                                      //                   left: 8,
-                                      //                   right: 8,
-                                      //                   top: 5,
-                                      //                   bottom: 5),
-                                      //               decoration: BoxDecoration(
-                                      //                 color: AppColors.colorButtonAccent,
-                                      //                 borderRadius:
-                                      //                     BorderRadius.circular(
-                                      //                         15),
-                                      //               ),
-                                      //               child: Text(
-                                      //                 "cotiser".tr(),
-                                      //                 style: TextStyle(
-                                      //                     color: AppColors.white,
-                                      //                     fontWeight:
-                                      //                         FontWeight.bold,
-                                      //                     fontSize: 13),
-                                      //               ),
-                                      //             ),
-                                      //             Container(
-                                      //               // height: 25,
-                                      //               width: 49,
-                                      //               alignment: Alignment.center,
-                                      //               decoration: BoxDecoration(
-                                      //                 borderRadius:
-                                      //                     BorderRadius.circular(
-                                      //                         7),
-                                      //               ),
-                                      //               child: Container(
-                                      //                 // color: Colors.black,
-                                      //                 child: Text(
-                                      //                   "expiré".tr(),
-                                      //                   style: TextStyle(
-                                      //                     fontWeight:
-                                      //                         FontWeight.bold,
-                                      //                     fontSize: 8,
-                                      //                     color: Color.fromARGB(
-                                      //                         255, 255, 0, 0),
-                                      //                   ),
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      // ),
+                                      
                               ],
                             );
                           },
@@ -346,7 +272,7 @@ class _widgetDetailCotisationCardState
                               ),
                               Container(
                                 child: Text(
-                                  widget.dateCotisation,
+                                  formatDateLiteral(widget.dateCotisation),
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
                                       fontSize: 10,

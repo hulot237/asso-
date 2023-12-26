@@ -72,15 +72,6 @@ class _PaiementPageState extends State<PaiementPage> {
               progression = progress;
             });
           },
-          // onPageStarted: (String url) {},
-          // onPageFinished: (String url) {},
-          // onWebResourceError: (WebResourceError error) {},
-          // onNavigationRequest: (NavigationRequest request) {
-          //   if (request.url.startsWith('https://www.youtube.com/')) {
-          //     return NavigationDecision.prevent;
-          //   }
-          //   return NavigationDecision.navigate;
-          // },
         ),
       )
       ..loadRequest(Uri.parse("https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}"));

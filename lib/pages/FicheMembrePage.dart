@@ -657,8 +657,6 @@ class _AccountPageState extends State<AccountPage> {
                                         (BuildContext context, int index) {
                                       final itemCurrentDetailUser =
                                           currentDetailUser["payments"][index];
-                                      // print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd }");
-
                                       return Container(
                                         decoration: BoxDecoration(
                                           border: Border(
@@ -714,7 +712,7 @@ class _AccountPageState extends State<AccountPage> {
                                                         ),
                                                         Container(
                                                           child: Text(
-                                                            "${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemCurrentDetailUser["created_at"]) : formatDateToEnglish(itemCurrentDetailUser["created_at"])}",
+                                                            formatDateLiteral(itemCurrentDetailUser["created_at"]),
                                                             style: TextStyle(
                                                               fontSize: 10,
                                                               color: Color

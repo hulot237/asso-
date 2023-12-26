@@ -82,7 +82,7 @@ class _widgetTontineHistoriqueCardState
                                   children: [
                                     Container(
                                       child: Text(
-                                        widget.dateCreaTontine,
+                                        formatDateLiteral(widget.dateCreaTontine),
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,

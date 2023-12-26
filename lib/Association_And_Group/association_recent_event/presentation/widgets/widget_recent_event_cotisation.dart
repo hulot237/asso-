@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Association_And_Group/user_group/business_l
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,9 +21,11 @@ class widgetRecentEventCotisation extends StatefulWidget {
     required this.montantCollecte,
     required this.codeCotisation,
     required this.lienDePaiement,
-    required this.nomCotisation,
+    required this.motif,
     required this.type,
     required this.isPassed,
+    required this.source,
+    required this.nomBeneficiaire,
   });
   String dateClose;
   String dateOpen;
@@ -30,9 +33,11 @@ class widgetRecentEventCotisation extends StatefulWidget {
   int montantCotisation;
   String codeCotisation;
   String lienDePaiement;
-  String nomCotisation;
+  String motif;
   String type;
   int isPassed;
+  String source;
+  String nomBeneficiaire;
 
   @override
   State<widgetRecentEventCotisation> createState() =>
@@ -73,7 +78,7 @@ class _widgetRecentEventCotisationState
               dateCotisation: widget.dateOpen,
               heureCotisation: widget.dateOpen,
               montantCotisations: widget.montantCotisation,
-              motifCotisations: widget.nomCotisation,
+              motifCotisations: widget.motif,
               soldeCotisation: widget.montantCollecte,
               type: widget.type,
               isPassed: widget.isPassed,
@@ -83,8 +88,16 @@ class _widgetRecentEventCotisationState
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: widget.isPassed == 0
+              ? AppColors.white
+              : Color.fromARGB(255, 255, 247, 247),
           borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: widget.isPassed == 0
+                ? AppColors.white
+                : Color.fromARGB(255, 243, 1, 1),
+            width: 0.5,
+          ),
         ),
         alignment: Alignment.center,
         padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
@@ -107,24 +120,6 @@ class _widgetRecentEventCotisationState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  // margin: EdgeInsets.only(top: 3),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          "${"Date".tr()} :",
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color.fromRGBO(
-                                                20, 45, 99, 0.534),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
                                   // margin: EdgeInsets.only(top: 10, bottom: 10),
                                   child: Column(
                                     crossAxisAlignment:
@@ -133,11 +128,11 @@ class _widgetRecentEventCotisationState
                                       Container(
                                         // margin: EdgeInsets.only(top: 3),
                                         child: Text(
-                                          "${formatDateToFrench(widget.dateOpen)} - ${formatDateToFrench(widget.dateClose)}",
+                                          "${formatCompareDateReturnWellValue(widget.dateClose)}",
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color: AppColors.blackBlue,
+                                            color: AppColors.blackBlueAccent1,
                                           ),
                                         ),
                                       ),
@@ -177,43 +172,45 @@ class _widgetRecentEventCotisationState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: Container(
-                            // margin: EdgeInsets.only(right: 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  // margin: EdgeInsets.only(top: 3),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          "${"nom".tr()} :",
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color.fromRGBO(
-                                                20, 45, 99, 0.534),
-                                          ),
-                                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${"Motif".tr()} :",
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromRGBO(20, 45, 99, 0.534),
+                              ),
+                            ),
+                            Container(
+                              // width: MediaQuery.of(context).size.width/2,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      "${widget.motif}",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.blackBlue,
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    "${widget.nomCotisation}",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.blackBlue,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    widget.source == ''
+                                        ? " (${(widget.nomBeneficiaire)})"
+                                        : " (${(widget.source)})",
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.blackBlueAccent1,
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                         if (checkTransparenceStatus(
                             context
@@ -224,32 +221,32 @@ class _widgetRecentEventCotisationState
                                 .read<AuthCubit>()
                                 .state
                                 .detailUser!["isMember"]))
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "montant_collecté".tr(),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.blackBlueAccent1,
-                                    ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "montant_collecté".tr(),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.blackBlueAccent1,
                                   ),
                                 ),
-                                Container(
-                                  child: Text(
-                                    "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.green,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "${formatMontantFrancais(
+                                    double.parse("${widget.montantCollecte}"),
+                                  )} FCFA",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                       ],
                     ),
@@ -300,7 +297,7 @@ class _widgetRecentEventCotisationState
                         GestureDetector(
                           onTap: () async {
                             String msg =
-                                "Aide-moi à payer ma cotisation *${widget.nomCotisation}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
 
                             Modal().showModalActionPayement(
                               context,
@@ -317,7 +314,7 @@ class _widgetRecentEventCotisationState
                             ),
                             child: Container(
                               child: Text(
-                                "Cotiser",
+                                "cotiser".tr(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,

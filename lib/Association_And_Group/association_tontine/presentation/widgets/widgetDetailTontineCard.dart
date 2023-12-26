@@ -127,7 +127,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                             ),
                             Container(
                               child: Text(
-                                widget.dateCreaTontine,
+                                formatDateLiteral(widget.dateCreaTontine),
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                   fontSize: 10,

@@ -26,6 +26,8 @@ class WidgetCotisation extends StatefulWidget {
     required this.lienDePaiement,
     required this.is_tontine,
     required this.is_passed,
+    required this.source,
+    required this.nomBeneficiaire,
   });
   int montantCotisations;
   String motifCotisations;
@@ -37,6 +39,8 @@ class WidgetCotisation extends StatefulWidget {
   String lienDePaiement;
   int is_tontine;
   int is_passed;
+  String source;
+  String nomBeneficiaire;
 
   @override
   State<WidgetCotisation> createState() => _WidgetCotisationState();
@@ -65,18 +69,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
   Widget build(BuildContext context) {
     return BlocBuilder<CotisationCubit, CotisationState>(
         builder: (CotisationContext, CotisationState) {
-      // if (CotisationState.detailCotisation != null) return Container();
-
-      // if (state.detailCotisation == null) return Container();
-
-      // final currentDetailCotisation = context.read<CotisationCubit>().state.detailCotisation;
-
-      // for (var itemDetailCotisation in currentDetailCotisation!["versements"]) {
-      //   if (itemDetailCotisation["membre_code"] == AppCubitStorage().state.membreCode) {
-      //      contributionOneUser = itemDetailCotisation["balance_after"];
-
-      //   }
-      // }
       return GestureDetector(
         onTap: () {
           handleDetailCotisation(widget.codeCotisation);
@@ -99,7 +91,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
           );
         },
         child: Container(
-          // margin: EdgeInsets.only(left: 3, right: 3),
 
           decoration: widget.is_passed == 0
               ? BoxDecoration(
@@ -135,20 +126,37 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.only(bottom: 7),
-                                    child: Text(
-                                      widget.motifCotisations,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.blackBlue,
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 7),
+                                        child: Text(
+                                          widget.motifCotisations,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.blackBlue,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 7),
+                                        child: Text(
+                                          widget.source == ''?
+                                          " (${(widget.nomBeneficiaire)})" : " (${(widget.source)})",
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   Container(
                                     child: Text(
-                                      "${widget.dateCotisation} : ${widget.heureCotisation}",
+                                      formatDateLiteral(widget.dateCotisation),
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
                                           fontSize: 10,
@@ -340,69 +348,9 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                 ],
                               ),
                             ),
-                            // Container(
-                            //   child: Row(
-                            //     children: [
-                            //       Container(
-                            //         child: Icon(
-                            //           Icons.people_alt_rounded,
-                            //           size: 16,
-                            //           color: AppColors.blackBlue,
-                            //         ),
-                            //         margin: EdgeInsets.only(right: 5),
-                            //       ),
-                            //       Container(
-                            //           child: Text(
-                            //         "${widget.nbreParticipantCotisationOK}/${widget.nbreParticipant}",
-                            //         style: TextStyle(
-                            //             fontSize: 12,
-                            //             fontWeight: FontWeight.w800,
-                            //             color: AppColors.blackBlue,),
-                            //       ))
-                            //     ],
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //             Modal().showModalTransactionByEvent(context, [], widget.montantCotisations);
-                    //           },
-                    //   child: Container(
-                    //     // color: Colors.deepOrangeAccent,
-                    //     padding: EdgeInsets.only(top: 5, bottom: 5),
-                    //     // width: MediaQuery.of(context).size.width / 1.1,
-                    //     child: Container(
-                    //       child: Row(
-                    //         // mainAxisAlignment: MainAxisAlignment.center,
-                    //         children: [
-                    //           Container(
-                    //             child: Text(
-                    //               "Vous avez cotisé :",
-                    //               style: TextStyle(
-                    //                 fontSize: 11,
-                    //                 fontWeight: FontWeight.bold,
-                    //                 color: AppColors.blackBlue,
-                    //               ),
-                    //             ),
-                    //             margin: EdgeInsets.only(right: 5),
-                    //           ),
-                    //           Container(
-                    //             child: Text(
-                    //               "${formatMontantFrancais(double.parse(widget.contributionOneUser))} FCFA",
-                    //               style: TextStyle(
-                    //                 fontSize: 12,
-                    //                 fontWeight: FontWeight.w800,
-                    //                 color: AppColors.blackBlue,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
