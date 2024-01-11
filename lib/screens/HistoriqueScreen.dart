@@ -451,70 +451,81 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                     .length >
                                 0
                             ? Expanded(
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: RefreshIndicator(
-                                    onRefresh: refresh,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.all(0),
-                                      shrinkWrap: true,
-                                      itemCount: currentDetailtournoiCourant[
-                                              "tournois"]["seance"]
-                                          .length,
-                                      itemBuilder: (context, index) {
-                                        final itemSeance =
-                                            currentDetailtournoiCourant[
-                                                "tournois"]["seance"][index];
-
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 3,
-                                              bottom: 7),
-                                          child: WidgetRencontreCard(
-                                            codeSeance:
-                                                itemSeance["seance_code"],
-                                            photoProfilRecepteur: "",
-                                            dateRencontre: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    itemSeance["date_seance"])
-                                                : formatDateToEnglish(
-                                                    itemSeance["date_seance"]),
-                                            descriptionRencontre:
-                                                'Le rencontre du ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemSeance["date_seance"]) : formatDateToEnglish(itemSeance["date_seance"])} se tiendra à ${itemSeance["heure_debut"]}',
-                                            heureRencontre:
-                                                itemSeance["heure_debut"],
-                                            identifiantRencontre:
-                                                itemSeance["matricule"],
-                                            lieuRencontre:
-                                                itemSeance["localisation"],
-                                            nomRecepteurRencontre:
-                                                itemSeance["membre"]
-                                                            ["first_name"] ==
-                                                        null
-                                                    ? ""
-                                                    : itemSeance["membre"]
-                                                        ["first_name"],
-                                            isActiveRencontre:
-                                                itemSeance["status"],
-                                            prenomRecepteurRencontre:
-                                                itemSeance["membre"]
-                                                            ["last_name"] ==
-                                                        null
-                                                    ? ""
-                                                    : itemSeance["membre"]
-                                                        ["last_name"],
-                                            dateRencontreAPI:
-                                                itemSeance["date_seance"],
-                                          ),
-                                        );
-                                      },
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: RefreshIndicator(
+                                        onRefresh: refresh,
+                                        child: ListView.builder(
+                                          padding: EdgeInsets.all(0),
+                                          shrinkWrap: true,
+                                          itemCount: currentDetailtournoiCourant[
+                                                  "tournois"]["seance"]
+                                              .length,
+                                          itemBuilder: (context, index) {
+                                            final itemSeance =
+                                                currentDetailtournoiCourant[
+                                                    "tournois"]["seance"][index];
+                                    
+                                            return Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 7,
+                                                  right: 7,
+                                                  top: 3,
+                                                  bottom: 7),
+                                              child: WidgetRencontreCard(
+                                                maskElt: false,
+                                                codeSeance:
+                                                    itemSeance["seance_code"],
+                                                photoProfilRecepteur: "",
+                                                dateRencontre: AppCubitStorage()
+                                                            .state
+                                                            .Language ==
+                                                        "fr"
+                                                    ? formatDateToFrench(
+                                                        itemSeance["date_seance"])
+                                                    : formatDateToEnglish(
+                                                        itemSeance["date_seance"]),
+                                                descriptionRencontre:
+                                                    'Le rencontre du ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemSeance["date_seance"]) : formatDateToEnglish(itemSeance["date_seance"])} se tiendra à ${itemSeance["heure_debut"]}',
+                                                heureRencontre:
+                                                    itemSeance["heure_debut"],
+                                                identifiantRencontre:
+                                                    itemSeance["matricule"],
+                                                lieuRencontre:
+                                                    itemSeance["localisation"],
+                                                nomRecepteurRencontre:
+                                                    itemSeance["membre"]
+                                                                ["first_name"] ==
+                                                            null
+                                                        ? ""
+                                                        : itemSeance["membre"]
+                                                            ["first_name"],
+                                                isActiveRencontre:
+                                                    itemSeance["status"],
+                                                prenomRecepteurRencontre:
+                                                    itemSeance["membre"]
+                                                                ["last_name"] ==
+                                                            null
+                                                        ? ""
+                                                        : itemSeance["membre"]
+                                                            ["last_name"],
+                                                dateRencontreAPI:
+                                                    itemSeance["date_seance"],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     ),
-                                  ),
+
+                                    Container(
+                                      color: AppColors.bleuLight,
+                                      height: 12,
+                                      width: 12,
+                                    )
+                                  ],
                                 ),
                               )
                             : Expanded(

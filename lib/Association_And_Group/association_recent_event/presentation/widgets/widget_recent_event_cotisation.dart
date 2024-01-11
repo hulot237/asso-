@@ -86,128 +86,111 @@ class _widgetRecentEventCotisationState
           ),
         );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: widget.isPassed == 0
-              ? AppColors.white
-              : Color.fromARGB(255, 255, 247, 247),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-            color: widget.isPassed == 0
-                ? AppColors.white
-                : Color.fromARGB(255, 243, 1, 1),
-            width: 0.5,
-          ),
-        ),
-        alignment: Alignment.center,
-        padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
-        child: Row(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Column(
           children: [
-            Expanded(
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              decoration: BoxDecoration(
+                color: AppColors.blackBlue,
+              ),
+              child: Text(
+                'cotisation'.tr(),
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: widget.isPassed == 0
+                    ? AppColors.white
+                    : Color.fromARGB(255, 255, 247, 247),
+                // borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15)),
+                border: Border.all(
+                  color: widget.isPassed == 0 ? AppColors.white : AppColors.red,
+                  width: 0.5,
+                ),
+              ),
+              padding: EdgeInsets.only(
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: 10,
+              ),
               child: Column(
                 children: [
+                  Column(
+                    children: [
+                      Container(
+                        child: Text(
+                          "${widget.motif}",
+                          // 'Voir bebe de l"enfant de djousse',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.blackBlue,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        widget.source == ''
+                            ? " (${(widget.nomBeneficiaire)})"
+                            : " (${(widget.source)})",
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.blackBlueAccent1,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                    ],
+                  ),
                   Container(
-                    margin: EdgeInsets.only(top: 7),
-                    width: MediaQuery.of(context).size.width / 1.1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            // margin: EdgeInsets.only(right: 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  // margin: EdgeInsets.only(top: 10, bottom: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        // margin: EdgeInsets.only(top: 3),
-                                        child: Text(
-                                          "${formatCompareDateReturnWellValue(widget.dateClose)}",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppColors.blackBlueAccent1,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                child: Text(
-                                  widget.type == "0"
-                                      ? "Cotisation_fixe".tr()
-                                      : "Cotisation_volontaire".tr(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w900,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    margin: EdgeInsets.only(top: 10),
+                    child: Text(
+                      "${formatCompareDateReturnWellValue(widget.dateClose)}",
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.blackBlueAccent1,
+                      ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 7),
-                    width: MediaQuery.of(context).size.width / 1.1,
+                    margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "${"Motif".tr()} :",
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromRGBO(20, 45, 99, 0.534),
+                            Container(
+                              child: Text(
+                                "montant".tr(),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
                               ),
                             ),
                             Container(
-                              // width: MediaQuery.of(context).size.width/2,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      "${widget.motif}",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.blackBlue,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    widget.source == ''
-                                        ? " (${(widget.nomBeneficiaire)})"
-                                        : " (${(widget.source)})",
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.blackBlueAccent1,
-                                        overflow: TextOverflow.ellipsis),
-                                  ),
-                                ],
+                              child: Text(
+                                "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.blackBlue,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -222,7 +205,6 @@ class _widgetRecentEventCotisationState
                                 .state
                                 .detailUser!["isMember"]))
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
                                 child: Text(
@@ -248,52 +230,6 @@ class _widgetRecentEventCotisationState
                               ),
                             ],
                           ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    // width: MediaQuery.of(context).size.width / 1.1,
-                    margin: EdgeInsets.only(bottom: 7, top: 7),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text(
-                                  "montant".tr(),
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.blackBlueAccent1,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Flexible(
-                                      child: Container(
-                                        child: Text(
-                                          "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: AppColors.blackBlue,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                         GestureDetector(
                           onTap: () async {
                             String msg =
@@ -326,10 +262,11 @@ class _widgetRecentEventCotisationState
                         ),
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
+            // Container(),
           ],
         ),
       ),

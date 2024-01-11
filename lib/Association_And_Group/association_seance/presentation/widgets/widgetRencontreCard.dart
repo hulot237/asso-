@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
@@ -22,6 +24,7 @@ class WidgetRencontreCard extends StatefulWidget {
     required this.photoProfilRecepteur,
     required this.codeSeance,
     required this.dateRencontreAPI,
+    required this.maskElt,
   });
 
   String prenomRecepteurRencontre;
@@ -35,6 +38,7 @@ class WidgetRencontreCard extends StatefulWidget {
   String photoProfilRecepteur;
   String codeSeance;
   String dateRencontreAPI;
+  bool maskElt;
 
   @override
   State<WidgetRencontreCard> createState() => _WidgetRencontreCardState();
@@ -199,6 +203,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
+                    if(!widget.maskElt)
                           Container(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,

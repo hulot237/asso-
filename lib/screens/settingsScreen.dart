@@ -169,7 +169,7 @@ class _SettingScreenState extends State<SettingScreen> {
             body: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: EdgeInsets.only(top: 20, bottom: 5),
                   child: Column(
                     children: [
                       GestureDetector(
@@ -250,7 +250,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                           top: 5,
                                         ),
                                         decoration: BoxDecoration(
-                                            color: AppColors.pageBackground,
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         child: Text(
@@ -320,7 +319,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                           top: 5,
                                         ),
                                         decoration: BoxDecoration(
-                                            color: AppColors.pageBackground,
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         child: Text(
@@ -348,15 +346,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            width: 12,
-                                            height: 12,
-                                            color: AppColors.whiteAccent1,
-                                            child: Icon(
-                                              Icons.content_copy,
-                                              size: 12,
-                                              color: AppColors.blackBlueAccent1,
-                                            ),
+                                          Icon(
+                                            Icons.content_copy,
+                                            size: 12,
+                                            color: AppColors.blackBlueAccent1,
                                           ),
                                         ],
                                       )
@@ -371,568 +364,627 @@ class _SettingScreenState extends State<SettingScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 10,
-                    left: 10,
-                    right: 10,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 15,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 10,
                             left: 10,
                             right: 10,
-                            bottom: 15,
                           ),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Icon(Icons.phone_android_outlined,
-                                          color: Colors.blue),
-                                      margin: EdgeInsets.only(right: 10),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AccountPage(),
                                     ),
-                                    Text(
-                                      "votre_compte".tr(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w500,
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(
+                                                  Icons.phone_android_outlined,
+                                                  color: Colors.blue),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                            ),
+                                            Text(
+                                              "votre_compte".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      Icon(Icons.arrow_right,
+                                          color: AppColors.blackBlue, size: 12),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Icon(Icons.arrow_right,
-                                  color: AppColors.blackBlue, size: 12),
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (currentDetailUser["is_withdrawal_approvers"] == 1)
-                        GestureDetector(
-                          onTap: () {
-                            handleDetailUser(
-                                AppCubitStorage().state.membreCode);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RetraitPage()));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              top: 15,
-                              left: 10,
-                              right: 10,
-                              bottom: 15,
-                            ),
-                            decoration: BoxDecoration(
-                              // color: Colors.black12,
-                              border: Border(
-                                bottom: BorderSide(
-                                    width: 1,
-                                    color: Color.fromARGB(12, 0, 0, 0)),
-                              ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        child: Icon(
-                                          Icons.account_balance_wallet_outlined,
-                                          color: Colors.black,
+                              if (currentDetailUser[
+                                      "is_withdrawal_approvers"] ==
+                                  1)
+                                GestureDetector(
+                                  onTap: () {
+                                    handleDetailUser(
+                                        AppCubitStorage().state.membreCode);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RetraitPage()));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      top: 15,
+                                      left: 10,
+                                      right: 10,
+                                      bottom: 15,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      // color: Colors.black12,
+                                      border: Border(
+                                        bottom: BorderSide(
+                                            width: 1,
+                                            color: Color.fromARGB(12, 0, 0, 0)),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                child: Icon(
+                                                  Icons
+                                                      .account_balance_wallet_outlined,
+                                                  color: Colors.black,
+                                                ),
+                                                margin:
+                                                    EdgeInsets.only(right: 10),
+                                              ),
+                                              Text(
+                                                "retrait_en_attente".tr(),
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        margin: EdgeInsets.only(right: 10),
+                                        Icon(Icons.arrow_right,
+                                            color: AppColors.blackBlue,
+                                            size: 12),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              GestureDetector(
+                                onTap: () {
+                                  // context.read<ServiceCubit>().state.currentService!.id;
+                                  Modal().showBottomSheetListTournoi(
+                                    context,
+                                    currentInfoAllTournoiAssCourant![
+                                        "user_group"]["tournois"],
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black12,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(
+                                                  Icons.ads_click_outlined,
+                                                  color: Colors.red),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                            ),
+                                            Text(
+                                              "tournoi".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      for (var item
+                                          in currentInfoAllTournoiAssCourant![
+                                              "user_group"]["tournois"])
+                                        if (item["tournois_code"] ==
+                                            AppCubitStorage()
+                                                .state
+                                                .codeTournois)
+                                          Text(
+                                            'Tournoi #${item["matricule"]}',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Color.fromARGB(
+                                                  125, 20, 45, 99),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                      Icon(Icons.arrow_right,
+                                          color: AppColors.blackBlue, size: 12),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // context.read<ServiceCubit>().state.currentService!.id;
+                                  Modal().showBottomSheetListAss(
+                                    context,
+                                    currentInfoAllAssociation,
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black12,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Image.asset(
+                                                "assets/images/Groupe_ou_Asso.png",
+                                                scale: 14,
+                                              ),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                            ),
+                                            Text(
+                                              "Groups & Associations".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Text(
-                                        "retrait_en_attente".tr(),
+                                        "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"]}",
                                         style: TextStyle(
-                                          fontSize: 15,
-                                          color: AppColors.blackBlue,
+                                          fontSize: 10,
+                                          color: Color.fromARGB(
+                                            125,
+                                            20,
+                                            45,
+                                            99,
+                                          ),
                                           fontWeight: FontWeight.w500,
                                         ),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_right,
+                                        color: AppColors.blackBlue,
+                                        size: 12,
                                       ),
                                     ],
                                   ),
                                 ),
-                                Icon(Icons.arrow_right,
-                                    color: AppColors.blackBlue, size: 12),
-                              ],
-                            ),
-                          ),
-                        ),
-                      GestureDetector(
-                        onTap: () {
-                          // context.read<ServiceCubit>().state.currentService!.id;
-                          Modal().showBottomSheetListTournoi(
-                            context,
-                            currentInfoAllTournoiAssCourant!["user_group"]
-                                ["tournois"],
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 15,
-                            left: 10,
-                            right: 10,
-                            bottom: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            // color: Colors.black12,
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Icon(Icons.ads_click_outlined,
-                                          color: Colors.red),
-                                      margin: EdgeInsets.only(right: 10),
-                                    ),
-                                    Text(
-                                      "tournoi".tr(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
-                              for (var item in currentInfoAllTournoiAssCourant![
-                                  "user_group"]["tournois"])
-                                if (item["tournois_code"] ==
-                                    AppCubitStorage().state.codeTournois)
-                                  Text(
-                                    'Tournoi #${item["matricule"]}',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: Color.fromARGB(125, 20, 45, 99),
-                                      fontWeight: FontWeight.w500,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ParamsAppPage(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black12,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
                                     ),
                                   ),
-                              Icon(Icons.arrow_right,
-                                  color: AppColors.blackBlue, size: 12),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // context.read<ServiceCubit>().state.currentService!.id;
-                          Modal().showBottomSheetListAss(
-                            context,
-                            currentInfoAllAssociation,
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 15,
-                            left: 10,
-                            right: 10,
-                            bottom: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            // color: Colors.black12,
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Image.asset(
-                                        "assets/images/Groupe_ou_Asso.png",
-                                        scale: 14,
-                                      ),
-                                      margin: EdgeInsets.only(right: 10),
-                                    ),
-                                    Text(
-                                      "Groups & Associations".tr(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"]}",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Color.fromARGB(
-                                    125,
-                                    20,
-                                    45,
-                                    99,
-                                  ),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_right,
-                                color: AppColors.blackBlue,
-                                size: 12,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ParamsAppPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 15,
-                            left: 10,
-                            right: 10,
-                            bottom: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            // color: Colors.black12,
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Icon(
-                                        Icons.settings_outlined,
-                                        color: Colors.brown,
-                                      ),
-                                      margin: EdgeInsets.only(right: 10),
-                                    ),
-                                    Text(
-                                      "paramètres".tr(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Icon(Icons.arrow_right,
-                                  color: AppColors.blackBlue, size: 12),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProposAidePage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 15,
-                            left: 10,
-                            right: 10,
-                            bottom: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            // color: Colors.black12,
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Icon(
-                                        Icons.support_agent_outlined,
-                                        color: Colors.orange,
-                                      ),
-                                      margin: EdgeInsets.only(right: 10),
-                                    ),
-                                    Text(
-                                      "a_propos_et_aide".tr(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Icon(Icons.arrow_right,
-                                  color: AppColors.blackBlue, size: 12),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Share.share("Le lien de l'application");
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 15,
-                            left: 10,
-                            right: 10,
-                            bottom: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            // color: Colors.black12,
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: Color.fromARGB(12, 0, 0, 0)),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Icon(
-                                        Icons.share_outlined,
-                                        color: Colors.black,
-                                      ),
-                                      margin: EdgeInsets.only(right: 10),
-                                    ),
-                                    Text(
-                                      "partager_l'application".tr(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Icon(Icons.arrow_right,
-                                  color: AppColors.blackBlue, size: 12),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                      // color: Colors.lightBlue,
-                      ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print(
-                        "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
-                    print(
-                        "success token   ${AppCubitStorage().state.tokenUser}");
-                    print(
-                        "success membre_code   ${AppCubitStorage().state.membreCode}");
-                    print(
-                        "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
-                    print("membre is_member ${currentDetailUser["isMember"]}");
-                    print(
-                        "membre configs group ${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["configs"]}");
-
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          contentPadding: EdgeInsets.all(0),
-                          content: Container(
-                            padding: EdgeInsets.all(10),
-                            height: 150,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "etes_vous_sur?".tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: AppColors.blackBlue,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                          top: 5,
-                                          bottom: 5,
-                                          right: 20,
-                                          left: 20,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.colorButton,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Text(
-                                          "non".tr(),
-                                          style: TextStyle(
-                                            color: AppColors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                LoginPage(),
-                                          ),
-                                          (route) => false,
-                                        );
-                                        HydratedBloc.storage.clear();
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                          top: 5,
-                                          bottom: 5,
-                                          right: 20,
-                                          left: 20,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              width: 1,
-                                              color: AppColors.colorButton,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(
+                                                Icons.settings_outlined,
+                                                color: Colors.brown,
+                                              ),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Text(
-                                          "oui".tr(),
-                                          style: TextStyle(
-                                            color: AppColors.colorButton,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                          ),
+                                            Text(
+                                              "paramètres".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromARGB(45, 255, 82, 82),
-                      ),
-                      width: MediaQuery.of(context).size.width / 3,
-                      margin: EdgeInsets.only(top: 10),
-                      padding: EdgeInsets.all(7),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 10),
-                            // color: Color.fromARGB(185, 255, 214, 64),
-                            child: Icon(
-                              Icons.logout_rounded,
-                              color: Colors.red,
-                              size: 15,
-                            ),
-                          ),
-                          Container(
-                            // color: AppColors.greenAccent,
-                            child: Text(
-                              "déconnexion".tr(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.red,
-                                fontWeight: FontWeight.w600,
+                                      Icon(Icons.arrow_right,
+                                          color: AppColors.blackBlue, size: 12),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProposAidePage(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black12,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(
+                                                Icons.support_agent_outlined,
+                                                color: Colors.orange,
+                                              ),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                            ),
+                                            Text(
+                                              "a_propos_et_aide".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_right,
+                                          color: AppColors.blackBlue, size: 12),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Share.share("Le lien de l'application");
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black12,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(
+                                                Icons.share_outlined,
+                                                color: AppColors.greenAssociation,
+                                              ),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                            ),
+                                            Text(
+                                              "partager_l'application".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_right,
+                                          color: AppColors.blackBlue, size: 12),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  print(
+                                      "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
+                                  print(
+                                      "success token   ${AppCubitStorage().state.tokenUser}");
+                                  print(
+                                      "success membre_code   ${AppCubitStorage().state.membreCode}");
+                                  print(
+                                      "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
+                                  print(
+                                      "membre is_member ${currentDetailUser["isMember"]}");
+                                  print(
+                                      "membre configs group ${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["configs"]}");
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        contentPadding: EdgeInsets.all(0),
+                                        content: Container(
+                                          padding: EdgeInsets.all(10),
+                                          height: 150,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  "etes_vous_sur?".tr(),
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: AppColors.blackBlue,
+                                                  ),
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.only(
+                                                        top: 5,
+                                                        bottom: 5,
+                                                        right: 20,
+                                                        left: 20,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                          color: AppColors
+                                                              .colorButton,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Text(
+                                                        "non".tr(),
+                                                        style: TextStyle(
+                                                          color:
+                                                              AppColors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pushAndRemoveUntil(
+                                                        MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              LoginPage(),
+                                                        ),
+                                                        (route) => false,
+                                                      );
+                                                      HydratedBloc.storage
+                                                          .clear();
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.only(
+                                                        top: 5,
+                                                        bottom: 5,
+                                                        right: 20,
+                                                        left: 20,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            width: 1,
+                                                            color: AppColors
+                                                                .colorButton,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Text(
+                                                        "oui".tr(),
+                                                        style: TextStyle(
+                                                          color: AppColors
+                                                              .colorButton,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black12,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(
+                                                Icons.logout_rounded,
+                                                color: Colors.black,
+                                              ),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                            ),
+                                            Text(
+                                              "déconnexion".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_right,
+                                          color: AppColors.blackBlue, size: 12),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -55,7 +55,6 @@ Widget PageScaffold({
 }
 
 class _HomePageState extends State<HomePage> {
-
   Future<void> handleTournoiDefault() async {
     final detailTournoiCourant = await context
         .read<DetailTournoiCourantCubit>()
@@ -115,7 +114,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
   @override
@@ -143,11 +141,9 @@ class _HomePageState extends State<HomePage> {
           items: itemListAndroid,
           currentIndex: _pageIndex,
           onTap: (index) {
-
             setState(() {
               _pageIndex = index;
             });
-            
           },
         ),
       ),

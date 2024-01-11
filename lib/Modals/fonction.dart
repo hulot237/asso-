@@ -146,7 +146,7 @@ String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
   }
 
   if (endDateApi.compareTo(dt2) < 0) {
-    print("DT1 est avant DT2");
+    print("DT1 est  DT2");
 
     if (diff.inMinutes * -1 < 1) {
       return ("À l'instant".tr());

@@ -983,6 +983,7 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
                 Container(
                   margin: EdgeInsets.only(left: 7, right: 7, top: 5),
                   child: WidgetRencontreCard(
+                    maskElt: true,
                     codeSeance: codeSeance,
                     dateRencontre: AppCubitStorage().state.Language == "fr"
                         ? formatDateToFrench(dateRencontre)

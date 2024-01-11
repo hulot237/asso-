@@ -62,8 +62,8 @@ class _LoginPageState extends State<LoginPage> {
         .loginFirstCubit(numeroPhoneController, countryCodeController);
 
     if (allCotisationAss != null) {
-      print("objec~~~~~~~~~~~~~~é~~  ${allCotisationAss}");
-      print("# ${context.read<AuthCubit>().state.isTrueNomber}");
+      print("handleLogin~~  ${allCotisationAss}");
+      print("## ${context.read<AuthCubit>().state.isTrueNomber}");
       if (context.read<AuthCubit>().state.isTrueNomber == false) {
         Navigator.push(
           context,
