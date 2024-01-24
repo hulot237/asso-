@@ -15,14 +15,14 @@ class MembresModel {
   String? region;
   String? city;
   String? hasid;
-  bool? is_inscription_payed;
-  int? inscription_status;
+  int? is_inscription_payed;
+  String? inscription_status;
   String? inscription_balance;
-  int? type;
-  int? marital_status;
+  String? type;
+  String? marital_status;
   String? date_adhesion;
   String? photo_profil;
-  bool? is_active;
+  int? is_active;
   UserGroupModel? user_group;
   String? created_at;
   String? updated_at;
@@ -58,18 +58,18 @@ class MembresModel {
   factory MembresModel.fromJson(Map<String, dynamic> json) =>
       MembresModel(
         id: json["id"],
-        association_role_id: json["type_id"],
-        first_name: json["public_ref"],
+        association_role_id: json["association_role_id"],
+        first_name: json["first_name"],
         matricule: json["matricule"],
-        membre_code: json["hidden_ref"],
-        last_name: json["name"],
-        first_phone: json["card_name"],
-        second_phone: json["description"],
-        email: json["balance"],
-        residence: json["currency"],
-        country: json["foroti_balance"],
-        region: json["is_default"],
-        city: json["status"],
+        membre_code: json["membre_code"],
+        last_name: json["last_name"],
+        first_phone: json["first_phone"],
+        second_phone: json["second_phone"],
+        email: json["email"],
+        residence: json["residence"],
+        country: json["country"],
+        region: json["region"],
+        city: json["city"],
         hasid: json["hasid"],
         is_inscription_payed: json["is_inscription_payed"],
         inscription_status: json["inscription_status"],

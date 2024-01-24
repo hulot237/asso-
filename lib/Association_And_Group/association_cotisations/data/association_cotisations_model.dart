@@ -1,32 +1,35 @@
 import 'package:faroty_association_1/Association_And_Group/association_compte/data/association_compte_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/data/association_membres_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_model.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/association_tournoi_model.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
+import 'package:faroty_association_1/Association_And_Group/association_versement/data/association_versement_model.dart';
 
 class CotisationModel {
   int? id;
   String? cotisation_code;
   String? matricule;
   String? name;
-  bool? is_auto_sanction;
-  String? motif_sanction;
-  int? type_sanction;
-  String? libelle_sanction;
-  String? amount_sanction;
-  String? date_sanction;
   String? start_date;
+  String? cotisation_pay_link;
   String? end_date;
-  bool? is_active;
-  bool? is_passed;
-  bool? is_tontine;
-  int? type;
+  int? is_active;
+  int? is_passed;
+  int? is_tontine;
+  String? type;
   int? amount;
-  bool? is_cotisation_payed;
-  int? cotisation_status;
+  int? is_cotisation_payed;
+  String? cotisation_status;
   String? cotisation_balance;
+  int? ass_rubrique_cotisation_id;
+  int? ass_membre_id;
+  int? ass_seance_id;
+  int? ass_compte_id;
+  int? ass_tournoi_id;
+  int? short_link_id;
   MembresModel? membre;
   SeanceModel? seance;
-  CompteModel? compte;
+  List<VersemenModel>? versement;
+  int? type_event;
   String? created_at;
   String? updated_at;
 
@@ -35,12 +38,6 @@ class CotisationModel {
     this.cotisation_code,
     this.matricule,
     this.name,
-    this.is_auto_sanction,
-    this.motif_sanction,
-    this.type_sanction,
-    this.libelle_sanction,
-    this.amount_sanction,
-    this.date_sanction,
     this.start_date,
     this.end_date,
     this.is_active,
@@ -53,9 +50,17 @@ class CotisationModel {
     this.cotisation_balance,
     this.membre,
     this.seance,
-    this.compte,
     this.created_at,
     this.updated_at,
+    this.ass_compte_id,
+    this.ass_membre_id,
+    this.ass_rubrique_cotisation_id,
+    this.ass_seance_id,
+    this.ass_tournoi_id,
+    this.cotisation_pay_link,
+    this.short_link_id,
+    this.type_event,
+    this.versement,
   });
 
   factory CotisationModel.fromJson(Map<String, dynamic> json) =>
@@ -64,12 +69,6 @@ class CotisationModel {
         cotisation_code: json["cotisation_code"],
         matricule: json["matricule"],
         name: json["name"],
-        is_auto_sanction: json["is_auto_sanction"],
-        motif_sanction: json["motif_sanction"],
-        type_sanction: json["type_sanction"],
-        libelle_sanction: json["libelle_sanction"],
-        amount_sanction: json["amount_sanction"],
-        date_sanction: json["date_sanction"],
         start_date: json["start_date"],
         end_date: json["end_date"],
         is_active: json["is_active"],
@@ -86,10 +85,16 @@ class CotisationModel {
         seance: json['seance'] != null
             ? SeanceModel.fromJson(json["seance"])
             : null,
-        compte: json['compte'] != null
-            ? CompteModel.fromJson(json["compte"])
-            : null,
         created_at: json["created_at"],
         updated_at: json["updated_at"],
+        ass_compte_id: json["ass_compte_id"],
+        ass_membre_id: json["ass_membre_id"],
+        ass_rubrique_cotisation_id: json["ass_rubrique_cotisation_id"],
+        ass_seance_id: json["ass_seance_id"],
+        ass_tournoi_id: json["ass_tournoi_id"],
+        cotisation_pay_link: json["cotisation_pay_link"],
+        short_link_id: json["short_link_id"],
+        type_event: json["type_event"],
+        versement: json['versement'] != null ? (json['versement'] as List).map((e) => VersemenModel.fromJson(e)).toList(): null,
       );
 }

@@ -49,11 +49,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
     final detailSeance =
         await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
 
-    if (detailSeance != null) {
-      print("objectttttttttttttttttttttttttt  ${detailSeance}");
-      print(
-          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  ${context.read<SeanceCubit>().state.detailSeance}");
-    } else {
+    if (detailSeance != null) {} else {
       print("userGroupDefault null");
     }
   }

@@ -14,18 +14,20 @@ class WidgetCompteCard extends StatefulWidget {
   final String montantCompte;
   final String nomCompte;
   final String numeroCompte;
-  final Color couleur;
+  final String couleur;
 
   @override
   State<WidgetCompteCard> createState() => _WidgetCompteCardState();
 }
 
 class _WidgetCompteCardState extends State<WidgetCompteCard> {
+  
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width / 2.15,
       padding: EdgeInsets.all(5),
+      margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(15),
@@ -47,8 +49,9 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                 borderRadius: BorderRadius.circular(360),
                 // color: Colors.cyanAccent,
                 border: Border.all(
-                  width: 5,
-                  color: widget.couleur,
+                  width: 4,
+                  color: Color(int.parse('${widget.couleur}'.replaceAll('#', '0xff')))
+                  // color: widget.couleur,
                 )),
             margin: EdgeInsets.only(top: 5),
             child: Container(
@@ -58,9 +61,11 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                 "${formatMontantFrancais(double.parse(widget.montantCompte))} FCFA",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w300,
-                  color: widget.couleur,
+                  color: Color(int.parse('${widget.couleur}'.replaceAll('#', '0xff'))),
+
+                  // color: widget.couleur,
                 ),
               ),
             ),
@@ -97,7 +102,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                         "compte".tr(),
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontSize: 14,
+                          fontSize: 12,
                           color: AppColors.blackBlue,
                         ),
                       ),
@@ -105,10 +110,10 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                     Container(
                       margin: EdgeInsets.only(top: 5),
                       child: Text(
-                        " #${widget.numeroCompte}",
+                        " ${widget.numeroCompte}",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                          fontSize: 12,
                           color: AppColors.blackBlue,
                         ),
                       ),
@@ -124,7 +129,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 14,
+                    fontSize: 12,
                     color: AppColors.blackBlue,
                   ),
                 ),

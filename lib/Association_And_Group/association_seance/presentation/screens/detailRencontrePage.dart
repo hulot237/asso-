@@ -99,9 +99,6 @@ class _detailRencontrePageState extends State<detailRencontrePage>
         await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
 
     if (detailSeance != null) {
-      print("objectttttttttttttttttttttttttt  ${detailSeance}");
-      print(
-          "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  ${context.read<SeanceCubit>().state.detailSeance}");
     } else {
       print("userGroupDefault null");
     }
@@ -113,9 +110,6 @@ class _detailRencontrePageState extends State<detailRencontrePage>
         .detailContributionTontineCubit(codeContribution);
 
     if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
     } else {
       print("userGroupDefault null");
     }
@@ -128,9 +122,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
   @override
   Widget build(BuildContext context) {
     final currentAssCourant =
-        context.read<UserGroupCubit>().state.ChangeAssData;
+        context.read<UserGroupCubit>().state.changeAssData;
     final TabController _tabController = TabController(
-        length: currentAssCourant!['user_group']['is_tontine'] == true ? 3 : 2,
+        length: currentAssCourant!.user_group!.is_tontine == true ? 3 : 2,
         vsync: this);
     return PageScaffold(
       context: context,
@@ -180,7 +174,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                   ),
                 ),
                 tabs: [
-                  if (currentAssCourant!['user_group']['is_tontine'] == true)
+                  if (currentAssCourant.user_group!.is_tontine == true)
                     Container(
                       margin: EdgeInsets.only(bottom: 5),
                       child: Text("Tontines"),
@@ -200,7 +194,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  if (currentAssCourant!['user_group']['is_tontine'] == true)
+                  if (currentAssCourant.user_group!.is_tontine == true)
                     BlocBuilder<SeanceCubit, SeanceState>(
                       builder: (context, state) {
                         if (state.isLoading == null || state.isLoading == true)
@@ -235,8 +229,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                             context
                                                     .read<UserGroupCubit>()
                                                     .state
-                                                    .ChangeAssData![
-                                                "user_group"]["configs"],
+                                                    .changeAssData!.user_group!.configs,
                                             context
                                                 .read<AuthCubit>()
                                                 .state
@@ -305,7 +298,11 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Container(
-                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/6),
+                                      padding: EdgeInsets.only(
+                                          top: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              6),
                                       alignment: Alignment.topCenter,
                                       child: Text(
                                         "Aucune Tontine".tr(),
@@ -353,52 +350,45 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
                                     child: WidgetCotisation(
-                                      montantCotisations:
-                                          ItemDetailCotisation["amount"],
-                                      motifCotisations:
-                                          ItemDetailCotisation["name"],
-                                      dateCotisation:
-                                          ItemDetailCotisation["start_date"],
-                                      heureCotisation: AppCubitStorage()
-                                                  .state
-                                                  .Language ==
-                                              "fr"
-                                          ? formatTimeToFrench(
-                                              ItemDetailCotisation[
-                                                  "start_date"])
-                                          : formatTimeToEnglish(
-                                              ItemDetailCotisation[
-                                                  "start_date"]),
-                                      soldeCotisation: ItemDetailCotisation[
-                                          "cotisation_balance"],
-                                      codeCotisation: ItemDetailCotisation[
-                                          "cotisation_code"],
-                                      type: ItemDetailCotisation["type"],
-                                      lienDePaiement: ItemDetailCotisation[
-                                                  "cotisation_pay_link"] ==
-                                              null
-                                          ? "le lien n'a pas été généré"
-                                          : ItemDetailCotisation[
-                                              "cotisation_pay_link"],
-                                      is_passed:
-                                          ItemDetailCotisation["is_passed"],
-                                      is_tontine:
-                                          ItemDetailCotisation["is_tontine"],
-                                      source: ItemDetailCotisation["seance"] ==
-                                              null
-                                          ? ''
-                                          : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
-                                      nomBeneficiaire: ItemDetailCotisation[
-                                                  "membre"] ==
-                                              null
-                                          ? ''
-                                          : ItemDetailCotisation["membre"]
-                                                      ["last_name"] ==
-                                                  null
-                                              ? "${ItemDetailCotisation["membre"]["first_name"]}"
-                                              : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
-                                    ),
-                                  );
+                                        montantCotisations:
+                                            ItemDetailCotisation["amount"],
+                                        motifCotisations:
+                                            ItemDetailCotisation["name"],
+                                        dateCotisation:
+                                            ItemDetailCotisation["start_date"],
+                                        heureCotisation: AppCubitStorage().state.Language == "fr"
+                                            ? formatTimeToFrench(ItemDetailCotisation[
+                                                "start_date"])
+                                            : formatTimeToEnglish(
+                                                ItemDetailCotisation[
+                                                    "start_date"]),
+                                        soldeCotisation: ItemDetailCotisation[
+                                            "cotisation_balance"],
+                                        codeCotisation: ItemDetailCotisation[
+                                            "cotisation_code"],
+                                        type: ItemDetailCotisation["type"],
+                                        lienDePaiement:
+                                            ItemDetailCotisation["cotisation_pay_link"] == null
+                                                ? "le lien n'a pas été généré"
+                                                : ItemDetailCotisation[
+                                                    "cotisation_pay_link"],
+                                        is_passed:
+                                            ItemDetailCotisation["is_passed"],
+                                        is_tontine:
+                                            ItemDetailCotisation["is_tontine"],
+                                        source: ItemDetailCotisation["seance"] == null
+                                            ? ''
+                                            : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
+                                        nomBeneficiaire: ItemDetailCotisation["membre"] ==
+                                                null
+                                            ? ''
+                                            : ItemDetailCotisation["membre"]
+                                                        ["last_name"] ==
+                                                    null
+                                                ? "${ItemDetailCotisation["membre"]["first_name"]}"
+                                                : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
+                                        rubrique: ItemDetailCotisation["ass_rubrique"] == null ? "" : ItemDetailCotisation["ass_rubrique"]["name"],
+                                   ) );
                                 },
                               ),
                             )
@@ -409,7 +399,11 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Container(
-                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/6),
+                                      padding: EdgeInsets.only(
+                                          top: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              6),
                                       alignment: Alignment.topCenter,
                                       child: Text(
                                         "aucune_cotisation".tr(),
@@ -494,7 +488,10 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 itemCount: 1,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(
-                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/6),
+                                    padding: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height /
+                                                6),
                                     alignment: Alignment.topCenter,
                                     child: Text(
                                       "aucune_sanction".tr(),

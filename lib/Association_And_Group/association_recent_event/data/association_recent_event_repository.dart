@@ -6,12 +6,10 @@ class RecentEventRepository {
   final dio = Dio();
   Future<Map<String, dynamic>> RecentEvent(codeMembre) async {
     try {
-    print("zzzeeezzzzz $codeMembre");
       log("response RecentEventRepository");
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/membre/$codeMembre/get-not-payed-events',
       );
-      print("dataRecentEventRepository      ${response.data["data"]}");
 
       final Map<String, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
@@ -19,7 +17,6 @@ class RecentEventRepository {
       return dataJson;
     } catch (e) {
       log('erreur RecentEventRepository rep');
-      print("RecentEventRepositoryRecentEventRepository  ${e}");
       return {};
     }
   }

@@ -64,10 +64,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
         await context.read<AuthCubit>().detailAuthCubit(userCode);
 
     if (allCotisationAss != null) {
-      print("objec===============ttt  ${allCotisationAss}");
-      print(
-          "éé22==============ssssssssssssssssssssssssss=222  ${context.read<AuthCubit>().state.detailUser}");
-    } else {
+      } else {
       print("userGroupDefault null");
     }
   }
@@ -79,9 +76,6 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
         .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
 
     if (allCotisationAss != null) {
-      print("objec===============ttt  ${allCotisationAss}");
-      print(
-          "éé22==============ssssssssssssssssssssssssss=222  ${context.read<AuthCubit>().state.detailUser}");
     } else {
       print("userGroupDefault null");
     }

@@ -42,8 +42,6 @@ class widgetDetailCotisationCard extends StatefulWidget {
 
 class _widgetDetailCotisationCardState
     extends State<widgetDetailCotisationCard> {
-
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -125,9 +123,13 @@ class _widgetDetailCotisationCardState
                                     .detailCotisation;
                             return Column(
                               children: [
-                                if (currentDetailCotisation!["members"].length >0)
-                                  for (var itemDetailCotisation in currentDetailCotisation!["members"])
-                                    if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
+                                if (currentDetailCotisation!["members"].length >
+                                    0)
+                                  for (var itemDetailCotisation
+                                      in currentDetailCotisation!["members"])
+                                    if (itemDetailCotisation["membre"]
+                                            ["membre_code"] ==
+                                        AppCubitStorage().state.membreCode)
                                       GestureDetector(
                                         onTap: () async {
                                           String msg =
@@ -140,8 +142,8 @@ class _widgetDetailCotisationCardState
                                         },
                                         child: widget.isPassed == 0
                                             ? Container(
-                                              alignment: Alignment.center,
-                        width: 72,
+                                                alignment: Alignment.center,
+                                                width: 72,
                                                 padding: EdgeInsets.only(
                                                   left: 8,
                                                   right: 8,
@@ -159,7 +161,7 @@ class _widgetDetailCotisationCardState
                                                       color: AppColors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      fontSize: 13),
+                                                      fontSize: 12),
                                                 ),
                                               )
                                             : Column(
@@ -176,8 +178,9 @@ class _widgetDetailCotisationCardState
                                                       );
                                                     },
                                                     child: Container(
-                                                      alignment: Alignment.center,
-                        width: 72,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      width: 72,
                                                       padding: EdgeInsets.only(
                                                         left: 8,
                                                         right: 8,
@@ -185,7 +188,8 @@ class _widgetDetailCotisationCardState
                                                         bottom: 5,
                                                       ),
                                                       decoration: BoxDecoration(
-                                                        color: AppColors.colorButton,
+                                                        color: AppColors
+                                                            .colorButton,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15),
@@ -197,7 +201,8 @@ class _widgetDetailCotisationCardState
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontSize: 12,
-                                                            color: AppColors.white,
+                                                            color:
+                                                                AppColors.white,
                                                           ),
                                                         ),
                                                       ),
@@ -226,11 +231,14 @@ class _widgetDetailCotisationCardState
                                                 ],
                                               ),
                                       ),
-                                if (currentDetailCotisation!["versements"].length > 0)
-                                  for (var itemDetailCotisation in currentDetailCotisation!["versements"])
-                                    if (itemDetailCotisation["membre_code"] == AppCubitStorage().state.membreCode)
-                                    Container(),
-                                      
+                                if (currentDetailCotisation!["versements"]
+                                        .length >
+                                    0)
+                                  for (var itemDetailCotisation
+                                      in currentDetailCotisation!["versements"])
+                                    if (itemDetailCotisation["membre_code"] ==
+                                        AppCubitStorage().state.membreCode)
+                                      Container(),
                               ],
                             );
                           },
@@ -313,8 +321,7 @@ class _widgetDetailCotisationCardState
                                         style: TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold,
-                                          color:
-                                              AppColors.blackBlue,
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                       margin: EdgeInsets.only(right: 5),
@@ -340,9 +347,13 @@ class _widgetDetailCotisationCardState
                                   .detailCotisation;
                           return Column(
                             children: [
-                              if (currentDetailCotisation!["versements"].length > 0)
-                                for (var itemDetailCotisation in currentDetailCotisation!["versements"])
-                                  if (itemDetailCotisation["membre_code"] == AppCubitStorage().state.membreCode)
+                              if (currentDetailCotisation!["versements"]
+                                      .length >
+                                  0)
+                                for (var itemDetailCotisation
+                                    in currentDetailCotisation!["versements"])
+                                  if (itemDetailCotisation["membre_code"] ==
+                                      AppCubitStorage().state.membreCode)
                                     GestureDetector(
                                       onTap: () {
                                         Modal().showModalTransactionByEvent(
@@ -386,16 +397,25 @@ class _widgetDetailCotisationCardState
                                         ),
                                       ),
                                     ),
-                              if (currentDetailCotisation!["members"].length > 0)
-                                for (var itemDetailCotisation in currentDetailCotisation!["members"])
-                                  if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
+                              if (currentDetailCotisation!["members"].length >
+                                  0)
+                                for (var itemDetailCotisation
+                                    in currentDetailCotisation!["members"])
+                                  if (itemDetailCotisation["membre"]
+                                          ["membre_code"] ==
+                                      AppCubitStorage().state.membreCode)
                                     GestureDetector(
                                       onTap: () {
                                         Modal().showModalTransactionByEvent(
                                             // context, itemDetailCotisation["members"]["versement"]!=null? itemDetailCotisation["members"]["versement"] : [], '${widget.montantCotisations}');
                                             // context, itemDetailCotisation["versement"]!=null? itemDetailCotisation["versement"] : [], '${widget.montantCotisations}');
                                             context,
-                                            itemDetailCotisation["membre"]["versement"] == null ? [] : itemDetailCotisation["membre"]["versement"],
+                                            itemDetailCotisation["membre"]
+                                                        ["versement"] ==
+                                                    null
+                                                ? []
+                                                : itemDetailCotisation["membre"]
+                                                    ["versement"],
                                             '${widget.montantCotisations}');
                                       },
                                       child: Container(
@@ -434,11 +454,13 @@ class _widgetDetailCotisationCardState
                           );
                         }),
                         checkTransparenceStatus(
-                    context
+                                context
                         .read<UserGroupCubit>()
-                        .state
-                        .ChangeAssData!["user_group"]["configs"],
-                    context.read<AuthCubit>().state.detailUser!["isMember"])
+                        .state.changeAssData!.user_group!.configs,
+                                context
+                                    .read<AuthCubit>()
+                                    .state
+                                    .detailUser!["isMember"])
                             ? GestureDetector(
                                 // onTap: () {
                                 //   Modal()
@@ -455,8 +477,7 @@ class _widgetDetailCotisationCardState
                                           style: TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
-                                            color:
-                                                AppColors.blackBlue,
+                                            color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
@@ -598,11 +619,10 @@ class _widgetDetailCotisationCardState
                     ),
                   ),
                   if (checkTransparenceStatus(
-                    context
+                      context
                         .read<UserGroupCubit>()
-                        .state
-                        .ChangeAssData!["user_group"]["configs"],
-                    context.read<AuthCubit>().state.detailUser!["isMember"]))
+                        .state.changeAssData!.user_group!.configs,
+                      context.read<AuthCubit>().state.detailUser!["isMember"]))
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

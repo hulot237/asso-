@@ -63,7 +63,6 @@ class _RetraitPageState extends State<RetraitPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(context.read<AuthCubit>().state.detailUser);
   }
 
   @override

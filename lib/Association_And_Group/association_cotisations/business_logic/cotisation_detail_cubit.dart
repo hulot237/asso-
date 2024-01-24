@@ -28,7 +28,6 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
           ),
         );
 
-        print("DetailSeance Cubit ok");
 
         return true;
       } else {

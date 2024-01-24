@@ -18,14 +18,10 @@ class DetailTournoiCourantRepository {
 
       final Map<String, dynamic> dataJson = response.data["data"];
 
-      print(
-          "dataJsozzzzzzzzzzzzzT      ${response.data["data"]["tournois"]["seance"]}");
-
       log('Okay DetailTournoiCourant rep');
       return dataJson;
     } catch (e) {
       log('erreur DetailTournoiCourant rep');
-      print(e);
       return {};
     }
   }
@@ -42,8 +38,6 @@ class DetailTournoiCourantRepository {
       );
 
       final List<dynamic> dataJson = response.data["data"];
-
-      print("AllTournoiAsseeeeeeeee      ${response.data["data"]}");
 
       log('Okay AllTournoiAss rep');
       return dataJson;
@@ -63,8 +57,6 @@ class DetailTournoiCourantRepository {
       );
 
       final Map<String, dynamic> dataJson = response.data["data"];
-
-      print("ChangeTournoiiiiiiiiiiiiiiiiiiiii      ${response.data["data"]}");
 
       log('Okay ChangeTournoi rep');
       return dataJson;

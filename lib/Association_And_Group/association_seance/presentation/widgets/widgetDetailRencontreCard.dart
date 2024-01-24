@@ -334,8 +334,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               if (checkTransparenceStatus(
                                   context
                                       .read<UserGroupCubit>()
-                                      .state
-                                      .ChangeAssData!["user_group"]["configs"],
+                                      .state.changeAssData!.user_group!.configs,
                                   context
                                       .read<AuthCubit>()
                                       .state
@@ -383,8 +382,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                             if (checkTransparenceStatus(
                                 context
                                     .read<UserGroupCubit>()
-                                    .state
-                                    .ChangeAssData!["user_group"]["configs"],
+                                    .state.changeAssData!.user_group!.configs,
                                 context
                                     .read<AuthCubit>()
                                     .state

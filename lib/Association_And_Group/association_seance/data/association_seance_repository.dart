@@ -7,13 +7,10 @@ class SeanceRepository {
 
   Future<Map<String, dynamic>> DetailSeance(codeSeance) async {
     try {
-      print("zzzeeerrrtttyyy $codeSeance");
       log("response DetailSeance");
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/seance/$codeSeance/show',
       );
-      print("dataJsoauauauauuauauauauauuauau      ${response.data["data"]}");
-
       final Map<String, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
       log('Okay DetailSeance rep');
@@ -29,20 +26,16 @@ class SeanceRepository {
 
   Future<List<dynamic>> AllSeanceAss(codeAss) async {
     try {
-      print("zzzeeerrrtttyyy $codeAss");
       log("response DetailSeance");
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/seance/$codeAss',
       );
-      print("dataJsoàààààààààààààààààààààààààààààà      ${response.data["data"]}");
-
       final List<dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
       log('Okay DetailSeance rep');
       return dataJson;
     } catch (e) {
       log('erreur DetailSeance rep');
-      print(e);
       return [];
     }
   }

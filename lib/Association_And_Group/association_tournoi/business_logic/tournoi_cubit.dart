@@ -1,7 +1,7 @@
 import 'package:faroty_association_1/Association_And_Group/association/business_logic/delivery_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association/data/association_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/association_tournoi_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -18,6 +18,7 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
         );
 
   Future<bool> detailTournoiCourantCubit(codeTournoiDefaul) async {
+    print("cdcdcdcdcdcdcdcdcdcdcdcdcdcdc");
     emit(
       state.copyWith(
         isloading: true,

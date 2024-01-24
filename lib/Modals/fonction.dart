@@ -67,17 +67,6 @@ String formatCompareDateReturnWellValue(String endDate, ) {
 
   Duration diff = endDateApi.difference(dt2);
 
-  print(diff.inDays);
-//output (in days): 1198
-
-  print(diff.inHours);
-//output (in hours): 28752
-
-  print(diff.inMinutes);
-//output (in minutes): 1725170
-
-  print(diff.inSeconds);
-//output (in seconds): 103510200
 
   if (endDateApi.compareTo(dt2) == 0) {
     return ("À l'instant".tr());
@@ -129,17 +118,6 @@ String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
 
   Duration diff = endDateApi.difference(dt2);
 
-  print(diff.inDays);
-//output (in days): 1198
-
-  print(diff.inHours);
-//output (in hours): 28752
-
-  print(diff.inMinutes);
-//output (in minutes): 1725170
-
-  print(diff.inSeconds);
-//output (in seconds): 103510200
 
   if (endDateApi.compareTo(dt2) == 0) {
     return ("À l'instant".tr());

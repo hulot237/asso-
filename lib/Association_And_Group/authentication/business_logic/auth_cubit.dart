@@ -16,11 +16,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<bool> detailAuthCubit(userCode) async {
     emit(state.copyWith(
-      isloadingdetailuser: true,
-      isloading: true,
-      detailuser: state.detailUser,
-      istruenomber: state.isTrueNomber,
-      logininfo: state.loginInfo,
+      isLoadingDetailUser: true,
+      isLoading: true,
+      detailUser: state.detailUser,
+      isTrueNomber: state.isTrueNomber,
+      loginInfo: state.loginInfo,
     ));
     try {
       final data = await AuthRepository().UserDetail(userCode);
@@ -28,11 +28,11 @@ class AuthCubit extends Cubit<AuthState> {
       if (data != null) {
         emit(
           state.copyWith(
-            detailuser: data,
-            logininfo: state.loginInfo,
-            isloading: false,
-            istruenomber: state.isTrueNomber,
-            isloadingdetailuser: false,
+            detailUser: data,
+            loginInfo: state.loginInfo,
+            isLoading: false,
+            isTrueNomber: state.isTrueNomber,
+            isLoadingDetailUser: false,
           ),
         );
 
@@ -41,11 +41,11 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         emit(
           state.copyWith(
-            detailuser: {},
-            logininfo: state.loginInfo,
-            isloading: false,
-            istruenomber: state.isTrueNomber,
-            isloadingdetailuser: false,
+            detailUser: {},
+            loginInfo: state.loginInfo,
+            isLoading: false,
+            isTrueNomber: state.isTrueNomber,
+            isLoadingDetailUser: false,
           ),
         );
         return false;
@@ -53,75 +53,58 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(
         state.copyWith(
-          detailuser: {},
-          logininfo: state.loginInfo,
-          isloading: false,
-          istruenomber: state.isTrueNomber,
-          isloadingdetailuser: false,
+          detailUser: {},
+          loginInfo: state.loginInfo,
+          isLoading: false,
+          isTrueNomber: state.isTrueNomber,
+          isLoadingDetailUser: false,
         ),
       );
       return false;
     }
   }
 
-  Future<bool> ConfirmationCubit(codeConfirmation) async {
+  Future<void> confirmationCubit(codeConfirmation) async {
     emit(state.copyWith(
-      isloading: true,
-      isloadingdetailuser: false,
-      detailuser: state.detailUser,
-      istruenomber: state.isTrueNomber,
-      logininfo: state.loginInfo,
+      isLoading: true,
+      isLoadingDetailUser: false,
+      errorLoading: false,
+      successLoading: false
     ));
     try {
       final data =
           await AuthRepository().ConfirmationRepository(codeConfirmation);
 
-      if (data != null) {
-        emit(
-          state.copyWith(
-            logininfo: data,
-            detailuser: state.detailUser,
-            isloading: false,
-            istruenomber: state.isTrueNomber,
-            isloadingdetailuser: false,
-          ),
-        );
-
-        print("detailAuthCubittttttttttttttttttt Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            logininfo: {},
-            detailuser: state.detailUser,
-            isloading: false,
-            istruenomber: state.isTrueNomber,
-            isloadingdetailuser: false,
-          ),
-        );
-        return false;
-      }
+      emit(
+        state.copyWith(
+          loginInfo: data,
+          isLoading: false,
+          isLoadingDetailUser: false,
+          errorLoading: false,
+          successLoading: true,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
-          logininfo: {},
-          detailuser: state.detailUser,
-          isloading: false,
-          istruenomber: state.isTrueNomber,
-          isloadingdetailuser: false,
+          isLoading: false,
+          isLoadingDetailUser: false,
+          errorLoading: true,
+          message: e.toString(),
+          successLoading: false
         ),
       );
-      return false;
+      
     }
   }
 
   Future<bool> loginFirstCubit(phoneNumber, countryCode) async {
     emit(state.copyWith(
-      isloading: true,
-      isloadingdetailuser: false,
-      detailuser: state.detailUser,
-      istruenomber: state.isTrueNomber,
-      logininfo: state.loginInfo,
+      isLoading: true,
+      isLoadingDetailUser: false,
+      detailUser: state.detailUser,
+      isTrueNomber: state.isTrueNomber,
+      loginInfo: state.loginInfo,
     ));
     try {
       final data =
@@ -130,11 +113,11 @@ class AuthCubit extends Cubit<AuthState> {
       if (data != null) {
         emit(
           state.copyWith(
-            istruenomber: data,
-            logininfo: state.loginInfo,
-            detailuser: state.detailUser,
-            isloading: false,
-            isloadingdetailuser: false,
+            isTrueNomber: data,
+            loginInfo: state.loginInfo,
+            detailUser: state.detailUser,
+            isLoading: false,
+            isLoadingDetailUser: false,
           ),
         );
 
@@ -143,11 +126,11 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         emit(
           state.copyWith(
-            logininfo: {},
-            detailuser: state.detailUser,
-            istruenomber: true,
-            isloading: false,
-            isloadingdetailuser: false,
+            //loginInfo: {},
+            detailUser: state.detailUser,
+            isTrueNomber: true,
+            isLoading: false,
+            isLoadingDetailUser: false,
           ),
         );
         return false;
@@ -155,11 +138,11 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(
         state.copyWith(
-          logininfo: {},
-          detailuser: state.detailUser,
-          istruenomber: true,
-          isloading: false,
-          isloadingdetailuser: false,
+          //loginInfo: {},
+          detailUser: state.detailUser,
+          isTrueNomber: true,
+          isLoading: false,
+          isLoadingDetailUser: false,
         ),
       );
       return false;

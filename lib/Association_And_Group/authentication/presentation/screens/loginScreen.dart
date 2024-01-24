@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_token_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
 // import 'package:integration_part_two/pages/homeCoursier.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -48,28 +49,26 @@ class _LoginPageState extends State<LoginPage> {
   String numeroPhoneController = '';
   String countryCodeController = '237';
 
-  String retirerPlus(String indice){
-    if (indice.startsWith('+')){
+  String retirerPlus(String indice) {
+    if (indice.startsWith('+')) {
       return indice.substring(1);
     }
     return indice;
   }
 
   Future handleLogin() async {
-
     final allCotisationAss = await context
         .read<AuthCubit>()
         .loginFirstCubit(numeroPhoneController, countryCodeController);
 
     if (allCotisationAss != null) {
-      print("handleLogin~~  ${allCotisationAss}");
-      print("## ${context.read<AuthCubit>().state.isTrueNomber}");
       if (context.read<AuthCubit>().state.isTrueNomber == false) {
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => VerificationPage(
-                  numeroPhone: numeroPhoneController, countryCode: countryCodeController)),
+                  numeroPhone: numeroPhoneController,
+                  countryCode: countryCodeController)),
         );
       }
     } else {
@@ -107,7 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 70),
                         Text(
-                          "Entrer votre numéro pour obtenir le code d'authentification".tr(),
+                          "Entrer votre numéro pour obtenir le code d'authentification"
+                              .tr(),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -133,17 +133,25 @@ class _LoginPageState extends State<LoginPage> {
                               color: AppColors.blackBlueAccent1,
                             ),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                // gapPadding: 10
-                                borderSide: BorderSide(width: 2)),
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(width: 2),
+                            ),
                             counterStyle: TextStyle(color: AppColors.blackBlue),
                           ),
                           controller: countrycode,
                           initialCountryCode: 'CM',
+                          onCountryChanged: (Country){
+                            setState(() {
+                              countryCodeController =
+                                  retirerPlus(Country.dialCode);
+                            });
+                            print(Country.dialCode);
+                          },
                           onChanged: (phone) {
                             setState(() {
                               numeroPhoneController = phone.number;
-                              countryCodeController = retirerPlus(phone.countryCode);
+                              countryCodeController =
+                                  retirerPlus(phone.countryCode);
                             });
                             print(numeroPhoneController);
                             print(countryCodeController);

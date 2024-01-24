@@ -12,31 +12,27 @@ class UserGroupCubit extends Cubit<UserGroupState> {
           UserGroupState(
               userGroup: null,
               // userGroupDefault: null,
-              ChangeAssData: null,
+              changeAssData: null,
               isLoading: false),
         );
 
   Future<bool> AllUserGroupOfUserCubit(token) async {
     emit(
       state.copyWith(
-        isloading: true,
-        usergroup: state.userGroup,
-        changeassdata: state.ChangeAssData,
+        isLoading: true,
+        userGroup: state.userGroup,
+        changeAssData: state.changeAssData,
       ),
     );
     try {
       final data = await UserGroupRepository().AllGroupOfUser(token);
 
       if (data != null) {
-        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-        // print("data in cubit ${data.length}");
-
         emit(
           state.copyWith(
-            usergroup: data,
-            // usergroupdefault: state.userGroupDefault,
-            changeassdata: state.ChangeAssData, isloading: false,
+            userGroup: data,
+            changeAssData: state.changeAssData,
+            isLoading: false,
           ),
         );
 
@@ -45,10 +41,9 @@ class UserGroupCubit extends Cubit<UserGroupState> {
       } else {
         emit(
           state.copyWith(
-            usergroup: [],
-            changeassdata: state.ChangeAssData,
-            // usergroupdefault: state.userGroupDefault,
-            isloading: false,
+            userGroup: [],
+            changeAssData: state.changeAssData,
+            isLoading: false,
           ),
         );
         return false;
@@ -56,107 +51,39 @@ class UserGroupCubit extends Cubit<UserGroupState> {
     } catch (e) {
       emit(
         state.copyWith(
-          usergroup: [],
-          changeassdata: state.ChangeAssData,
-          // usergroupdefault: state.userGroupDefault,
-          isloading: false,
+          userGroup: [],
+          changeAssData: state.changeAssData,
+          isLoading: false,
         ),
       );
       return true;
     }
   }
 
-  // Future<bool> UserGroupDefaultCubit(codeAssDefaul) async {
-  //   try {
-  //     final data = await UserGroupRepository().UserGroupDefault(codeAssDefaul);
-
-  //     if (data != null) {
-  //       // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-  //       // print("UserGroupDefaultCubit data in cubittttttttt ${data}");
-
-  //       emit(
-  //         state.copyWith(
-  //           usergroupdefault: data,
-  //           usergroup: state.userGroup,
-  //           changeassdata: state.ChangeAssData,isloading: false,
-
-  //         ),
-  //       );
-
-  //       print("UserGroupDefaultCubit Cubit ok");
-  //       return true;
-  //     } else {
-  //       emit(
-  //         state.copyWith(
-  //           usergroupdefault: {},
-  //           usergroup: state.userGroup,
-  //           changeassdata: state.ChangeAssData,isloading: false,
-
-  //         ),
-  //       );
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     emit(
-  //       state.copyWith(
-  //         usergroupdefault: {},
-  //         usergroup: state.userGroup,
-  //           changeassdata: state.ChangeAssData,isloading: false,
-
-  //       ),
-  //     );
-  //     return true;
-  //   }
-  // }
-
-  Future<bool> ChangeAssCubit(codeAss) async {
+  Future<void> ChangeAssCubit(codeAss) async {
     emit(
       state.copyWith(
-        isloading: true,
-        usergroup: state.userGroup,
-        changeassdata: state.ChangeAssData,
+        isLoading: true,
+        userGroup: state.userGroup,
+        changeAssData: state.changeAssData,
       ),
     );
     try {
       final data = await UserGroupRepository().ChangerAss(codeAss);
 
-      if (data != null) {
-        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-        print(
-            "ChangeAssCubitChangeAssCubitChangeAssCubit data in cubittttttttt ${data}");
-
-        emit(
-          state.copyWith(
-            changeassdata: data,
-            // usergroupdefault: state.userGroupDefault,
-            usergroup: state.userGroup,
-            isloading: false,
-          ),
-        );
-
-        print("UserGroupDefaultCubit Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            changeassdata: {},
-            // usergroupdefault: state.userGroupDefault,
-            usergroup: state.userGroup, isloading: false,
-          ),
-        );
-        return false;
-      }
+      emit(
+        state.copyWith(
+          changeAssData: data,
+          userGroup: state.userGroup,
+          isLoading: false,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
-          changeassdata: {},
-          // usergroupdefault: state.userGroupDefault,
-          usergroup: state.userGroup, isloading: false,
+          isLoading: false,
         ),
       );
-      return true;
     }
   }
 }

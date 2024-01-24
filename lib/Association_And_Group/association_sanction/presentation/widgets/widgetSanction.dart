@@ -39,7 +39,8 @@ class _WidgetSanctionState extends State<WidgetSanction> {
     return GestureDetector(
       onTap: () {
         if (widget.typeSaction == "1")
-          Modal().showModalTransactionByEvent(context, widget.versement, widget.montantSanction);
+          Modal().showModalTransactionByEvent(
+              context, widget.versement, widget.montantSanction);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
@@ -49,11 +50,12 @@ class _WidgetSanctionState extends State<WidgetSanction> {
             border: Border(
               left: BorderSide(
                   width: 8,
-                  color:
-                      widget.isSanctionPayed == 0 ? AppColors.red : AppColors.green),
+                  color: widget.isSanctionPayed == 0
+                      ? AppColors.red
+                      : AppColors.green),
             ),
           ),
-          padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+          padding: EdgeInsets.only(left: 10, right: 10),
           width: MediaQuery.of(context).size.width,
           child: Row(
             children: [
@@ -79,7 +81,11 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                   Container(
                                     margin: EdgeInsets.only(bottom: 7),
                                     child: Text(
-                                    widget.isSanctionPayed == 1 ?  formatDateLiteral(widget.dateSanction) : formatCompareDateReturnWellValueSanctionRecent(widget.dateSanction),
+                                      widget.isSanctionPayed == 1
+                                          ? formatDateLiteral(
+                                              widget.dateSanction)
+                                          : formatCompareDateReturnWellValueSanctionRecent(
+                                              widget.dateSanction),
                                       style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
@@ -92,7 +98,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                       "${widget.motifSanction}",
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w600),
                                     ),
@@ -108,19 +114,24 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.only(bottom: 5),
+                                    padding: EdgeInsets.only(bottom: 2),
                                     child: Text(
                                       "a_payer".tr(),
-                                      style: TextStyle(fontSize: 12, color: AppColors.blackBlue),
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                   Container(
                                     child: Text(
                                       "${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA",
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w800,
-                                          color: AppColors.red,),
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w900,
+                                        color: AppColors.red,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -158,20 +169,24 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                     child: Row(
                                       children: [
                                         Container(
-                                          child:
-                                              Text("voulez_vous_payer?".tr(), style: TextStyle(
-                                                color: AppColors.blackBlue,
-                                              ),),
-                                          margin: EdgeInsets.only(right: 10),
+                                          child: Text(
+                                            "voulez_vous_payer?".tr(),
+                                            style: TextStyle(
+                                              color: AppColors.blackBlue,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w900,
+                                            ),
+                                          ),
+                                          margin: EdgeInsets.only(right: 5),
                                         ),
                                         Container(
                                           alignment: Alignment.center,
-                        width: 72,
+                                          width: 45,
                                           padding: EdgeInsets.only(
-                                              left: 8,
-                                              right: 8,
-                                              top: 5,
-                                              bottom: 5),
+                                              // left: 2,
+                                              // right: 2,
+                                              top: 2,
+                                              bottom: 2),
                                           decoration: BoxDecoration(
                                             color: AppColors.colorButton,
                                             borderRadius:
@@ -191,20 +206,24 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                 ),
                                 Container(
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.only(bottom: 5),
+                                        padding: EdgeInsets.only(bottom: 2),
                                         child: Text(
                                           "déjà_payé".tr(),
-                                          style: TextStyle(fontSize: 12, color: AppColors.blackBlue),
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: AppColors.blackBlueAccent1,
+                                              fontWeight: FontWeight.w700),
                                         ),
                                       ),
                                       Container(
                                         child: Text(
                                           "${formatMontantFrancais(double.parse(widget.montantPayeeSanction))} FCFA",
                                           style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w800,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w900,
                                               color: AppColors.green),
                                         ),
                                       )
@@ -229,18 +248,23 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.only(bottom: 5),
+                                            padding: EdgeInsets.only(bottom: 2),
                                             child: Text(
                                               "a_payer".tr(),
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
                                           ),
                                           Container(
                                             child: Text(
                                               "${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA",
                                               style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w900,
                                                   color: AppColors.green),
                                             ),
                                           )
@@ -253,18 +277,20 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                             CrossAxisAlignment.end,
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.only(bottom: 5),
+                                            padding: EdgeInsets.only(bottom: 2),
                                             child: Text(
                                               "déjà_payé".tr(),
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 10,
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.w700,),
                                             ),
                                           ),
                                           Container(
                                             child: Text(
                                               "${formatMontantFrancais(double.parse(widget.montantPayeeSanction))} FCFA",
                                               style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w900,
                                                   color: AppColors.green),
                                             ),
                                           )

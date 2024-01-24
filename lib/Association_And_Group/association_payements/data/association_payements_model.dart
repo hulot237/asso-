@@ -3,7 +3,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_membres/data/association_membres_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_sanction/data/association_saction_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_model.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/association_tournoi_model.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_versement/data/association_versement_model.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
 

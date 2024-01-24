@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/presentation/screens/notification_page.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
@@ -50,12 +53,15 @@ class _SettingScreenState extends State<SettingScreen> {
         .changeTournoiCubit(codeTournoi, AppCubitStorage().state.codeAssDefaul);
 
     if (allCotisationAss != null) {
-      print("objec~~~~~~~~ttt  ${allCotisationAss}");
-      print(
-          "éé22222~~~~~~~~  ${context.read<DetailTournoiCourantCubit>().state.changeTournoi}");
     } else {
       print("userGroupDefault null");
     }
+  }
+
+  Future<void> getNotification() async {
+    await context.read<NotificationCubit>().getNotification(
+        AppCubitStorage().state.tokenUser,
+        AppCubitStorage().state.codeAssDefaul);
   }
 
   Future<void> handleDetailUser(userCode) async {
@@ -70,11 +76,18 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    getNotification();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserGroupCubit, UserGroupState>(
         builder: (userGroupContext, userGroupState) {
       if (userGroupState.isLoading == true ||
-          userGroupState.ChangeAssData == null)
+          userGroupState.changeAssData == null)
         return Container(
             child: EasyLoader(
           backgroundColor: Color.fromARGB(0, 255, 255, 255),
@@ -85,7 +98,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         ));
       final currentInfoAllTournoiAssCourant =
-          userGroupContext.read<UserGroupCubit>().state.ChangeAssData;
+          userGroupContext.read<UserGroupCubit>().state.changeAssData;
       return BlocBuilder<AuthCubit, AuthState>(
           builder: (authContext, authState) {
         if (authState.isLoading == null || authState.isLoading == true)
@@ -131,40 +144,81 @@ class _SettingScreenState extends State<SettingScreen> {
                 },
                 child: Icon(Icons.arrow_back, color: AppColors.white),
               ),
-              // actions: [
-              //   Container(
-              //     child: Stack(
-              //       children: [
-              //         Container(
-              //           margin: EdgeInsets.only(right: 25, top: 15),
-              //           child: Icon(Icons.notifications_active_outlined,
-              //               color: AppColors.white),
-              //         ),
-              //         Positioned(
-              //           top: 12,
-              //           left: 12,
-              //           child: Container(
-              //             alignment: Alignment.center,
-              //             width: 15,
-              //             height: 15,
-              //             decoration: BoxDecoration(
-              //               borderRadius: BorderRadius.circular(360),
-              //               color: Colors.red,
-              //             ),
-              //             child: Text(
-              //               "100",
-              //               textAlign: TextAlign.center,
-              //               style: TextStyle(
-              //                   fontSize: 6,
-              //                   fontWeight: FontWeight.w700,
-              //                   color: AppColors.white),
-              //             ),
-              //           ),
-              //         )
-              //       ],
-              //     ),
-              //   )
-              // ],
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationPage(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 25, top: 15),
+                          child: Icon(Icons.notifications_active_outlined,
+                              color: AppColors.white),
+                        ),
+                        BlocBuilder<NotificationCubit, NotificationState>(
+                            builder: (NotificationContext, NotificationState) {
+                          if (NotificationState.isLoading == true &&
+                              NotificationState.notifications == null)
+                            return 
+                            Positioned(
+                              top: 12,
+                              left: 12,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 15,
+                                height: 15,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 0.1,
+                                  color: AppColors.blackBlue,
+                                ),
+                              ),
+                            );
+                          final currentNotifications = context
+                              .read<NotificationCubit>()
+                              .state
+                              .notifications;
+
+                          final noReadElt = currentNotifications!
+                              .where((elt) => elt.isReaded == 0)
+                              .toList();
+                          if (noReadElt.length > 0) {
+                            return 
+                            Positioned(
+                              top: 12,
+                              left: 12,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 15,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(360),
+                                  color: Colors.red,
+                                ),
+                                child: Text(
+                                  "${noReadElt.length}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 6,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white),
+                                ),
+                              ),
+                            );
+                          }
+                          return Container();
+                        })
+                      ],
+                    ),
+                  ),
+                )
+              ],
               // leading: Icon(Icons.arrow_back),
             ),
             body: Column(
@@ -499,8 +553,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   // context.read<ServiceCubit>().state.currentService!.id;
                                   Modal().showBottomSheetListTournoi(
                                     context,
-                                    currentInfoAllTournoiAssCourant![
-                                        "user_group"]["tournois"],
+                                    currentInfoAllTournoiAssCourant
+                                        .user_group!.tournois!,
                                   );
                                 },
                                 child: Container(
@@ -544,14 +598,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                         ),
                                       ),
                                       for (var item
-                                          in currentInfoAllTournoiAssCourant![
-                                              "user_group"]["tournois"])
-                                        if (item["tournois_code"] ==
+                                          in currentInfoAllTournoiAssCourant!
+                                              .user_group!.tournois!)
+                                        if (item.tournois_code ==
                                             AppCubitStorage()
                                                 .state
                                                 .codeTournois)
                                           Text(
-                                            'Tournoi #${item["matricule"]}',
+                                            'Tournoi #${item.matricule}',
                                             style: TextStyle(
                                               fontSize: 10,
                                               color: Color.fromARGB(
@@ -615,7 +669,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         ),
                                       ),
                                       Text(
-                                        "${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["matricule"]}",
+                                        "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
                                         style: TextStyle(
                                           fontSize: 10,
                                           color: Color.fromARGB(
@@ -692,6 +746,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ),
                                 ),
                               ),
+                              
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(

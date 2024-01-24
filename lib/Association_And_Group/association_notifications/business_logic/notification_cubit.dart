@@ -4,18 +4,20 @@
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
-import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/association_payements_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/data/notification_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/data/association_payements_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class tokenNotificationCubit extends Cubit<tokenNotificationState> {
-  tokenNotificationCubit()
+class NotificationCubit extends Cubit<NotificationState> {
+  NotificationCubit()
       : super(
-          tokenNotificationState(
+          NotificationState(
             tokenNotification: null,
+            notifications: null,
           ),
         );
 
@@ -25,17 +27,16 @@ class tokenNotificationCubit extends Cubit<tokenNotificationState> {
       if (token != null) {
         emit(
           state.copyWith(
-            tokennotification: token,
+            tokenNotification: token,
           ),
         );
 
-        print("tokennotification Cubit ok");
 
         return true;
       } else {
         emit(
           state.copyWith(
-            tokennotification: '',
+            tokenNotification: '',
           ),
         );
         return false;
@@ -43,10 +44,36 @@ class tokenNotificationCubit extends Cubit<tokenNotificationState> {
     } catch (e) {
       emit(
         state.copyWith(
-          tokennotification: '',
+          tokenNotification: '',
         ),
       );
       return true;
+    }
+  }
+
+  Future<void> getNotification(tokenUser, codeAssociation) async {
+    emit(state.copyWith(
+      isLoading: true,
+      notifications: state.notifications
+    ));
+    try {
+      final data =
+          await NotificationRepository().getNotification(tokenUser, codeAssociation);
+
+      emit(
+        state.copyWith(
+          notifications: data,
+          isLoading: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          messageError: e.toString(),
+        ),
+      );
+      
     }
   }
 }

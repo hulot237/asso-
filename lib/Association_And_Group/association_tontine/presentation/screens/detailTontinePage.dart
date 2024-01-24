@@ -87,10 +87,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
         .detailContributionTontineCubit(codeContribution);
 
     if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
-    } else {
+      } else {
       print("userGroupDefault null");
     }
   }
@@ -226,9 +223,6 @@ class _DetailTontinePageState extends State<DetailTontinePage>
               ),
             ),
             GestureDetector(
-              onTap: () {
-                print(context.read<TontineCubit>().state.detailTontine);
-              },
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 5),
@@ -278,16 +272,12 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                       final itemTontine = currentDetailTontineCard[index];
 
                       return GestureDetector(
-                        // onTap: (){
-                        //   print(itemTontine["code"],);
-                        // },
 
                         onTap: () {
                           if (checkTransparenceStatus(
                               context
                                   .read<UserGroupCubit>()
-                                  .state
-                                  .ChangeAssData!["user_group"]["configs"],
+                                  .state.changeAssData!.user_group!.configs,
                               context
                                   .read<AuthCubit>()
                                   .state
@@ -317,7 +307,8 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                       ? ""
                                       : itemTontine["membre"]["last_name"],
                               codeCotisation: itemTontine["code"],
-                            )),
+                            )
+                            ),
                       );
                     },
                   ),

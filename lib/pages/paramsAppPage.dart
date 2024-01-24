@@ -69,7 +69,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
     // TODO: implement initState
     super.initState();
     final dataBloc = context.read<AppCubitStorage>();
-    print("dddddddddddddddddddd ${AppCubitStorage().state}");
+    print("dddddddddddddddddddd ${AppCubitStorage().state.codeTournois}");
   }
 
   // Map<String, dynamic>? get dataLanguage {
@@ -126,18 +126,19 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ParamsAppPage(),
-                              ),
-                            );
-                            setState(() {
-                              context.setLocale(
+                            // Navigator.pop(context);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ParamsAppPage(),
+                            //   ),
+                            // );
+                            // setState(() {
+                             await context.setLocale(
                                 Locale("fr", "FR"),
                               );
-                            });
+                            // });
+                            print(context.locale.toString());
                             // AppCubitStorage().updateLanguage("fr");
                             await dataLanguage.updateLanguage('fr');
                           },
@@ -149,7 +150,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                               left: 20,
                             ),
                             margin: EdgeInsets.only(left: 10, bottom: 10),
-                            decoration: AppCubitStorage().state.Language == "fr"
+                            decoration: context.locale.toString() == "fr_FR"
                                 ? BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     color: AppColors.colorButton,
@@ -162,7 +163,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                   ),
                             child: Text(
                               "${"francais".tr()}",
-                              style: AppCubitStorage().state.Language == "fr"
+                              style: context.locale.toString() == "fr_FR"
                                   ? TextStyle(
                                       color: AppColors.white,
                                       fontWeight: FontWeight.bold,
@@ -178,25 +179,27 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ParamsAppPage(),
-                              ),
-                            );
-                            setState(() {
-                              context.setLocale(
+                            // Navigator.pop(context);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ParamsAppPage(),
+                            //   ),
+                            // );
+                            // setState(() {
+                             await context.setLocale(
                                 Locale("en", "US"),
                               );
-                            });
+                            // });
+                            print(context.locale.toString());
+
                             await AppCubitStorage().updateLanguage("en");
                           },
                           child: Container(
                             padding: EdgeInsets.only(
                                 top: 10, bottom: 10, left: 20, right: 20),
                             margin: EdgeInsets.only(left: 10, bottom: 10),
-                            decoration: AppCubitStorage().state.Language == "en"
+                            decoration: context.locale.toString() == "en_US"
                                 ? BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     color: AppColors.colorButton,
@@ -209,7 +212,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                   ),
                             child: Text(
                               "anglais".tr(),
-                              style: AppCubitStorage().state.Language == "en"
+                              style: context.locale.toString() == "en_US"
                                   ? TextStyle(
                                       color: AppColors.white,
                                       fontWeight: FontWeight.bold,
@@ -231,7 +234,6 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                   setState(() {
                     // print(e);
                     _customIconLangue = e;
-                    print(_customIconLangue);
                   });
                 },
               ),
@@ -356,19 +358,6 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            print(
-                                "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
-                            print(
-                                "success token   ${AppCubitStorage().state.tokenUser}");
-                            print(
-                                "success membre_code   ${AppCubitStorage().state.membreCode}");
-                            print(
-                                "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
-                            print(
-                                "membre is_member ${context.read<AuthCubit>().state.detailUser!["isMember"]}");
-                            print(
-                                "membre configs group ${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["configs"]}");
-
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -508,6 +497,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                     // print(e);
                     _customIconLangue = e;
                     print('_customIconLangue');
+                    print("Code token: ${AppCubitStorage().state.tokenUser}");
+                    print("Code ass: ${AppCubitStorage().state.codeAssDefaul}");
                   });
                 },
               ),
@@ -851,7 +842,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                 margin: EdgeInsets.only(bottom: 20),
                 // color: Colors.amber,
                 child: Text(
-                  "Version 1.0.1-beta",
+                  "Version 1.0.3-beta",
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                       color: Color.fromARGB(52, 20, 45, 99),

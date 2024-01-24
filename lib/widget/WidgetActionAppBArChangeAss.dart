@@ -55,7 +55,7 @@ class _WidgetActionAppBArChangeAssState
                     height: 25,
                     width: 25,
                     child: Image.network(
-                      "${Variables.LienAIP}${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"] == null ? "" : context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["profile_photo"]}",
+                      "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
                       fit: BoxFit.cover,
                     ),
                   ),

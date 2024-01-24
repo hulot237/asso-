@@ -3,6 +3,7 @@ import 'package:faroty_association_1/Association_And_Group/association_compte/bu
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
@@ -110,6 +111,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => MembreCubit(),
         ),
+        BlocProvider(
+          create: (context) => NotificationCubit(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -125,7 +129,6 @@ class MyApp extends StatelessWidget {
                   AppCubitStorage().state.codeAssDefaul == null
               ? LoginPage()
               : HomePage(),
-          // "/": (context) => LoginPage(),
           "/homepage": (context) => HomePage(),
         },
       ),

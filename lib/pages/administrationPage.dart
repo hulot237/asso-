@@ -150,7 +150,6 @@ class _AdministrationPageState extends State<AdministrationPage> {
         NavigationDelegate(
           onProgress: (int progress) {
             // Update loading bar.
-            print("zzzzzzzzzzz${progress}");
             setState(() {
               progression = progress;
             });

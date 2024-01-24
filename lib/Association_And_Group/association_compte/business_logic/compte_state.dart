@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:faroty_association_1/Association_And_Group/association_compte/data/association_compte_model.dart';
 
 class CompteState extends Equatable {
-  final List<dynamic>? allCompteAss;
+  final List<CompteModel>? allCompteAss;
   final bool isLoading;
 
   CompteState({
@@ -17,7 +18,7 @@ class CompteState extends Equatable {
 
   CompteState copyWith({
     // List<UserGroupCourantModel>? userGroupDefault,
-    List<dynamic>? allcompteAss,
+    List<CompteModel>? allcompteAss,
     required bool isloading,
   }) {
     return CompteState(

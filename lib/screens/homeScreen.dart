@@ -15,6 +15,7 @@ import 'package:faroty_association_1/Association_And_Group/association_seance/pr
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
@@ -24,6 +25,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnection.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
+import 'package:faroty_association_1/widget/widgetCallFunctionFailled.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,14 +110,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future handleChangeAss(codeAss) async {
     final allCotisationAss =
         await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
-
-    if (allCotisationAss != null) {
-      print("objec~~~~~~~~ttt  ${allCotisationAss}");
-      print(
-          "éé222sssssssssssssssssssssssssssssssssssssssssstttttttttttsssssss22~~~~~~~~");
-    } else {
-      print("userGroupDefault null");
-    }
   }
 
   Future handleRecentEvent(codeMembre) async {
@@ -123,8 +117,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         await context.read<RecentEventCubit>().AllRecentEventCubit(codeMembre);
 
     if (allRecentEvent != null) {
-      print("objec~~~~~~~~ttt  ${allRecentEvent}");
-      print("handleRecentEventhandleRecentEventhandleRecentEvent~~~~~~~~");
     } else {
       print("handleRecentEventhandleRecentEvent null");
     }
@@ -138,7 +130,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     handleChangeAss(AppCubitStorage().state.codeAssDefaul);
     handleDetailUser(AppCubitStorage().state.membreCode);
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
-    context.read<MembreCubit>().showMembersAss(AppCubitStorage().state.codeAssDefaul);
+    context
+        .read<MembreCubit>()
+        .showMembersAss(AppCubitStorage().state.codeAssDefaul);
 
     super.initState();
   }
@@ -159,26 +153,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-                child: EasyLoader(
-              backgroundColor: Color.fromARGB(0, 255, 255, 255),
-              iconSize: 50,
-              iconColor: AppColors.blackBlueAccent1,
-              image: AssetImage(
-                'assets/images/Groupe_ou_Asso.png',
+              child: EasyLoader(
+                backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                iconSize: 50,
+                iconColor: AppColors.blackBlueAccent1,
+                image: AssetImage(
+                  'assets/images/Groupe_ou_Asso.png',
+                ),
               ),
-            ));
+            );
           } else if (snapshot.hasError == snapshot.data) {
             return checkInternetConnectionPage();
           } else {
-            return BlocBuilder<UserGroupCubit, UserGroupState>(
-                builder: (UserGroupcontext, UserGroupstate) {
-              print(
-                  'UserGroupstate.ChangeAssData UserGroupstate.ChangeAssData ${UserGroupstate.ChangeAssData}');
-              print(
-                  'UserGroupstate.userGroup UserGroupstate.userGroup  ${UserGroupstate.userGroup}');
-              if (UserGroupstate.isLoading == true &&
-                  UserGroupstate.ChangeAssData == null &&
-                  UserGroupstate.userGroup == null)
+            return BlocBuilder<AuthCubit, AuthState>(
+                builder: (Authcontext, Authstate) {
+              if (Authstate.isLoading == true && Authstate.detailUser == null)
                 return Container(
                   child: EasyLoader(
                     backgroundColor: Color.fromARGB(0, 255, 255, 255),
@@ -189,13 +178,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
                 );
-              final DetailAss =
-                  UserGroupcontext.read<UserGroupCubit>().state.ChangeAssData;
-              return BlocBuilder<DetailTournoiCourantCubit,
-                  DetailTournoiCourantState>(
-                builder: (tournoisContext, tournoisState) {
-                  if (tournoisState.isLoading == true &&
-                      tournoisState.detailtournoiCourant == null)
+
+              return BlocBuilder<UserGroupCubit, UserGroupState>(
+                builder: (UserGroupcontext, UserGroupstate) {
+                  if (UserGroupstate.isLoading == true &&
+                      UserGroupstate.changeAssData == null &&
+                      UserGroupstate.userGroup == null)
                     return Container(
                       child: EasyLoader(
                         backgroundColor: Color.fromARGB(0, 255, 255, 255),
@@ -206,10 +194,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ),
                       ),
                     );
-                  final currentDetailtournoiCourant = context
-                      .read<DetailTournoiCourantCubit>()
+
+                  final DetailAss = UserGroupcontext.read<UserGroupCubit>()
                       .state
-                      .detailtournoiCourant;
+                      .changeAssData;
 
                   return Scaffold(
                     backgroundColor: AppColors.pageBackground,
@@ -234,14 +222,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   children: [
                                     Container(
                                       child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Expanded(
                                             child: Container(
                                               margin:
                                                   EdgeInsets.only(right: 13),
                                               child: Text(
-                                                "${DetailAss!["user_group"]["name"]}",
-                                                // nomAss,
+                                                "${DetailAss!.user_group!.name}",
+                                                // 'nomAss',
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   fontSize: 16,
@@ -285,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   width: 30,
                                                   child: Image.network(
                                                     // "zz",
-                                                    "${Variables.LienAIP}${DetailAss!["user_group"]["profile_photo"] == null ? "" : DetailAss!["user_group"]["profile_photo"]}",
+                                                    "${Variables.LienAIP}${DetailAss.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -315,37 +305,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 Container(
                                   width: MediaQuery.of(context).size.width,
                                   height: MediaQuery.of(context).size.height,
-                                  child: Image.network(
-                                    "${Variables.LienAIP}${DetailAss!["user_group"]["background_cover"] == null ? "" : DetailAss!["user_group"]["background_cover"]}",
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child:
+                                      Image.network(
+                                              "${Variables.LienAIP}${DetailAss.user_group!.background_cover == null ? "" : DetailAss.user_group!.background_cover}",
+                                              fit: BoxFit.cover,
+                                            )
                                 ),
                                 Container(
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color:
-                                            Color.fromARGB(62, 255, 255, 255),
-                                        spreadRadius: 1,
-                                        blurRadius: 15,
-                                        offset: const Offset(5, 5),
-                                      ),
-                                      const BoxShadow(
-                                          color:
-                                              Color.fromARGB(4, 255, 255, 255),
-                                          offset: Offset(-5, -5),
-                                          blurRadius: 15,
-                                          spreadRadius: 1),
-                                    ],
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color:
+                                    //         Color.fromARGB(62, 255, 255, 255),
+                                    //     spreadRadius: 1,
+                                    //     blurRadius: 15,
+                                    //     offset: const Offset(5, 5),
+                                    //   ),
+                                    //   const BoxShadow(
+                                    //       color:
+                                    //           Color.fromARGB(4, 255, 255, 255),
+                                    //       offset: Offset(-5, -5),
+                                    //       blurRadius: 15,
+                                    //       spreadRadius: 1),
+                                    // ],
                                     gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
                                       colors: [
-                                        Color.fromARGB(0, 85, 85, 85),
-                                        Color.fromARGB(70, 53, 53, 53),
-                                        Color.fromARGB(80, 63, 63, 63),
-                                        Color.fromARGB(221, 46, 46, 46),
+                                        Colors.transparent,
+                                        Colors.transparent,
+                                        Colors.transparent,
+                                        const Color.fromARGB(167, 150, 191, 53)
                                       ],
                                     ),
                                   ),
@@ -353,70 +344,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ]),
                             ),
                           ),
-                          if (currentDetailtournoiCourant!["tournois"] != null)
-                            if (currentDetailtournoiCourant["tournois"]
-                                        ["seance"]
-                                    .length >
-                                0)
-                              if (currentDetailtournoiCourant["tournois"]
-                                      ["seance"][0]["status"] ==
-                                  1)
-                                SliverPersistentHeader(
-                                  pinned: false,
-                                  floating: false,
-                                  delegate: FixedHeaderBar(
-                                    dateRencontreAPI:
-                                        currentDetailtournoiCourant["tournois"]
-                                            ["seance"][0]["date_seance"],
-                                    isActiveRencontre:
-                                        currentDetailtournoiCourant["tournois"]
-                                            ["seance"][0]["status"],
-                                    codeSeance:
-                                        currentDetailtournoiCourant["tournois"]
-                                            ["seance"][0]["seance_code"],
-                                    matriculeRencontre:
-                                        currentDetailtournoiCourant["tournois"]
-                                            ["seance"][0]["matricule"],
-                                    nomRecepteurRencontre:
-                                        currentDetailtournoiCourant["tournois"]
-                                                        ["seance"][0]["membre"]
-                                                    ["first_name"] ==
-                                                null
-                                            ? ""
-                                            : currentDetailtournoiCourant[
-                                                    "tournois"]["seance"][0]
-                                                ["membre"]["first_name"],
-                                    prenomRecepteurRencontre:
-                                        currentDetailtournoiCourant["tournois"]
-                                                        ["seance"][0]["membre"]
-                                                    ["last_name"] ==
-                                                null
-                                            ? ""
-                                            : currentDetailtournoiCourant[
-                                                    "tournois"]["seance"][0]
-                                                ["membre"]["last_name"],
-                                    photoProfilRecepteur:
-                                        currentDetailtournoiCourant["tournois"]
-                                                        ["seance"][0]["membre"]
-                                                    ["photo_profil"] ==
-                                                null
-                                            ? ""
-                                            : currentDetailtournoiCourant[
-                                                    "tournois"]["seance"][0]
-                                                ["membre"]["photo_profil"],
-                                    dateRencontre:
-                                        currentDetailtournoiCourant["tournois"]
-                                            ["seance"][0]["date_seance"],
-                                    heureRencontre:
-                                        currentDetailtournoiCourant["tournois"]
-                                            ["seance"][0]["heure_debut"],
-                                    lieuRencontre:
-                                        currentDetailtournoiCourant["tournois"]
-                                            ["seance"][0]["localisation"],
-                                    maxExtent: 215,
-                                    minExtent: 215,
-                                  ),
-                                ),
+                          SliverPersistentHeader(
+                            pinned: false,
+                            floating: false,
+                            delegate: FixedHeaderBar(
+                              maxExtent: 215,
+                              minExtent: 215,
+                            ),
+                          ),
                           SliverPersistentHeader(
                             pinned: true,
                             floating: false,
@@ -446,6 +381,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 );
+
+                              // if (state.isLoading == false &&
+                              //     state.allRecentEvent == {})
+                              //   return SliverToBoxAdapter(
+                              //     child: callFunctionFailled(
+                              //       reFunction: () => context
+                              //           .read<RecentEventCubit>()
+                              //           .AllRecentEventCubit(
+                              //             AppCubitStorage().state.membreCode,
+                              //           ),
+                              //     ),
+                              //   );
 
                               final currentRecentEvent = context
                                   .read<RecentEventCubit>()
@@ -485,6 +432,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               List<Widget> listWidgetCotisation =
                                   listeCotisation.map((monObjet) {
                                 return widgetRecentEventCotisation(
+                                  rublique: monObjet["ass_rubrique"] == null
+                                      ? ""
+                                      : '(${monObjet["ass_rubrique"]["name"]})',
                                   dateOpen: monObjet["start_date"],
                                   dateClose: monObjet["end_date"],
                                   montantCotisation: monObjet["amount"],
@@ -599,21 +549,46 @@ class SliverTabBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-
     return Stack(
       fit: StackFit.expand,
       children: [
         Container(
           padding: EdgeInsets.only(left: 10),
+          margin: EdgeInsets.only(top: 6),
           color: AppColors.whiteAccent,
           alignment: Alignment.centerLeft,
-          child: Text(
-            "Événements_récents".tr(),
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: AppColors.blackBlueAccent1),
-          ),
+          child: BlocBuilder<RecentEventCubit, RecentEventState>(
+              builder: (context, state) {
+            if (state.isLoading == true || state.allRecentEvent == null)
+              return Text(
+                "Événements_récents".tr(),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: AppColors.blackBlueAccent1),
+              );
+
+            final currentRecentEvent =
+                context.read<RecentEventCubit>().state.allRecentEvent;
+
+            final currentTontine = currentRecentEvent!["tontines"];
+            final currentCotisation = currentRecentEvent!["cotisations"];
+            final currentSanction = currentRecentEvent!["sanctions"];
+            int allLenght = currentTontine.length +
+                currentCotisation.length +
+                currentSanction.length;
+            if (allLenght == 0) {
+              return Container();
+            } else {
+              return Text(
+                "Événements_récents".tr(),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: AppColors.blackBlueAccent1),
+              );
+            }
+          }),
         ),
       ],
     );
@@ -632,31 +607,7 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
   FixedHeaderBar({
     required this.minExtent,
     required this.maxExtent,
-    required this.matriculeRencontre,
-    required this.nomRecepteurRencontre,
-    required this.prenomRecepteurRencontre,
-    required this.lieuRencontre,
-    required this.dateRencontre,
-    required this.heureRencontre,
-    required this.photoProfilRecepteur,
-    required this.codeSeance,
-    required this.isActiveRencontre,
-    required this.dateRencontreAPI,
   });
-  String nomRecepteurRencontre;
-  String photoProfilRecepteur;
-
-  String prenomRecepteurRencontre;
-  String dateRencontre;
-
-  String heureRencontre;
-
-  String lieuRencontre;
-
-  String matriculeRencontre;
-  String codeSeance;
-  int isActiveRencontre;
-  String dateRencontreAPI;
 
   @override
   final double minExtent;
@@ -667,7 +618,6 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // return Container();
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -675,7 +625,6 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
           padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top: 3),
           margin: EdgeInsets.only(left: 8, right: 8, top: 7),
           decoration: BoxDecoration(
-            // color: Colors.black87,
             color: AppColors.white,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
@@ -686,7 +635,6 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
             ],
           ),
           child: Container(
-            // width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
                 Container(
@@ -719,41 +667,117 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
                   ),
                 ),
                 BlocBuilder<DetailTournoiCourantCubit,
-                  DetailTournoiCourantState>(
-                builder: (tournoisContext, tournoisState) {
-                  if (tournoisState.isLoading == true ||
-                      tournoisState.detailtournoiCourant == null)
-                    return Container(
-                      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/13),
-                      child: EasyLoader(
-                        backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                        iconSize: 50,
-                        iconColor: AppColors.blackBlueAccent1,
-                        image: AssetImage(
-                          'assets/images/Groupe_ou_Asso.png',
+                    DetailTournoiCourantState>(
+                  builder: (tournoisContext, tournoisState) {
+                    if (tournoisState.isLoading == true ||
+                        tournoisState.detailtournoiCourant == null)
+                      return Container(
+                        margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 13),
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            'assets/images/Groupe_ou_Asso.png',
+                          ),
                         ),
-                      ),
-                    );
-                    return Container(
-                      margin: EdgeInsets.only(left: 7, right: 7, top: 5),
-                      child: WidgetRencontreCard(
-                        maskElt: true,
-                        codeSeance: codeSeance,
-                        dateRencontre: AppCubitStorage().state.Language == "fr"
-                            ? formatDateToFrench(dateRencontre)
-                            : formatDateToEnglish(dateRencontre),
-                        descriptionRencontre:
-                            '${'La rencontres, se tiendra le'.tr()} ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(dateRencontre) : formatDateToEnglish(dateRencontre)} ${"soyez donc present a".tr()} ${heureRencontre}',
-                        heureRencontre: heureRencontre,
-                        identifiantRencontre: matriculeRencontre,
-                        isActiveRencontre: isActiveRencontre,
-                        lieuRencontre: lieuRencontre,
-                        prenomRecepteurRencontre: prenomRecepteurRencontre,
-                        nomRecepteurRencontre: nomRecepteurRencontre,
-                        photoProfilRecepteur: photoProfilRecepteur,
-                        dateRencontreAPI: dateRencontreAPI,
-                      ),
-                    );
+                      );
+                    // if (tournoisState.isLoading == false &&
+                    //     tournoisState.detailtournoiCourant == {})
+                    //   return callFunctionFailled(
+                    //     reFunction: () => tournoisContext
+                    //         .read<DetailTournoiCourantCubit>()
+                    //         .detailTournoiCourantCubit(
+                    //           AppCubitStorage().state.codeTournois,
+                    //         ),
+                    //   );
+                    final currentDetailtournoiCourant = context
+                        .read<DetailTournoiCourantCubit>()
+                        .state
+                        .detailtournoiCourant;
+
+                    return currentDetailtournoiCourant!["tournois"] != null &&
+                            currentDetailtournoiCourant["tournois"]["seance"]
+                                    .length >
+                                0 &&
+                            currentDetailtournoiCourant["tournois"]["seance"][0]
+                                    ["status"] ==
+                                1
+                        ? Container(
+                            margin: EdgeInsets.only(left: 7, right: 7, top: 5),
+                            child: WidgetRencontreCard(
+                              maskElt: true,
+                              codeSeance:
+                                  currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["seance_code"],
+                              dateRencontre: AppCubitStorage().state.Language ==
+                                      "fr"
+                                  ? formatDateToFrench(
+                                      currentDetailtournoiCourant!["tournois"]
+                                          ["seance"][0]["date_seance"],
+                                    )
+                                  : formatDateToEnglish(
+                                      currentDetailtournoiCourant!["tournois"]
+                                          ["seance"][0]["date_seance"],
+                                    ),
+                              descriptionRencontre:
+                                  '${'La rencontres, se tiendra le'.tr()} ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"]) : formatDateToEnglish(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])} ${"soyez donc present a".tr()} ${currentDetailtournoiCourant["tournois"]["seance"][0]["heure_debut"]}',
+                              heureRencontre:
+                                  currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["heure_debut"],
+                              identifiantRencontre:
+                                  currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["matricule"],
+                              isActiveRencontre:
+                                  currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["status"],
+                              lieuRencontre:
+                                  currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["localisation"],
+                              prenomRecepteurRencontre:
+                                  currentDetailtournoiCourant["tournois"]
+                                                  ["seance"][0]["membre"]
+                                              ["last_name"] ==
+                                          null
+                                      ? ""
+                                      : currentDetailtournoiCourant["tournois"]
+                                          ["seance"][0]["membre"]["last_name"],
+                              nomRecepteurRencontre:
+                                  currentDetailtournoiCourant["tournois"]
+                                                  ["seance"][0]["membre"]
+                                              ["first_name"] ==
+                                          null
+                                      ? ""
+                                      : currentDetailtournoiCourant["tournois"]
+                                          ["seance"][0]["membre"]["first_name"],
+                              photoProfilRecepteur:
+                                  currentDetailtournoiCourant["tournois"]
+                                                  ["seance"][0]["membre"]
+                                              ["photo_profil"] ==
+                                          null
+                                      ? ""
+                                      : currentDetailtournoiCourant["tournois"]
+                                              ["seance"][0]["membre"]
+                                          ["photo_profil"],
+                              dateRencontreAPI:
+                                  currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["date_seance"],
+                            ),
+                          )
+                        : Container(
+                            margin: EdgeInsets.only(top: 50),
+                            child: Center(
+                              child: Text(
+                                "Pas de rencontre en cours".tr(),
+                                style: TextStyle(
+                                  color: Color.fromRGBO(20, 45, 99, 0.26),
+                                  fontWeight: FontWeight.w100,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          );
                   },
                 ),
               ],

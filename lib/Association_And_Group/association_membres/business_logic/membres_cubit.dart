@@ -23,8 +23,6 @@ class MembreCubit extends Cubit<MembreState> {
             isloading: false,
           ),
         );
-
-        print("DetailSeance Cubit ok");
         return true;
       } else {
         emit(

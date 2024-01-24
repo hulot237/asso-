@@ -1,4 +1,4 @@
-package com.example.faroty_association_1
+package com.faroty.groups
 
 import io.flutter.embedding.android.FlutterActivity
 

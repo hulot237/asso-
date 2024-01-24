@@ -23,12 +23,7 @@ class _MembersAssPageState extends State<MembersAssPage> {
     final detailCotisation =
         await context.read<MembreCubit>().showMembersAss(codeAssociation);
 
-    if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<MembreCubit>().state.allMembers}");
-    } else {
-      print("handleShowMembers null");
+    if (detailCotisation != null) {} else {
     }
   }
 
@@ -88,11 +83,11 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                   children: [
                                     CircleAvatar(
                                       backgroundImage: NetworkImage(
-                                        "${Variables.LienAIP}${itemMembers!["photo_profil"] == null ? "" : itemMembers!["photo_profil"]}",
+                                        "${Variables.LienAIP}${itemMembers!.photo_profil == null ? "" : itemMembers!.photo_profil}",
                                       ),
                                       radius: 25,
                                     ),
-                                    if (itemMembers["isSuperAdmin"] == true)
+                                    if (itemMembers.isSuperAdmin == true)
                                       Positioned(
                                         left: 35,
                                         child: Container(
@@ -123,14 +118,14 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        "${itemMembers["first_name"]} ${itemMembers["last_name"] == null ? '' : itemMembers["last_name"]}",
+                                        "${itemMembers.first_name} ${itemMembers.last_name == null ? '' : itemMembers.last_name}",
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
-                                      if (itemMembers["membre_code"] ==
+                                      if (itemMembers.membre_code ==
                                           AppCubitStorage().state.membreCode)
                                         Container(
                                           decoration: BoxDecoration(
@@ -161,16 +156,16 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                   ),
                                   Row(
                                     children: [
-                                      if (itemMembers["countrycode"] != 0)
+                                      if (itemMembers.countrycode != 0)
                                         Text(
-                                          "${itemMembers["countrycode"]}",
+                                          "${itemMembers.countrycode}",
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors.blackBlue,
                                           ),
                                         ),
                                       Text(
-                                        "${itemMembers["first_phone"]}",
+                                        "${itemMembers.first_phone}",
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: AppColors.blackBlue,
@@ -186,7 +181,7 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
-                                      "${itemMembers["membre_code"]}",
+                                      "${itemMembers.membre_code}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 11,

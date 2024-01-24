@@ -47,9 +47,6 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
         .detailContributionTontineCubit(codeContribution);
 
     if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
     } else {
       print("userGroupDefault null");
     }
@@ -60,8 +57,12 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
     return GestureDetector(
       onTap: () {
         if (checkTransparenceStatus(
-            context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]
-                ["configs"],
+            context
+                .read<UserGroupCubit>()
+                .state
+                .changeAssData!
+                .user_group!
+                .configs,
             context.read<AuthCubit>().state.detailUser!["isMember"])) {
           handleDetailContributionTontine(
             widget.codeCotisation,
@@ -72,7 +73,6 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
       },
       child: Column(
         children: [
-          
           Container(
             decoration: BoxDecoration(
               color: isPasseDate(widget.dateClose)
@@ -104,9 +104,10 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                           width: 11,
                           height: 11,
                           decoration: BoxDecoration(
-                          color: !isPasseDate(widget.dateClose) ?AppColors.colorButton:AppColors.red,
-                            borderRadius: BorderRadius.circular(360)
-                          ),
+                              color: !isPasseDate(widget.dateClose)
+                                  ? AppColors.colorButton
+                                  : AppColors.red,
+                              borderRadius: BorderRadius.circular(360)),
                         ),
                         Text(
                           'TONTINE'.tr(),
@@ -185,8 +186,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
-                                      color:
-                                          Color.fromRGBO(20, 45, 99, 0.534),
+                                      color: Color.fromRGBO(20, 45, 99, 0.534),
                                     ),
                                   ),
                                 ),
@@ -242,7 +242,9 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                           context
                               .read<UserGroupCubit>()
                               .state
-                              .ChangeAssData!["user_group"]["configs"],
+                              .changeAssData!
+                              .user_group!
+                              .configs,
                           context
                               .read<AuthCubit>()
                               .state

@@ -1,7 +1,7 @@
 import 'package:faroty_association_1/Association_And_Group/association_compte/data/association_compte_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/data/association_membres_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_model.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/association_tournoi_model.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
 
 class SanctionModel {
   int? id;

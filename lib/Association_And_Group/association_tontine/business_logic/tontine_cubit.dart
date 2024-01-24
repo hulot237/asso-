@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tontine/data/association_tontine_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/data/tontine_repository.dart';
 
 class TontineCubit extends Cubit<TontineState> {
   TontineCubit()

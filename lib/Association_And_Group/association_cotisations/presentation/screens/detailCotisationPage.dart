@@ -103,12 +103,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
-    } else {
-      print("userGroupDefault null");
+    if (detailCotisation != null) {} else {
     }
   }
 
@@ -118,9 +113,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
         .AllCotisationAssTournoiCubit(codeTournoi);
 
     if (allCotisationAss != null) {
-      print("handleAllCotisationAss");
     } else {
-      print("handleAllCotisationAss null");
     }
   }
 
@@ -154,8 +147,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
             checkTransparenceStatus(
                     context
                         .read<UserGroupCubit>()
-                        .state
-                        .ChangeAssData!["user_group"]["configs"],
+                        .state.changeAssData!.user_group!.configs,
                     context.read<AuthCubit>().state.detailUser!["isMember"])
                 ? Container(
                     // color: Colors.deepOrange,
@@ -551,8 +543,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
             checkTransparenceStatus(
                     context
                         .read<UserGroupCubit>()
-                        .state
-                        .ChangeAssData!["user_group"]["configs"],
+                        .state.changeAssData!.user_group!.configs,
                     context.read<AuthCubit>().state.detailUser!["isMember"])
                 ? BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
                     builder: (CotisationDetailcontext, CotisationDetailstate) {
@@ -585,8 +576,6 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                       List<Widget> listWidgetOkayCotis =
                           listeOkayCotisation.map((monObjet) {
                         return Card(
-                          // margin:
-                          // EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                           child: WidgetHistoriqueCotisation(
                             is_versement_finished:
                                 monObjet["versement"].length == 0

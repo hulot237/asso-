@@ -39,7 +39,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final currentDetailUser = context.read<AuthCubit>().state.detailUser;
-    print(currentDetailUser);
+
     return PageScaffold(
       context: context,
       child: Column(
@@ -59,45 +59,68 @@ class _AccountPageState extends State<AccountPage> {
             height: 170,
             child: Column(
               children: [
-                Column(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Container(
-                          width: 70,
-                          height: 70,
-                          child: Image.network(
-                            "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
-                            fit: BoxFit.cover,
-                          ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, left: 10),
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: AppColors.white,
                         ),
                       ),
                     ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 5, right: 5, top: 5),
-                            child: Text(
-                              "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w300,
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(right: 30),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 15, bottom: 3),
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
                                 color: AppColors.white,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  child: Image.network(
+                                    "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            Container(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: 5, right: 5, top: 5),
+                                    child: Text(
+                                      "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
+                                        color: AppColors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Container(
@@ -114,6 +137,9 @@ class _AccountPageState extends State<AccountPage> {
                               fontWeight: FontWeight.w600,
                               color: AppColors.whiteAccent1,
                             ),
+                          ),
+                          SizedBox(
+                            height: 2,
                           ),
                           Text(
                             "${currentDetailUser["type"] == "2" ? "Fondateur" : currentDetailUser["type"] == "3" ? "Membre" : "Super Admin"}",
@@ -134,6 +160,9 @@ class _AccountPageState extends State<AccountPage> {
                               fontWeight: FontWeight.w600,
                               color: AppColors.whiteAccent1,
                             ),
+                          ),
+                          SizedBox(
+                            height: 2,
                           ),
                           Text(
                             "${currentDetailUser["matricule"]}",
@@ -166,6 +195,9 @@ class _AccountPageState extends State<AccountPage> {
                                 color: AppColors.whiteAccent1,
                               ),
                             ),
+                            SizedBox(
+                              height: 2,
+                            ),
                             currentDetailUser["is_inscription_payed"] == 1
                                 ? Text(
                                     "payé".tr(),
@@ -195,6 +227,9 @@ class _AccountPageState extends State<AccountPage> {
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.red,
                                           ),
+                                        ),
+                                        SizedBox(
+                                          height: 2,
                                         ),
                                         Container(
                                             margin: EdgeInsets.only(left: 2),

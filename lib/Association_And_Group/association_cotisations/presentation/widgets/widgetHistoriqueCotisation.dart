@@ -140,7 +140,7 @@ class _WidgetHistoriqueCotisationState
                         color: Color.fromARGB(40, 175, 76, 76),
                       ),
                       child: Icon(
-                        Icons.done,
+                        Icons.close,
                         color: Colors.red,
                         size: 10,
                       ),
@@ -189,7 +189,7 @@ class _WidgetHistoriqueCotisationState
                         color: Color.fromARGB(40, 175, 76, 76),
                       ),
                       child: Icon(
-                        Icons.done,
+                        Icons.close,
                         color: Colors.orange,
                         size: 10,
                       ),

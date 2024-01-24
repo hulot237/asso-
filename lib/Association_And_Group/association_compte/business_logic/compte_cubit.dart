@@ -17,9 +17,6 @@ class CompteCubit extends Cubit<CompteState> {
           await CompteRepository().AllCompteAss(codeAssociation);
 
       if (data != null) {
-        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-        // print("data in cubit ${data.length}");
 
         emit(
           state.copyWith(
@@ -27,7 +24,6 @@ class CompteCubit extends Cubit<CompteState> {
               allcompteAss: data, )
         );
 
-        print("DetailSeance Cubit ok");
         return true;
       } else {
         emit(

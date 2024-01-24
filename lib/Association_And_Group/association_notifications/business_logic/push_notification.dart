@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_token_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,7 +11,6 @@ class PushNotifications {
 
   Future _firebaseBackgroundMessage(RemoteMessage message) async {
     if (message.notification != null) {
-      print("Some notifications received");
     }
   }
 
@@ -38,15 +37,12 @@ class PushNotifications {
 
     //get the device fcm token
     final token = await _firebaseMessaging.getToken();
-    print("device token for FireBase: $token");
   }
 
   Future<void> getTokenNotification() async {
     String? token = await FirebaseMessaging.instance.getAPNSToken();
-    print('FlutterFire Messaging Example: Got APNs token: $token');
 
     await FirebaseMessaging.instance.getToken().then((value) async {
-      print("this is my token: $value");
       await saveToken(value!);
       
       return null;

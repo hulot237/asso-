@@ -41,11 +41,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
-    } else {
+    if (detailCotisation != null) {} else {
       print("userGroupDefault null");
     }
   }
@@ -272,8 +268,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                       if (checkTransparenceStatus(
                           context
                               .read<UserGroupCubit>()
-                              .state
-                              .ChangeAssData!["user_group"]["configs"],
+                              .state.changeAssData!.user_group!.configs,
                           context
                               .read<AuthCubit>()
                               .state

@@ -26,6 +26,7 @@ class widgetRecentEventCotisation extends StatefulWidget {
     required this.isPassed,
     required this.source,
     required this.nomBeneficiaire,
+    required this.rublique,
   });
   String dateClose;
   String dateOpen;
@@ -38,6 +39,7 @@ class widgetRecentEventCotisation extends StatefulWidget {
   int isPassed;
   String source;
   String nomBeneficiaire;
+  String rublique;
 
   @override
   State<widgetRecentEventCotisation> createState() =>
@@ -55,9 +57,7 @@ class _widgetRecentEventCotisationState
         .detailCotisationCubit(codeCotisation);
 
     if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
+     
     } else {
       print("userGroupDefault null");
     }
@@ -122,7 +122,7 @@ class _widgetRecentEventCotisationState
                               borderRadius: BorderRadius.circular(360),),
                         ),
                         Text(
-                          'cotisation_capital'.tr(),
+                          "${'cotisation_capital'.tr()} ${widget.rublique}".toUpperCase(),
                           style: TextStyle(
                             color: AppColors.blackBlue,
                             fontWeight: FontWeight.w700,
@@ -206,9 +206,8 @@ class _widgetRecentEventCotisationState
                         children: [
                           if (checkTransparenceStatus(
                               context
-                                  .read<UserGroupCubit>()
-                                  .state
-                                  .ChangeAssData!["user_group"]["configs"],
+                        .read<UserGroupCubit>()
+                        .state.changeAssData!.user_group!.configs,
                               context
                                   .read<AuthCubit>()
                                   .state

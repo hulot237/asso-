@@ -10,15 +10,12 @@ class PayementRepository {
       final response = await dio.patch(
         '${Variables.LienAIP}/api/v1/payment/$withdrawId/membre/$codeMembre/approve',
       );
-      print("dataJszzzaaaaaaaaaaaaaazzzzzzzzzzzzz      ${response.data["data"]}");
-
       final bool dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
       log('Okay ApprouvePayement rep');
       return dataJson;
     } catch (e) {
       log('erreur ApprouvePayement rep');
-      print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ${e}");
       return false;
     }
   }

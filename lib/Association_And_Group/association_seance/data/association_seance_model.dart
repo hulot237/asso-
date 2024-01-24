@@ -1,5 +1,5 @@
 import 'package:faroty_association_1/Association_And_Group/association_membres/data/association_membres_model.dart';
-import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/association_tournoi_model.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
 
 class SeanceModel {
   int? id;
@@ -8,11 +8,12 @@ class SeanceModel {
   String? date_seance;
   String? localisation;
   String? heure_debut;
-  bool? is_attendance_list;
-  bool? is_active;
-  bool? status;
-  TournoiModel? tournois;
-  MembresModel? membre;
+  int? is_attendance_list;
+  int? is_active;
+  int? status;
+  String? type_rencontre;
+  String? ass_tournois_id;
+  String? ass_membre_id;
   String? created_at;
   String? updated_at;
 
@@ -26,10 +27,11 @@ class SeanceModel {
     this.is_attendance_list,
     this.is_active,
     this.status,
-    this.tournois,
-    this.membre,
     this.created_at,
     this.updated_at,
+    this.ass_membre_id,
+    this.ass_tournois_id,
+    this.type_rencontre,
   });
 
   factory SeanceModel.fromJson(Map<String, dynamic> json) => SeanceModel(
@@ -42,12 +44,9 @@ class SeanceModel {
         is_attendance_list: json["is_attendance_list"],
         is_active: json["is_active"],
         status: json["status"],
-        tournois: json['tournois'] != null
-            ? TournoiModel.fromJson(json["tournois"])
-            : null,
-        membre: json['membre'] != null
-            ? MembresModel.fromJson(json["membre"])
-            : null,
+        ass_membre_id: json["ass_membre_id"],
+        ass_tournois_id: json["ass_tournois_id"],
+        type_rencontre: json["type_rencontre"],
         created_at: json["created_at"],
         updated_at: json["updated_at"],
       );

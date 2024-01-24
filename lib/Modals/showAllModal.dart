@@ -6,6 +6,7 @@ import 'package:faroty_association_1/Association_And_Group/association_tontine/b
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -27,24 +28,19 @@ class Modal {
     bool isLoading = false;
 
     Future handleChangeAss(codeAss) async {
-      final ChangeAss =
-          await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+      final ChangeAss = await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
 
-      if (ChangeAss != null) {
         await AppCubitStorage().updateCodeAssDefaul(codeAss);
 
-        await AppCubitStorage().updatemembreCode(context
-            .read<UserGroupCubit>()
-            .state
-            .ChangeAssData!["membre"]["membre_code"]);
+        await AppCubitStorage().updatemembreCode(context.read<UserGroupCubit>().state.changeAssData!.membre!.membre_code!,
+            // .ChangeAssData!["membre"]["membre_code"],
+            );
 
         await AppCubitStorage().updateCodeTournoisDefault(context
             .read<UserGroupCubit>()
             .state
-            .ChangeAssData!["user_group"]["tournois"][0]["tournois_code"]);
-      } else {
-        print("userGroupDefault null");
-      }
+            .changeAssData!.user_group!.tournois![0].tournois_code!);
+     
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -168,7 +164,7 @@ class Modal {
   }
 
   void showBottomSheetListTournoi(
-      BuildContext context, List currentInfoAssociationCourant) {
+      BuildContext context, List<TournoiModel>? currentInfoAssociationCourant) {
     // .state.userGroupDefault
     Color? colorSelect(tournois_code) {
       if (tournois_code == AppCubitStorage().state.codeTournois) {
@@ -207,13 +203,7 @@ class Modal {
         (route) => false,
       );
 
-      print(
-          "2222222222222222222222222222222222222222é ${AppCubitStorage().state.codeAssDefaul}");
-
       if (allCotisationAss != null) {
-        print("objec~~~~~~~~ttt  ${allCotisationAss}");
-        print(
-            "éé22222~~~~~~~~  ${context.read<DetailTournoiCourantCubit>().state.changeTournoi}");
       } else {
         print("userGroupDefault null");
       }
@@ -261,7 +251,7 @@ class Modal {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: currentInfoAssociationCourant.length,
+                        itemCount: currentInfoAssociationCourant!.length,
                         itemBuilder: (context, index) {
                           final currentItemAssociationList =
                               currentInfoAssociationCourant[index];
@@ -274,7 +264,7 @@ class Modal {
                                 isLoading = true;
                               });
                               await handleChangeTournoi(
-                                  currentItemAssociationList["tournois_code"]);
+                                  currentItemAssociationList.tournois_code);
                               setState(() {
                                 isLoading = false;
                               });
@@ -286,17 +276,15 @@ class Modal {
                                 padding: EdgeInsets.only(
                                     top: 15, bottom: 15, left: 15),
                                 decoration: BoxDecoration(
-                                  color: colorSelect(currentItemAssociationList[
-                                      "tournois_code"]),
+                                  color: colorSelect(currentItemAssociationList.tournois_code),
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 margin: EdgeInsets.all(5),
                                 child: Text(
-                                  '${"tournoi".tr()} #${currentItemAssociationList["matricule"]}',
+                                  '${"tournoi".tr()} #${currentItemAssociationList.matricule}',
                                   style: TextStyle(
                                       color: colorSelectText(
-                                          currentItemAssociationList[
-                                              "tournois_code"]),
+                                          currentItemAssociationList.tournois_code),
                                       fontWeight: FontWeight.w800),
                                 ),
                               ),
@@ -820,7 +808,6 @@ class Modal {
                         itemBuilder: (context, index) {
                           final itemLListSanction = listSanction[index];
 
-                          print("@@@@@@@@@@@@@ ${itemLListSanction}");
                           return Container(
                             margin: EdgeInsets.only(left: 5, right: 5),
                             child: WidgetPersonSanctionner(
@@ -1090,8 +1077,7 @@ class Modal {
           await context.read<AuthCubit>().detailAuthCubit(userCode);
 
       if (allCotisationAss != null) {
-        print("objec===============ttt  ${allCotisationAss}");
-      } else {
+       } else {
         print("userGroupDefault null");
       }
     }
@@ -1103,10 +1089,7 @@ class Modal {
           .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
 
       if (allCotisationAss != null) {
-        print("objec===============ttt  ${allCotisationAss}");
-        print(
-            "éé22==============ssssssssssssssssssssssssss=222  ${context.read<AuthCubit>().state.detailUser}");
-      } else {
+       } else {
         print("userGroupDefault null");
       }
     }
@@ -1217,7 +1200,6 @@ class Modal {
           await context.read<AuthCubit>().detailAuthCubit(userCode);
 
       if (allCotisationAss != null) {
-        print("objec===============ttt  ${allCotisationAss}");
       } else {
         print("userGroupDefault null");
       }
@@ -1230,9 +1212,6 @@ class Modal {
           .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
 
       if (allCotisationAss != null) {
-        print("objec===============ttt  ${allCotisationAss}");
-        print(
-            "éé22==============ssssssssssssssssssssssssss=222  ${context.read<AuthCubit>().state.detailUser}");
       } else {
         print("userGroupDefault null");
       }

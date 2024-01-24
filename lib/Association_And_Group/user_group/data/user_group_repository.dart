@@ -24,9 +24,7 @@ class UserGroupRepository {
       );
 
       final List<dynamic> dataJson = response.data["data"]["user_groups"];
-      // print("dataJsozzzzzzzzzzzzz      ${response.data["data"]["userGroups"].runtimeType}");
-      print("dataJsonsssssssssddddedxex      ${dataJson}");
-
+      
       final List<dynamic> groups = dataJson;
 
       log('Okay AllUserGroupOfUser rep');
@@ -69,9 +67,7 @@ class UserGroupRepository {
     }
   }
 
-  Future<Map<String, dynamic>> ChangerAss(codeAss) async {
-    try {
-      log("response11");
+  Future<InfoAssModel> ChangerAss(codeAss) async {
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/usergroupe/$codeAss/show',
         options: Options(
@@ -81,16 +77,9 @@ class UserGroupRepository {
         ),
       );
 
-      print(
-          "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzeeeeeeeeeeeee ${response}");
-      final Map<String, dynamic> dataJson = response.data["data"];
-      log('Okay ChangerAssChangerAssChangerAss rep');
-      return dataJson;
-    } catch (e) {
-      log('erreur ChangerAssChangerAssChangerAss rep');
-      print(e);
-      return {};
-    }
+      var data = response.data;
+
+     return InfoAssModel.fromJson(data['data']);
   }
 
   // patch("/prositions/reject/:propositionId/active

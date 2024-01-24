@@ -1,11 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+
+import 'package:faroty_association_1/Association_And_Group/authentication/data/auth_model.dart';
 
 class AuthState extends Equatable {
   final Map<String, dynamic>? detailUser;
-  final Map<String, dynamic>? loginInfo;
+  final AuthModel? loginInfo;
   final bool isLoading;
   final bool? isTrueNomber;
-  final bool?isLoadingDetailUser;
+  final bool? isLoadingDetailUser;
+  final bool errorLoading;
+  final bool successLoading;
+  final String? message;
 
   AuthState({
     this.detailUser,
@@ -13,6 +19,9 @@ class AuthState extends Equatable {
     this.isLoading = false,
     this.isTrueNomber,
     this.isLoadingDetailUser,
+    this.errorLoading = false,
+    this.successLoading = false,
+    this.message,
   });
 
   @override
@@ -22,22 +31,31 @@ class AuthState extends Equatable {
         isLoading,
         isTrueNomber,
         isLoadingDetailUser,
+        errorLoading,
+        message,
+        successLoading,
       ];
 
+
   AuthState copyWith({
-    // List<UserGroupCourantModel>? userGroupDefault,
-    Map<String, dynamic>? detailuser,
-    Map<String, dynamic>? logininfo,
-    required bool isloading,
-    bool? istruenomber,
-    required bool isloadingdetailuser,
+    Map<String, dynamic>? detailUser,
+    AuthModel? loginInfo,
+    bool? isLoading,
+    bool? isTrueNomber,
+    bool? isLoadingDetailUser,
+    bool? errorLoading,
+    String? message,
+    bool? successLoading,
   }) {
     return AuthState(
-      detailUser: detailuser,
-      loginInfo: logininfo,
-      isLoading: isloading,
-      isTrueNomber: istruenomber,
-isLoadingDetailUser: isloadingdetailuser,
+      detailUser: detailUser ?? this.detailUser,
+      loginInfo: loginInfo ?? this.loginInfo,
+      isLoading: isLoading ?? this.isLoading,
+      isTrueNomber: isTrueNomber ?? this.isTrueNomber,
+      isLoadingDetailUser: isLoadingDetailUser ?? this.isLoadingDetailUser,
+      errorLoading: errorLoading ?? this.errorLoading,
+      successLoading: successLoading ?? this.successLoading,
+      message: message ?? this.message,
     );
   }
 }

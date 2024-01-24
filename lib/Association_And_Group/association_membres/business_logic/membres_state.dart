@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/data/user_model.dart';
 
 class MembreState extends Equatable {
-  final List<dynamic>? allMembers;
+  final List<UserModel>? allMembers;
   final bool isLoading;
   
 
@@ -17,7 +18,7 @@ class MembreState extends Equatable {
       ];
 
   MembreState copyWith({
-    List<dynamic>? allmembers,
+    List<UserModel>? allmembers,
     required bool isloading,
   }) {
     return MembreState(

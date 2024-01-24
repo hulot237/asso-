@@ -42,11 +42,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {
-      print("objaaaaaaaaaaaaaaaaaa  ${detailCotisation}");
-      print(
-          "aaaaaaaaaaaaaaaaaaaaaqqqqq  ${context.read<CotisationDetailCubit>().state.detailCotisation}");
-    } else {
+    if (detailCotisation != null) {} else {
       print("userGroupDefault null");
     }
   }
