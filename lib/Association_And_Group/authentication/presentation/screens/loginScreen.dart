@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 70),
                         Text(
-                          "Entrer votre numéro pour obtenir le code d'authentification",
+                          "Entrer votre numéro pour obtenir le code d'authentification".tr(),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,

@@ -8,7 +8,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class UserGroupRepository {
   final dio = Dio();
-  Future<List> AllGroupOfUser() async {
+  Future<List> AllGroupOfUser(token) async {
     try {
       // Récupérer le token du bloc hydraté
       // final token = AuthCubit().state.token;
@@ -18,7 +18,7 @@ class UserGroupRepository {
         '${Variables.LienAIP}/api/v1/usergroupe/userpages',
         options: Options(
           headers: {
-            "token": AppCubitStorage().state.tokenUser,
+            "token": token,
           },
         ),
       );

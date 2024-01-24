@@ -111,6 +111,8 @@ class _WidgetTontineRencontreCardState
                         //           );
                         //         },
                         child: Container(
+                          alignment: Alignment.center,
+                        width: 72,
                           padding: EdgeInsets.only(
                               left: 8, right: 8, top: 5, bottom: 5),
                           decoration: BoxDecoration(

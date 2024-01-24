@@ -15,10 +15,14 @@ class RecentEventCubit extends Cubit<RecentEventState> {
           ),
         );
   Future<bool> AllRecentEventCubit(codeMembre) async {
-    emit(state.copyWith(isloading: true));
+    emit(
+      state.copyWith(
+        isloading: true,
+        allrecentEvent: state.allRecentEvent,
+      ),
+    );
     try {
-      final data =
-          await RecentEventRepository().RecentEvent(codeMembre);
+      final data = await RecentEventRepository().RecentEvent(codeMembre);
 
       if (data != null) {
         emit(

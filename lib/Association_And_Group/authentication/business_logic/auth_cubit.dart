@@ -15,7 +15,13 @@ class AuthCubit extends Cubit<AuthState> {
         );
 
   Future<bool> detailAuthCubit(userCode) async {
-    emit(state.copyWith(isloadingdetailuser: true, isloading: true));
+    emit(state.copyWith(
+      isloadingdetailuser: true,
+      isloading: true,
+      detailuser: state.detailUser,
+      istruenomber: state.isTrueNomber,
+      logininfo: state.loginInfo,
+    ));
     try {
       final data = await AuthRepository().UserDetail(userCode);
 
@@ -59,7 +65,13 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<bool> ConfirmationCubit(codeConfirmation) async {
-    emit(state.copyWith(isloading: true, isloadingdetailuser: false));
+    emit(state.copyWith(
+      isloading: true,
+      isloadingdetailuser: false,
+      detailuser: state.detailUser,
+      istruenomber: state.isTrueNomber,
+      logininfo: state.loginInfo,
+    ));
     try {
       final data =
           await AuthRepository().ConfirmationRepository(codeConfirmation);
@@ -107,9 +119,13 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(
       isloading: true,
       isloadingdetailuser: false,
+      detailuser: state.detailUser,
+      istruenomber: state.isTrueNomber,
+      logininfo: state.loginInfo,
     ));
     try {
-      final data = await AuthRepository().LoginRepository(phoneNumber, countryCode);
+      final data =
+          await AuthRepository().LoginRepository(phoneNumber, countryCode);
 
       if (data != null) {
         emit(

@@ -13,7 +13,7 @@ class CotisationCubit extends Cubit<CotisationState> {
           ),
         );
   Future<bool> AllCotisationAssTournoiCubit(codeTournoi) async {
-    emit(state.copyWith(isloading: true));
+    emit(state.copyWith(isloading: true, allcotisationAss: state.allCotisationAss));
     try {
       final data =
           await CotisationRepository().AllCotisationOfAssTournoi(codeTournoi);

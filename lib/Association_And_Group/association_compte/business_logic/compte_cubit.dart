@@ -10,7 +10,7 @@ class CompteCubit extends Cubit<CompteState> {
 
 
   Future<bool> AllCompteAssCubit(codeAssociation) async {
-    emit(state.copyWith(isloading: true));
+    emit(state.copyWith(isloading: true, allcompteAss: state.allCompteAss));
 
     try {
       final data =

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   
-  static const Color blackBlue = Color(0xFF142D63);
+  static const Color blackBlue = Color.fromARGB(255, 20, 45, 99);
+  // static const Color blackBlue = Color(0xFF879B56);
   static const Color blackBlueAccent1 = Color(0x79142D63);
   static const Color blackBlueAccent2 = Color.fromARGB(19, 20, 45, 99);
   static const Color white = Color(0xFFFFFFFF);
@@ -10,14 +11,18 @@ class AppColors {
   static const Color whiteAccent1 = Color(0x7EFFFFFF);
   static const Color pageBackground = Color(0xFFEFEFEF);
   static const Color greenAssociation = Color(0xFF9bc43f);
-  static const Color backgroundAppBAr = Color(0xCF00A2FF);
-  static const Color colorButton = Color(0xFF00A2FF);
+  static const Color backgroundAppBAr =  Color(0xFF729126);
+  // static const Color backgroundAppBAr = Color(0xCF00A2FF);
+  static const Color colorButton = Color(0xFF96BF35);
+  // static const Color colorButton = Color(0xFF00A2FF);
   static const Color bleuLight = Color(0xFF00A2FF);
   static const Color colorButtonAccent = Color(0x4800A2FF);
   static const Color red = Color(0xFFFF0000);
   static const Color redAccent = Color(0x2ED50000);
-  static const Color green = Color(0xFF4CAF50);
+  static const Color green = Color.fromARGB(255, 150, 191, 53);
+  // static const Color green = Color(0xFF4CAF50);
   static const Color greenAccent = Color.fromARGB(125, 76, 175, 79);
+  static const Color barrierColorModal = Color(0x79142D63);
 
 
 

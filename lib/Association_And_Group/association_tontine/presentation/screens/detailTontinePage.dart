@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
@@ -96,7 +97,6 @@ class _DetailTontinePageState extends State<DetailTontinePage>
 
   @override
   Widget build(BuildContext context) {
-    final TabController _tabController = TabController(length: 2, vsync: this);
     return PageScaffold(
       context: context,
       child: Container(
@@ -248,15 +248,18 @@ class _DetailTontinePageState extends State<DetailTontinePage>
               if (tontineState.isLoading == null ||
                   tontineState.isLoading == true ||
                   tontineState.detailTontine == null)
-                return Container(
-                  // color: AppColors.white,
-                  margin: EdgeInsets.only(top: 25),
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.bleuLight,
-                    ),
-                  ),
-                );
+                return Expanded(
+                          child: Center(
+                            child: EasyLoader(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              iconSize: 50,
+                              iconColor: AppColors.blackBlueAccent1,
+                              image: AssetImage(
+                                'assets/images/Groupe_ou_Asso.png',
+                              ),
+                            ),
+                          ),
+                        );
               final currentDetailTontineCard =
                   tontineContext.read<TontineCubit>().state.detailTontine;
               return Expanded(
@@ -295,7 +298,6 @@ class _DetailTontinePageState extends State<DetailTontinePage>
 
                             Modal().showBottomSheetHistTontine(
                               tontineContext,
-                              _tabController,
                             );
                           }
                         },

@@ -104,7 +104,7 @@ class _widgetDetailCotisationCardState
                                 padding: EdgeInsets.only(
                                     left: 8, right: 8, top: 5, bottom: 5),
                                 decoration: BoxDecoration(
-                                  color: AppColors.bleuLight,
+                                  color: AppColors.colorButton,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Center(
@@ -140,6 +140,8 @@ class _widgetDetailCotisationCardState
                                         },
                                         child: widget.isPassed == 0
                                             ? Container(
+                                              alignment: Alignment.center,
+                        width: 72,
                                                 padding: EdgeInsets.only(
                                                   left: 8,
                                                   right: 8,
@@ -174,6 +176,8 @@ class _widgetDetailCotisationCardState
                                                       );
                                                     },
                                                     child: Container(
+                                                      alignment: Alignment.center,
+                        width: 72,
                                                       padding: EdgeInsets.only(
                                                         left: 8,
                                                         right: 8,

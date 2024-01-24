@@ -17,11 +17,17 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
           ),
         );
 
-  Future<bool> detailTournoiCourantCubit() async {
-    emit(state.copyWith(isloading: true));
+  Future<bool> detailTournoiCourantCubit(codeTournoiDefaul) async {
+    emit(
+      state.copyWith(
+        isloading: true,
+        changetournoi: state.changeTournoi,
+        detailtournoicourant: state.detailtournoiCourant,
+      ),
+    );
     try {
-      final data =
-          await DetailTournoiCourantRepository().DetailTournoiCourant();
+      final data = await DetailTournoiCourantRepository()
+          .DetailTournoiCourant(codeTournoiDefaul);
 
       if (data != null) {
         emit(
@@ -58,7 +64,13 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
   }
 
   Future<bool> changeTournoiCubit(codeTournoi, codeAss) async {
-    emit(state.copyWith(isloading: true));
+    emit(
+      state.copyWith(
+        isloading: true,
+        changetournoi: state.changeTournoi,
+        detailtournoicourant: state.detailtournoiCourant,
+      ),
+    );
     try {
       final data = await DetailTournoiCourantRepository()
           .ChangeTournoi(codeTournoi, codeAss);
@@ -99,6 +111,4 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
       return true;
     }
   }
-
-
 }

@@ -24,7 +24,7 @@ class _widgetListAssCardState extends State<widgetListAssCard> {
 
      Color? colorSelect(code_ass) {
       if (code_ass == AppCubitStorage().state.codeAssDefaul) {
-        return Color.fromRGBO(0, 162, 255, 0.915);
+        return AppColors.colorButton;
       } else {
         return Color.fromARGB(23, 20, 45, 99);
       }

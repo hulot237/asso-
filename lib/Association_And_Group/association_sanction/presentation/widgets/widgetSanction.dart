@@ -165,6 +165,8 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                           margin: EdgeInsets.only(right: 10),
                                         ),
                                         Container(
+                                          alignment: Alignment.center,
+                        width: 72,
                                           padding: EdgeInsets.only(
                                               left: 8,
                                               right: 8,

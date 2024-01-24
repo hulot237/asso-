@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
@@ -123,11 +124,14 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
             authState.isLoading == true ||
             authState.detailUser == null)
           return Container(
-            color: AppColors.white,
-            child: Center(
-              child: CircularProgressIndicator(color: AppColors.bleuLight,),
-            ),
-          );
+                child: EasyLoader(
+              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+              iconSize: 50,
+              iconColor: AppColors.blackBlueAccent1,
+              image: AssetImage(
+                'assets/images/Groupe_ou_Asso.png',
+              ),
+            ));
         final currentDetailUser =
             authContext.read<AuthCubit>().state.detailUser;
         return Container(
@@ -142,12 +146,12 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                     return Column(
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            _pickImage();
-                            // _cropImage();
-                            // Modal().showBottomSheetEditProfilPhoto(
-                            //     context, "key", _pickImage());
-                          },
+                          // onTap: () {
+                          //   _pickImage();
+                          //   // _cropImage();
+                          //   // Modal().showBottomShreetEditProfilPhoto(
+                          //   //     context, "key", _pickImage());
+                          // },
                           child: Stack(
                             children: [
                               Container(
@@ -159,8 +163,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                     Container(
                                       padding: EdgeInsets.all(4),
                                       decoration: BoxDecoration(
-                                          color: Color.fromRGBO(
-                                              0, 162, 255, 0.815),
+                                          color: AppColors.colorButton,
                                           borderRadius:
                                               BorderRadius.circular(100)),
                                       child: ClipRRect(
@@ -181,27 +184,27 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                   ],
                                 ),
                               ),
-                              Positioned(
-                                right: 115,
-                                top: 20,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: AppColors.white,
-                                    borderRadius: BorderRadius.circular(360),
-                                  ),
-                                  padding: EdgeInsets.all(2),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: AppColors.bleuLight,
-                                      borderRadius: BorderRadius.circular(360),
-                                    ),
-                                    width: 30,
-                                    height: 30,
-                                    child: Icon(Icons.mode_edit_rounded,
-                                        color: AppColors.white, size: 14),
-                                  ),
-                                ),
-                              ),
+                              // Positioned(
+                              //   right: 115,
+                              //   top: 20,
+                              //   child: Container(
+                              //     decoration: BoxDecoration(
+                              //       color: AppColors.white,
+                              //       borderRadius: BorderRadius.circular(360),
+                              //     ),
+                              //     padding: EdgeInsets.all(2),
+                              //     child: Container(
+                              //       decoration: BoxDecoration(
+                              //         color: AppColors.bleuLight,
+                              //         borderRadius: BorderRadius.circular(360),
+                              //       ),
+                              //       width: 30,
+                              //       height: 30,
+                              //       child: Icon(Icons.mode_edit_rounded,
+                              //           color: AppColors.white, size: 14),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

@@ -16,10 +16,16 @@ class UserGroupCubit extends Cubit<UserGroupState> {
               isLoading: false),
         );
 
-  Future<bool> AllUserGroupOfUserCubit() async {
-    emit(state.copyWith(isloading: true));
+  Future<bool> AllUserGroupOfUserCubit(token) async {
+    emit(
+      state.copyWith(
+        isloading: true,
+        usergroup: state.userGroup,
+        changeassdata: state.ChangeAssData,
+      ),
+    );
     try {
-      final data = await UserGroupRepository().AllGroupOfUser();
+      final data = await UserGroupRepository().AllGroupOfUser(token);
 
       if (data != null) {
         // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
@@ -105,7 +111,13 @@ class UserGroupCubit extends Cubit<UserGroupState> {
   // }
 
   Future<bool> ChangeAssCubit(codeAss) async {
-    emit(state.copyWith(isloading: true));
+    emit(
+      state.copyWith(
+        isloading: true,
+        usergroup: state.userGroup,
+        changeassdata: state.ChangeAssData,
+      ),
+    );
     try {
       final data = await UserGroupRepository().ChangerAss(codeAss);
 

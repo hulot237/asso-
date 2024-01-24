@@ -181,6 +181,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   );
                                 },
                                 child: Container(
+                        width: 72,
+                                  alignment: Alignment.center,
                                   padding: EdgeInsets.only(
                                       left: 8, right: 8, top: 5, bottom: 5),
                                   decoration: BoxDecoration(

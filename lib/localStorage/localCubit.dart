@@ -50,7 +50,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     };
   }
 
-  void updateLanguage(String language) {
+  Future<void> updateLanguage(String language) async {
     emit(state.copyWith(isloading: true));
 
     emit(

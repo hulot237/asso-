@@ -1,5 +1,4 @@
-
-
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
@@ -57,6 +56,7 @@ class Modal {
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
+      barrierColor: AppColors.barrierColorModal,
       context: context,
       builder: (context) {
         return StatefulBuilder(
@@ -136,21 +136,25 @@ class Modal {
                   builder: (UserGroupContext, UserGroupState) {
                 if (UserGroupState.isLoading == null ||
                     UserGroupState.isLoading == true)
-                  return Container(
-                    color: Color.fromARGB(91, 0, 0, 0),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.bleuLight,
+                  return Center(
+                    child: EasyLoader(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      iconSize: 50,
+                      iconColor: AppColors.blackBlueAccent1,
+                      image: AssetImage(
+                        'assets/images/Groupe_ou_Asso.png',
                       ),
                     ),
                   );
 
                 return isLoading
-                    ? Container(
-                        color: Color.fromARGB(91, 0, 0, 0),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.bleuLight,
+                    ? Center(
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            'assets/images/Groupe_ou_Asso.png',
                           ),
                         ),
                       )
@@ -168,7 +172,7 @@ class Modal {
     // .state.userGroupDefault
     Color? colorSelect(tournois_code) {
       if (tournois_code == AppCubitStorage().state.codeTournois) {
-        return Color.fromRGBO(0, 162, 255, 0.915);
+        return AppColors.colorButton;
       } else {
         return Color.fromARGB(23, 20, 45, 99);
       }
@@ -216,6 +220,7 @@ class Modal {
     }
 
     showModalBottomSheet(
+      barrierColor: AppColors.barrierColorModal,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
@@ -308,21 +313,25 @@ class Modal {
                       (DetailTournoiCouranContext, DetailTournoiCouranState) {
                 if (DetailTournoiCouranState.isLoading == null ||
                     DetailTournoiCouranState.isLoading == true)
-                  return Container(
-                    color: Color.fromARGB(91, 0, 0, 0),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.bleuLight,
+                  return Center(
+                    child: EasyLoader(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      iconSize: 50,
+                      iconColor: AppColors.blackBlueAccent1,
+                      image: AssetImage(
+                        'assets/images/Groupe_ou_Asso.png',
                       ),
                     ),
                   );
 
                 return isLoading
-                    ? Container(
-                        color: Color.fromARGB(91, 0, 0, 0),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.bleuLight,
+                    ? Center(
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            'assets/images/Groupe_ou_Asso.png',
                           ),
                         ),
                       )
@@ -335,9 +344,10 @@ class Modal {
     );
   }
 
-  void showBottomSheetHistTontine(BuildContext context, _tabController) {
+  void showBottomSheetHistTontine(BuildContext context) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
+      barrierColor: AppColors.barrierColorModal,
       context: context,
       builder: (context) {
         return Container(
@@ -380,111 +390,57 @@ class Modal {
                   Container(
                     color: AppColors.blackBlueAccent2,
                     alignment: Alignment.center,
-                    child: TabBar(
-                      labelColor: AppColors.blackBlue,
-                      labelStyle:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                      padding: EdgeInsets.all(0),
-                      unselectedLabelStyle: TextStyle(
-                        color: AppColors.blackBlueAccent1,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      indicator: UnderlineTabIndicator(
-                        borderSide: BorderSide(
-                          color: AppColors.blackBlue,
-                          width: 5.0,
-                        ),
-                        insets: EdgeInsets.symmetric(
-                          horizontal: 36.0,
-                        ),
-                      ),
-
-                      isScrollable: true,
-                      // indicatorWeight: 0,
-                      controller: _tabController,
-                      tabs: [
-                        Tab(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Text("Tontiné"),
-                              ),
-                              BlocBuilder<DetailContributionCubit,
-                                  ContributionState>(
-                                builder: (DetailContributionContext,
-                                    DetailContributionState) {
-                                  if (DetailContributionState
-                                              .isLoadingContibutionTontine ==
-                                          null ||
-                                      DetailContributionState
-                                              .isLoadingContibutionTontine ==
-                                          true)
-                                    return Container(
-                                      width: 10,
-                                      height: 10,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color: AppColors.bleuLight,
-                                          strokeWidth: 0.3,
-                                        ),
-                                      ),
-                                    );
-
-                                  final okayTontine = DetailContributionContext
-                                          .read<DetailContributionCubit>()
-                                      .state
-                                      .detailContributionTontine!["versements"];
-                                  return Container(
-                                    child: Text(
-                                      " (${okayTontine.length})",
-                                      style: TextStyle(fontSize: 10),
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Contributions",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.blackBlue,
+                            ),
                           ),
                         ),
-                        Tab(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Text("Non tontiné"),
+                        BlocBuilder<DetailContributionCubit, ContributionState>(
+                          builder: (DetailContributionContext,
+                              DetailContributionState) {
+                            if (DetailContributionState
+                                        .isLoadingContibutionTontine ==
+                                    null ||
+                                DetailContributionState
+                                        .isLoadingContibutionTontine ==
+                                    true)
+                              return Container(
+                                width: 10,
+                                height: 10,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.bleuLight,
+                                    strokeWidth: 0.3,
+                                  ),
+                                ),
+                              );
+
+                            final okayTontine = DetailContributionContext.read<
+                                    DetailContributionCubit>()
+                                .state
+                                .detailContributionTontine!["versements"];
+                            final nonTontine = DetailContributionContext.read<
+                                    DetailContributionCubit>()
+                                .state
+                                .detailContributionTontine!["members"];
+                            return Container(
+                              child: Text(
+                                "(${okayTontine.length}/${nonTontine.length + okayTontine.length})",
+                                style: TextStyle(
+                                    fontSize: 10, color: AppColors.blackBlue),
                               ),
-                              BlocBuilder<DetailContributionCubit,
-                                  ContributionState>(
-                                builder: (DetailContributionContext,
-                                    DetailContributionState) {
-                                  if (DetailContributionState
-                                              .isLoadingContibutionTontine ==
-                                          null ||
-                                      DetailContributionState
-                                              .isLoadingContibutionTontine ==
-                                          true)
-                                    return Container(
-                                      width: 10,
-                                      height: 10,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color: AppColors.bleuLight,
-                                          strokeWidth: 0.3,
-                                        ),
-                                      ),
-                                    );
-                                  final nonTontine = DetailContributionContext
-                                          .read<DetailContributionCubit>()
-                                      .state
-                                      .detailContributionTontine!["members"];
-                                  return Container(
-                                    child: Text(
-                                      " (${nonTontine.length})",
-                                      style: TextStyle(fontSize: 10),
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                          ),
+                            );
+                          },
                         )
                       ],
                     ),
@@ -496,12 +452,17 @@ class Modal {
                 if (DetailContributionState.isLoadingContibutionTontine ==
                         null ||
                     DetailContributionState.isLoadingContibutionTontine == true)
-                  return Container(
-                    // color: AppColors.white,
-                    margin: EdgeInsets.only(top: 15),
+                  return Expanded(
                     child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.bleuLight,
+                      child: Container(
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            'assets/images/Groupe_ou_Asso.png',
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -515,148 +476,69 @@ class Modal {
                         .state
                         .detailContributionTontine!["versements"];
 
+                List listeOkayTontine = okayTontine;
+                List listeNonTontine = nonTontine;
+
+                List<Widget> listWidgetOkayTontine =
+                    listeOkayTontine.map((monObjet) {
+                  return Card(
+                    margin:
+                        EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                    child: widgetHistoriqueTontineCard(
+                      date: formatDateLiteral(monObjet["updated_at"]),
+                      imageProfil: monObjet["photo_profil"] == null
+                          ? ""
+                          : monObjet["photo_profil"],
+                      is_versement_finished: monObjet["versements"][0]
+                          ["is_versement_finished"],
+                      montantVersee: monObjet["versements"][0]["balance_after"],
+                      nom: monObjet["membre"]["first_name"] == null
+                          ? ""
+                          : monObjet["membre"]["first_name"],
+                      prenom: monObjet["membre"]["last_name"] == null
+                          ? ""
+                          : monObjet["membre"]["last_name"],
+                    ),
+                  );
+                }).toList();
+
+                List<Widget> listWidgetNonTontine =
+                    listeNonTontine.map((monObj) {
+                  return Card(
+                    margin:
+                        EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                    child: widgetHistoriqueTontineCard(
+                      date: AppCubitStorage().state.Language == "fr"
+                          ? formatDateToFrench(monObj["updated_at"])
+                          : formatDateToEnglish(monObj["updated_at"]),
+                      imageProfil: monObj["membre"]["photo_profil"] == null
+                          ? ""
+                          : monObj["membre"]["photo_profil"],
+                      is_versement_finished: monObj["versements"].length == 0
+                          ? 0
+                          : monObj["versements"][0]["is_versement_finished"],
+                      montantVersee: monObj["versements"].length == 0
+                          ? "0"
+                          : monObj["versements"][0]["balance_after"],
+                      nom: monObj["membre"]["first_name"] == null
+                          ? ""
+                          : monObj["membre"]["first_name"],
+                      prenom: monObj["membre"]["last_name"] == null
+                          ? ""
+                          : monObj["membre"]["last_name"],
+                    ),
+                  );
+                }).toList();
+
+                final listeFinale = [
+                  ...listWidgetOkayTontine,
+                  ...listWidgetNonTontine
+                ];
+
                 return Expanded(
-                  child: Container(
-                    color: AppColors.white,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        okayTontine.length > 0
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.all(0),
-                                itemCount: okayTontine.length,
-                                itemBuilder: (context, index) {
-                                  final currentDetailPersonCotis =
-                                      okayTontine[index];
-                                  print(okayTontine.length);
-                                  return Container(
-                                    child: widgetHistoriqueTontineCard(
-                                      date: formatDateLiteral(
-                                              currentDetailPersonCotis[
-                                                  "updated_at"]),
-                                      imageProfil: currentDetailPersonCotis[
-                                                  "photo_profil"] ==
-                                              null
-                                          ? ""
-                                          : currentDetailPersonCotis[
-                                              "photo_profil"],
-                                      is_versement_finished:
-                                          currentDetailPersonCotis["versements"]
-                                              [0]["is_versement_finished"],
-                                      montantVersee:
-                                          currentDetailPersonCotis["versements"]
-                                              [0]["balance_after"],
-                                      nom: currentDetailPersonCotis["membre"]
-                                                  ["first_name"] ==
-                                              null
-                                          ? ""
-                                          : currentDetailPersonCotis["membre"]
-                                              ["first_name"],
-                                      prenom: currentDetailPersonCotis["membre"]
-                                                  ["last_name"] ==
-                                              null
-                                          ? ""
-                                          : currentDetailPersonCotis["membre"]
-                                              ["last_name"],
-                                    ),
-                                    margin: EdgeInsets.only(
-                                        top: 3, bottom: 7, left: 10, right: 10),
-                                  );
-                                },
-                              )
-                            : ListView.builder(
-                                itemCount: 1,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 100),
-                                    alignment: Alignment.topCenter,
-                                    child: Icon(
-                                      Icons.playlist_remove,
-                                      size: 100,
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
-                                    ),
-                                  );
-                                },
-                              ),
-                        nonTontine.length > 0
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.all(0),
-                                itemCount: nonTontine.length,
-                                itemBuilder: (context, index) {
-                                  // print(nonTontine.length);
-                                  final currentDetailPersonNonCotis =
-                                      nonTontine![index];
-                                  return Container(
-                                    margin: EdgeInsets.only(
-                                        top: 3, bottom: 7, left: 10, right: 10),
-                                    child: widgetHistoriqueTontineCard(
-                                      date: AppCubitStorage().state.Language ==
-                                              "fr"
-                                          ? formatDateToFrench(
-                                              currentDetailPersonNonCotis[
-                                                  "updated_at"])
-                                          : formatDateToEnglish(
-                                              currentDetailPersonNonCotis[
-                                                  "updated_at"]),
-                                      imageProfil:
-                                          currentDetailPersonNonCotis["membre"]
-                                                      ["photo_profil"] ==
-                                                  null
-                                              ? ""
-                                              : currentDetailPersonNonCotis[
-                                                  "membre"]["photo_profil"],
-                                      is_versement_finished:
-                                          currentDetailPersonNonCotis[
-                                                          "versements"]
-                                                      .length ==
-                                                  0
-                                              ? 0
-                                              : currentDetailPersonNonCotis[
-                                                      "versements"][0]
-                                                  ["is_versement_finished"],
-                                      montantVersee:
-                                          currentDetailPersonNonCotis[
-                                                          "versements"]
-                                                      .length ==
-                                                  0
-                                              ? "0"
-                                              : currentDetailPersonNonCotis[
-                                                      "versements"][0]
-                                                  ["balance_after"],
-                                      nom: currentDetailPersonNonCotis["membre"]
-                                                  ["first_name"] ==
-                                              null
-                                          ? ""
-                                          : currentDetailPersonNonCotis[
-                                              "membre"]["first_name"],
-                                      prenom:
-                                          currentDetailPersonNonCotis["membre"]
-                                                      ["last_name"] ==
-                                                  null
-                                              ? ""
-                                              : currentDetailPersonNonCotis[
-                                                  "membre"]["last_name"],
-                                    ),
-                                  );
-                                },
-                              )
-                            : ListView.builder(
-                                itemCount: 1,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 100),
-                                    alignment: Alignment.topCenter,
-                                    child: Icon(
-                                      Icons.playlist_add_check,
-                                      size: 100,
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
-                                    ),
-                                  );
-                                },
-                              ),
-                      ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: listeFinale,
                     ),
                   ),
                 );
@@ -671,6 +553,7 @@ class Modal {
   void showModalTransactionByEvent(context, versement, montantAPayer) {
     showDialog<String>(
       context: context,
+      barrierColor: AppColors.barrierColorModal,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
         actionsPadding: EdgeInsets.all(10),
@@ -787,15 +670,11 @@ class Modal {
               versement.length > 0
                   ? Expanded(
                       child: Container(
-                        // color: AppColors.white,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Color.fromARGB(120, 226, 226, 226),
                         ),
-                        // height: 350,
                         width: MediaQuery.of(context).size.width,
-                        // padding: EdgeInsets.only(top: 10),
-                        // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
                         child: Container(
                           margin: EdgeInsets.only(
                               top: 7, right: 5, left: 5, bottom: 7),
@@ -804,13 +683,16 @@ class Modal {
                             children: [
                               Expanded(
                                 child: ListView.builder(
-                                  itemCount: versement[0]["transanctions"].length,
+                                  itemCount:
+                                      versement[0]["transanctions"].length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
-                                    final detailVersement = versement[0]["transanctions"][index];
+                                    final detailVersement =
+                                        versement[0]["transanctions"][index];
                                     return Container(
                                         child: widgetListTransactionByEventCard(
-                                      date: formatDateLiteral(detailVersement["created_at"]),
+                                      date: formatDateLiteral(
+                                          detailVersement["created_at"]),
                                       montant: detailVersement["amount"],
                                     ));
                                   },
@@ -836,6 +718,7 @@ class Modal {
 
   void showModalAllTransactionCotisation(context) {
     showDialog<String>(
+      barrierColor: AppColors.barrierColorModal,
       context: context,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
@@ -900,6 +783,7 @@ class Modal {
   void showModalPersonSanctionner(context, var listSanction) {
     showDialog<String>(
       context: context,
+      barrierColor: AppColors.barrierColorModal,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
         actionsPadding: EdgeInsets.all(10),
@@ -984,8 +868,13 @@ class Modal {
   }
 
   void showModalPersonPresent(
-      context, tabController, var listAbs, var listPrsent) {
+    context,
+    tabController,
+    var listAbs,
+    var listPrsent,
+  ) {
     showDialog<String>(
+      barrierColor: AppColors.barrierColorModal,
       context: context,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
@@ -1010,8 +899,6 @@ class Modal {
               ),
               Container(
                 color: AppColors.blackBlueAccent2,
-
-                // transformAlignment: AlignmentDirectional.center,
                 child: TabBar(
                   isScrollable: true,
                   labelColor: AppColors.blackBlue,
@@ -1079,14 +966,13 @@ class Modal {
                   ),
                   padding: EdgeInsets.only(bottom: 5),
                   child: Container(
-                    
                     decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                      color: AppColors.white,
                     ),
-                    color: AppColors.white,
-                  ),
                     padding: EdgeInsets.only(
                       top: 2,
                       bottom: 3,
@@ -1228,6 +1114,7 @@ class Modal {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       // isScrollControlled: true,
+      barrierColor: AppColors.barrierColorModal,
       context: context,
       builder: (context) {
         return ClipRRect(
@@ -1322,7 +1209,9 @@ class Modal {
   }
 
   void showBottomSheetEditProfil(BuildContext context, hintText, key) {
-    TextEditingController infoUserController = TextEditingController();
+    TextEditingController infoUserController =
+        TextEditingController(text: "${hintText}");
+
     Future<void> handleDetailUser(userCode) async {
       final allCotisationAss =
           await context.read<AuthCubit>().detailAuthCubit(userCode);
@@ -1351,14 +1240,19 @@ class Modal {
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
+      barrierColor: AppColors.barrierColorModal,
       // isScrollControlled: true,
       context: context,
       builder: (context) {
-        return ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        return SingleChildScrollView(
           child: Container(
-            color: AppColors.white,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+              color: AppColors.white,
+            ),
             child: Padding(
               padding: const EdgeInsets.only(top: 15, bottom: 15),
               child: Column(
@@ -1395,21 +1289,22 @@ class Modal {
                     ),
                     child: TextField(
                       controller: infoUserController,
+                      autofocus: true,
                       style: TextStyle(fontSize: 15),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "${hintText}",
                       ),
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      handleUpdateInfoUser(
+                    onTap: () async {
+                      await handleUpdateInfoUser(
                           key,
                           infoUserController.text,
                           AppCubitStorage().state.codeAssDefaul,
                           AppCubitStorage().state.membreCode);
-                      handleDetailUser(AppCubitStorage().state.membreCode);
+                      await handleDetailUser(
+                          AppCubitStorage().state.membreCode);
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -1418,7 +1313,7 @@ class Modal {
                           top: 10,
                           bottom: MediaQuery.of(context).viewInsets.bottom),
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: AppColors.colorButton,
                         borderRadius: BorderRadius.circular(7),
                       ),
                       child: Text(
@@ -1441,6 +1336,8 @@ class Modal {
   void showModalActionPayement(BuildContext context, msg, lienDePaiement) {
     showDialog<String>(
       context: context,
+      barrierColor: AppColors.barrierColorModal,
+
       builder: (BuildContext context) => AlertDialog(
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(

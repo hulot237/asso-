@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotistion.dart';
@@ -131,19 +132,6 @@ class _detailRencontrePageState extends State<detailRencontrePage>
     final TabController _tabController = TabController(
         length: currentAssCourant!['user_group']['is_tontine'] == true ? 3 : 2,
         vsync: this);
-    final TabController _tabController1 = TabController(length: 2, vsync: this);
-    // final currentDetailSeance =
-
-    // return BlocBuilder<SeanceCubit, SeanceState>(builder: (context, state) {
-    //   if (state.isLoading == null || state.isLoading == true)
-    //     return Container(
-    //       color: AppColors.white,
-    //       child: Center(
-    //         child: CircularProgressIndicator(),
-    //       ),
-    //     );
-    // final currentDetailSeance =
-    //     context.read<SeanceCubit>().state.detailSeance;
     return PageScaffold(
       context: context,
       child: Container(
@@ -216,10 +204,13 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                     BlocBuilder<SeanceCubit, SeanceState>(
                       builder: (context, state) {
                         if (state.isLoading == null || state.isLoading == true)
-                          return Container(
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.bleuLight,
+                          return Center(
+                            child: EasyLoader(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              iconSize: 50,
+                              iconColor: AppColors.blackBlueAccent1,
+                              image: AssetImage(
+                                'assets/images/Groupe_ou_Asso.png',
                               ),
                             ),
                           );
@@ -239,10 +230,6 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                     final ItemDetailCotisation =
                                         currentDetailSeance[index];
                                     return GestureDetector(
-                                      // onTap: (){
-                                      //   print(itemTontine["code"],);
-                                      // },
-
                                       onTap: () {
                                         if (checkTransparenceStatus(
                                             context
@@ -259,9 +246,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                           );
 
                                           Modal().showBottomSheetHistTontine(
-                                            context,
-                                            _tabController1,
-                                          );
+                                              context);
                                         }
                                       },
                                       child: Container(
@@ -294,8 +279,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                               : formatDateToEnglish(
                                                   ItemDetailCotisation[
                                                       "start_date"]),
-                                          dateClose: ItemDetailCotisation[
-                                                      "end_date"],
+                                          dateClose:
+                                              ItemDetailCotisation["end_date"],
                                           // ItemDetailCotisation["end_date"],
                                           montantTontine:
                                               ItemDetailCotisation["amount"],
@@ -320,7 +305,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Container(
-                                      padding: EdgeInsets.only(top: 200),
+                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/6),
                                       alignment: Alignment.topCenter,
                                       child: Text(
                                         "Aucune Tontine".tr(),
@@ -339,10 +324,13 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                   BlocBuilder<SeanceCubit, SeanceState>(
                     builder: (context, state) {
                       if (state.isLoading == null || state.isLoading == true)
-                        return Container(
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.bleuLight,
+                        return Center(
+                          child: EasyLoader(
+                            backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                            iconSize: 50,
+                            iconColor: AppColors.blackBlueAccent1,
+                            image: AssetImage(
+                              'assets/images/Groupe_ou_Asso.png',
                             ),
                           ),
                         );
@@ -369,9 +357,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                           ItemDetailCotisation["amount"],
                                       motifCotisations:
                                           ItemDetailCotisation["name"],
-                                      dateCotisation: 
-                                              ItemDetailCotisation[
-                                                  "start_date"],
+                                      dateCotisation:
+                                          ItemDetailCotisation["start_date"],
                                       heureCotisation: AppCubitStorage()
                                                   .state
                                                   .Language ==
@@ -422,7 +409,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Container(
-                                      padding: EdgeInsets.only(top: 200),
+                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/6),
                                       alignment: Alignment.topCenter,
                                       child: Text(
                                         "aucune_cotisation".tr(),
@@ -440,10 +427,13 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                   BlocBuilder<SeanceCubit, SeanceState>(
                     builder: (context, state) {
                       if (state.isLoading == null || state.isLoading == true)
-                        return Container(
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.bleuLight,
+                        return Center(
+                          child: EasyLoader(
+                            backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                            iconSize: 50,
+                            iconColor: AppColors.blackBlueAccent1,
+                            image: AssetImage(
+                              'assets/images/Groupe_ou_Asso.png',
                             ),
                           ),
                         );
@@ -479,8 +469,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                 currentSaction["start_date"])
                                             : formatTimeToEnglish(
                                                 currentSaction["start_date"]),
-                                    dateSanction:
-                                                currentSaction["start_date"],
+                                    dateSanction: currentSaction["start_date"],
                                     motifSanction: currentSaction["motif"],
                                     montantSanction:
                                         currentSaction["amount"].toString(),
@@ -488,7 +477,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                         currentSaction["sanction_balance"],
                                     lienPaiement: currentSaction[
                                                 "sanction_pay_link"] ==
-                                            null 
+                                            null
                                         ? " "
                                         : currentSaction["sanction_pay_link"],
                                     versement: currentSaction["versement"],
@@ -505,7 +494,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 itemCount: 1,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(
-                                    padding: EdgeInsets.only(top: 200),
+                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/6),
                                     alignment: Alignment.topCenter,
                                     child: Text(
                                       "aucune_sanction".tr(),

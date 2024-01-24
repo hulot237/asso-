@@ -107,11 +107,8 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
           );
         },
         child: Container(
-          // height: 200,
           padding: EdgeInsets.all(14),
-          // margin: EdgeInsets.only(left: 7, right: 7, top: 5),
           decoration: BoxDecoration(
-            // border: Border.all(width: 0.5, color: Colors.black26),
             color: widget.isActiveRencontre == 1
                 ? AppColors.white
                 : Color.fromARGB(12, 0, 0, 0),
@@ -134,7 +131,6 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      // margin: EdgeInsets.only(top: 5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -228,7 +224,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               ],
                             ),
                           ),
-                          if (widget.isActiveRencontre == 0 && isPasseDate())
+                          if (widget.isActiveRencontre == 0)
                             Container(
                               padding: EdgeInsets.only(top: 5),
 
@@ -263,7 +259,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 ),
                               ),
                             ),
-                          if (!isPasseDate())
+                          if (!isPasseDate() && widget.isActiveRencontre == 1)
                             Container(
                               padding: EdgeInsets.only(top: 5),
                               // decoration: BoxDecoration(

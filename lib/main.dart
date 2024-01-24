@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
@@ -20,12 +21,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 //function to lisen to background changes
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,14 +33,12 @@ Future<void> main() async {
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
 
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   PushNotifications().init();
 
   await EasyLocalization.ensureInitialized();
-
 
   runApp(
     EasyLocalization(
@@ -58,12 +56,11 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-        SystemChrome.setSystemUIOverlayStyle(
-       SystemUiOverlayStyle(
-                // systemNavigationBarColor: Colors.white, // navigation bar color
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        // systemNavigationBarColor: Colors.white, // navigation bar color
         statusBarColor: Colors.transparent, // status bar color
         statusBarIconBrightness: Brightness.dark, // status bar icons' color
         // systemNavigationBarIconBrightness: Brightness.dark,
@@ -110,18 +107,21 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => RecentEventCubit(),
         ),
+        BlocProvider(
+          create: (context) => MembreCubit(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
           useMaterial3: false,
-          
+          fontFamily: GoogleFonts.roboto().fontFamily,
         ),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         routes: {
-          "/": (context) => AppCubitStorage().state.tokenUser == null  &&
+          "/": (context) => AppCubitStorage().state.tokenUser == null &&
                   AppCubitStorage().state.codeAssDefaul == null
               ? LoginPage()
               : HomePage(),

@@ -7,14 +7,13 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class DetailTournoiCourantRepository {
   final dio = Dio();
-  final codeTournoiDefaul = AppCubitStorage().state.codeTournois;
 
-  Future<Map<String, dynamic>> DetailTournoiCourant() async {
+  Future<Map<String, dynamic>> DetailTournoiCourant(codeTournoiDefaul) async {
     try {
       log("response7");
 
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/tournois/${AppCubitStorage().state.codeTournois}/show',
+        '${Variables.LienAIP}/api/v1/tournois/${codeTournoiDefaul}/show',
       );
 
       final Map<String, dynamic> dataJson = response.data["data"];

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
@@ -14,6 +15,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/FicheMembrePage.dart';
 import 'package:faroty_association_1/pages/administrationPage.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/Association_And_Group/association_membres/presentation/screens/members_Ass_Page.dart';
 import 'package:faroty_association_1/pages/paramsAppPage.dart';
 import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
 import 'package:faroty_association_1/pages/proposAidePage.dart';
@@ -71,32 +73,31 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserGroupCubit, UserGroupState>(
         builder: (userGroupContext, userGroupState) {
-      if (userGroupState.isLoading == null ||
-          userGroupState.isLoading == true ||
+      if (userGroupState.isLoading == true ||
           userGroupState.ChangeAssData == null)
         return Container(
-          color: AppColors.white,
-          width: 10,
-          height: 10,
-          child: Center(
-            child: CircularProgressIndicator(
-              color: AppColors.bleuLight,
-            ),
+            child: EasyLoader(
+          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+          iconSize: 50,
+          iconColor: AppColors.blackBlueAccent1,
+          image: AssetImage(
+            'assets/images/Groupe_ou_Asso.png',
           ),
-        );
+        ));
       final currentInfoAllTournoiAssCourant =
           userGroupContext.read<UserGroupCubit>().state.ChangeAssData;
       return BlocBuilder<AuthCubit, AuthState>(
           builder: (authContext, authState) {
         if (authState.isLoading == null || authState.isLoading == true)
           return Container(
-            color: AppColors.white,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: AppColors.bleuLight,
-              ),
+              child: EasyLoader(
+            backgroundColor: Color.fromARGB(0, 255, 255, 255),
+            iconSize: 50,
+            iconColor: AppColors.blackBlueAccent1,
+            image: AssetImage(
+              'assets/images/Groupe_ou_Asso.png',
             ),
-          );
+          ));
         final currentDetailUser =
             authContext.read<AuthCubit>().state.detailUser;
 
@@ -114,7 +115,7 @@ class _SettingScreenState extends State<SettingScreen> {
             backgroundColor: AppColors.pageBackground,
             appBar: AppBar(
               title: Text(
-                "profil".tr(),
+                "Profil".tr(),
                 style: TextStyle(fontSize: 16, color: AppColors.white),
               ),
               backgroundColor: AppColors.backgroundAppBAr,
@@ -130,40 +131,40 @@ class _SettingScreenState extends State<SettingScreen> {
                 },
                 child: Icon(Icons.arrow_back, color: AppColors.white),
               ),
-              actions: [
-                Container(
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 25, top: 15),
-                        child: Icon(Icons.notifications_active_outlined,
-                            color: AppColors.white),
-                      ),
-                      Positioned(
-                        top: 12,
-                        left: 12,
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 15,
-                          height: 15,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(360),
-                            color: Colors.red,
-                          ),
-                          child: Text(
-                            "100",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 6,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.white),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
+              // actions: [
+              //   Container(
+              //     child: Stack(
+              //       children: [
+              //         Container(
+              //           margin: EdgeInsets.only(right: 25, top: 15),
+              //           child: Icon(Icons.notifications_active_outlined,
+              //               color: AppColors.white),
+              //         ),
+              //         Positioned(
+              //           top: 12,
+              //           left: 12,
+              //           child: Container(
+              //             alignment: Alignment.center,
+              //             width: 15,
+              //             height: 15,
+              //             decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(360),
+              //               color: Colors.red,
+              //             ),
+              //             child: Text(
+              //               "100",
+              //               textAlign: TextAlign.center,
+              //               style: TextStyle(
+              //                   fontSize: 6,
+              //                   fontWeight: FontWeight.w700,
+              //                   color: AppColors.white),
+              //             ),
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   )
+              // ],
               // leading: Icon(Icons.arrow_back),
             ),
             body: Column(
@@ -184,7 +185,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         child: Container(
                           padding: EdgeInsets.all(3),
                           decoration: BoxDecoration(
-                              color: AppColors.bleuLight,
+                              color: AppColors.colorButton,
                               borderRadius: BorderRadius.circular(100)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
@@ -286,7 +287,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           SnackBar(
                                             content: Center(
                                               child: Text(
-                                                'Copié : ${currentDetailUser["membre_code"]}',
+                                                '${currentDetailUser["membre_code"]}',
                                                 style: TextStyle(
                                                     fontSize: 12,
                                                     fontWeight:
@@ -299,7 +300,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 top: 7,
                                                 bottom: 7),
                                             backgroundColor:
-                                                AppColors.bleuLight,
+                                                AppColors.colorButton,
                                             behavior: SnackBarBehavior.floating,
                                             width: 140,
                                             shape: StadiumBorder(),
@@ -410,7 +411,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             Container(
                                               child: Icon(
                                                   Icons.phone_android_outlined,
-                                                  color: Colors.blue),
+                                                  color: AppColors.bleuLight),
                                               margin:
                                                   EdgeInsets.only(right: 10),
                                             ),
@@ -640,6 +641,62 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
+                                      builder: (context) => MembersAssPage(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 10,
+                                    right: 10,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black12,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(
+                                                Icons.contact_mail,
+                                                color: AppColors.blackBlue,
+                                              ),
+                                              margin:
+                                                  EdgeInsets.only(right: 10),
+                                            ),
+                                            Text(
+                                              "Membres".tr(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_right,
+                                          color: AppColors.blackBlue, size: 12),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
                                       builder: (context) => ParamsAppPage(),
                                     ),
                                   );
@@ -693,62 +750,6 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProposAidePage(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    // color: Colors.black12,
-                                    border: Border(
-                                      bottom: BorderSide(
-                                          width: 1,
-                                          color: Color.fromARGB(12, 0, 0, 0)),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              child: Icon(
-                                                Icons.support_agent_outlined,
-                                                color: Colors.orange,
-                                              ),
-                                              margin:
-                                                  EdgeInsets.only(right: 10),
-                                            ),
-                                            Text(
-                                              "a_propos_et_aide".tr(),
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: AppColors.blackBlue,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue, size: 12),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
                                   Share.share("Le lien de l'application");
                                 },
                                 child: Container(
@@ -776,193 +777,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                             Container(
                                               child: Icon(
                                                 Icons.share_outlined,
-                                                color: AppColors.greenAssociation,
+                                                color:
+                                                    AppColors.greenAssociation,
                                               ),
                                               margin:
                                                   EdgeInsets.only(right: 10),
                                             ),
                                             Text(
                                               "partager_l'application".tr(),
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: AppColors.blackBlue,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue, size: 12),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  print(
-                                      "success urlcode   ${AppCubitStorage().state.codeAssDefaul}");
-                                  print(
-                                      "success token   ${AppCubitStorage().state.tokenUser}");
-                                  print(
-                                      "success membre_code   ${AppCubitStorage().state.membreCode}");
-                                  print(
-                                      "success tournoi_code   ${AppCubitStorage().state.codeTournois}");
-                                  print(
-                                      "membre is_member ${currentDetailUser["isMember"]}");
-                                  print(
-                                      "membre configs group ${context.read<UserGroupCubit>().state.ChangeAssData!["user_group"]["configs"]}");
-
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        contentPadding: EdgeInsets.all(0),
-                                        content: Container(
-                                          padding: EdgeInsets.all(10),
-                                          height: 150,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Text(
-                                                  "etes_vous_sur?".tr(),
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: AppColors.blackBlue,
-                                                  ),
-                                                ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Container(
-                                                      padding: EdgeInsets.only(
-                                                        top: 5,
-                                                        bottom: 5,
-                                                        right: 20,
-                                                        left: 20,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                          color: AppColors
-                                                              .colorButton,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10)),
-                                                      child: Text(
-                                                        "non".tr(),
-                                                        style: TextStyle(
-                                                          color:
-                                                              AppColors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pushAndRemoveUntil(
-                                                        MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              LoginPage(),
-                                                        ),
-                                                        (route) => false,
-                                                      );
-                                                      HydratedBloc.storage
-                                                          .clear();
-                                                    },
-                                                    child: Container(
-                                                      padding: EdgeInsets.only(
-                                                        top: 5,
-                                                        bottom: 5,
-                                                        right: 20,
-                                                        left: 20,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                            width: 1,
-                                                            color: AppColors
-                                                                .colorButton,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10)),
-                                                      child: Text(
-                                                        "oui".tr(),
-                                                        style: TextStyle(
-                                                          color: AppColors
-                                                              .colorButton,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    // color: Colors.black12,
-                                    border: Border(
-                                      bottom: BorderSide(
-                                          width: 1,
-                                          color: Color.fromARGB(12, 0, 0, 0)),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              child: Icon(
-                                                Icons.logout_rounded,
-                                                color: Colors.black,
-                                              ),
-                                              margin:
-                                                  EdgeInsets.only(right: 10),
-                                            ),
-                                            Text(
-                                              "déconnexion".tr(),
                                               style: TextStyle(
                                                 fontSize: 15,
                                                 color: AppColors.blackBlue,

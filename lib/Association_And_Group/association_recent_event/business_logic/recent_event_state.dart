@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class RecentEventState extends Equatable {
-  final Map<dynamic, dynamic>? allRecentEvent;
+  final Map<String, dynamic>? allRecentEvent;
   final bool isLoading;
 
   RecentEventState({

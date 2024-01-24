@@ -19,7 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VerificationPage extends StatefulWidget {
-  VerificationPage({super.key, required this.numeroPhone, required this.countryCode});
+  VerificationPage(
+      {super.key, required this.numeroPhone, required this.countryCode});
   String numeroPhone;
   String countryCode;
 
@@ -86,8 +87,9 @@ class _VerificationPageState extends State<VerificationPage> {
     final numeroPhone = widget.numeroPhone;
     final countryCode = widget.countryCode;
 
-    final allCotisationAss =
-        await context.read<AuthCubit>().loginFirstCubit(numeroPhone, countryCode);
+    final allCotisationAss = await context
+        .read<AuthCubit>()
+        .loginFirstCubit(numeroPhone, countryCode);
 
     if (allCotisationAss != null) {
       print("objec~~~~~~~~~~~~~~é~~  ${allCotisationAss}");
@@ -117,6 +119,9 @@ class _VerificationPageState extends State<VerificationPage> {
 
       await AppCubitStorage()
           .updateCodeAssDefaul(loginInfo!["data"]["user_groups"][0]["urlcode"]);
+      await context
+          .read<UserGroupCubit>()
+          .AllUserGroupOfUserCubit(loginInfo!["data"]["token"]);
       await AppCubitStorage().updateTokenUser(loginInfo!["data"]["token"]);
       await AppCubitStorage()
           .updatemembreCode(loginInfo["data"]["membre"]["membre_code"]);
@@ -193,7 +198,7 @@ class _VerificationPageState extends State<VerificationPage> {
                           },
                           child: Container(
                             child: Text(
-                              "${"veuillez_saisir_le_code_que_vous_avez_reçu_par_SMS_au_+237".tr()} ${widget.numeroPhone}",
+                              "${"veuillez_saisir_le_code_que_vous_avez_reçu_par_SMS_au".tr()} +${widget.countryCode}${widget.numeroPhone}",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -215,20 +220,20 @@ class _VerificationPageState extends State<VerificationPage> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: TextField(
                               textAlign: TextAlign.center,
-                                  controller: codeController,
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "code_à_5_chiffres".tr(),
-                                    hintStyle: TextStyle(
-                                      color: AppColors.blackBlueAccent1,
-                                    ),
-                                  ),
+                              controller: codeController,
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: AppColors.blackBlue,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "code_à_5_chiffres".tr(),
+                                hintStyle: TextStyle(
+                                  color: AppColors.blackBlueAccent1,
                                 ),
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(height: 25),

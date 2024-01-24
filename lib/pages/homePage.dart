@@ -55,17 +55,7 @@ Widget PageScaffold({
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<void> handleTournoiDefault() async {
-    final detailTournoiCourant = await context
-        .read<DetailTournoiCourantCubit>()
-        .detailTournoiCourantCubit();
 
-    if (detailTournoiCourant != null) {
-      print("handleTournoiDefault");
-    } else {
-      print("handleTournoiDefault null");
-    }
-  }
 
   int _pageIndex = 0;
   final screens = [
@@ -136,7 +126,7 @@ class _HomePageState extends State<HomePage> {
           unselectedIconTheme: IconThemeData(size: 15),
           selectedFontSize: 12,
           unselectedItemColor: AppColors.blackBlue,
-          selectedItemColor: Color.fromRGBO(0, 162, 255, 0.815),
+          selectedItemColor: AppColors.colorButton,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           items: itemListAndroid,
           currentIndex: _pageIndex,
