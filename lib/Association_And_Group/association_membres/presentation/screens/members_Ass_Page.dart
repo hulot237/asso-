@@ -2,6 +2,7 @@ import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_state.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -120,7 +121,7 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                       Text(
                                         "${itemMembers.first_name} ${itemMembers.last_name == null ? '' : itemMembers.last_name}",
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 14,
                                           color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -158,16 +159,18 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                     children: [
                                       if (itemMembers.countrycode != 0)
                                         Text(
-                                          "${itemMembers.countrycode}",
+                                          "+${itemMembers.countrycode} ",
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 16,
                                             color: AppColors.blackBlue,
+                                            fontWeight: FontWeight.bold
                                           ),
                                         ),
                                       Text(
-                                        "${itemMembers.first_phone}",
+                                        "${formatMontantFrancais(double.parse("${itemMembers.first_phone}")) }",
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 16,
+                                            fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
                                       ),

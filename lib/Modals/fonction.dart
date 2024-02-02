@@ -54,11 +54,26 @@ String formatDateToFrench(String isoDate) {
 
 String formatDateLiteral(String isoDate) {
   final dateTime = DateTime.parse(isoDate);
-  final formattedDate = DateFormat("dd MMM yyy '${'à'.tr()}' HH:mm").format(dateTime);
+  final formattedDate =
+      DateFormat("dd MMM yyy '${'à'.tr()}' HH:mm").format(dateTime);
   return formattedDate;
 }
 
-String formatCompareDateReturnWellValue(String endDate, ) {
+String formatDateUnikLiteral(String isoDate) {
+  final dateTime = DateTime.parse(isoDate);
+  final formattedDate = DateFormat("dd MMM yyy").format(dateTime);
+  return formattedDate;
+}
+
+String formatHeurUnikLiteral(String isoDate) {
+  final dateTime = DateTime.parse(isoDate);
+  final formattedDate = DateFormat("HH:mm").format(dateTime);
+  return formattedDate;
+}
+
+String formatCompareDateReturnWellValue(
+  String endDate,
+) {
   final dateTime = DateTime.parse(endDate);
   final formattedDate = DateFormat("yyy-MM-dd HH:mm:ss").format(dateTime);
 
@@ -66,7 +81,6 @@ String formatCompareDateReturnWellValue(String endDate, ) {
   DateTime dt2 = DateTime.now();
 
   Duration diff = endDateApi.difference(dt2);
-
 
   if (endDateApi.compareTo(dt2) == 0) {
     return ("À l'instant".tr());
@@ -118,7 +132,6 @@ String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
 
   Duration diff = endDateApi.difference(dt2);
 
-
   if (endDateApi.compareTo(dt2) == 0) {
     return ("À l'instant".tr());
   }
@@ -166,21 +179,52 @@ checkTransparenceStatus(var ListConfigs, var UserIsMember) {
   }
 }
 
-    isPasseDate(dateRencontreAPI) {
-      // Date récupérée de l'API (sous forme de String)
-      String apiDateString = dateRencontreAPI;
+isPasseDate(dateRencontreAPI) {
+  // Date récupérée de l'API (sous forme de String)
+  String apiDateString = dateRencontreAPI;
 
-      // Conversion de la chaîne en un objet DateTime
-      DateTime apiDate = DateTime.parse(apiDateString);
+  // Conversion de la chaîne en un objet DateTime
+  DateTime apiDate = DateTime.parse(apiDateString);
 
-      // Date actuelle
-      DateTime now = DateTime.now();
+  // Date actuelle
+  DateTime now = DateTime.now();
 
-      // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
-      if (apiDate.isBefore(now)) {
-        print('La date de l\'API est passée par rapport à la date actuelle.');
-        return true;
-      } else {
-        return false;
-      }
-    }
+  // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
+  if (apiDate.isBefore(now)) {
+    print('La date de l\'API est passée par rapport à la date actuelle.');
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+String formatDateTimeintegral(String lang, String dateTimeStr) {
+  // Conversion de la chaîne de date en objet DateTime
+  DateTime dateTime = DateTime.parse(dateTimeStr);
+
+  // Récupération du nom du jour de la semaine et du mois en fonction de la langue
+  String dayOfWeek;
+  String month;
+  if (lang.toLowerCase() == 'en') {
+    dayOfWeek = DateFormat.E().format(dateTime);
+    month = DateFormat.MMM().format(dateTime);
+  } else if (lang.toLowerCase() == 'fr') {
+    dayOfWeek = DateFormat.E('fr_FR').format(dateTime);
+    month = DateFormat.MMM('fr_FR').format(dateTime);
+  } else {
+    return "Langue non prise en charge";
+  }
+
+  // Formattage de la date dans le format demandé
+  String formattedDate =
+      '$dayOfWeek ${dateTime.day} $month ${dateTime.year}';
+
+  return formattedDate;
+}
+
+
+String removeBBalise(String htmlString) {
+  RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
+  return htmlString.replaceAll(exp, '');
+}

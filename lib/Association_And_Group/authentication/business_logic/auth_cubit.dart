@@ -14,7 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
 
-  Future<bool> detailAuthCubit(userCode) async {
+  Future<bool> detailAuthCubit(userCode, codeTournoi) async {
     emit(state.copyWith(
       isLoadingDetailUser: true,
       isLoading: true,
@@ -23,7 +23,7 @@ class AuthCubit extends Cubit<AuthState> {
       loginInfo: state.loginInfo,
     ));
     try {
-      final data = await AuthRepository().UserDetail(userCode);
+      final data = await AuthRepository().UserDetail(userCode, codeTournoi);
 
       if (data != null) {
         emit(

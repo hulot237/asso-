@@ -67,15 +67,10 @@ class _RetraitPageState extends State<RetraitPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> handleDetailUser(userCode) async {
+    Future<void> handleDetailUser(userCode, codeTournoi) async {
       final allCotisationAss =
-          await context.read<AuthCubit>().detailAuthCubit(userCode);
+          await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
 
-      if (allCotisationAss != null) {
-        print("handleDetailUser");
-      } else {
-        print("handleDetailUser null");
-      }
     }
 
     Future<void> handleApproveWithdraw(withdrawId, codeMembre) async {
@@ -84,7 +79,7 @@ class _RetraitPageState extends State<RetraitPage> {
           .approvePayementCubit(withdrawId, codeMembre);
 
       if (ApproveWithdraw != null) {
-        handleDetailUser(AppCubitStorage().state.membreCode);
+        handleDetailUser(AppCubitStorage().state.membreCode, AppCubitStorage().state.codeTournois);
         print("handleDetailUser");
       } else {
         print("handleDetailUser null");

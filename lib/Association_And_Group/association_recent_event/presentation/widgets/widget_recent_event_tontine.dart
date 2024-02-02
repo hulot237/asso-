@@ -1,9 +1,11 @@
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
@@ -54,246 +56,262 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (checkTransparenceStatus(
-            context
-                .read<UserGroupCubit>()
-                .state
-                .changeAssData!
-                .user_group!
-                .configs,
-            context.read<AuthCubit>().state.detailUser!["isMember"])) {
-          handleDetailContributionTontine(
-            widget.codeCotisation,
-          );
-
-          Modal().showBottomSheetHistTontine(context);
-        }
-      },
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: isPasseDate(widget.dateClose)
-                  ? Color.fromARGB(255, 255, 247, 247)
-                  : AppColors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              border: Border.all(
-                color: isPasseDate(widget.dateClose)
-                    ? Color.fromARGB(255, 243, 1, 1)
-                    : AppColors.white,
-                width: 0.5,
-              ),
-            ),
-            padding: EdgeInsets.only(
-              top: 10,
-              left: 10,
-              right: 10,
-              bottom: 10,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<UserGroupCubit, UserGroupState>(
+                builder: (UserGroupcontext, UserGroupstate) {
+                  if (UserGroupstate.isLoadingChangeAss == true &&
+                      UserGroupstate.changeAssData == null )
+                      return Container(
+                      child: EasyLoader(
+                        backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                        iconSize: 50,
+                        iconColor: AppColors.blackBlueAccent1,
+                        image: AssetImage(
+                          'assets/images/Groupe_ou_Asso.png',
+                        ),
+                      ),
+                    );
+        return GestureDetector(
+          onTap: () {
+            if (checkTransparenceStatus(
+                context
+                    .read<UserGroupCubit>()
+                    .state
+                    .changeAssData!
+                    .user_group!
+                    .configs,
+                context.read<AuthCubit>().state.detailUser!["isMember"])) {
+              handleDetailContributionTontine(
+                widget.codeCotisation,
+              );
+        
+              Modal().showBottomSheetHistTontine(context);
+            }
+          },
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: isPasseDate(widget.dateClose)
+                      ? Color.fromARGB(255, 255, 247, 247)
+                      : AppColors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(
+                    color: isPasseDate(widget.dateClose)
+                        ? Color.fromARGB(255, 243, 1, 1)
+                        : AppColors.white,
+                    width: 0.5,
+                  ),
+                ),
+                padding: EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
+                ),
+                child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 5),
-                          width: 11,
-                          height: 11,
-                          decoration: BoxDecoration(
-                              color: !isPasseDate(widget.dateClose)
-                                  ? AppColors.colorButton
-                                  : AppColors.red,
-                              borderRadius: BorderRadius.circular(360)),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 5),
+                              width: 11,
+                              height: 11,
+                              decoration: BoxDecoration(
+                                  color: !isPasseDate(widget.dateClose)
+                                      ? AppColors.colorButton
+                                      : AppColors.red,
+                                  borderRadius: BorderRadius.circular(360)),
+                            ),
+                            Text(
+                              'TONTINE'.tr(),
+                              style: TextStyle(
+                                color: AppColors.blackBlue,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'TONTINE'.tr(),
-                          style: TextStyle(
-                            color: AppColors.blackBlue,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
+                        GestureDetector(
+                          onTap: () async {
+                            String msg =
+                                "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                            Modal().showModalActionPayement(
+                              context,
+                              msg,
+                              widget.lienDePaiement,
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 72,
+                            padding: EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                              top: 5,
+                              bottom: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.colorButton,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Container(
+                              child: Text(
+                                "Tontiner",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        String msg =
-                            "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                        Modal().showModalActionPayement(
-                          context,
-                          msg,
-                          widget.lienDePaiement,
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 72,
-                        padding: EdgeInsets.only(
-                          left: 8,
-                          right: 8,
-                          top: 5,
-                          bottom: 5,
+                    Container(
+                      margin: EdgeInsets.only(top: 8),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "${widget.nomTontine}",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.blackBlue,
                         ),
-                        decoration: BoxDecoration(
-                          color: AppColors.colorButton,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Container(
-                          child: Text(
-                            "Tontiner",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 8),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "${widget.nomTontine}",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.blackBlue,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            child: Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        "${"Bénéficiaire".tr()} :",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color.fromRGBO(20, 45, 99, 0.534),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "${widget.nomBeneficiaire}",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.blackBlue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "montant".tr(),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.blackBlueAccent1,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (checkTransparenceStatus(
+                              context
+                                  .read<UserGroupCubit>()
+                                  .state
+                                  .changeAssData!
+                                  .user_group!
+                                  .configs,
+                              context
+                                  .read<AuthCubit>()
+                                  .state
+                                  .detailUser!["isMember"]))
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   child: Text(
-                                    "${"Bénéficiaire".tr()} :",
+                                    "montant_collecté".tr(),
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
-                                      color: Color.fromRGBO(20, 45, 99, 0.534),
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    "${formatMontantFrancais(
+                                      double.parse("${widget.montantCollecte}"),
+                                    )} FCFA",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.green,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
                           Container(
                             child: Text(
-                              "${widget.nomBeneficiaire}",
+                              "${formatCompareDateReturnWellValue(widget.dateClose)}",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 11,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.blackBlue,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            child: Text(
-                              "montant".tr(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
                           ),
-                          Container(
-                            child: Text(
-                              "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.blackBlue,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (checkTransparenceStatus(
-                          context
-                              .read<UserGroupCubit>()
-                              .state
-                              .changeAssData!
-                              .user_group!
-                              .configs,
-                          context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"]))
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Text(
-                                "montant_collecté".tr(),
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.blackBlueAccent1,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "${formatMontantFrancais(
-                                  double.parse("${widget.montantCollecte}"),
-                                )} FCFA",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.green,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      Container(
-                        child: Text(
-                          "${formatCompareDateReturnWellValue(widget.dateClose)}",
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.blackBlueAccent1,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 }

@@ -32,6 +32,7 @@ import 'package:faroty_association_1/widget/widgetCallFunctionFailled.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class HistoriqueScreen extends StatefulWidget {
   const HistoriqueScreen({super.key});
@@ -86,10 +87,10 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
   late TabController _tabController;
   bool _dataLoaded = false;
 
-  Future<void> handleAllCotisationAssTournoi(codeTournoi) async {
+  Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
     final allCotisationAss = await context
         .read<CotisationCubit>()
-        .AllCotisationAssTournoiCubit(codeTournoi);
+        .AllCotisationAssTournoiCubit(codeTournoi, codeMembre);
 
     if (allCotisationAss != null) {
       print("handleAllCotisationAss");
@@ -168,15 +169,10 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
     print("cdddcdcdcdcdcdcdcdcdcdcdcdcdcdcdcrrrr");
   }
 
-  Future<void> handleDetailUser(userCode) async {
+  Future<void> handleDetailUser(userCode, codeTournoi) async {
     final allCotisationAss =
-        await context.read<AuthCubit>().detailAuthCubit(userCode);
+        await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
 
-    if (allCotisationAss != null) {
-      print("handleDetailUser");
-    } else {
-      print("handleDetailUser null");
-    }
   }
 
   Future refreshRencontre() async {
@@ -188,11 +184,13 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
   }
 
   Future refreshCotisation() async {
-    handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois);
+    handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois,
+        AppCubitStorage().state.membreCode);
   }
 
   Future refreshSanction() async {
-    handleDetailUser(AppCubitStorage().state.membreCode);
+    handleDetailUser(AppCubitStorage().state.membreCode,
+        AppCubitStorage().state.codeTournois);
   }
 
   Future refreshCompte() async {
@@ -210,7 +208,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
     super.initState();
     handleTournoiDefault(AppCubitStorage().state.codeTournois);
     // handleAllUserGroup();
-    handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois);
+    handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois,
+        AppCubitStorage().state.membreCode);
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
     getNotifications();
 
@@ -496,6 +495,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                         top: 3,
                                                         bottom: 7),
                                                     child: WidgetRencontreCard(
+                                                      typeRencontre: itemSeance[
+                                                          "type_rencontre"],
                                                       maskElt: false,
                                                       codeSeance: itemSeance[
                                                           "seance_code"],
@@ -511,7 +512,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                               itemSeance[
                                                                   "date_seance"]),
                                                       descriptionRencontre:
-                                                          '${"La rencontre du".tr()} ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(itemSeance["date_seance"]) : formatDateToEnglish(itemSeance["date_seance"])} ${"se tiendra à".tr()} ${itemSeance["heure_debut"]}',
+                                  '${formatDateTimeintegral(context.locale.toString() == "en_US"? "en" : "fr", itemSeance["date_seance"]).toUpperCase()} ${"à".tr()} ${itemSeance["heure_debut"]}',
+
                                                       heureRencontre:
                                                           itemSeance[
                                                               "heure_debut"],
@@ -805,13 +807,15 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                               if (CotisationState.isLoading == true &&
                                   CotisationState.allCotisationAss == null)
                                 return Container(
-                                  child: EasyLoader(
-                                    backgroundColor:
-                                        Color.fromARGB(0, 255, 255, 255),
-                                    iconSize: 50,
-                                    iconColor: AppColors.blackBlueAccent1,
-                                    image: AssetImage(
-                                      'assets/images/Groupe_ou_Asso.png',
+                                  child: Expanded(
+                                    child: EasyLoader(
+                                      backgroundColor:
+                                          Color.fromARGB(0, 255, 255, 255),
+                                      iconSize: 50,
+                                      iconColor: AppColors.blackBlueAccent1,
+                                      image: AssetImage(
+                                        'assets/images/Groupe_ou_Asso.png',
+                                      ),
                                     ),
                                   ),
                                 );
@@ -855,6 +859,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                         top: 3,
                                                         bottom: 7),
                                                     child: WidgetCotisation(
+                                                      isPayed:
+                                                          ItemDetailCotisation[
+                                                              "is_payed"],
                                                       rubrique: ItemDetailCotisation[
                                                                   "ass_rubrique"] ==
                                                               null
@@ -941,24 +948,24 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                       child: RefreshIndicator(
                                         onRefresh: refreshCotisation,
                                         child: ListView.builder(
-                                            itemCount: 1,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Container(
-                                                padding:
-                                                    EdgeInsets.only(top: 200),
-                                                alignment: Alignment.topCenter,
-                                                child: Text(
-                                                  "aucune_cotisation".tr(),
-                                                  style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          20, 45, 99, 0.26),
-                                                      fontWeight:
-                                                          FontWeight.w100,
-                                                      fontSize: 20),
-                                                ),
-                                              );
-                                            }),
+                                          itemCount: 1,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Container(
+                                              padding:
+                                                  EdgeInsets.only(top: 200),
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                "aucune_cotisation".tr(),
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        20, 45, 99, 0.26),
+                                                    fontWeight: FontWeight.w100,
+                                                    fontSize: 20),
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     );
                             },
@@ -1125,8 +1132,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                         padding:
                             EdgeInsets.only(top: 1.5, left: 1.5, right: 1.5),
                         width: MediaQuery.of(context).size.width,
-                        // decoration:
-                        // BoxDecoration(color: Color.fromARGB(255, 240, 35, 35),),
                         child: Column(
                           children: [
                             Container(
@@ -1143,7 +1148,23 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                               ),
                             ),
                             BlocBuilder<CompteCubit, CompteState>(
-                                builder: (CompteContext, CompteState) {
+                                builder: (CompteContext, compteState) {
+
+                              if (compteState.isLoading == true &&
+                                  compteState.allCompteAss == null)
+                                return Container(
+                                  child: Expanded(
+                                    child: EasyLoader(
+                                      backgroundColor:
+                                          Color.fromARGB(0, 255, 255, 255),
+                                      iconSize: 50,
+                                      iconColor: AppColors.blackBlueAccent1,
+                                      image: AssetImage(
+                                        'assets/images/Groupe_ou_Asso.png',
+                                      ),
+                                    ),
+                                  ),
+                                );
                               final currentCompteAss = context
                                   .read<CompteCubit>()
                                   .state
@@ -1162,12 +1183,21 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                               List<Widget> listWidgetSanction =
                                   currentCompteAss!.map((item) {
                                 i++;
-                                return WidgetCompteCard(
-                                  montantCompte:
-                                      "${int.parse(item.balance!) + int.parse(item.faroti_balance!)}",
-                                  nomCompte: item.name!,
-                                  numeroCompte: item.public_ref!,
-                                  couleur: listeDeCouleurs[i],
+                                return GestureDetector(
+                                  onTap: () async {
+                                    context
+                                        .read<CompteCubit>()
+                                        .getTransactionCompte(item.public_ref);
+
+                                    showModalBottomTransactionCompte(context);
+                                  },
+                                  child: WidgetCompteCard(
+                                    montantCompte:
+                                        "${int.parse(item.balance!) + int.parse(item.faroti_balance!)}",
+                                    nomCompte: item.name!,
+                                    numeroCompte: item.public_ref!,
+                                    couleur: listeDeCouleurs[i],
+                                  ),
                                 );
                               }).toList();
 
@@ -1186,7 +1216,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         ),
                                       ),
                                     ),
-                                    if (CompteState.isLoading == true)
+                                    if (compteState.isLoading == true)
                                       EasyLoader(
                                         backgroundColor:
                                             Color.fromARGB(0, 255, 255, 255),
@@ -1211,5 +1241,175 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
         },
       );
     });
+  }
+
+  Future<dynamic> showModalBottomTransactionCompte(BuildContext context) {
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: AppColors.barrierColorModal,
+      context: context,
+      builder: (context) {
+        return Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+            ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 10, bottom: 5),
+                height: 5,
+                width: 55,
+                decoration: BoxDecoration(
+                  color: AppColors.blackBlue,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
+              BlocBuilder<CompteCubit, CompteState>(
+                  builder: (CompteContext, compteState) {
+                final currentTransactionCompte =
+                    context.read<CompteCubit>().state.transactionCompte;
+                if (compteState.isLoadingTransaction &&
+                    compteState.transactionCompte == null)
+                  return Expanded(
+                    child: EasyLoader(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      iconSize: 50,
+                      iconColor: AppColors.blackBlueAccent1,
+                      image: AssetImage(
+                        'assets/images/Groupe_ou_Asso.png',
+                      ),
+                    ),
+                  );
+                return Expanded(
+                  child: Stack(
+                    children: [
+                      ListView.builder(
+                        itemCount: currentTransactionCompte!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final itemTransaction =
+                              currentTransactionCompte[index];
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.blackBlueAccent2,
+                            ),
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.all(7),
+                            child: Column(
+                              children: [
+                                // Container(
+                                // margin: EdgeInsets.only(bottom: 5),
+                                // child:
+
+                                Html(
+                                  data:"<p style='color:#142D63 ; text-align:center;'>${itemTransaction["description"]}</p>",
+                                ),
+
+                                
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "${formatMontantFrancais(double.parse(itemTransaction["amount"]))} FCFA",
+                                        style: TextStyle(
+                                          color: itemTransaction["type"] == "0"
+                                              ? AppColors.green
+                                              : AppColors.red,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      itemTransaction["type"] == "0"
+                                          ? Icon(
+                                              Icons.arrow_downward_sharp,
+                                              size: 14,
+                                              color:
+                                                  itemTransaction["type"] == "0"
+                                                      ? AppColors.green
+                                                      : AppColors.red,
+                                            )
+                                          : Icon(
+                                              Icons.arrow_upward_sharp,
+                                              color:
+                                                  itemTransaction["type"] == "0"
+                                                      ? AppColors.green
+                                                      : AppColors.red,
+                                              size: 14,
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Via ",
+                                            style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12),
+                                          ),
+                                          Text(
+                                            itemTransaction["mode"] == "0"
+                                                ? "Admin"
+                                                : "Lien de paiement".tr(),
+                                            style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        formatDateLiteral(
+                                            itemTransaction["created_at"]),
+                                        style: TextStyle(
+                                            color: AppColors.blackBlue,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 12),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      if (compteState.isLoadingTransaction &&
+                          compteState.transactionCompte != null)
+                        EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            'assets/images/Groupe_ou_Asso.png',
+                          ),
+                        )
+                    ],
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

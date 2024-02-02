@@ -59,14 +59,10 @@ Widget PageScaffold({
 class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
   File? imageFile;
 
-  Future<void> handleDetailUser(userCode) async {
+  Future<void> handleDetailUser(userCode, codeTournoi) async {
     final allCotisationAss =
-        await context.read<AuthCubit>().detailAuthCubit(userCode);
+        await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
 
-    if (allCotisationAss != null) {
-      } else {
-      print("userGroupDefault null");
-    }
   }
 
   Future<void> handleUpdateInfoUser(
@@ -96,7 +92,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
           partner_urlcode: AppCubitStorage().state.codeAssDefaul,
           membre_code: AppCubitStorage().state.membreCode);
       handleDetailUser(
-        AppCubitStorage().state.membreCode,
+        AppCubitStorage().state.membreCode,AppCubitStorage().state.codeTournois
       );
     }
   }

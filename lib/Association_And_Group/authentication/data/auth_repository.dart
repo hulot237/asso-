@@ -7,10 +7,10 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 class AuthRepository {
   final dio = Dio();
 
-  Future<Map<String, dynamic>> UserDetail(userCode) async {
+  Future<Map<String, dynamic>> UserDetail(userCode, codeTournoi) async {
     try {
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/membre/$userCode/show',
+        '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi',
       );
       final Map<String, dynamic> dataJson = response.data["data"];
       

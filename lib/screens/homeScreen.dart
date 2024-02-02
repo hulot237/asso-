@@ -62,10 +62,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> handleAllCotisationAssTournoi(codeTournoi) async {
+  Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
     final allCotisationAss = await context
         .read<CotisationCubit>()
-        .AllCotisationAssTournoiCubit(codeTournoi);
+        .AllCotisationAssTournoiCubit(codeTournoi, codeMembre);
 
     if (allCotisationAss != null) {
       print("handleAllCotisationAss");
@@ -74,27 +74,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> handleDetailUser(userCode) async {
+  Future<void> handleDetailUser(userCode, codeTournoi) async {
     final allCotisationAss =
-        await context.read<AuthCubit>().detailAuthCubit(userCode);
+        await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
 
-    if (allCotisationAss != null) {
-      print("handleDetailUser");
-    } else {
-      print("handleDetailUser null");
-    }
+
   }
 
-  Future<void> handleAllCompteAss(codeAssociation) async {
-    final allCotisationAss =
-        await context.read<CompteCubit>().AllCompteAssCubit(codeAssociation);
+  // Future<void> handleAllCompteAss(codeAssociation) async {
+  //   final allCotisationAss =
+  //       await context.read<CompteCubit>().AllCompteAssCubit(codeAssociation);
 
-    if (allCotisationAss != null) {
-      print("handleAllCompteAss");
-    } else {
-      print("handleAllCompteAss null");
-    }
-  }
+  //   if (allCotisationAss != null) {
+  //     print("handleAllCompteAss");
+  //   } else {
+  //     print("handleAllCompteAss null");
+  //   }
+  // }
 
   Future<void> handleAllSeanceAss(codeAssociation) async {
     final allSeanceAss =
@@ -128,11 +124,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     handleTournoiDefault();
     handleRecentEvent(AppCubitStorage().state.membreCode);
     handleChangeAss(AppCubitStorage().state.codeAssDefaul);
-    handleDetailUser(AppCubitStorage().state.membreCode);
-    handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
-    context
-        .read<MembreCubit>()
-        .showMembersAss(AppCubitStorage().state.codeAssDefaul);
+    handleDetailUser(AppCubitStorage().state.membreCode,
+        AppCubitStorage().state.codeTournois);
+    // handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
 
     super.initState();
   }
@@ -148,23 +142,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 2, vsync: this);
 
-    return FutureBuilder<bool>(
-        future: ConnectivityService.checkConnectivity(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              child: EasyLoader(
-                backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                iconSize: 50,
-                iconColor: AppColors.blackBlueAccent1,
-                image: AssetImage(
-                  'assets/images/Groupe_ou_Asso.png',
-                ),
-              ),
-            );
-          } else if (snapshot.hasError == snapshot.data) {
-            return checkInternetConnectionPage();
-          } else {
+    // return FutureBuilder<bool>(
+    //     future: ConnectivityService.checkConnectivity(),
+    //     builder: (context, snapshot) {
+    //       if (snapshot.connectionState == ConnectionState.waiting) {
+    //         return Container(
+    //           child: EasyLoader(
+    //             backgroundColor: Color.fromARGB(0, 255, 255, 255),
+    //             iconSize: 50,
+    //             iconColor: AppColors.blackBlueAccent1,
+    //             image: AssetImage(
+    //               'assets/images/Groupe_ou_Asso.png',
+    //             ),
+    //           ),
+    //         );
+    //       } else if (snapshot.hasError == snapshot.data) {
+    //         return checkInternetConnectionPage();
+    //       } else {
             return BlocBuilder<AuthCubit, AuthState>(
                 builder: (Authcontext, Authstate) {
               if (Authstate.isLoading == true && Authstate.detailUser == null)
@@ -178,11 +172,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
                 );
+              final currentDetailUser =
+                  context.read<AuthCubit>().state.detailUser;
 
               return BlocBuilder<UserGroupCubit, UserGroupState>(
                 builder: (UserGroupcontext, UserGroupstate) {
                   if (UserGroupstate.isLoading == true &&
-                      UserGroupstate.changeAssData == null &&
+                          UserGroupstate.changeAssData == null ||
                       UserGroupstate.userGroup == null)
                     return Container(
                       child: EasyLoader(
@@ -209,140 +205,147 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             leading: Container(),
                             elevation: 0,
                             backgroundColor: AppColors.backgroundAppBAr,
-                            flexibleSpace: FlexibleSpaceBar(
-                              titlePadding: EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 20,
-                                right: 20,
-                              ),
-                              centerTitle: false,
-                              title: Container(
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                            flexibleSpace: UserGroupstate.isLoadingChangeAss ==
+                                        true &&
+                                    UserGroupstate.changeAssData == null
+                                // UserGroupstate.userGroup != null
+                                ? EasyLoader(
+                                    backgroundColor:
+                                        Color.fromARGB(0, 255, 255, 255),
+                                    iconSize: 50,
+                                    iconColor: AppColors.blackBlueAccent1,
+                                    image: AssetImage(
+                                      'assets/images/Groupe_ou_Asso.png',
+                                    ),
+                                  )
+                                : FlexibleSpaceBar(
+                                    titlePadding: EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                      left: 20,
+                                      right: 20,
+                                    ),
+                                    centerTitle: false,
+                                    title: Container(
+                                      child: Stack(
                                         children: [
-                                          Expanded(
-                                            child: Container(
-                                              margin:
-                                                  EdgeInsets.only(right: 13),
-                                              child: Text(
-                                                "${DetailAss!.user_group!.name}",
-                                                // 'nomAss',
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColors.white,
+                                          Container(
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: 13),
+                                                    child: Text(
+                                                      "${DetailAss!.user_group!.name}",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: AppColors.white,
+                                                      ),
+                                                      // textAlign: TextAlign.center,
+                                                      maxLines: 2,
+                                                    ),
+                                                  ),
                                                 ),
-                                                // textAlign: TextAlign.center,
-                                                maxLines: 2,
-                                              ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Modal()
+                                                        .showBottomSheetListAss(
+                                                      context,
+                                                      context
+                                                          .read<
+                                                              UserGroupCubit>()
+                                                          .state
+                                                          .userGroup,
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: Color.fromARGB(
+                                                            255, 255, 26, 9),
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    padding: EdgeInsets.all(1),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
+                                                        ),
+                                                        height: 30,
+                                                        width: 30,
+                                                        child: Image.network(
+                                                          // "zz",
+                                                          "${Variables.LienAIP}${DetailAss.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Modal().showBottomSheetListAss(
-                                                context,
-                                                context
-                                                    .read<UserGroupCubit>()
-                                                    .state
-                                                    .userGroup,
-                                              );
-                                            },
+                                          Positioned(
+                                            right: 2,
+                                            top: 3,
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                border: Border.all(
                                                   color: Color.fromARGB(
                                                       255, 255, 26, 9),
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                              ),
-                                              padding: EdgeInsets.all(1),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                  height: 30,
-                                                  width: 30,
-                                                  child: Image.network(
-                                                    // "zz",
-                                                    "${Variables.LienAIP}${DetailAss.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              width: 5,
+                                              height: 5,
                                             ),
-                                          ),
+                                          )
                                         ],
                                       ),
                                     ),
-                                    Positioned(
-                                      right: 2,
-                                      top: 3,
-                                      child: Container(
+                                    background: Stack(children: [
+                                      Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Image.network(
+                                            "${Variables.LienAIP}${DetailAss.user_group!.background_cover == null ? "" : DetailAss.user_group!.background_cover}",
+                                            fit: BoxFit.cover,
+                                          )),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
-                                            color:
-                                                Color.fromARGB(255, 255, 26, 9),
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        width: 5,
-                                        height: 5,
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Colors.transparent,
+                                              Colors.transparent,
+                                              Colors.transparent,
+                                              const Color.fromARGB(
+                                                  167, 150, 191, 53)
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              background: Stack(children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.height,
-                                  child:
-                                      Image.network(
-                                              "${Variables.LienAIP}${DetailAss.user_group!.background_cover == null ? "" : DetailAss.user_group!.background_cover}",
-                                              fit: BoxFit.cover,
-                                            )
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    // boxShadow: [
-                                    //   BoxShadow(
-                                    //     color:
-                                    //         Color.fromARGB(62, 255, 255, 255),
-                                    //     spreadRadius: 1,
-                                    //     blurRadius: 15,
-                                    //     offset: const Offset(5, 5),
-                                    //   ),
-                                    //   const BoxShadow(
-                                    //       color:
-                                    //           Color.fromARGB(4, 255, 255, 255),
-                                    //       offset: Offset(-5, -5),
-                                    //       blurRadius: 15,
-                                    //       spreadRadius: 1),
-                                    // ],
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        const Color.fromARGB(167, 150, 191, 53)
-                                      ],
-                                    ),
+                                    ]),
                                   ),
-                                ),
-                              ]),
-                            ),
                           ),
                           SliverPersistentHeader(
                             pinned: false,
@@ -352,6 +355,148 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               minExtent: 215,
                             ),
                           ),
+                          if (currentDetailUser!["is_inscription_payed"] == 0)
+                            SliverToBoxAdapter(
+                              child: Container(
+                                  margin: EdgeInsets.only(
+                                      left: 10, right: 10, top: 7),
+                                  padding: EdgeInsets.only(
+                                      left: 10, right: 10, top: 7, bottom: 7),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.blackBlueAccent2,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Fonds de caisse"
+                                                  .tr()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.blackBlue),
+                                            ),
+                                            if (Authstate.isLoading != true)
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    '${"reste à payer".tr()}',
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: AppColors
+                                                          .blackBlueAccent1,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      "${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA"
+                                                          .tr(),
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: AppColors.red,
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                      Authstate.isLoading == true
+                                          ? Container(
+                                              child: EasyLoader(
+                                                backgroundColor: Color.fromARGB(
+                                                    0, 255, 255, 255),
+                                                iconSize: 25,
+                                                iconColor:
+                                                    AppColors.blackBlueAccent1,
+                                                image: AssetImage(
+                                                  'assets/images/Groupe_ou_Asso.png',
+                                                ),
+                                              ),
+                                            )
+                                          : Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                    "${formatMontantFrancais(double.parse(currentDetailUser["entry_amount"]))} FCFA"
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color:
+                                                          AppColors.blackBlue,
+                                                    ),
+                                                  ),
+                                                    
+                                                  ],
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    String msg =
+                                                        "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["inscription_balance"]) - int.parse(currentDetailUser["entry_amount"])).toString()))} FCFA.\nMerci de suivre le lien ${currentDetailUser["inscription_pay_link"]} pour valider";
+                                                    if (currentDetailUser[
+                                                            "is_inscription_payed"] !=
+                                                        1)
+                                                      Modal()
+                                                          .showModalActionPayement(
+                                                        context,
+                                                        msg,
+                                                        currentDetailUser[
+                                                            "inscription_pay_link"],
+                                                      );
+                                                  },
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    width: 72,
+                                                    padding: EdgeInsets.only(
+                                                      left: 8,
+                                                      right: 8,
+                                                      top: 5,
+                                                      bottom: 5,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          AppColors.colorButton,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                    child: Container(
+                                                      child: Text(
+                                                        "Payer".tr(),
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12,
+                                                          color:
+                                                              AppColors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                    ],
+                                  )),
+                            ),
                           SliverPersistentHeader(
                             pinned: true,
                             floating: false,
@@ -530,8 +675,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               );
             });
           }
-        });
-  }
+        // });
+  // }
 }
 
 class SliverTabBar extends SliverPersistentHeaderDelegate {
@@ -707,6 +852,10 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
                         ? Container(
                             margin: EdgeInsets.only(left: 7, right: 7, top: 5),
                             child: WidgetRencontreCard(
+                              // typeRencontre: currentDetailtournoiCourant["type_rencontre"],
+                              typeRencontre:
+                                  currentDetailtournoiCourant["tournois"]
+                                      ["seance"][0]["type_rencontre"],
                               maskElt: true,
                               codeSeance:
                                   currentDetailtournoiCourant["tournois"]
@@ -722,7 +871,7 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
                                           ["seance"][0]["date_seance"],
                                     ),
                               descriptionRencontre:
-                                  '${'La rencontres, se tiendra le'.tr()} ${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"]) : formatDateToEnglish(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])} ${"soyez donc present a".tr()} ${currentDetailtournoiCourant["tournois"]["seance"][0]["heure_debut"]}',
+                                  '${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"]).toUpperCase()} ${"à".tr()} ${currentDetailtournoiCourant["tournois"]["seance"][0]["heure_debut"]}',
                               heureRencontre:
                                   currentDetailtournoiCourant["tournois"]
                                       ["seance"][0]["heure_debut"],

@@ -19,11 +19,11 @@ class CotisationRepository {
     }
   }
 
-  Future<List<dynamic>> AllCotisationOfAssTournoi(codeTournoi) async {
+  Future<List<dynamic>> AllCotisationOfAssTournoi(codeTournoi, codeMembre) async {
     try {
       log("response AllCotisationOfAssAllCotisationOfAss");
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/cotisation/tournois/$codeTournoi/all',
+        '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/membre/$codeMembre/get-cotisation-of-membre',
       );
       final List<dynamic> dataJson = response.data["data"]["cotisations"];
       log('Okay AllCotisationOfAssAllCotisationOfAss rep');

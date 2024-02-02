@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class AdministrationPage extends StatefulWidget {
@@ -57,6 +59,13 @@ class _AdministrationPageState extends State<AdministrationPage> {
   int progression = 0;
   WebViewController controller = WebViewController();
 
+  final cookieManager = WebviewCookieManager();
+
+  // final String _url = 'https://youtube.com';
+  // final String cookieValue = JSON.stringify(list);
+  // final String domain = 'faroty.com';
+  // final String cookieName = 'some_cookie_name';
+
   @override
   void initState() {
     super.initState();
@@ -66,30 +75,29 @@ class _AdministrationPageState extends State<AdministrationPage> {
       value: {
         "error": false,
         "user": {
-          "id": 23586,
+          "id": 17799,
           "parent_id": null,
           "admin_id": null,
           "country_id": 1,
           "currency_id": 1,
           "location_id": null,
           "profil_id": null,
-          "balance": 1902.88,
+          "balance": 879.39,
           "sms_balance": 0,
           "devise_country_iso3": "cm",
-          "token":
-              "d6EVQeUik3c:APA91bETkRsEhWhzEJnrfOxkNpWreuQDFqJAr2dXDwThywaDD93tZhTsmCZm6DFXUuOam_jNj5cOics0YTYty7rhO8qavKkaEgXdqWNVoG10avn8tWKXxYsPbHYPrsgkEhUDj0IkSbC8",
+          "token": null,
           "go_token": null,
-          "hashid": "73fade63-de3f-4072-bb97-016df10547fe",
-          "phonenumber": "237680474835",
-          "phone": "680474835",
-          "username": "28fb8679-65e1-4bda-959b-b52c0dbb508e",
+          "hashid": "2d94eb2a-6705-4a3c-8e81-ad4d1c1f1552",
+          "phonenumber": "237677438521",
+          "phone": "677438521",
+          "username": "88afd164-9486-4b81-acf7-c11de760cac7",
           "password": null,
-          "wallet_password": "e82c4b19b8151ddc25d4d93baf7b908f",
-          "api_password": "6f51b785-0e4f-44d7-93a3-b5d4e0b2558e",
+          "wallet_password": "17b3c7061788dbe82de5abe9f6fe22b3",
+          "api_password": "9e03e2dd-38fe-4375-9555-91a94d71e2d7",
           "api_auth_password": null,
-          "name": "Hulot",
+          "name": "Thibaut TSAGUE",
           "anniversary": "2002-08-04T23:00:00.000Z",
-          "email": "kengnedjoussehulot@gmail.com",
+          "email": "",
           "localisation": null,
           "biography": null,
           "quartier": null,
@@ -97,21 +105,22 @@ class _AdministrationPageState extends State<AdministrationPage> {
           "utc": 1,
           "gender": -1,
           "profil_photo_base64": null,
-          "profil_photo_url": "https://api.faroty.com/images/avatar/avatar.png",
-          "create_date": 1676013880,
+          "profil_photo_url":
+              "https://api.rush.faroty.com/images/avatar/avatar.png",
+          "create_date": 1661362901,
           "is_confirm": 1,
           "is_wallet_confirm": 1,
           "has_kyc": 1,
-          "kyc_date": 1691047960,
-          "confirm_date": 1676014031,
+          "kyc_date": 1691072008,
+          "confirm_date": 1682796374,
           "confirm_wallet_date": null,
-          "last_update_time": 1703098167,
-          "profil_type": 0,
+          "last_update_time": 1706091361,
+          "profil_type": 2,
           "api_fees": 0,
-          "versioncode": 986,
+          "versioncode": 980,
           "appname": "android",
-          "save_money_date": 1702410361,
-          "save_money_password": "e82c4b19b8151ddc25d4d93baf7b908f",
+          "save_money_date": 1691171723,
+          "save_money_password": "17b3c7061788dbe82de5abe9f6fe22b3",
           "save_money_question": null,
           "save_money_answord": null,
           "transaction_suspended": 0,
@@ -135,10 +144,10 @@ class _AdministrationPageState extends State<AdministrationPage> {
           "cumul_withdrawn_amount_per_day": 250000,
           "cumul_withdrawn_amount_per_week": 1000000,
           "cumul_withdrawn_amount_per_mo": 4000000,
-          "daily_free_withdrawal_count": 2
+          "daily_free_withdrawal_count": 50
         },
-        "api_token": "834da76a-246d-4b19-b143-3befd02891a1",
-        "api_password": "6f51b785-0e4f-44d7-93a3-b5d4e0b2558e"
+        "api_token": "53c95ac9-deda-463f-b305-0b3306dcf7c4",
+        "api_password": "9e03e2dd-38fe-4375-9555-91a94d71e2d7"
       }.toString(),
       domain: "faroty.com",
     );
@@ -159,7 +168,6 @@ class _AdministrationPageState extends State<AdministrationPage> {
       ..loadRequest(
         Uri.parse('https://groups.faroty.com/'),
       );
-    
 
     WebViewWidget(
       controller: controller,

@@ -1,5 +1,8 @@
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
@@ -28,19 +31,28 @@ class Modal {
     bool isLoading = false;
 
     Future handleChangeAss(codeAss) async {
-      final ChangeAss = await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+      final ChangeAss =
+          await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
 
-        await AppCubitStorage().updateCodeAssDefaul(codeAss);
+      await AppCubitStorage().updateCodeAssDefaul(codeAss);
 
-        await AppCubitStorage().updatemembreCode(context.read<UserGroupCubit>().state.changeAssData!.membre!.membre_code!,
-            // .ChangeAssData!["membre"]["membre_code"],
-            );
-
-        await AppCubitStorage().updateCodeTournoisDefault(context
+      await AppCubitStorage().updatemembreCode(
+        context
             .read<UserGroupCubit>()
             .state
-            .changeAssData!.user_group!.tournois![0].tournois_code!);
-     
+            .changeAssData!
+            .membre!
+            .membre_code!,
+        // .ChangeAssData!["membre"]["membre_code"],
+      );
+
+      await AppCubitStorage().updateCodeTournoisDefault(context
+          .read<UserGroupCubit>()
+          .state
+          .changeAssData!
+          .user_group!
+          .tournois![0]
+          .tournois_code!);
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -276,7 +288,8 @@ class Modal {
                                 padding: EdgeInsets.only(
                                     top: 15, bottom: 15, left: 15),
                                 decoration: BoxDecoration(
-                                  color: colorSelect(currentItemAssociationList.tournois_code),
+                                  color: colorSelect(
+                                      currentItemAssociationList.tournois_code),
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 margin: EdgeInsets.all(5),
@@ -284,7 +297,8 @@ class Modal {
                                   '${"tournoi".tr()} #${currentItemAssociationList.matricule}',
                                   style: TextStyle(
                                       color: colorSelectText(
-                                          currentItemAssociationList.tournois_code),
+                                          currentItemAssociationList
+                                              .tournois_code),
                                       fontWeight: FontWeight.w800),
                                 ),
                               ),
@@ -385,7 +399,7 @@ class Modal {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Text(
-                            "Contributions",
+                            "Contributions ",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
@@ -531,6 +545,285 @@ class Modal {
                   ),
                 );
               })
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void showBottomSheetHistCotisation(
+      BuildContext context,
+      codeCotisation,
+      lienDePaiement,
+      dateCotisation,
+      heureCotisation,
+      montantCotisations,
+      motifCotisations,
+      soldeCotisation,
+      type,
+      is_passed,
+      isPayed) {
+    Future<void> handleDetailCotisation(codeCotisation) async {
+      final detailCotisation = await context
+          .read<CotisationDetailCubit>()
+          .detailCotisationCubit(codeCotisation);
+    }
+
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: AppColors.barrierColorModal,
+      context: context,
+      builder: (context) {
+        return Container(
+          // height: 500,
+          padding: EdgeInsets.only(top: 10),
+          margin: EdgeInsets.only(left: 5, right: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(7),
+              topLeft: Radius.circular(7),
+            ),
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+          child: Column(
+            children: [
+              Container(
+                height: 5,
+                width: 55,
+                decoration: BoxDecoration(
+                    color: AppColors.blackBlue,
+                    borderRadius: BorderRadius.circular(50)),
+              ),
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Text(
+                      "Historique de la cotisation".tr(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.blackBlueAccent1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Container(
+                    color: AppColors.blackBlueAccent2,
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                "Contributions ",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.blackBlue,
+                                ),
+                              ),
+                            ),
+                            BlocBuilder<CotisationDetailCubit,
+                                CotisationDetailState>(
+                              builder: (detailCotisationContext,
+                                  detailCotisationState) {
+                                if (detailCotisationState.detailCotisation ==
+                                        null ||
+                                    detailCotisationState.isLoading == true)
+                                  return Container(
+                                    width: 10,
+                                    height: 10,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.bleuLight,
+                                        strokeWidth: 0.3,
+                                      ),
+                                    ),
+                                  );
+
+                                final okayTontine = detailCotisationContext
+                                    .read<CotisationDetailCubit>()
+                                    .state
+                                    .detailCotisation!["versements"];
+                                final nonTontine = detailCotisationContext
+                                    .read<CotisationDetailCubit>()
+                                    .state
+                                    .detailCotisation!["members"];
+                                return Container(
+                                  child: Text(
+                                    "(${okayTontine.length}/${nonTontine.length + okayTontine.length})",
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.blackBlue),
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                        BlocBuilder<CotisationDetailCubit,
+                                CotisationDetailState>(
+                            builder: (detailCotisationContext,
+                                detailCotisationState) {
+                          if (detailCotisationState.detailCotisation == null ||
+                              detailCotisationState.isLoading == true)
+                            return Container(
+                              padding: EdgeInsets.all(10),
+                              width: 10,
+                              height: 10,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.bleuLight,
+                                  strokeWidth: 0.3,
+                                ),
+                              ),
+                            );
+                          return GestureDetector(
+                              onTap: () {
+                                handleDetailCotisation(codeCotisation);
+
+                                Navigator.pop(context);
+                                
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailCotisationPage(
+                                      codeCotisation: codeCotisation,
+                                      lienDePaiement: lienDePaiement,
+                                      dateCotisation: dateCotisation,
+                                      heureCotisation: heureCotisation,
+                                      montantCotisations: montantCotisations,
+                                      motifCotisations: motifCotisations,
+                                      soldeCotisation: soldeCotisation,
+                                      type: type,
+                                      isPassed: is_passed,
+                                      isPayed: isPayed,
+                                    ),
+                                  ),
+                                );
+
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                child: Icon(
+                                  Icons.info_outline,
+                                  color: AppColors.blackBlue,
+                                  size: 18,
+                                ),
+                              ));
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                builder: (CotisationDetailcontext, CotisationDetailstate) {
+                  if (CotisationDetailstate.isLoading == null ||
+                      CotisationDetailstate.isLoading == true ||
+                      CotisationDetailstate.detailCotisation == null)
+                    return Expanded(
+                      child: Center(
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            'assets/images/Groupe_ou_Asso.png',
+                          ),
+                        ),
+                      ),
+                    );
+
+                  final currentDetailCotisation =
+                      CotisationDetailcontext.read<CotisationDetailCubit>()
+                          .state
+                          .detailCotisation;
+
+                  List listeOkayCotisation =
+                      currentDetailCotisation!["versements"];
+                  List listeNonCotisation = currentDetailCotisation["members"];
+
+                  List<Widget> listWidgetOkayCotis =
+                      listeOkayCotisation.map((monObjet) {
+                    return Card(
+                      margin: EdgeInsets.only(
+                          left: 10, right: 10, top: 5, bottom: 5),
+                      child: widgetHistoriqueTontineCard(
+                        date: formatDateLiteral(monObjet["updated_at"]),
+                        imageProfil: monObjet["photo_profil"] == null
+                            ? ""
+                            : monObjet["photo_profil"],
+                        is_versement_finished: monObjet["versement"][0]
+                            ["is_versement_finished"],
+                        montantVersee: monObjet["versement"].length == 0
+                            ? "0"
+                            : monObjet["versement"][0]["balance_after"],
+                        nom: monObjet["first_name"] == null
+                            ? ""
+                            : monObjet["first_name"],
+                        prenom: monObjet["last_name"] == null
+                            ? ""
+                            : monObjet["last_name"],
+                      ),
+                    );
+                  }).toList();
+
+                  List<Widget> listWidgetNonCotis =
+                      listeNonCotisation.map((monObj) {
+                    return Card(
+                      margin: EdgeInsets.only(
+                          left: 10, right: 10, top: 5, bottom: 5),
+                      child: widgetHistoriqueTontineCard(
+                        date: AppCubitStorage().state.Language == "fr"
+                            ? formatDateToFrench(monObj["updated_at"])
+                            : formatDateToEnglish(monObj["updated_at"]),
+                        imageProfil: monObj["membre"]["photo_profil"] == null
+                            ? ""
+                            : monObj["membre"]["photo_profil"],
+                        is_versement_finished:
+                            monObj["membre"]["versement"].length == 0
+                                ? 0
+                                : monObj["membre"]["versement"][0]
+                                    ["is_versement_finished"],
+                        montantVersee: monObj["membre"]["versement"].length == 0
+                            ? "0"
+                            : monObj["membre"]["versement"][0]["balance_after"],
+                        nom: monObj["membre"]["first_name"] == null
+                            ? ""
+                            : monObj["membre"]["first_name"],
+                        prenom: monObj["membre"]["last_name"] == null
+                            ? ""
+                            : monObj["membre"]["last_name"],
+                      ),
+                    );
+                  }).toList();
+
+                  final listeFinale = [
+                    ...listWidgetOkayCotis,
+                    ...listWidgetNonCotis
+                  ];
+
+                  return Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: listeFinale,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         );
@@ -1072,14 +1365,12 @@ class Modal {
 
   void showBottomSheetEditProfilPhoto(BuildContext context, key, _pickImage) {
     TextEditingController infoUserController = TextEditingController();
-    Future<void> handleDetailUser(userCode) async {
-      final allCotisationAss =
-          await context.read<AuthCubit>().detailAuthCubit(userCode);
+    Future<void> handleDetailUser(userCode, codeTournoi) async {
+      final allCotisationAss = await context
+          .read<AuthCubit>()
+          .detailAuthCubit(userCode, codeTournoi);
 
-      if (allCotisationAss != null) {
-       } else {
-        print("userGroupDefault null");
-      }
+
     }
 
     Future<void> handleUpdateInfoUser(
@@ -1089,7 +1380,7 @@ class Modal {
           .UpdateInfoUserCubit(key, value, partner_urlcode, membre_code);
 
       if (allCotisationAss != null) {
-       } else {
+      } else {
         print("userGroupDefault null");
       }
     }
@@ -1195,14 +1486,11 @@ class Modal {
     TextEditingController infoUserController =
         TextEditingController(text: "${hintText}");
 
-    Future<void> handleDetailUser(userCode) async {
-      final allCotisationAss =
-          await context.read<AuthCubit>().detailAuthCubit(userCode);
+    Future<void> handleDetailUser(userCode, codeTournoi) async {
+      final allCotisationAss = await context
+          .read<AuthCubit>()
+          .detailAuthCubit(userCode, codeTournoi);
 
-      if (allCotisationAss != null) {
-      } else {
-        print("userGroupDefault null");
-      }
     }
 
     Future<void> handleUpdateInfoUser(
@@ -1282,8 +1570,8 @@ class Modal {
                           infoUserController.text,
                           AppCubitStorage().state.codeAssDefaul,
                           AppCubitStorage().state.membreCode);
-                      await handleDetailUser(
-                          AppCubitStorage().state.membreCode);
+                      await handleDetailUser(AppCubitStorage().state.membreCode,
+                          AppCubitStorage().state.codeTournois);
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -1316,7 +1604,6 @@ class Modal {
     showDialog<String>(
       context: context,
       barrierColor: AppColors.barrierColorModal,
-
       builder: (BuildContext context) => AlertDialog(
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(

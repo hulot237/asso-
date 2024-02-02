@@ -90,46 +90,46 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
           ),
           Column(
             children: [
+              // Container(
+              //   alignment: Alignment.center,
+              //   margin: EdgeInsets.only(bottom: 5),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Container(
+              //         margin: EdgeInsets.only(top: 5),
+              //         child: Text(
+              //           "compte".tr(),
+              //           style: TextStyle(
+              //             fontWeight: FontWeight.w400,
+              //             fontSize: 12,
+              //             color: AppColors.blackBlue,
+              //           ),
+              //         ),
+              //       ),
+              //       Container(
+              //         margin: EdgeInsets.only(top: 5),
+              //         child: Text(
+              //           " ${widget.numeroCompte}",
+              //           style: TextStyle(
+              //             fontWeight: FontWeight.w600,
+              //             fontSize: 12,
+              //             color: AppColors.blackBlue,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.only(bottom: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Text(
-                        "compte".tr(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: AppColors.blackBlue,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Text(
-                        " ${widget.numeroCompte}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: AppColors.blackBlue,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(bottom:5 ),
+                margin: EdgeInsets.only(bottom:5, top: 10),
                 child: Text(
-                  widget.nomCompte,
+                  widget.nomCompte.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: 14,
                     color: AppColors.blackBlue,
                   ),
                 ),

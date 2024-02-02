@@ -24,7 +24,7 @@ class UserGroupRepository {
       );
 
       final List<dynamic> dataJson = response.data["data"]["user_groups"];
-      
+
       final List<dynamic> groups = dataJson;
 
       log('Okay AllUserGroupOfUser rep');
@@ -68,19 +68,32 @@ class UserGroupRepository {
   }
 
   Future<InfoAssModel> ChangerAss(codeAss) async {
-      final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/usergroupe/$codeAss/show',
-        options: Options(
-          headers: {
-            "token": AppCubitStorage().state.tokenUser,
-          },
-        ),
-      );
+    final response = await dio.get(
+      '${Variables.LienAIP}/api/v1/usergroupe/$codeAss/show',
+      options: Options(
+        headers: {
+          "token": AppCubitStorage().state.tokenUser,
+        },
+      ),
+    );
 
-      var data = response.data;
+    var data = response.data;
 
-     return InfoAssModel.fromJson(data['data']);
+    return InfoAssModel.fromJson(data['data']);
   }
+
+  Future<void> ChangerLang(codeAss, langCode) async {
+    final response = await dio.patch(
+      '${Variables.LienAIP}/api/v1/usergroup/$codeAss/default-lang?lang=$langCode',
+      options: Options(
+        headers: {
+          "token": AppCubitStorage().state.tokenUser,
+        },
+      ),
+    );
+  }
+
+  // usergroup/codeUrl/default-lan?lang=fr
 
   // patch("/prositions/reject/:propositionId/active
 

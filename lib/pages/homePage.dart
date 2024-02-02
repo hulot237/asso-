@@ -114,27 +114,29 @@ class _HomePageState extends State<HomePage> {
       child: screens,
       itemListIos: itemListIos,
       itemListAndroid: itemListAndroid,
-      childBottomNavBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Color.fromARGB(255, 226, 226, 226),
-          type: BottomNavigationBarType.shifting,
-          selectedIconTheme: IconThemeData(size: 25),
-          unselectedIconTheme: IconThemeData(size: 15),
-          selectedFontSize: 12,
-          unselectedItemColor: AppColors.blackBlue,
-          selectedItemColor: AppColors.colorButton,
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          items: itemListAndroid,
-          currentIndex: _pageIndex,
-          onTap: (index) {
-            setState(() {
-              _pageIndex = index;
-            });
-          },
+      childBottomNavBar: Material(
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: Color.fromARGB(255, 226, 226, 226),
+            type: BottomNavigationBarType.shifting,
+            selectedIconTheme: IconThemeData(size: 25),
+            unselectedIconTheme: IconThemeData(size: 15),
+            selectedFontSize: 12,
+            unselectedItemColor: AppColors.blackBlue,
+            selectedItemColor: AppColors.colorButton,
+            selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+            items: itemListAndroid,
+            currentIndex: _pageIndex,
+            onTap: (index) {
+              setState(() {
+                _pageIndex = index;
+              });
+            },
+          ),
         ),
       ),
     );

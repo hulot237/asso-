@@ -32,6 +32,7 @@ class DetailCotisationPage extends StatefulWidget {
     required this.type,
     required this.lienDePaiement,
     required this.codeCotisation,
+    required this.isPayed,
   });
   int montantCotisations;
   String motifCotisations;
@@ -42,6 +43,7 @@ class DetailCotisationPage extends StatefulWidget {
   String lienDePaiement;
   int isPassed;
   String codeCotisation;
+  int isPayed;
 
   @override
   State<DetailCotisationPage> createState() => _DetailCotisationPageState();
@@ -107,10 +109,10 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
     }
   }
 
-  Future<void> handleAllCotisationAssTournoi(codeTournoi) async {
+  Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
     final allCotisationAss = await context
         .read<CotisationCubit>()
-        .AllCotisationAssTournoiCubit(codeTournoi);
+        .AllCotisationAssTournoiCubit(codeTournoi, codeMembre);
 
     if (allCotisationAss != null) {
     } else {
@@ -142,6 +144,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                 soldeCotisation: widget.soldeCotisation,
                 lienDePaiement: widget.lienDePaiement,
                 isPassed: widget.isPassed,
+                isPayed: widget.isPayed,
               ),
             ),
             checkTransparenceStatus(
@@ -563,18 +566,12 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                           ),
                         );
 
-                      final currentDetailCotisation =
-                          CotisationDetailcontext.read<CotisationDetailCubit>()
-                              .state
-                              .detailCotisation;
+                      final currentDetailCotisation = CotisationDetailcontext.read<CotisationDetailCubit>().state.detailCotisation;
 
-                      List listeOkayCotisation =
-                          currentDetailCotisation!["versements"];
-                      List listeNonCotisation =
-                          currentDetailCotisation["members"];
+                      List listeOkayCotisation = currentDetailCotisation!["versements"];
+                      List listeNonCotisation = currentDetailCotisation["members"];
 
-                      List<Widget> listWidgetOkayCotis =
-                          listeOkayCotisation.map((monObjet) {
+                      List<Widget> listWidgetOkayCotis = listeOkayCotisation.map((monObjet) {
                         return Card(
                           child: WidgetHistoriqueCotisation(
                             is_versement_finished:
@@ -605,11 +602,8 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                         );
                       }).toList();
 
-                      List<Widget> listWidgetNonCotis =
-                          listeNonCotisation.map((monObjet) {
+                      List<Widget> listWidgetNonCotis = listeNonCotisation.map((monObjet) {
                         return Card(
-                            // margin:
-                            // EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                             child: WidgetHistoriqueCotisation(
                           is_versement_finished:
                               monObjet["membre"]["versement"].length == 0

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   
-  static const Color blackBlue = Color.fromARGB(255, 20, 45, 99);
+  static const Color blackBlue = Color(0xFF142D63);
   // static const Color blackBlue = Color(0xFF879B56);
   static const Color blackBlueAccent1 = Color(0x79142D63);
   static const Color blackBlueAccent2 = Color.fromARGB(19, 20, 45, 99);

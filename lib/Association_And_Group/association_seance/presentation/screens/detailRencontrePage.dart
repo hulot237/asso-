@@ -350,6 +350,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                     margin: EdgeInsets.only(
                                         left: 7, right: 7, top: 3, bottom: 7),
                                     child: WidgetCotisation(
+                                      isPayed: ItemDetailCotisation["is_payed"],
                                         montantCotisations:
                                             ItemDetailCotisation["amount"],
                                         motifCotisations:

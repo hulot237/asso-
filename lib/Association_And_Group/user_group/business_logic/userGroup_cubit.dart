@@ -13,7 +13,8 @@ class UserGroupCubit extends Cubit<UserGroupState> {
               userGroup: null,
               // userGroupDefault: null,
               changeAssData: null,
-              isLoading: false),
+              isLoading: false,
+              isLoadingChangeAss: false),
         );
 
   Future<bool> AllUserGroupOfUserCubit(token) async {
@@ -63,9 +64,9 @@ class UserGroupCubit extends Cubit<UserGroupState> {
   Future<void> ChangeAssCubit(codeAss) async {
     emit(
       state.copyWith(
-        isLoading: true,
-        userGroup: state.userGroup,
         changeAssData: state.changeAssData,
+        isLoadingChangeAss: true,
+        userGroup: state.userGroup,
       ),
     );
     try {
@@ -75,13 +76,13 @@ class UserGroupCubit extends Cubit<UserGroupState> {
         state.copyWith(
           changeAssData: data,
           userGroup: state.userGroup,
-          isLoading: false,
+          isLoadingChangeAss: false,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          isLoading: false,
+          isLoadingChangeAss: false,
         ),
       );
     }

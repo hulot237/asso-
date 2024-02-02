@@ -109,7 +109,7 @@ class _widgetHistoriqueTontineCardState
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Icon(
-                      Icons.done,
+                      Icons.close,
                       color: AppColors.red,
                       size: 11,
                     ),
@@ -122,7 +122,7 @@ class _widgetHistoriqueTontineCardState
                     ),
                     child: Icon(
                       Icons.check,
-                      color: AppColors.green,
+                      color: AppColors.white,
                       size: 11,
                     ),
                   ),

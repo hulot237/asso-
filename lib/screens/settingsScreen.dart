@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/presentation/screens/notification_page.dart';
@@ -64,15 +65,11 @@ class _SettingScreenState extends State<SettingScreen> {
         AppCubitStorage().state.codeAssDefaul);
   }
 
-  Future<void> handleDetailUser(userCode) async {
+  Future<void> handleDetailUser(userCode, codeTournoi) async {
     final allCotisationAss =
-        await context.read<AuthCubit>().detailAuthCubit(userCode);
+        await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
 
-    if (allCotisationAss != null) {
-      print("handleDetailUser");
-    } else {
-      print("handleDetailUser null");
-    }
+
   }
 
   @override
@@ -166,8 +163,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             builder: (NotificationContext, NotificationState) {
                           if (NotificationState.isLoading == true &&
                               NotificationState.notifications == null)
-                            return 
-                            Positioned(
+                            return Positioned(
                               top: 12,
                               left: 12,
                               child: Container(
@@ -189,8 +185,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               .where((elt) => elt.isReaded == 0)
                               .toList();
                           if (noReadElt.length > 0) {
-                            return 
-                            Positioned(
+                            return Positioned(
                               top: 12,
                               left: 12,
                               child: Container(
@@ -285,16 +280,16 @@ class _SettingScreenState extends State<SettingScreen> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AdministrationPage(
-                                          lienDePaiement:
-                                              'https://groups.faroty.com/',
-                                        ),
-                                      ),
-                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         AdministrationPage(
+                                    //       lienDePaiement:
+                                    //           'https://groups.faroty.com/',
+                                    //     ),
+                                    //   ),
+                                    // );
                                   },
                                   child: Column(
                                     children: [
@@ -377,7 +372,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         child: Text(
-                                          "${"code_membre".tr()}",
+                                          "${"Code pour paiement".tr()}",
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -492,7 +487,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     handleDetailUser(
-                                        AppCubitStorage().state.membreCode);
+                                        AppCubitStorage().state.membreCode, AppCubitStorage().state.codeTournois);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -692,6 +687,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  context.read<MembreCubit>().showMembersAss(
+                                      AppCubitStorage().state.codeAssDefaul);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -723,7 +720,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           children: [
                                             Container(
                                               child: Icon(
-                                                Icons.contact_mail,
+                                                Icons.groups,
                                                 color: AppColors.blackBlue,
                                               ),
                                               margin:
@@ -746,7 +743,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ),
                                 ),
                               ),
-                              
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -805,7 +801,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Share.share("Le lien de l'application");
+                                  Share.share("""${'Gérez vos associations et groupes avec *Groups & Assocations* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} :  Play Store https://play.google.com/store/apps/details?id=com.faroty.groups "${'et sur'.tr()}" groups.faroty.com"""
+                                                  .tr(),);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(

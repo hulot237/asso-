@@ -29,6 +29,7 @@ class WidgetCotisation extends StatefulWidget {
     required this.source,
     required this.nomBeneficiaire,
     required this.rubrique,
+    required this.isPayed,
   });
   int montantCotisations;
   String motifCotisations;
@@ -43,6 +44,7 @@ class WidgetCotisation extends StatefulWidget {
   String source;
   String nomBeneficiaire;
   String rubrique;
+  int isPayed;
 
   @override
   State<WidgetCotisation> createState() => _WidgetCotisationState();
@@ -56,9 +58,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
     final detailCotisation = await context
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
-
-    if (detailCotisation != null) {
-    } else {}
   }
 
   @override
@@ -82,6 +81,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                 soldeCotisation: widget.soldeCotisation,
                 type: widget.type,
                 isPassed: widget.is_passed,
+                isPayed: widget.isPayed,
               ),
             ),
           );
@@ -134,7 +134,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       ),
                                     ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(bottom: 2),
@@ -166,58 +167,72 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               ),
                             ),
                           ),
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  String msg =
-                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                  Modal().showModalActionPayement(
-                                    context,
-                                    msg,
-                                    widget.lienDePaiement,
-                                  );
-                                },
-                                child: Container(
-                                  width: 72,
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.only(
-                                      left: 8, right: 8, top: 5, bottom: 5),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.colorButton,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Container(
-                                    child: Text(
-                                      "cotiser".tr(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: AppColors.white,
+                          widget.isPayed == 0
+                              ? Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        String msg =
+                                            "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                        Modal().showModalActionPayement(
+                                          context,
+                                          msg,
+                                          widget.lienDePaiement,
+                                        );
+                                      },
+                                      child: Container(
+                                        width: 72,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(
+                                            left: 8,
+                                            right: 8,
+                                            top: 5,
+                                            bottom: 5),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.colorButton,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Container(
+                                          child: Text(
+                                            "cotiser".tr(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: AppColors.white,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              if (widget.is_passed == 1)
-                                Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: Container(
-                                    child: Text(
-                                      "expiré".tr(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 8,
-                                        color: AppColors.red,
+                                    if (widget.is_passed == 1)
+                                      Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                        ),
+                                        child: Container(
+                                          child: Text(
+                                            "expiré".tr(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 8,
+                                              color: AppColors.red,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                  ],
+                                )
+                              : Text(
+                                  "payé".tr(),
+                                  style: TextStyle(
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic
                                   ),
                                 ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
@@ -270,8 +285,11 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                     ),
                     if (checkTransparenceStatus(
                         context
-                        .read<UserGroupCubit>()
-                        .state.changeAssData!.user_group!.configs,
+                            .read<UserGroupCubit>()
+                            .state
+                            .changeAssData!
+                            .user_group!
+                            .configs,
                         context
                             .read<AuthCubit>()
                             .state
@@ -305,15 +323,16 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               ),
                             ),
                             Container(
-                                child: Text(
-                                  formatDateLiteral(widget.dateCotisation),
-                                  overflow: TextOverflow.clip,
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: AppColors.blackBlueAccent1,
-                                      fontWeight: FontWeight.w600,),
+                              child: Text(
+                                formatDateLiteral(widget.dateCotisation),
+                                overflow: TextOverflow.clip,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.blackBlueAccent1,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
+                            ),
                           ],
                         ),
                       ),

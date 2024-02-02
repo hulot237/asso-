@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
@@ -9,6 +7,7 @@ import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class WidgetRencontreCard extends StatefulWidget {
   WidgetRencontreCard({
@@ -25,6 +24,7 @@ class WidgetRencontreCard extends StatefulWidget {
     required this.codeSeance,
     required this.dateRencontreAPI,
     required this.maskElt,
+    required this.typeRencontre,
   });
 
   String prenomRecepteurRencontre;
@@ -39,6 +39,7 @@ class WidgetRencontreCard extends StatefulWidget {
   String codeSeance;
   String dateRencontreAPI;
   bool maskElt;
+  String typeRencontre;
 
   @override
   State<WidgetRencontreCard> createState() => _WidgetRencontreCardState();
@@ -295,7 +296,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                           style: TextStyle(
                             letterSpacing: 0.3,
                             height: 1.3,
-                            fontSize: 11,
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppColors.blackBlue,
                           ),
@@ -369,7 +370,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                         children: [
                           Container(
                             child: Text(
-                              "dateheure".tr(),
+                              "Type".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 10,
@@ -380,7 +381,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                           Container(
                             margin: EdgeInsets.only(top: 1),
                             child: Text(
-                              formatDateLiteral(widget.dateRencontreAPI),
+                              widget.typeRencontre == "0"? "Ordinaire".tr(): widget.typeRencontre == "1"? "Extraordinaire".tr(): "Comité",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 10,

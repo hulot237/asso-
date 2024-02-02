@@ -13,6 +13,7 @@ class NotificationModel {
   String? createdAt;
   String? updatedAt;
   String? tartgetCode;
+  String? authorAvatar;
 
   NotificationModel(
       {this.id,
@@ -28,7 +29,8 @@ class NotificationModel {
       this.assMembreId,
       this.createdAt,
       this.updatedAt,
-      this.tartgetCode});
+      this.tartgetCode,
+      this.authorAvatar,});
 
   NotificationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -45,5 +47,6 @@ class NotificationModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     tartgetCode = json['tartget_code'];
+    authorAvatar = json['author_avatar'];
   }
 }

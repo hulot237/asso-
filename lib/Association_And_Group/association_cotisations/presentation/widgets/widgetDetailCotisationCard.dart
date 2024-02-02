@@ -13,18 +13,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class widgetDetailCotisationCard extends StatefulWidget {
-  widgetDetailCotisationCard({
-    super.key,
-    required this.montantCotisations,
-    required this.motifCotisations,
-    required this.dateCotisation,
-    required this.heureCotisation,
-    required this.soldeCotisation,
-    // required this.montantSanctionCollectee,
-    required this.isPassed,
-    required this.type,
-    required this.lienDePaiement,
-  });
+  widgetDetailCotisationCard(
+      {super.key,
+      required this.montantCotisations,
+      required this.motifCotisations,
+      required this.dateCotisation,
+      required this.heureCotisation,
+      required this.soldeCotisation,
+      // required this.montantSanctionCollectee,
+      required this.isPassed,
+      required this.type,
+      required this.lienDePaiement,
+      required this.isPayed});
   int montantCotisations;
   String motifCotisations;
   String dateCotisation;
@@ -32,6 +32,7 @@ class widgetDetailCotisationCard extends StatefulWidget {
   String soldeCotisation;
   String type;
   String lienDePaiement;
+  int isPayed;
   // String montantSanctionCollectee;
   int isPassed;
 
@@ -90,159 +91,181 @@ class _widgetDetailCotisationCardState
                             ),
                           ),
                         ),
-                        BlocBuilder<CotisationDetailCubit,
-                            CotisationDetailState>(
-                          builder: (CotisationContext, CotisationState) {
-                            if (CotisationState.isLoading == null ||
-                                CotisationState.isLoading == true ||
-                                CotisationState.detailCotisation == null)
-                              return Container(
-                                width: 60,
-                                height: 25,
-                                padding: EdgeInsets.only(
-                                    left: 8, right: 8, top: 5, bottom: 5),
-                                decoration: BoxDecoration(
-                                  color: AppColors.colorButton,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Center(
-                                  child: Container(
-                                    width: 10,
-                                    height: 10,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 0.5,
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                ),
-                              );
 
-                            final currentDetailCotisation =
-                                CotisationContext.read<CotisationDetailCubit>()
-                                    .state
-                                    .detailCotisation;
-                            return Column(
-                              children: [
-                                if (currentDetailCotisation!["members"].length >
-                                    0)
-                                  for (var itemDetailCotisation
-                                      in currentDetailCotisation!["members"])
-                                    if (itemDetailCotisation["membre"]
-                                            ["membre_code"] ==
-                                        AppCubitStorage().state.membreCode)
-                                      GestureDetector(
-                                        onTap: () async {
-                                          String msg =
-                                              "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                          Modal().showModalActionPayement(
-                                            context,
-                                            msg,
-                                            widget.lienDePaiement,
-                                          );
-                                        },
-                                        child: widget.isPassed == 0
-                                            ? Container(
-                                                alignment: Alignment.center,
-                                                width: 72,
-                                                padding: EdgeInsets.only(
-                                                  left: 8,
-                                                  right: 8,
-                                                  top: 5,
-                                                  bottom: 5,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.colorButton,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                child: Text(
-                                                  "cotiser".tr(),
-                                                  style: TextStyle(
-                                                      color: AppColors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 12),
-                                                ),
-                                              )
-                                            : Column(
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () async {
-                                                      String msg =
-                                                          "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                                      Modal()
-                                                          .showModalActionPayement(
-                                                        context,
-                                                        msg,
-                                                        widget.lienDePaiement,
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      width: 72,
-                                                      padding: EdgeInsets.only(
-                                                        left: 8,
-                                                        right: 8,
-                                                        top: 5,
-                                                        bottom: 5,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors
-                                                            .colorButton,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                      ),
-                                                      child: Container(
-                                                        child: Text(
-                                                          "cotiser".tr(),
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 12,
-                                                            color:
-                                                                AppColors.white,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7),
-                                                    ),
-                                                    child: Container(
-                                                      child: Text(
-                                                        "expiré".tr(),
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 8,
-                                                          color: Color.fromARGB(
-                                                              255, 255, 0, 0),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+
+                        widget.isPayed == 0
+                            ? BlocBuilder<CotisationDetailCubit,
+                                CotisationDetailState>(
+                                builder: (CotisationContext, CotisationState) {
+                                  if (CotisationState.isLoading == null ||
+                                      CotisationState.isLoading == true ||
+                                      CotisationState.detailCotisation == null)
+                                    return Container(
+                                      width: 60,
+                                      height: 25,
+                                      padding: EdgeInsets.only(
+                                          left: 8, right: 8, top: 5, bottom: 5),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.colorButton,
+                                        borderRadius: BorderRadius.circular(15),
                                       ),
-                                if (currentDetailCotisation!["versements"]
-                                        .length >
-                                    0)
-                                  for (var itemDetailCotisation
-                                      in currentDetailCotisation!["versements"])
-                                    if (itemDetailCotisation["membre_code"] ==
-                                        AppCubitStorage().state.membreCode)
-                                      Container(),
-                              ],
-                            );
-                          },
-                        ),
+                                      child: Center(
+                                        child: Container(
+                                          width: 10,
+                                          height: 10,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 0.5,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+
+                                  final currentDetailCotisation =
+                                      CotisationContext.read<
+                                              CotisationDetailCubit>()
+                                          .state
+                                          .detailCotisation;
+                                  return Column(
+                                    children: [
+                                      // if (currentDetailCotisation!["members"]
+                                      //         .length >
+                                      //     0)
+                                      //   for (var itemDetailCotisation
+                                      //       in currentDetailCotisation![
+                                      //           "members"])
+                                      //     if (itemDetailCotisation["membre"]
+                                      //             ["membre_code"] ==
+                                      //         AppCubitStorage()
+                                      //             .state
+                                      //             .membreCode)
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  String msg =
+                                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                                  Modal()
+                                                      .showModalActionPayement(
+                                                    context,
+                                                    msg,
+                                                    widget.lienDePaiement,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  width: 72,
+                                                  padding: EdgeInsets.only(
+                                                    left: 8,
+                                                    right: 8,
+                                                    top: 5,
+                                                    bottom: 5,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        AppColors.colorButton,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Text(
+                                                    "cotiser".tr(),
+                                                    style: TextStyle(
+                                                        color: AppColors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12),
+                                                  ),
+                                                )
+
+                                                // : Column(
+                                                //     children: [
+                                                //       GestureDetector(
+                                                //         onTap: () async {
+                                                //           String msg =
+                                                //               "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                                //           Modal()
+                                                //               .showModalActionPayement(
+                                                //             context,
+                                                //             msg,
+                                                //             widget.lienDePaiement,
+                                                //           );
+                                                //         },
+                                                //         child: Container(
+                                                //           alignment:
+                                                //               Alignment.center,
+                                                //           width: 72,
+                                                //           padding: EdgeInsets.only(
+                                                //             left: 8,
+                                                //             right: 8,
+                                                //             top: 5,
+                                                //             bottom: 5,
+                                                //           ),
+                                                //           decoration: BoxDecoration(
+                                                //             color: AppColors
+                                                //                 .colorButton,
+                                                //             borderRadius:
+                                                //                 BorderRadius
+                                                //                     .circular(15),
+                                                //           ),
+                                                //           child: Container(
+                                                //             child: Text(
+                                                //               "cotiser".tr(),
+                                                //               style: TextStyle(
+                                                //                 fontWeight:
+                                                //                     FontWeight.bold,
+                                                //                 fontSize: 12,
+                                                //                 color:
+                                                //                     AppColors.white,
+                                                //               ),
+                                                //             ),
+                                                //           ),
+                                                //         ),
+                                                //       ),
+                                                //       Container(
+                                                //         alignment: Alignment.center,
+                                                //         decoration: BoxDecoration(
+                                                //           borderRadius:
+                                                //               BorderRadius.circular(
+                                                //                   7),
+                                                //         ),
+                                                //         child: Container(
+                                                //           child: Text(
+                                                //             "expiré".tr(),
+                                                //             style: TextStyle(
+                                                //               fontWeight:
+                                                //                   FontWeight.bold,
+                                                //               fontSize: 8,
+                                                //               color: Color.fromARGB(
+                                                //                   255, 255, 0, 0),
+                                                //             ),
+                                                //           ),
+                                                //         ),
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                ),
+                                      if (widget.isPassed == 1)
+                                        Container(
+                                          child: Text(
+                                            "expiré".tr(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 8,
+                                              color: Color.fromARGB(
+                                                  255, 255, 0, 0),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  );
+                                },
+                              )
+                            : Text(
+                                "payé".tr(),
+                                style: TextStyle(
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic),
+                              ),
                       ],
                     ),
                   ),
@@ -455,8 +478,11 @@ class _widgetDetailCotisationCardState
                         }),
                         checkTransparenceStatus(
                                 context
-                        .read<UserGroupCubit>()
-                        .state.changeAssData!.user_group!.configs,
+                                    .read<UserGroupCubit>()
+                                    .state
+                                    .changeAssData!
+                                    .user_group!
+                                    .configs,
                                 context
                                     .read<AuthCubit>()
                                     .state
@@ -620,8 +646,11 @@ class _widgetDetailCotisationCardState
                   ),
                   if (checkTransparenceStatus(
                       context
-                        .read<UserGroupCubit>()
-                        .state.changeAssData!.user_group!.configs,
+                          .read<UserGroupCubit>()
+                          .state
+                          .changeAssData!
+                          .user_group!
+                          .configs,
                       context.read<AuthCubit>().state.detailUser!["isMember"]))
                     Container(
                       child: Row(

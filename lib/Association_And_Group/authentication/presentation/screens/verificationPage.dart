@@ -111,177 +111,205 @@ class _VerificationPageState extends State<VerificationPage> {
   Widget build(BuildContext context) {
     return PageScaffold(
       context: context,
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) async {
-          if (state.errorLoading) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text("${state.message}")));
-          }
-          if (state.successLoading) {
-            var loginInfo = context.read<AuthCubit>().state.loginInfo;
+      child: Material(
+        child: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) async {
+            if (state.errorLoading) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text("${state.message}")));
+            }
+            if (state.successLoading) {
+              var loginInfo = context.read<AuthCubit>().state.loginInfo;
 
-            await AppCubitStorage()
-                .updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
-            context
-                .read<UserGroupCubit>()
-                .AllUserGroupOfUserCubit(loginInfo.token);
-            await AppCubitStorage().updateTokenUser(loginInfo.token!);
-            await AppCubitStorage()
-                .updatemembreCode(loginInfo.user!.membre_code!);
-            await AppCubitStorage()
-                .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
+              await AppCubitStorage()
+                  .updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
+              context
+                  .read<UserGroupCubit>()
+                  .AllUserGroupOfUserCubit(loginInfo.token);
+              await AppCubitStorage().updateTokenUser(loginInfo.token!);
+              await AppCubitStorage()
+                  .updatemembreCode(loginInfo.user!.membre_code!);
+              await AppCubitStorage()
+                  .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
 
-            Navigator.pop(context);
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (BuildContext context) => HomePage(),
-              ),
-              (route) => false,
-            );
-          }
-        },
-        builder: (context, state) {
-          return Container(
-            padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
-            // color: Colors.brown,
-            margin: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
-            alignment: Alignment.center,
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    // flex: 7,
-                    child: Center(
-                      child: Container(
-                        // color: Colors.deepOrangeAccent,
-                        child: Column(
+              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => HomePage(),
+                ),
+                (route) => false,
+              );
+            }
+          },
+          builder: (context, state) {
+            return Container(
+              padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
+              margin: const EdgeInsets.only(left: 20, right: 20),
+              height: MediaQuery.of(context).size.height,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/Groupe_ou_Asso.png",
+                        scale: 4,
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        "vérification".tr(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 27,
+                          color: AppColors.blackBlue,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      GestureDetector(
+                        child: Container(
+                          child: Text(
+                            "${"veuillez_saisir_le_code_que_vous_avez_reçu_par_SMS_au".tr()} +${widget.countryCode}${widget.numeroPhone}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.blackBlue,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: AppColors.blackBlue,
+                              ),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: TextField(
+                            autofocus: true,
+                            textAlign: TextAlign.center,
+                            controller: codeController,
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: AppColors.blackBlue,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "code_à_5_chiffres".tr(),
+                              hintStyle: TextStyle(
+                                color: AppColors.blackBlueAccent1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 25),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 40,
+                        child: BlocBuilder<AuthCubit, AuthState>(
+                          builder: (Authcontext, Authstate) {
+                            if (Authstate.isLoading == null ||
+                                Authstate.isLoading == true ||
+                                Authstate.isLoadingDetailUser == true ||
+                                Authstate.isLoading == null)
+                              return Container(
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.greenAssociation,
+                                  ),
+                                ),
+                              );
+                  
+                            return isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.greenAssociation,
+                                    ),
+                                  )
+                                : ElevatedButton(
+                                    onPressed: () async {
+                                      setState(() {
+                                        isLoading =
+                                            true; // Démarre l'indicateur de chargement
+                                      });
+                  
+                                      await handleConfirmation();
+                  
+                                      setState(() {
+                                        isLoading =
+                                            false; // Arrête l'indicateur de chargement
+                                      });
+                                    },
+                                    child: Text(
+                                      "Confirmer".tr(),
+                                      style: TextStyle(
+                                        fontSize: 19,
+                                        color: AppColors.white,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          AppColors.greenAssociation,
+                                      // primary: Color(0xFF6FA629),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  );
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 15,
+                        ),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset(
-                              "assets/images/Groupe_ou_Asso.png",
-                              scale: 4,
-                            ),
-                            SizedBox(height: 30),
                             Text(
-                              "vérification".tr(),
-                              textAlign: TextAlign.center,
+                              "${"vous_n'avez_pas_reçu_le_code?".tr()} ",
                               style: TextStyle(
-                                fontSize: 27,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
                                 color: AppColors.blackBlue,
-                                fontWeight: FontWeight.w900,
                               ),
+                              textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: 30),
-                            GestureDetector(
-                              child: Container(
-                                child: Text(
-                                  "${"veuillez_saisir_le_code_que_vous_avez_reçu_par_SMS_au".tr()} +${widget.countryCode}${widget.numeroPhone}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Container(
-                              child: Container(
-                                height: 55,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: AppColors.blackBlue,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: codeController,
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "code_à_5_chiffres".tr(),
-                                    hintStyle: TextStyle(
-                                      color: AppColors.blackBlueAccent1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 25),
-                            SizedBox(
-                              width: double.infinity,
-                              height: 40,
-                              child: BlocBuilder<AuthCubit, AuthState>(
-                                builder: (Authcontext, Authstate) {
-                                  if (Authstate.isLoading == null ||
-                                      Authstate.isLoading == true ||
-                                      Authstate.isLoadingDetailUser == true ||
-                                      Authstate.isLoading == null)
-                                    return Container(
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color: AppColors.greenAssociation,
-                                        ),
-                                      ),
-                                    );
-
-                                  return isLoading
-                                      ? Center(
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.greenAssociation,
-                                          ),
-                                        )
-                                      : ElevatedButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              isLoading =
-                                                  true; // Démarre l'indicateur de chargement
-                                            });
-                                            await handleConfirmation();
-                                            setState(() {
-                                              isLoading =
-                                                  false; // Arrête l'indicateur de chargement
-                                            });
-                                          },
-                                          child: Text(
-                                            "vérifier".tr(),
-                                            style: TextStyle(
-                                              fontSize: 19,
-                                              color: AppColors.white,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
+                            _secondsLeft == 0
+                                ? GestureDetector(
+                                    onTap: () {
+                                      resetTimer();
+                                      handleLogin();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${"renvoyer".tr()} ",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w800,
+                                            color:
                                                 AppColors.greenAssociation,
-                                            // primary: Color(0xFF6FA629),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
                                           ),
-                                        );
-                                },
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: 15,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "${"vous_n'avez_pas_reçu_le_code?".tr()} ",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Icon(
+                                          Icons.double_arrow_outlined,
+                                          size: 8,
+                                          color: AppColors.greenAssociation,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : Text(
+                                    "00: $_secondsLeft",
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -289,55 +317,16 @@ class _VerificationPageState extends State<VerificationPage> {
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  _secondsLeft == 0
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            resetTimer();
-                                            handleLogin();
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "${"renvoyer".tr()} ",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w800,
-                                                  color: AppColors
-                                                      .greenAssociation,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              Icon(
-                                                Icons.double_arrow_outlined,
-                                                size: 8,
-                                                color:
-                                                    AppColors.greenAssociation,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      : Text(
-                                          "00: $_secondsLeft",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.blackBlue,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
