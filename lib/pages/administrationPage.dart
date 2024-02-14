@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class AdministrationPage extends StatefulWidget {
@@ -47,7 +47,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(Icons.close, color: AppColors.white),
       ),
     ),
     body: child,
@@ -55,123 +55,297 @@ Widget PageScaffold({
 }
 
 class _AdministrationPageState extends State<AdministrationPage> {
-  // late final WebViewController _controller;
   int progression = 0;
-  WebViewController controller = WebViewController();
+  WebViewController webViewController = WebViewController();
+  late final WebViewCookieManager cookieManager = WebViewCookieManager();
 
-  final cookieManager = WebviewCookieManager();
+  Future<void> reload() {
+    return webViewController.reload();
+  }
 
-  // final String _url = 'https://youtube.com';
-  // final String cookieValue = JSON.stringify(list);
-  // final String domain = 'faroty.com';
-  // final String cookieName = 'some_cookie_name';
+  Future<void> _onSetCookie(context) async {
+    await _onClearCookies(context);
+    await cookieManager.setCookie(
+      WebViewCookie(
+        name: 'user_data',
+        value:
+            // "hhhhh",
+
+            json.encode(
+          {
+            "user": {
+              "id": null,
+              "hash_id": "73fade63-de3f-4072-bb97-016df10547fe",
+              "parent_id": null,
+              "country_id": "1",
+              "country_name": "CAMEROON",
+              "currency_id": "1",
+              "currency_name": "XAF",
+              "location_id": null,
+              "location_name": "",
+              "token": null,
+              "go_token": null,
+              "api_token": "b5d282dd-0f04-4a36-81cf-1ba63cd49509",
+              "phonecode": "237",
+              "phone": "680474835",
+              "phonenumber": "237680474835",
+              "email": "kengnedjoussehulot@gmail.com",
+              "username": "28fb8679-65e1-4bda-959b-b52c0dbb508e",
+              "password": null,
+              "balance": "480.65",
+              "sms_balance": "0",
+              "withdrawn_amount_one_time": "100000",
+              "cumul_withdrawn_amount_per_day": "250000",
+              "cumul_withdrawn_amount_today": 0,
+              "tx_over_withdraw": "0.003",
+              "amount_tx_over_withdraw": "75000",
+              "fees_amount_over_withdraw": "450",
+              "daily_withdrawal_has_fees": 0,
+              "name": "KENGNE DJOUSSE Hulot",
+              "anniversary": "2002-08-05",
+              "localisation": null,
+              "quartier": null,
+              "biography": null,
+              "lang": "fr",
+              "gender": "-1",
+              "profil_photo_base64": null,
+              "profil_photo_url":
+                  "https://api.faroty.com/images/avatar/avatar.png",
+              "create_date": "1676013880",
+              "is_confirm": "1",
+              "is_wallet_confirm": "1",
+              "confirm_date": "1676014031",
+              "confirm_wallet_date": null,
+              "profil": "0",
+              "status": "1",
+              "nbcontacts": "0",
+              "nbfollowers": "0",
+              "nbfollows": "0",
+              "last_seen": "2",
+              "birthday_seen": "2",
+              "status_seen": "2",
+              "phonenumber_seen": "2",
+              "faroti_seen": "1",
+              "faroti_location_seen": "1",
+              "faroti_deposit_seen": "2",
+              "faroti_media_seen": "3",
+              "utc": "1",
+              "degree": 0,
+              "phonenumbers":
+                  "237692665224,237656083020,237695605617,237680474835",
+              "isOwner": 0,
+              "has_kyc": "1",
+              "isBlocked": 0,
+              "blocked_date": null,
+              "isMsgBlocked": 0,
+              "msg_blocked_date": null,
+              "pin_to_see_balance": "0",
+              "ask_pin_every_min": "5",
+              "disconnect_user": 0,
+              "has_page": 1,
+              "pages": ["1hg085k6h"]
+            },
+            "api_token": "b5d282dd-0f04-4a36-81cf-1ba63cd49509",
+            "api_password": "c2f8-0f-405-8046-1c7731",
+            "error": false
+          },
+        ),
+
+        // json.encode({
+        //   "error": false,
+        //   "user": {
+        //     "id": 23586,
+        //     "parent_id": null,
+        //     "admin_id": null,
+        //     "country_id": 1,
+        //     "currency_id": 1,
+        //     "location_id": null,
+        //     "profil_id": null,
+        //     "balance": 480.65,
+        //     "sms_balance": 0,
+        //     "devise_country_iso3": "cm",
+        //     "token": null,
+        //     "go_token": null,
+        //     "hashid": "73fade63-de3f-4072-bb97-016df10547fe",
+        //     "phonenumber": "237680474835",
+        //     "phone": "680474835",
+        //     "username": "28fb8679-65e1-4bda-959b-b52c0dbb508e",
+        //     "password": null,
+        //     "wallet_password": "e82c4b19b8151ddc25d4d93baf7b908f",
+        //     "api_password": "c2f8-0f-405-8046-1c7731",
+        //     "api_auth_password": null,
+        //     "name": "KENGNE DJOUSSE Hulot",
+        //     "anniversary": "2002-08-04T23:00:00.000Z",
+        //     "email": "kengnedjoussehulot@gmail.com",
+        //     "localisation": null,
+        //     "biography": null,
+        //     "quartier": null,
+        //     "lang": "fr",
+        //     "utc": 1,
+        //     "gender": -1,
+        //     "profil_photo_base64": null,
+        //     "profil_photo_url":
+        //         "https://api.faroty.com/images/avatar/avatar.png",
+        //     "create_date": 1676013880,
+        //     "is_confirm": 1,
+        //     "is_wallet_confirm": 1,
+        //     "has_kyc": 1,
+        //     "kyc_date": 1691047960,
+        //     "confirm_date": 1676014031,
+        //     "confirm_wallet_date": null,
+        //     "last_update_time": 1706005407,
+        //     "profil_type": 0,
+        //     "api_fees": 0,
+        //     "versioncode": 986,
+        //     "appname": "android",
+        //     "save_money_date": 1690811170,
+        //     "save_money_password": "e82c4b19b8151ddc25d4d93baf7b908f",
+        //     "save_money_question": null,
+        //     "save_money_answord": null,
+        //     "transaction_suspended": 0,
+        //     "mycollect_suspended": 0,
+        //     "status": 1,
+        //     "nbcontacts": 0,
+        //     "nbfollowers": 0,
+        //     "nbfollows": 0,
+        //     "nbfaroters": 0,
+        //     "last_seen": 2,
+        //     "birthday_seen": 2,
+        //     "status_seen": 2,
+        //     "phonenumber_seen": 2,
+        //     "faroti_seen": 1,
+        //     "faroti_location_seen": 1,
+        //     "faroti_deposit_seen": 2,
+        //     "faroti_media_seen": 3,
+        //     "pin_to_see_balance": 0,
+        //     "ask_pin_every_min": 5,
+        //     "withdrawn_amount_one_time": 100000,
+        //     "cumul_withdrawn_amount_per_day": 250000,
+        //     "cumul_withdrawn_amount_per_week": 1000000,
+        //     "cumul_withdrawn_amount_per_mo": 4000000,
+        //     "daily_free_withdrawal_count": 2
+        //   },
+        //   "api_token": "834da76a-246d-4b19-b143-3befd02891a1",
+        //   "api_password": "c2f8-0f-405-8046-1c7731"
+        // }),
+
+        domain: '.faroty.com',
+        // path: '/anything',
+      ),
+    );
+    // await webViewController.loadRequest(Uri.parse(
+    //   'https://group.rush.faroty.com/',
+    // ));
+    await _onListCookies(context);
+  }
+
+  Future<void> _onListCookies(BuildContext context) async {
+    final String cookies = await webViewController
+        .runJavaScriptReturningResult('document.cookie') as String;
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: Duration(seconds: 3),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Text('Cookies:'),
+            _getCookieList(cookies),
+          ],
+        ),
+      ));
+    }
+  }
+
+  Future<void> _onClearCookies(BuildContext context) async {
+    final bool hadCookies = await cookieManager.clearCookies();
+    String message = 'There were cookies. Now, they are gone!';
+    if (!hadCookies) {
+      message = 'There are no cookies.';
+    }
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+      ));
+    }
+  }
+
+  Widget _getCookieList(String cookies) {
+    if (cookies == '""') {
+      return Container();
+    }
+    final List<String> cookieList = cookies.split(';');
+    final Iterable<Text> cookieWidgets =
+        cookieList.map((String cookie) => Text(cookie));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: cookieWidgets.toList(),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
 
-    WebViewCookie cookie = WebViewCookie(
-      name: "user_data",
-      value: {
-        "error": false,
-        "user": {
-          "id": 17799,
-          "parent_id": null,
-          "admin_id": null,
-          "country_id": 1,
-          "currency_id": 1,
-          "location_id": null,
-          "profil_id": null,
-          "balance": 879.39,
-          "sms_balance": 0,
-          "devise_country_iso3": "cm",
-          "token": null,
-          "go_token": null,
-          "hashid": "2d94eb2a-6705-4a3c-8e81-ad4d1c1f1552",
-          "phonenumber": "237677438521",
-          "phone": "677438521",
-          "username": "88afd164-9486-4b81-acf7-c11de760cac7",
-          "password": null,
-          "wallet_password": "17b3c7061788dbe82de5abe9f6fe22b3",
-          "api_password": "9e03e2dd-38fe-4375-9555-91a94d71e2d7",
-          "api_auth_password": null,
-          "name": "Thibaut TSAGUE",
-          "anniversary": "2002-08-04T23:00:00.000Z",
-          "email": "",
-          "localisation": null,
-          "biography": null,
-          "quartier": null,
-          "lang": "fr",
-          "utc": 1,
-          "gender": -1,
-          "profil_photo_base64": null,
-          "profil_photo_url":
-              "https://api.rush.faroty.com/images/avatar/avatar.png",
-          "create_date": 1661362901,
-          "is_confirm": 1,
-          "is_wallet_confirm": 1,
-          "has_kyc": 1,
-          "kyc_date": 1691072008,
-          "confirm_date": 1682796374,
-          "confirm_wallet_date": null,
-          "last_update_time": 1706091361,
-          "profil_type": 2,
-          "api_fees": 0,
-          "versioncode": 980,
-          "appname": "android",
-          "save_money_date": 1691171723,
-          "save_money_password": "17b3c7061788dbe82de5abe9f6fe22b3",
-          "save_money_question": null,
-          "save_money_answord": null,
-          "transaction_suspended": 0,
-          "mycollect_suspended": 0,
-          "status": 1,
-          "nbcontacts": 0,
-          "nbfollowers": 0,
-          "nbfollows": 0,
-          "nbfaroters": 0,
-          "last_seen": 2,
-          "birthday_seen": 2,
-          "status_seen": 2,
-          "phonenumber_seen": 2,
-          "faroti_seen": 1,
-          "faroti_location_seen": 1,
-          "faroti_deposit_seen": 2,
-          "faroti_media_seen": 3,
-          "pin_to_see_balance": 1,
-          "ask_pin_every_min": 5,
-          "withdrawn_amount_one_time": 100000,
-          "cumul_withdrawn_amount_per_day": 250000,
-          "cumul_withdrawn_amount_per_week": 1000000,
-          "cumul_withdrawn_amount_per_mo": 4000000,
-          "daily_free_withdrawal_count": 50
-        },
-        "api_token": "53c95ac9-deda-463f-b305-0b3306dcf7c4",
-        "api_password": "9e03e2dd-38fe-4375-9555-91a94d71e2d7"
-      }.toString(),
-      domain: "faroty.com",
-    );
-    WebViewCookieManager().setCookie(cookie);
-    controller = WebViewController()
+    webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            // Update loading bar.
+            print("hfhhhhhh${progress}");
             setState(() {
               progression = progress;
             });
           },
+          // onPageStarted: (String url) async {
+          //   debugPrint(
+          //       'Page started loadingrrrrrrrrrrrrrrrrrrrrrrrrrrrrr: $url');
+          // },
+          // onPageFinished: (String url) async {
+          //   await _onSetCookie(context);
+          //   debugPrint(
+          //       'Page finished loading ttttttttttttttttttttttttttt: $url');
+          // },
+          //         onWebResourceError: (WebResourceError error) {
+          //           debugPrint('''
+          // Page resource error:
+          // code: ${error.errorCode}
+          // description: ${error.description}
+          // errorType: ${error.errorType}
+          // isForMainFrame: ${error.isForMainFrame}
+          //         ''');
+          //         },
+          // onNavigationRequest: (NavigationRequest request) {
+          //   if (request.url.startsWith('https://group.rush.faroty.com/')) {
+          //     debugPrint('blocking navigation to ${request.url}');
+          //     return NavigationDecision.prevent;
+          //   }
+          //   debugPrint('allowing navigation to ${request.url}');
+          //   return NavigationDecision.navigate;
+          // },
+          // onUrlChange: (UrlChange change) {
+          //   debugPrint('url change to ${change.url}');
+          // },
+          // onHttpAuthRequest: (HttpAuthRequest request) {
+          //   openDialog(request);
+          // },
         ),
       )
-      ..loadRequest(
-        Uri.parse('https://groups.faroty.com/'),
-      );
+      // ..addJavaScriptChannel(
+      //   'Toaster',
+      //   onMessageReceived: (JavaScriptMessage message) {
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: Text(message.message)),
+      //     );
+      //   },
+      // )
+      ..loadRequest(Uri.parse('https://groups.faroty.com/'));
 
-    WebViewWidget(
-      controller: controller,
-    );
+    // #enddocregion platform_features
+
+    // _controller = controller;
   }
 
   @override
@@ -180,14 +354,31 @@ class _AdministrationPageState extends State<AdministrationPage> {
       context: context,
       child: progression < 100
           ? Center(
-              child: Container(
-                margin: EdgeInsets.only(left: 20, right: 20),
-                child: LinearProgressIndicator(
-                  value: (progression / 100).toDouble(),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: EasyLoader(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      iconSize: 50,
+                      iconColor: AppColors.blackBlueAccent1,
+                      image: AssetImage(
+                        'assets/images/Groupe_ou_Asso.png',
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: LinearProgressIndicator(
+                      backgroundColor: AppColors.blackBlueAccent1,
+                      color: AppColors.colorButton,
+                      value: (progression / 100).toDouble(),
+                    ),
+                  ),
+                ],
               ),
             )
-          : WebViewWidget(controller: controller),
+          : WebViewWidget(controller: webViewController),
     );
   }
 }

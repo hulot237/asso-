@@ -3,6 +3,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WidgetDetailTontineCard extends StatefulWidget {
   WidgetDetailTontineCard({
@@ -37,9 +38,9 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
           BoxShadow(
               color: Color.fromARGB(69, 0, 0, 0),
               spreadRadius: 0.5,
-              blurRadius: 2),
+              blurRadius: 2,),
         ],
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
       ),
 
       // decoration: BoxDecoration(
@@ -53,14 +54,14 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
       //   ],
       // ),
       alignment: Alignment.center,
-      padding: EdgeInsets.only(left: 12, bottom: 5, right: 12),
+      padding: EdgeInsets.only(left: 12.w, bottom: 5.h, right: 12.w),
       child: Row(
         children: [
           Expanded(
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 10, bottom: 7),
+                  margin: EdgeInsets.only(top: 10.h, bottom: 7.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,7 +74,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                             child: Text(
                               widget.nomTontine,
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.blackBlue,
                               ),
@@ -83,17 +84,17 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                       ),
                       widget.isActive == 1
                           ? Container(
-                              padding: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(5.r),
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(61, 76, 175, 79),
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(5.r),
                               ),
                               child: Text(
                                 "en_cours".tr(),
                                 style: TextStyle(
                                     color: AppColors.green,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 13),
+                                    fontSize: 13.sp,),
                               ),
                             )
                           : Text(
@@ -101,7 +102,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 13),
+                                  fontSize: 13.sp,),
                             ),
                     ],
                   ),
@@ -120,7 +121,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                                 "ouverture".tr(),
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 10.sp,
                                     color: Color.fromARGB(160, 20, 45, 99),
                                     fontWeight: FontWeight.w600),
                               ),
@@ -130,7 +131,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                                 formatDateLiteral(widget.dateCreaTontine),
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   color: AppColors.blackBlue,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -143,7 +144,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 3),
+                  margin: EdgeInsets.only(bottom: 3.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -155,12 +156,12 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                               child: Text(
                                 "${"bénéficiaires".tr()} (${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(146, 20, 45, 99),
                                 ),
                               ),
-                              margin: EdgeInsets.only(right: 5),
+                              margin: EdgeInsets.only(right: 5.w),
                             ),
                           ],
                         ),
@@ -174,7 +175,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                               child: Text(
                                 "montant".tr(),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(120, 20, 45, 99),
                                 ),
@@ -184,7 +185,7 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                               child: Text(
                                 "${formatMontantFrancais(double.parse(widget.montantTontine))} FCFA",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w800,
                                   color: AppColors.blackBlue,
                                 ),

@@ -112,7 +112,7 @@
     "Aucun_evenement_recent": "No recent events",
     "Événements_récents": "Recent events",
     "Accueil": "Home",
-    "Historiques": "Historical",
+    "Historiques": "Transactions",
     "Profil": "Profile",
     "code_membre": "member code",
     "Avance": "Advance",
@@ -166,6 +166,18 @@
     "Marié": "Married",
     "Divorcé": "Divorced",
     "Veuf": "Widowed",
-    "reste à payer":"Remainder to pay"
+    "reste à payer":"Remainder to pay",
+    "CRÉER UN GROUPE/UNE ASSOCIATION":"CREATE A GROUP/ASSOCIATION",
+    "Votre comptable express \net connecté":"Your online express \naccountant",
+    "Simple et efficace":"Simple and effective",
+    "Globale (cotisations, prêts et épagnes, \ntontines, bilans, ...)":"Global (contributions, loans and deposits, \ntontine, balance sheets, ...)",
+    "Rapide et sécurisé":"Fast and secure",
+    "Votre groupe a déjà été créé ?":"Has your group already been created?",
+    "Connectez-vous":"Log in",
+    "Solde après":"Balance after",
+    "Toutes vos tontines":"All your tontines",
+    "TOTAL EPARGNES":"TOTAL SAVINGS",
+    "INTÉRÊTS EN COURS":"CURRENT INTEREST",
+    "Detail de la tontine":"Tontine details"
 
 }

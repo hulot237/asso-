@@ -24,9 +24,11 @@ import 'package:faroty_association_1/pages/paramsAppPage.dart';
 import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
 import 'package:faroty_association_1/pages/proposAidePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/presentation/screens/retraitPage.dart';
+import 'package:faroty_association_1/pages/testWebViewOne.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -59,6 +61,13 @@ class _SettingScreenState extends State<SettingScreen> {
     }
   }
 
+  Future countNotifications() async {
+    final countNotificationsVar =
+        await context.read<NotificationCubit>().countNotification();
+
+    print("cdddcdcdcdcdcdcdcdcdcdcdcdcdcdcdcrrrr");
+  }
+
   Future<void> getNotification() async {
     await context.read<NotificationCubit>().getNotification(
         AppCubitStorage().state.tokenUser,
@@ -68,14 +77,13 @@ class _SettingScreenState extends State<SettingScreen> {
   Future<void> handleDetailUser(userCode, codeTournoi) async {
     final allCotisationAss =
         await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
-
-
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    getNotification();
+    countNotifications();
+
     super.initState();
   }
 
@@ -88,7 +96,7 @@ class _SettingScreenState extends State<SettingScreen> {
         return Container(
             child: EasyLoader(
           backgroundColor: Color.fromARGB(0, 255, 255, 255),
-          iconSize: 50,
+          iconSize: 50.r,
           iconColor: AppColors.blackBlueAccent1,
           image: AssetImage(
             'assets/images/Groupe_ou_Asso.png',
@@ -102,7 +110,7 @@ class _SettingScreenState extends State<SettingScreen> {
           return Container(
               child: EasyLoader(
             backgroundColor: Color.fromARGB(0, 255, 255, 255),
-            iconSize: 50,
+            iconSize: 50.r,
             iconColor: AppColors.blackBlueAccent1,
             image: AssetImage(
               'assets/images/Groupe_ou_Asso.png',
@@ -113,24 +121,27 @@ class _SettingScreenState extends State<SettingScreen> {
 
         return WillPopScope(
           onWillPop: () async {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (BuildContext context) => HomePage(),
-              ),
-              (route) => false,
-            );
-            return false;
+            // Navigator.of(context).pushAndRemoveUntil(
+            //   MaterialPageRoute(
+            //     builder: (BuildContext context) => HomePage(),
+            //   ),
+            //   (route) => false,
+            // );
+            return Platform.isIOS?false:true;
           },
           child: Scaffold(
             backgroundColor: AppColors.pageBackground,
             appBar: AppBar(
               title: Text(
                 "Profil".tr(),
-                style: TextStyle(fontSize: 16, color: AppColors.white),
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: AppColors.white,
+                ),
               ),
               backgroundColor: AppColors.backgroundAppBAr,
               elevation: 0,
-              leading: GestureDetector(
+              leading: Platform.isAndroid? GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
@@ -140,7 +151,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   );
                 },
                 child: Icon(Icons.arrow_back, color: AppColors.white),
-              ),
+              ):Container(),
               actions: [
                 GestureDetector(
                   onTap: () {
@@ -155,21 +166,21 @@ class _SettingScreenState extends State<SettingScreen> {
                     child: Stack(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 25, top: 15),
+                          margin: EdgeInsets.only(right: 25.w, top: 15.h),
                           child: Icon(Icons.notifications_active_outlined,
                               color: AppColors.white),
                         ),
                         BlocBuilder<NotificationCubit, NotificationState>(
                             builder: (NotificationContext, NotificationState) {
-                          if (NotificationState.isLoading == true &&
-                              NotificationState.notifications == null)
+                          if (NotificationState.isLoadingNomberNotif == true &&
+                              NotificationState.nomberNotif == null)
                             return Positioned(
-                              top: 12,
-                              left: 12,
+                              top: 12.h,
+                              left: 12.w,
                               child: Container(
                                 alignment: Alignment.center,
-                                width: 15,
-                                height: 15,
+                                width: 15.w,
+                                height: 15.w,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 0.1,
                                   color: AppColors.blackBlue,
@@ -179,28 +190,25 @@ class _SettingScreenState extends State<SettingScreen> {
                           final currentNotifications = context
                               .read<NotificationCubit>()
                               .state
-                              .notifications;
+                              .nomberNotif;
 
-                          final noReadElt = currentNotifications!
-                              .where((elt) => elt.isReaded == 0)
-                              .toList();
-                          if (noReadElt.length > 0) {
+                          if (currentNotifications! > 0) {
                             return Positioned(
-                              top: 12,
-                              left: 12,
+                              top: 12.h,
+                              left: 12.w,
                               child: Container(
                                 alignment: Alignment.center,
-                                width: 15,
-                                height: 15,
+                                width: 15.w,
+                                height: 15.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(360),
                                   color: Colors.red,
                                 ),
                                 child: Text(
-                                  "${noReadElt.length}",
+                                  "${currentNotifications}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 6,
+                                      fontSize: 7.sp,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.white),
                                 ),
@@ -219,7 +227,7 @@ class _SettingScreenState extends State<SettingScreen> {
             body: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 20, bottom: 5),
+                  margin: EdgeInsets.only(top: 20.h, bottom: 5.h),
                   child: Column(
                     children: [
                       GestureDetector(
@@ -232,15 +240,15 @@ class _SettingScreenState extends State<SettingScreen> {
                           );
                         },
                         child: Container(
-                          padding: EdgeInsets.all(3),
+                          padding: EdgeInsets.all(3.r),
                           decoration: BoxDecoration(
                               color: AppColors.colorButton,
                               borderRadius: BorderRadius.circular(100)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Container(
-                              width: 90,
-                              height: 90,
+                              width: 90.w,
+                              height: 90.w,
                               child: Image.network(
                                 "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
                                 fit: BoxFit.cover,
@@ -262,13 +270,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                 );
                               },
                               child: Container(
-                                padding:
-                                    EdgeInsets.only(left: 5, right: 5, top: 5),
+                                padding: EdgeInsets.only(
+                                    left: 5.w, right: 5.w, top: 5.h),
                                 child: Text(
                                   "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 18.sp,
                                     fontWeight: FontWeight.w300,
                                     color: AppColors.blackBlue,
                                   ),
@@ -281,23 +289,31 @@ class _SettingScreenState extends State<SettingScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) =>
-                                    //         AdministrationPage(
-                                    //       lienDePaiement:
-                                    //           'https://groups.faroty.com/',
-                                    //     ),
+                                    // context,
+                                    // MaterialPageRoute(
+                                    //   builder: (context) =>
+                                    //       WebViewExample(
+                                    //     // lienDePaiement:
+                                    //     //     'https://groups.faroty.com/',
                                     //   ),
+                                    // ),
+
+                                    // MaterialPageRoute(
+                                    //   builder: (context) =>
+                                    //       AdministrationPage(
+                                    //     lienDePaiement:
+                                    //         'https://api.group.rush.faroty.com/',
+                                    //   ),
+                                    // ),
                                     // );
                                   },
                                   child: Column(
                                     children: [
                                       Container(
                                         padding: EdgeInsets.only(
-                                          left: 8,
-                                          right: 8,
-                                          top: 5,
+                                          left: 8.w,
+                                          right: 8.w,
+                                          top: 5.h,
                                         ),
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -306,7 +322,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           "${"matricule".tr()}",
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w600,
                                             color: AppColors.blackBlueAccent1,
                                           ),
@@ -316,7 +332,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "${currentDetailUser["matricule"]}",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.blackBlueAccent1,
                                         ),
@@ -338,20 +354,21 @@ class _SettingScreenState extends State<SettingScreen> {
                                               child: Text(
                                                 '${currentDetailUser["membre_code"]}',
                                                 style: TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
                                             ),
                                             padding: EdgeInsets.only(
-                                                left: 2,
-                                                right: 2,
-                                                top: 7,
-                                                bottom: 7),
+                                              left: 2.w,
+                                              right: 2.w,
+                                              top: 7.h,
+                                              bottom: 7.h,
+                                            ),
                                             backgroundColor:
                                                 AppColors.colorButton,
                                             behavior: SnackBarBehavior.floating,
-                                            width: 140,
+                                            width: 140.w,
                                             shape: StadiumBorder(),
                                             duration:
                                                 Duration(milliseconds: 1000),
@@ -366,7 +383,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     children: [
                                       Container(
                                         padding: EdgeInsets.only(
-                                          top: 5,
+                                          top: 5.h,
                                         ),
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -375,7 +392,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           "${"Code pour paiement".tr()}",
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w600,
                                             color: AppColors.blackBlueAccent1,
                                           ),
@@ -384,12 +401,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                       Row(
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.only(right: 5),
+                                            padding:
+                                                EdgeInsets.only(right: 5.w),
                                             child: Text(
                                               "${currentDetailUser["membre_code"]}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                fontSize: 12,
+                                                fontSize: 12.sp,
                                                 fontWeight: FontWeight.w600,
                                                 color:
                                                     AppColors.blackBlueAccent1,
@@ -398,7 +416,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ),
                                           Icon(
                                             Icons.content_copy,
-                                            size: 12,
+                                            size: 12.sp,
                                             color: AppColors.blackBlueAccent1,
                                           ),
                                         ],
@@ -420,9 +438,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                            top: 10,
-                            left: 10,
-                            right: 10,
+                            top: 10.h,
+                            left: 10.w,
+                            right: 10.w,
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -438,15 +456,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
+                                    top: 15.h,
+                                    left: 10.w,
+                                    right: 10.w,
+                                    bottom: 15.h,
                                   ),
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
-                                          width: 1,
+                                          width: 1.r,
                                           color: Color.fromARGB(12, 0, 0, 0)),
                                     ),
                                   ),
@@ -462,12 +480,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   Icons.phone_android_outlined,
                                                   color: AppColors.bleuLight),
                                               margin:
-                                                  EdgeInsets.only(right: 10),
+                                                  EdgeInsets.only(right: 10.w),
                                             ),
                                             Text(
                                               "votre_compte".tr(),
                                               style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 color: AppColors.blackBlue,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -476,7 +494,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                         ),
                                       ),
                                       Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue, size: 12),
+                                          color: AppColors.blackBlue,
+                                          size: 12.sp),
                                     ],
                                   ),
                                 ),
@@ -487,7 +506,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     handleDetailUser(
-                                        AppCubitStorage().state.membreCode, AppCubitStorage().state.codeTournois);
+                                        AppCubitStorage().state.membreCode,
+                                        AppCubitStorage().state.codeTournois);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -496,16 +516,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(
-                                      top: 15,
-                                      left: 10,
-                                      right: 10,
-                                      bottom: 15,
+                                      top: 15.h,
+                                      left: 10.w,
+                                      right: 10.w,
+                                      bottom: 15.h,
                                     ),
                                     decoration: BoxDecoration(
                                       // color: Colors.black12,
                                       border: Border(
                                         bottom: BorderSide(
-                                            width: 1,
+                                            width: 1.r,
                                             color: Color.fromARGB(12, 0, 0, 0)),
                                       ),
                                     ),
@@ -522,13 +542,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                                       .account_balance_wallet_outlined,
                                                   color: Colors.black,
                                                 ),
-                                                margin:
-                                                    EdgeInsets.only(right: 10),
+                                                margin: EdgeInsets.only(
+                                                    right: 10.w),
                                               ),
                                               Text(
                                                 "retrait_en_attente".tr(),
                                                 style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 15.sp,
                                                   color: AppColors.blackBlue,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -536,9 +556,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                             ],
                                           ),
                                         ),
-                                        Icon(Icons.arrow_right,
-                                            color: AppColors.blackBlue,
-                                            size: 12),
+                                        Icon(
+                                          Icons.arrow_right,
+                                          color: AppColors.blackBlue,
+                                          size: 12.sp,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -554,16 +576,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
+                                    top: 15.h,
+                                    left: 10.w,
+                                    right: 10.w,
+                                    bottom: 15.h,
                                   ),
                                   decoration: BoxDecoration(
                                     // color: Colors.black12,
                                     border: Border(
                                       bottom: BorderSide(
-                                          width: 1,
+                                          width: 1.r,
                                           color: Color.fromARGB(12, 0, 0, 0)),
                                     ),
                                   ),
@@ -579,12 +601,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   Icons.ads_click_outlined,
                                                   color: Colors.red),
                                               margin:
-                                                  EdgeInsets.only(right: 10),
+                                                  EdgeInsets.only(right: 10.w),
                                             ),
                                             Text(
                                               "tournoi".tr(),
                                               style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 color: AppColors.blackBlue,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -602,14 +624,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                           Text(
                                             'Tournoi #${item.matricule}',
                                             style: TextStyle(
-                                              fontSize: 10,
+                                              fontSize: 10.sp,
                                               color: Color.fromARGB(
                                                   125, 20, 45, 99),
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                       Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue, size: 12),
+                                          color: AppColors.blackBlue,
+                                          size: 12.sp),
                                     ],
                                   ),
                                 ),
@@ -624,16 +647,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
+                                    top: 15.h,
+                                    left: 10.w,
+                                    right: 10.w,
+                                    bottom: 15.h,
                                   ),
                                   decoration: BoxDecoration(
                                     // color: Colors.black12,
                                     border: Border(
                                       bottom: BorderSide(
-                                          width: 1,
+                                          width: 1.r,
                                           color: Color.fromARGB(12, 0, 0, 0)),
                                     ),
                                   ),
@@ -650,12 +673,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 scale: 14,
                                               ),
                                               margin:
-                                                  EdgeInsets.only(right: 10),
+                                                  EdgeInsets.only(right: 10.w),
                                             ),
                                             Text(
                                               "Groups & Associations".tr(),
                                               style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 color: AppColors.blackBlue,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -666,7 +689,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       Text(
                                         "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                           color: Color.fromARGB(
                                             125,
                                             20,
@@ -679,7 +702,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       Icon(
                                         Icons.arrow_right,
                                         color: AppColors.blackBlue,
-                                        size: 12,
+                                        size: 12.sp,
                                       ),
                                     ],
                                   ),
@@ -698,16 +721,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
+                                    top: 15.h,
+                                    left: 10.w,
+                                    right: 10.w,
+                                    bottom: 15.h,
                                   ),
                                   decoration: BoxDecoration(
                                     // color: Colors.black12,
                                     border: Border(
                                       bottom: BorderSide(
-                                          width: 1,
+                                          width: 1.r,
                                           color: Color.fromARGB(12, 0, 0, 0)),
                                     ),
                                   ),
@@ -724,12 +747,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 color: AppColors.blackBlue,
                                               ),
                                               margin:
-                                                  EdgeInsets.only(right: 10),
+                                                  EdgeInsets.only(right: 10.w),
                                             ),
                                             Text(
                                               "Membres".tr(),
                                               style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 color: AppColors.blackBlue,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -737,8 +760,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue, size: 12),
+                                      Icon(
+                                        Icons.arrow_right,
+                                        color: AppColors.blackBlue,
+                                        size: 12.sp,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -754,17 +780,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
+                                    top: 15.h,
+                                    left: 10.w,
+                                    right: 10.w,
+                                    bottom: 15.h,
                                   ),
                                   decoration: BoxDecoration(
                                     // color: Colors.black12,
                                     border: Border(
                                       bottom: BorderSide(
-                                          width: 1,
-                                          color: Color.fromARGB(12, 0, 0, 0)),
+                                        width: 1.r,
+                                        color: Color.fromARGB(12, 0, 0, 0),
+                                      ),
                                     ),
                                   ),
                                   child: Row(
@@ -780,12 +807,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 color: Colors.brown,
                                               ),
                                               margin:
-                                                  EdgeInsets.only(right: 10),
+                                                  EdgeInsets.only(right: 10.w),
                                             ),
                                             Text(
                                               "paramètres".tr(),
                                               style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 color: AppColors.blackBlue,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -793,29 +820,34 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue, size: 12),
+                                      Icon(
+                                        Icons.arrow_right,
+                                        color: AppColors.blackBlue,
+                                        size: 12.sp,
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Share.share("""${'Gérez vos associations et groupes avec *Groups & Assocations* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} :  Play Store https://play.google.com/store/apps/details?id=com.faroty.groups "${'et sur'.tr()}" groups.faroty.com"""
-                                                  .tr(),);
+                                  Share.share(
+                                    """${'Gérez vos associations et groupes avec *Groups & Assocations* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} :  Play Store https://play.google.com/store/apps/details?id=com.faroty.groups "${'et sur'.tr()}" groups.faroty.com"""
+                                        .tr(),
+                                  );
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                    top: 15,
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 15,
+                                    top: 15.h,
+                                    left: 10.w,
+                                    right: 10.w,
+                                    bottom: 15.h,
                                   ),
                                   decoration: BoxDecoration(
                                     // color: Colors.black12,
                                     border: Border(
                                       bottom: BorderSide(
-                                          width: 1,
+                                          width: 1.r,
                                           color: Color.fromARGB(12, 0, 0, 0)),
                                     ),
                                   ),
@@ -833,12 +865,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     AppColors.greenAssociation,
                                               ),
                                               margin:
-                                                  EdgeInsets.only(right: 10),
+                                                  EdgeInsets.only(right: 10.w),
                                             ),
                                             Text(
                                               "partager_l'application".tr(),
                                               style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 color: AppColors.blackBlue,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -846,8 +878,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue, size: 12),
+                                      Icon(
+                                        Icons.arrow_right,
+                                        color: AppColors.blackBlue,
+                                        size: 12.sp,
+                                      ),
                                     ],
                                   ),
                                 ),

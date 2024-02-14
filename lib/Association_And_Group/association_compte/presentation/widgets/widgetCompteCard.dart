@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WidgetCompteCard extends StatefulWidget {
   const WidgetCompteCard({super.key,
@@ -26,8 +27,8 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width / 2.15,
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(5),
+      padding: EdgeInsets.all(5.r),
+      margin: EdgeInsets.all(5.r),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(15),
@@ -43,25 +44,25 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            height: 150,
-            width: 150,
+            height: 150.w,
+            width: 150.w,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(360),
                 // color: Colors.cyanAccent,
                 border: Border.all(
-                  width: 4,
+                  width: 4.w,
                   color: Color(int.parse('${widget.couleur}'.replaceAll('#', '0xff')))
                   // color: widget.couleur,
                 )),
-            margin: EdgeInsets.only(top: 5),
+            margin: EdgeInsets.only(top: 5.h),
             child: Container(
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5.r),
               alignment: Alignment.center,
               child: Text(
                 "${formatMontantFrancais(double.parse(widget.montantCompte))} FCFA",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w300,
                   color: Color(int.parse('${widget.couleur}'.replaceAll('#', '0xff'))),
 
@@ -123,13 +124,13 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
               // ),
               Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.only(bottom:5, top: 10),
+                margin: EdgeInsets.only(bottom:5.h, top: 10.h),
                 child: Text(
                   widget.nomCompte.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: AppColors.blackBlue,
                   ),
                 ),

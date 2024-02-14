@@ -11,6 +11,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class widgetDetailCotisationCard extends StatefulWidget {
   widgetDetailCotisationCard(
@@ -54,12 +55,12 @@ class _widgetDetailCotisationCardState
             BoxShadow(
                 color: Color.fromARGB(69, 0, 0, 0),
                 spreadRadius: 0.5,
-                blurRadius: 2),
+                blurRadius: 2,),
           ],
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(15.r),
         ),
         alignment: Alignment.center,
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(12.r),
         child: Row(
           children: [
             Expanded(
@@ -73,7 +74,8 @@ class _widgetDetailCotisationCardState
                         Expanded(
                           // flex: 1,
                           child: Container(
-                            margin: EdgeInsets.only(right: 15),
+                            margin: EdgeInsets.only(right: 15.w
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -81,7 +83,7 @@ class _widgetDetailCotisationCardState
                                   child: Text(
                                     widget.motifCotisations,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.blackBlue,
                                     ),
@@ -101,18 +103,18 @@ class _widgetDetailCotisationCardState
                                       CotisationState.isLoading == true ||
                                       CotisationState.detailCotisation == null)
                                     return Container(
-                                      width: 60,
-                                      height: 25,
+                                      width: 60.w,
+                                      height: 25.h,
                                       padding: EdgeInsets.only(
-                                          left: 8, right: 8, top: 5, bottom: 5),
+                                          left: 8.w, right: 8.w, top: 5.h, bottom: 5.h),
                                       decoration: BoxDecoration(
                                         color: AppColors.colorButton,
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Center(
                                         child: Container(
-                                          width: 10,
-                                          height: 10,
+                                          width: 10.w,
+                                          height: 10.h,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 0.5,
                                             color: AppColors.white,
@@ -152,19 +154,17 @@ class _widgetDetailCotisationCardState
                                                 },
                                                 child: Container(
                                                   alignment: Alignment.center,
-                                                  width: 72,
-                                                  padding: EdgeInsets.only(
-                                                    left: 8,
-                                                    right: 8,
-                                                    top: 5,
-                                                    bottom: 5,
+                                                  width: 72.w,
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 8.w,
+                                                    vertical: 5.h,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color:
                                                         AppColors.colorButton,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            15),
+                                                            15.r),
                                                   ),
                                                   child: Text(
                                                     "cotiser".tr(),
@@ -172,7 +172,7 @@ class _widgetDetailCotisationCardState
                                                         color: AppColors.white,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize: 12),
+                                                        fontSize: 12.sp),
                                                   ),
                                                 )
 
@@ -249,7 +249,7 @@ class _widgetDetailCotisationCardState
                                             "expiré".tr(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 8,
+                                              fontSize: 8.sp,
                                               color: Color.fromARGB(
                                                   255, 255, 0, 0),
                                             ),
@@ -274,10 +274,10 @@ class _widgetDetailCotisationCardState
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(7),
-                          margin: EdgeInsets.only(bottom: 1),
+                          padding: EdgeInsets.all(7.r),
+                          margin: EdgeInsets.only(bottom: 1.h),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(5.r),
                             color: Color.fromARGB(20, 9, 185, 255),
                           ),
                           child: Container(
@@ -300,7 +300,7 @@ class _widgetDetailCotisationCardState
                                   "ouverture".tr(),
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 10.sp,
                                       color: Color.fromARGB(160, 20, 45, 99),
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -310,7 +310,7 @@ class _widgetDetailCotisationCardState
                                   formatDateLiteral(widget.dateCotisation),
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 10.sp,
                                       color: AppColors.blackBlue,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -323,7 +323,7 @@ class _widgetDetailCotisationCardState
                   ),
                   Container(
                     // width: MediaQuery.of(context).size.width / 1.1,
-                    margin: EdgeInsets.only(bottom: 7),
+                    margin: EdgeInsets.only(bottom: 7.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -342,16 +342,16 @@ class _widgetDetailCotisationCardState
                                       child: Text(
                                         "vous_avez_cotisé".tr(),
                                         style: TextStyle(
-                                          fontSize: 11,
+                                          fontSize: 11.sp,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
                                       ),
-                                      margin: EdgeInsets.only(right: 5),
+                                      margin: EdgeInsets.only(right: 5.w),
                                     ),
                                     Container(
-                                      width: 12,
-                                      height: 12,
+                                      width: 12.w,
+                                      height: 12.h,
                                       color: AppColors.white,
                                       child: Center(
                                         child: CircularProgressIndicator(
@@ -398,19 +398,19 @@ class _widgetDetailCotisationCardState
                                               child: Text(
                                                 "vous_avez_cotisé".tr(),
                                                 style: TextStyle(
-                                                  fontSize: 11,
+                                                  fontSize: 11.sp,
                                                   fontWeight: FontWeight.bold,
                                                   color: Color.fromARGB(
                                                       255, 20, 45, 99),
                                                 ),
                                               ),
-                                              margin: EdgeInsets.only(right: 5),
+                                              margin: EdgeInsets.only(right: 5.w),
                                             ),
                                             Container(
                                               child: Text(
                                                 "${formatMontantFrancais(double.parse(itemDetailCotisation["versement"] != null ? itemDetailCotisation["versement"][0]["balance_after"] : "0"))} FCFA",
                                                 style: TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w800,
                                                     color: Color.fromARGB(
                                                         255, 20, 45, 99)),
@@ -450,23 +450,23 @@ class _widgetDetailCotisationCardState
                                               child: Text(
                                                 "vous_avez_cotisé".tr(),
                                                 style: TextStyle(
-                                                  fontSize: 11,
+                                                  fontSize: 11.sp,
                                                   fontWeight: FontWeight.bold,
                                                   color: Color.fromARGB(
                                                       255, 20, 45, 99),
                                                 ),
                                               ),
-                                              margin: EdgeInsets.only(right: 5),
+                                              margin: EdgeInsets.only(right: 5.w),
                                             ),
                                             Container(
                                               child: Text(
                                                 "${formatMontantFrancais(double.parse(itemDetailCotisation["membre"]["versement"].length > 0 ? "${itemDetailCotisation["membre"]["versement"][0]["balance_after"]}" : "0"))} FCFA",
                                                 // "${itemDetailCotisation["membre"]["versement"].length}",
                                                 style: TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w800,
                                                     color: Color.fromARGB(
-                                                        255, 20, 45, 99)),
+                                                        255, 20, 45, 99,),),
                                               ),
                                             ),
                                           ],
@@ -501,7 +501,7 @@ class _widgetDetailCotisationCardState
                                         child: Text(
                                           "solde".tr(),
                                           style: TextStyle(
-                                            fontSize: 11,
+                                            fontSize: 11.sp,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.blackBlue,
                                           ),
@@ -511,9 +511,9 @@ class _widgetDetailCotisationCardState
                                         child: Text(
                                           "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
                                           style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 12.sp,
                                               fontWeight: FontWeight.w800,
-                                              color: AppColors.green),
+                                              color: AppColors.green,),
                                         ),
                                       ),
                                     ],
@@ -530,7 +530,7 @@ class _widgetDetailCotisationCardState
                                       //   Modal().showModalPersonSanctionner(context, [], "");
                                       // },
                                       child: Container(
-                                        margin: EdgeInsets.only(bottom: 3),
+                                        margin: EdgeInsets.only(bottom: 3.h),
                                         child: Row(
                                           children: [
                                             Container(
@@ -538,7 +538,7 @@ class _widgetDetailCotisationCardState
                                                 "montant".tr(),
                                                 overflow: TextOverflow.clip,
                                                 style: TextStyle(
-                                                    fontSize: 11,
+                                                    fontSize: 11.sp,
                                                     color: Color.fromARGB(
                                                         160, 20, 45, 99),
                                                     fontWeight:
@@ -554,7 +554,7 @@ class _widgetDetailCotisationCardState
                                                           overflow:
                                                               TextOverflow.clip,
                                                           style: TextStyle(
-                                                              fontSize: 11,
+                                                              fontSize: 11.sp,
                                                               color: Color
                                                                   .fromARGB(
                                                                       255,
@@ -572,13 +572,13 @@ class _widgetDetailCotisationCardState
                                                           overflow:
                                                               TextOverflow.clip,
                                                           style: TextStyle(
-                                                              fontSize: 11,
+                                                              fontSize: 11.sp,
                                                               color: Color
                                                                   .fromARGB(
                                                                       255,
                                                                       20,
                                                                       45,
-                                                                      99),
+                                                                      99,),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600),
@@ -661,7 +661,7 @@ class _widgetDetailCotisationCardState
                             //   Modal().showModalPersonSanctionner(context, [], "");
                             // },
                             child: Container(
-                              margin: EdgeInsets.only(bottom: 3),
+                              margin: EdgeInsets.only(bottom: 3.h),
                               child: Row(
                                 children: [
                                   Container(
@@ -669,7 +669,7 @@ class _widgetDetailCotisationCardState
                                       "montant".tr(),
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
-                                          fontSize: 11,
+                                          fontSize: 11.sp,
                                           color:
                                               Color.fromARGB(160, 20, 45, 99),
                                           fontWeight: FontWeight.w600),
@@ -683,7 +683,7 @@ class _widgetDetailCotisationCardState
                                                 " : Volontaire",
                                                 overflow: TextOverflow.clip,
                                                 style: TextStyle(
-                                                    fontSize: 11,
+                                                    fontSize: 11.sp,
                                                     color: Color.fromARGB(
                                                         255, 20, 45, 99),
                                                     fontWeight:
@@ -695,7 +695,7 @@ class _widgetDetailCotisationCardState
                                                 " : ${formatMontantFrancais(double.parse("${widget.montantCotisations}"))} FCFA",
                                                 overflow: TextOverflow.clip,
                                                 style: TextStyle(
-                                                    fontSize: 11,
+                                                    fontSize: 11.sp,
                                                     color: Color.fromARGB(
                                                         255, 20, 45, 99),
                                                     fontWeight:

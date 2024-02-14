@@ -8,6 +8,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
 // import 'package:integration_part_two/pages/homeCoursier.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class VerificationPage extends StatefulWidget {
   VerificationPage(
@@ -112,13 +114,13 @@ class _VerificationPageState extends State<VerificationPage> {
     return PageScaffold(
       context: context,
       child: Material(
+        type: MaterialType.transparency,
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
-            if (state.errorLoading) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text("${state.message}")));
-            }
             if (state.successLoading) {
+              setState(() {
+                isLoading = true; // Démarre l'indicateur de chargement
+              });
               var loginInfo = context.read<AuthCubit>().state.loginInfo;
 
               await AppCubitStorage()
@@ -139,12 +141,15 @@ class _VerificationPageState extends State<VerificationPage> {
                 ),
                 (route) => false,
               );
+              setState(() {
+                isLoading = false; // Arrête l'indicateur de chargement
+              });
             }
           },
           builder: (context, state) {
             return Container(
               padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
-              margin: const EdgeInsets.only(left: 20, right: 20),
+              margin: EdgeInsets.only(left: 20.w, right: 20.w),
               height: MediaQuery.of(context).size.height,
               child: Center(
                 child: SingleChildScrollView(
@@ -155,23 +160,23 @@ class _VerificationPageState extends State<VerificationPage> {
                         "assets/images/Groupe_ou_Asso.png",
                         scale: 4,
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 30.h),
                       Text(
                         "vérification".tr(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 27,
+                          fontSize: 27.sp,
                           color: AppColors.blackBlue,
                           fontWeight: FontWeight.w900,
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 30.h),
                       GestureDetector(
                         child: Container(
                           child: Text(
-                            "${"veuillez_saisir_le_code_que_vous_avez_reçu_par_SMS_au".tr()} +${widget.countryCode}${widget.numeroPhone}",
+                            "${"veuillez_saisir_le_code_que_vous_avez_reçu_par_SMS_au".tr()} \n+${widget.countryCode} ${formatMontantFrancais(double.parse(widget.numeroPhone))}",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.blackBlue,
                             ),
@@ -179,23 +184,26 @@ class _VerificationPageState extends State<VerificationPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       Container(
                         child: Container(
-                          height: 55,
+                          height: 55.h,
                           decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: AppColors.blackBlue,
-                              ),
-                              borderRadius: BorderRadius.circular(10)),
+                            border: Border.all(
+                              width: 1.r,
+                              color: AppColors.blackBlue,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              10.r,
+                            ),
+                          ),
                           child: TextField(
                             autofocus: true,
                             textAlign: TextAlign.center,
                             controller: codeController,
                             keyboardType: TextInputType.number,
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 17.sp,
                               color: AppColors.blackBlue,
                             ),
                             decoration: InputDecoration(
@@ -208,10 +216,10 @@ class _VerificationPageState extends State<VerificationPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 25),
+                      SizedBox(height: 25.h),
                       SizedBox(
                         width: double.infinity,
-                        height: 40,
+                        height: 50.h,
                         child: BlocBuilder<AuthCubit, AuthState>(
                           builder: (Authcontext, Authstate) {
                             if (Authstate.isLoading == null ||
@@ -225,7 +233,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                   ),
                                 ),
                               );
-                  
+
                             return isLoading
                                 ? Center(
                                     child: CircularProgressIndicator(
@@ -234,22 +242,12 @@ class _VerificationPageState extends State<VerificationPage> {
                                   )
                                 : ElevatedButton(
                                     onPressed: () async {
-                                      setState(() {
-                                        isLoading =
-                                            true; // Démarre l'indicateur de chargement
-                                      });
-                  
                                       await handleConfirmation();
-                  
-                                      setState(() {
-                                        isLoading =
-                                            false; // Arrête l'indicateur de chargement
-                                      });
                                     },
                                     child: Text(
                                       "Confirmer".tr(),
                                       style: TextStyle(
-                                        fontSize: 19,
+                                        fontSize: 19.sp,
                                         color: AppColors.white,
                                       ),
                                     ),
@@ -259,7 +257,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                       // primary: Color(0xFF6FA629),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10),
+                                            BorderRadius.circular(10.r),
                                       ),
                                     ),
                                   );
@@ -268,7 +266,7 @@ class _VerificationPageState extends State<VerificationPage> {
                       ),
                       Container(
                         margin: EdgeInsets.only(
-                          top: 15,
+                          top: 15.h,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -276,7 +274,7 @@ class _VerificationPageState extends State<VerificationPage> {
                             Text(
                               "${"vous_n'avez_pas_reçu_le_code?".tr()} ",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.blackBlue,
                               ),
@@ -293,16 +291,15 @@ class _VerificationPageState extends State<VerificationPage> {
                                         Text(
                                           "${"renvoyer".tr()} ",
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w800,
-                                            color:
-                                                AppColors.greenAssociation,
+                                            color: AppColors.greenAssociation,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
                                         Icon(
                                           Icons.double_arrow_outlined,
-                                          size: 8,
+                                          size: 8.sp,
                                           color: AppColors.greenAssociation,
                                         )
                                       ],
@@ -311,7 +308,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                 : Text(
                                     "00: $_secondsLeft",
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.blackBlue,
                                     ),

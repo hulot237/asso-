@@ -4,19 +4,17 @@ import 'package:equatable/equatable.dart';
 
 import 'package:faroty_association_1/Association_And_Group/association_notifications/data/notification_model.dart';
 
-class NotificationState extends Equatable {
-  final String? tokenNotification;
-  final List<NotificationModel>? notifications;
-  final bool isLoading;
+class PretEpargneState extends Equatable {
+  final Map<String, dynamic>? epargne;
+  final bool isLoadingEpargne;
   final bool isLoadingNomberNotif;
   final String? messageError;
   final int? nomberNotif;
   
 
-  NotificationState({
-    this.tokenNotification,
-    this.notifications,
-    this.isLoading = false,
+  PretEpargneState({
+    this.epargne,
+    this.isLoadingEpargne = false,
     this.isLoadingNomberNotif = false,
     this.messageError,
     this.nomberNotif,
@@ -24,25 +22,22 @@ class NotificationState extends Equatable {
 
   @override
   List<Object?> get props => [
-        tokenNotification,
-        isLoading,
-        notifications,
+        epargne,
+        isLoadingEpargne,
         messageError,
         nomberNotif,
       ];
 
-  NotificationState copyWith({
-    String? tokenNotification,
-    List<NotificationModel>? notifications,
-    bool? isLoading,
+  PretEpargneState copyWith({
+    Map<String, dynamic>? epargne,
+    bool? isLoadingEpargne,
     bool? isLoadingNomberNotif,
     String? messageError,
     int? nomberNotif,
   }) {
-    return NotificationState(
-      tokenNotification: tokenNotification ?? this.tokenNotification,
-      notifications: notifications ?? this.notifications,
-      isLoading: isLoading ?? this.isLoading,
+    return PretEpargneState(
+      epargne: epargne ?? this.epargne,
+      isLoadingEpargne: isLoadingEpargne ?? this.isLoadingEpargne,
       isLoadingNomberNotif: isLoadingNomberNotif ?? this.isLoadingNomberNotif,
       messageError: messageError ?? this.messageError,
       nomberNotif: nomberNotif ?? this.nomberNotif,

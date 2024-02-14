@@ -1,6 +1,3 @@
-
-
-
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
@@ -18,19 +15,18 @@ class NotificationCubit extends Cubit<NotificationState> {
           NotificationState(
             tokenNotification: null,
             notifications: null,
+            nomberNotif: null,
           ),
         );
 
   Future<bool> tokenNotificationCubitt(token) async {
     try {
-
       if (token != null) {
         emit(
           state.copyWith(
             tokenNotification: token,
           ),
         );
-
 
         return true;
       } else {
@@ -52,13 +48,10 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> getNotification(tokenUser, codeAssociation) async {
-    emit(state.copyWith(
-      isLoading: true,
-      notifications: state.notifications
-    ));
+    emit(state.copyWith(isLoading: true, notifications: state.notifications));
     try {
-      final data =
-          await NotificationRepository().getNotification(tokenUser, codeAssociation);
+      final data = await NotificationRepository()
+          .getNotification(tokenUser, codeAssociation);
 
       emit(
         state.copyWith(
@@ -73,7 +66,27 @@ class NotificationCubit extends Cubit<NotificationState> {
           messageError: e.toString(),
         ),
       );
-      
+    }
+  }
+
+  Future<void> countNotification() async {
+    emit(state.copyWith(isLoadingNomberNotif: true, notifications: state.notifications));
+    try {
+      final data = await NotificationRepository().countNotification();
+
+      emit(
+        state.copyWith(
+          nomberNotif: data,
+          isLoadingNomberNotif: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoadingNomberNotif: false,
+          messageError: e.toString(),
+        ),
+      );
     }
   }
 }

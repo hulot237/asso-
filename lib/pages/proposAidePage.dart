@@ -5,6 +5,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProposAidePage extends StatefulWidget {
   const ProposAidePage({super.key});
@@ -23,9 +24,19 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "a_propos_et_aide".tr(),
-          style: TextStyle(fontSize: 16, color : AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color : AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
+      leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.white,
+            size: 20.sp,
+          ),
+        ),
       ),
       child: child,
     );
@@ -36,7 +47,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "a_propos_et_aide".tr(),
-        style: TextStyle(fontSize: 16, color : AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color : AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -54,31 +65,86 @@ Widget PageScaffold({
 class _ProposAidePageState extends State<ProposAidePage> {
   @override
   Widget build(BuildContext context) {
-    return PageScaffold(
-      context: context,
-      child: Container(
-        margin: EdgeInsets.only(left: 20),
-        width: MediaQuery.of(context).size.width / 1.4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              onTap: () {},
-              title: Row(
+    return Material(
+      type: MaterialType.transparency,
+      child: PageScaffold(
+        context: context,
+        child: Container(
+          margin: EdgeInsets.only(left: 20.w),
+          width: MediaQuery.of(context).size.width / 1.4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                onTap: () {},
+                title: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 12.sp,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5.r),
+                      child: Text(
+                        "utilisation_et_confidentialité".tr(),
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: AppColors.blackBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                onTap: () {},
+                title: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 12.sp,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5.r),
+                      margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                      child: Text(
+                        "a_propos_de_l'application".tr(),
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: AppColors.blackBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+      
+              ListTile(
+                onTap: () {},
+                title: Row(
                 children: [
                   Container(
                     child: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      size: 12,
+                      size: 12.sp,
                       color: AppColors.blackBlue,
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(5.r),
+                    margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
                     child: Text(
-                      "utilisation_et_confidentialité".tr(),
+                      "centre_d'aide".tr(),
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         color: AppColors.blackBlue,
                         fontWeight: FontWeight.w500,
                       ),
@@ -86,25 +152,27 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   ),
                 ],
               ),
-            ),
-            ListTile(
-              onTap: () {},
-              title: Row(
+              ),
+      
+      
+              ListTile(
+                onTap: () {},
+                title: Row(
                 children: [
                   Container(
                     child: Icon(
                       Icons.arrow_forward_ios_rounded,
-                      size: 12,
+                      size: 12.sp,
                       color: AppColors.blackBlue,
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(5),
-                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    padding: EdgeInsets.all(5.r),
+                    margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
                     child: Text(
-                      "a_propos_de_l'application".tr(),
+                      "nous_contacter".tr(),
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         color: AppColors.blackBlue,
                         fontWeight: FontWeight.w500,
                       ),
@@ -112,65 +180,11 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   ),
                 ],
               ),
-            ),
-
-            ListTile(
-              onTap: () {},
-              title: Row(
-              children: [
-                Container(
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 12,
-                    color: AppColors.blackBlue,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                  child: Text(
-                    "centre_d'aide".tr(),
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.blackBlue,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            ),
-
-
-            ListTile(
-              onTap: () {},
-              title: Row(
-              children: [
-                Container(
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 12,
-                    color: AppColors.blackBlue,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                  child: Text(
-                    "nous_contacter".tr(),
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.blackBlue,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            ),
-            
-            
-          ],
+              ),
+              
+              
+            ],
+          ),
         ),
       ),
     );

@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class widgetDetailHistoriqueTontineCard extends StatefulWidget {
   widgetDetailHistoriqueTontineCard({
@@ -55,17 +56,17 @@ class _widgetDetailHistoriqueTontineCardState
     return Container(
       decoration: BoxDecoration(
         color:  AppColors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
       ),
       alignment: Alignment.center,
-      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+      padding: EdgeInsets. symmetric(horizontal: 10.w, vertical: 5.h,),
       child: Row(
         children: [
           Expanded(
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.only(top: 10.h),
                   width: MediaQuery.of(context).size.width / 1.1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +86,7 @@ class _widgetDetailHistoriqueTontineCardState
                                       child: Text(
                                         "${"Bénéficiaire".tr()} :",
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                           fontWeight: FontWeight.bold,
                                           color:
                                               Color.fromRGBO(20, 45, 99, 0.534),
@@ -102,7 +103,7 @@ class _widgetDetailHistoriqueTontineCardState
                                       child: Text(
                                         "${widget.nomBeneficiaire}",
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
@@ -127,19 +128,19 @@ class _widgetDetailHistoriqueTontineCardState
                         },
                         child: Container(
                           alignment: Alignment.center,
-                        width: 72,
-                          padding: EdgeInsets.only(
-                              left: 8, right: 8, top: 5, bottom: 5),
+                        width: 72.w,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 5.h,),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton,
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(15.r),
                           ),
                           child: Container(
                             child: Text(
                               "Tontiner",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: AppColors.white,
                               ),
                             ),
@@ -151,16 +152,16 @@ class _widgetDetailHistoriqueTontineCardState
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                  margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 3),
+                        margin: EdgeInsets.only(top: 3.h),
                         child: Text(
                           formatDateLiteral(widget.dateOpen),
                           style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 10.sp,
                               overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.w700,
                               color: Color.fromARGB(123, 20, 45, 99)),
@@ -171,7 +172,7 @@ class _widgetDetailHistoriqueTontineCardState
                 ),
                 Container(
                   // width: MediaQuery.of(context).size.width / 1.1,
-                  margin: EdgeInsets.only(bottom: 7),
+                  margin: EdgeInsets.only(bottom: 7.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -183,7 +184,7 @@ class _widgetDetailHistoriqueTontineCardState
                               child: Text(
                                 "montant".tr(),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
                                   color: Color.fromARGB(125, 20, 45, 99),
                                 ),
@@ -195,12 +196,12 @@ class _widgetDetailHistoriqueTontineCardState
                                 children: [
                                   Flexible(
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 3),
+                                      margin: EdgeInsets.only(top: 3.h),
                                       child: Text(
                                         "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -227,18 +228,18 @@ class _widgetDetailHistoriqueTontineCardState
                               child: Text(
                                 "montant_collecté".tr(),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
                                   color: Color.fromARGB(125, 20, 45, 99),
                                 ),
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 3),
+                              margin: EdgeInsets.only(top: 3.h),
                               child: Text(
                                 "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 12.sp,
                                     color: AppColors.green,
                                     fontWeight: FontWeight.w600),
                               ),

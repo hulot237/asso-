@@ -28,7 +28,7 @@ class CompteRepository {
 
   Future<List<dynamic>> getTransactionCompte(codeCompte) async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/payment/${AppCubitStorage().state.codeAssDefaul}/all?page=1&per_page=10&source_name=compte&source_ref=$codeCompte&mode=all',
+      '${Variables.LienAIP}/api/v1/payment/${AppCubitStorage().state.codeAssDefaul}/all?page=1&per_page=20&source_name=compte&source_ref=$codeCompte&mode=all',
       options: Options(
           headers: {
             "token": AppCubitStorage().state.tokenUser,

@@ -7,6 +7,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class widgetTontineHistoriqueCard extends StatefulWidget {
   widgetTontineHistoriqueCard({
@@ -38,17 +39,17 @@ class _widgetTontineHistoriqueCardState
     return Container(
       decoration: BoxDecoration(
         color: widget.isActive ==1? AppColors.white: Color.fromARGB(12, 0, 0, 0),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
       ),
       alignment: Alignment.center,
-      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h,),
       child: Row(
         children: [
           Expanded(
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 7),
+                  margin: EdgeInsets.only(top: 7.h),
                   width: MediaQuery.of(context).size.width / 1.1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,7 +68,7 @@ class _widgetTontineHistoriqueCardState
                                       child: Text(
                                         "${"ouverture".tr()} ",
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
@@ -84,7 +85,7 @@ class _widgetTontineHistoriqueCardState
                                       child: Text(
                                         formatDateLiteral(widget.dateCreaTontine),
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                           fontWeight: FontWeight.bold,
                                           color:
                                               Color.fromRGBO(20, 45, 99, 0.534),
@@ -100,17 +101,17 @@ class _widgetTontineHistoriqueCardState
                       ),
                       widget.isActive ==1?
                       Container(
-                        padding: EdgeInsets.all(3),
+                        padding: EdgeInsets.all(3.r),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(48, 76, 175, 79),
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(5.r),
                         ),
                         child: Text(
                           "en_cours".tr(),
                           style: TextStyle(
                             color: AppColors.green,
                             fontWeight: FontWeight.w400,
-                            fontSize: 10,
+                            fontSize: 10.sp,
                           ),
                         ),
                       ):Text(
@@ -118,14 +119,14 @@ class _widgetTontineHistoriqueCardState
                           style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.w400,
-                            fontSize: 10,
+                            fontSize: 10.sp,
                           ),
                         ),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.only(top: 10.h),
                   width: MediaQuery.of(context).size.width / 1.1,
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,7 +141,7 @@ class _widgetTontineHistoriqueCardState
                               child: Text(
                                 widget.nomTontine,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.blackBlue,
                                 ),
@@ -159,7 +160,7 @@ class _widgetTontineHistoriqueCardState
                                   child: Text(
                                     "montant".tr(),
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.bold,
                                       color: Color.fromRGBO(20, 45, 99, 0.521),
                                     ),
@@ -167,12 +168,12 @@ class _widgetTontineHistoriqueCardState
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 3),
+                                margin: EdgeInsets.only(top: 3.h),
                                 child: Container(
                                   child: Text(
                                     "${formatMontantFrancais(double.parse(widget.montantTontine))} FCFA",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w800,
                                       color: AppColors.blackBlue,
                                     ),
@@ -187,7 +188,7 @@ class _widgetTontineHistoriqueCardState
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10, bottom: 10),
+                  margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -195,7 +196,7 @@ class _widgetTontineHistoriqueCardState
                         child: Text(
                           "${"Participant".tr()} (${widget.nbrMembreTontine})",
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
                             color: Color.fromARGB(125, 20, 45, 99),
                           ),

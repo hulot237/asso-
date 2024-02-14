@@ -11,6 +11,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -78,152 +79,175 @@ class _LoginPageState extends State<LoginPage> {
         type: MaterialType.transparency,
         child: Container(
           padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
-          height: MediaQuery.of(context).size.height,
-          margin: EdgeInsets.only(left: 20, right: 20),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 70),
-                  Column(
-                    children: [
-                      Image.asset(
-                        "assets/images/Groupe_ou_Asso.png",
-                        scale: 3,
-                      ),
-                      SizedBox(height: 70),
-                      Text(
-                        "Entrer votre numéro pour obtenir le code d'authentification"
-                            .tr(),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.blackBlue,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 50),
-                      IntlPhoneField(
-                        autofocus: true,
-                        style: TextStyle(
-                            color: AppColors.blackBlue,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18),
-                        dropdownTextStyle: TextStyle(
-                            color: AppColors.blackBlue,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15),
-                        flagsButtonPadding: EdgeInsets.all(8),
-                        dropdownIconPosition: IconPosition.trailing,
-                        decoration: InputDecoration(
-                          labelText: 'numero_de_téléphone'.tr(),
-                          labelStyle: TextStyle(
-                            color: AppColors.blackBlueAccent1,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(width: 2),
-                          ),
-                          counterStyle: TextStyle(color: AppColors.blackBlue),
-                        ),
-                        controller: countrycode,
-                        initialCountryCode: 'CM',
-                        onCountryChanged: (Country) {
-                          setState(() {
-                            countryCodeController =
-                                retirerPlus(Country.dialCode);
-                          });
-                          print(Country.dialCode);
-                        },
-                        onChanged: (phone) {
-                          setState(() {
-                            numeroPhoneController = phone.number;
-                            countryCodeController =
-                                retirerPlus(phone.countryCode);
-                          });
-                          print(numeroPhoneController);
-                          print(countryCodeController);
-                        },
-                      ),
-                      BlocBuilder<AuthCubit, AuthState>(
-                          builder: (Authcontext, Authstate) {
-                        if (Authstate.isTrueNomber == true)
-                          return Container(
-                            decoration: BoxDecoration(
-                                color: AppColors.redAccent,
-                                border:
-                                    Border.all(width: 1, color: AppColors.red)),
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.only(
-                                top: 20, bottom: 20, left: 10, right: 10),
-                            child: Text(
-                              "Votre numéro est incorrect ou n'est pas lié à un groupe ou une association"
-                                  .tr(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color.fromARGB(255, 255, 34, 18)),
-                            ),
-                          );
-                        return Container(
-                          margin: EdgeInsets.only(top: 10, bottom: 10),
-                        );
-                      }),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 40,
-                        child: BlocBuilder<AuthCubit, AuthState>(
-                            builder: (Authcontext, Authstate) {
-                          if (Authstate.isLoading == null ||
-                              Authstate.isLoading == true)
-                            return Container(
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColors.greenAssociation,
-                                ),
-                              ),
-                            );
-                          return ElevatedButton(
-                            onPressed: () async {
-                              handleLogin();
-                              print(numeroPhoneController);
-                              print(countryCodeController);
-                              await PushNotifications().getTokenNotification();
-                            },
-                            child: Text(
-                              "Connexion".tr(),
-                              style: TextStyle(
-                                  fontSize: 19, color: AppColors.white),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.greenAssociation,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                    ],
+          margin: EdgeInsets.only(left: 20.w, right: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 20.h),
+                  width: 40.w,
+                  transformAlignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.arrow_back_outlined,
+                    color: AppColors.blackBlue,
                   ),
-                  Container(
-                    padding: EdgeInsets.only(
-                      bottom: 15,
-                      top: MediaQuery.of(context).size.height / 4,
-                    ),
-                    child: Text(
-                      "msg_condition_utilisation".tr(),
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: AppColors.blackBlue,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              Expanded(
+                child: Container(
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Column(
+                            children: [
+                              Image.asset(
+                                "assets/images/Groupe_ou_Asso.png",
+                                scale: 4,
+                              ),
+                              SizedBox(height: 70.h),
+                              Text(
+                                "Entrer votre numéro pour obtenir le code d'authentification"
+                                    .tr(),
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.blackBlue,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 50.h),
+                              IntlPhoneField(
+                                autofocus: true,
+                                style: TextStyle(
+                                  color: AppColors.blackBlue,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18.sp,
+                                ),
+                                dropdownTextStyle: TextStyle(
+                                  color: AppColors.blackBlue,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 15.sp,
+                                ),
+                                flagsButtonPadding: EdgeInsets.all(8.r),
+                                dropdownIconPosition: IconPosition.trailing,
+                                decoration: InputDecoration(
+                                  labelText: 'numero_de_téléphone'.tr(),
+                                  labelStyle: TextStyle(
+                                    color: AppColors.blackBlueAccent1,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderSide: BorderSide(width: 2.w),
+                                  ),
+                                  counterStyle:
+                                      TextStyle(color: AppColors.blackBlue),
+                                ),
+                                controller: countrycode,
+                                initialCountryCode: 'CM',
+                                onCountryChanged: (Country) {
+                                  setState(() {
+                                    countryCodeController =
+                                        retirerPlus(Country.dialCode);
+                                  });
+                                  print(Country.dialCode);
+                                },
+                                onChanged: (phone) {
+                                  setState(() {
+                                    numeroPhoneController = phone.number;
+                                    countryCodeController =
+                                        retirerPlus(phone.countryCode);
+                                  });
+                                  print(numeroPhoneController);
+                                  print(countryCodeController);
+                                },
+                              ),
+                              BlocBuilder<AuthCubit, AuthState>(
+                                  builder: (Authcontext, Authstate) {
+                                if (Authstate.isTrueNomber == true)
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.redAccent,
+                                      border: Border.all(
+                                        width: 1.w,
+                                        color: AppColors.red,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.all(5.r),
+                                    margin: EdgeInsets.only(
+                                      top: 20.h,
+                                      bottom: 20.h,
+                                      left: 10.w,
+                                      right: 10.w,
+                                    ),
+                                    child: Text(
+                                      "Votre numéro est incorrect ou n'est pas lié à un groupe ou une association"
+                                          .tr(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color:
+                                              Color.fromARGB(255, 255, 34, 18)),
+                                    ),
+                                  );
+                                return Container(
+                                  margin:
+                                      EdgeInsets.only(top: 10.h, bottom: 10.h),
+                                );
+                              }),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 50.h,
+                                child: BlocBuilder<AuthCubit, AuthState>(
+                                    builder: (Authcontext, Authstate) {
+                                  if (Authstate.isLoading == null ||
+                                      Authstate.isLoading == true)
+                                    return Container(
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.greenAssociation,
+                                        ),
+                                      ),
+                                    );
+                                  return ElevatedButton(
+                                    onPressed: () async {
+                                      handleLogin();
+                                      print(numeroPhoneController);
+                                      print(countryCodeController);
+                                      await PushNotifications()
+                                          .getTokenNotification();
+                                    },
+                                    child: Text(
+                                      "Connexion".tr(),
+                                      style: TextStyle(
+                                          fontSize: 19.sp,
+                                          color: AppColors.white),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          AppColors.greenAssociation,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

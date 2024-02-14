@@ -15,6 +15,7 @@ import 'package:faroty_association_1/screens/HistoriqueScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -84,19 +85,17 @@ class _HomePageState extends State<HomePage> {
   final itemListIos = [
     BottomNavigationBarItem(
       icon: Icon(
-        CupertinoIcons.house_fill,
-        // home_rounded,
+        Icons.home_rounded,
       ),
-      label: 'Accueil',
+      label: 'Accueil'.tr(),
     ),
     BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.table_fill),
-      // account_tree_rounded),
-      label: 'Historiques',
+      icon: Icon(Icons.article_rounded),
+      label: 'Historiques'.tr(),
     ),
     BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.circle_grid_hex_fill),
-      label: 'Profil',
+      icon: Icon(Icons.person_2_rounded),
+      label: 'Profil'.tr(),
     ),
   ];
 
@@ -115,17 +114,18 @@ class _HomePageState extends State<HomePage> {
       itemListIos: itemListIos,
       itemListAndroid: itemListAndroid,
       childBottomNavBar: Material(
+        type: MaterialType.transparency,
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+          borderRadius:  BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
           ),
           child: BottomNavigationBar(
             backgroundColor: Color.fromARGB(255, 226, 226, 226),
             type: BottomNavigationBarType.shifting,
-            selectedIconTheme: IconThemeData(size: 25),
-            unselectedIconTheme: IconThemeData(size: 15),
-            selectedFontSize: 12,
+            selectedIconTheme: IconThemeData(size: 25.sp),
+            unselectedIconTheme: IconThemeData(size: 15.sp),
+            selectedFontSize: 12.sp,
             unselectedItemColor: AppColors.blackBlue,
             selectedItemColor: AppColors.colorButton,
             selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),

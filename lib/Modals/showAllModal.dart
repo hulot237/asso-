@@ -24,6 +24,7 @@ import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Modal {
@@ -72,8 +73,8 @@ class Modal {
           return Stack(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 10),
-                margin: EdgeInsets.only(left: 10, right: 10),
+                padding: EdgeInsets.only(top: 10.h),
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(7),
@@ -84,18 +85,18 @@ class Modal {
                 child: Column(
                   children: [
                     Container(
-                      height: 5,
-                      width: 55,
+                      height: 5.h,
+                      width: 55.w,
                       decoration: BoxDecoration(
                           color: AppColors.blackBlue,
                           borderRadius: BorderRadius.circular(50)),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                       child: Text(
                         "vos_associations".tr(),
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w900,
                           color: AppColors.blackBlueAccent1,
                         ),
@@ -147,7 +148,7 @@ class Modal {
                   return Center(
                     child: EasyLoader(
                       backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                      iconSize: 50,
+                      iconSize: 50.sp,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
                         'assets/images/Groupe_ou_Asso.png',
@@ -159,7 +160,7 @@ class Modal {
                     ? Center(
                         child: EasyLoader(
                           backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50,
+                          iconSize: 50.sp,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
                             'assets/images/Groupe_ou_Asso.png',
@@ -231,8 +232,8 @@ class Modal {
           return Stack(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 10),
-                margin: EdgeInsets.only(left: 10, right: 10),
+                padding: EdgeInsets.only(top: 10.h),
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(7),
@@ -243,19 +244,19 @@ class Modal {
                 child: Column(
                   children: [
                     Container(
-                      height: 5,
-                      width: 55,
+                      height: 5.h,
+                      width: 55.w,
                       decoration: BoxDecoration(
                           // if (item["tournois_code"] == AppCubitStorage().state.codeTournois)
                           color: AppColors.blackBlue,
                           borderRadius: BorderRadius.circular(50)),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                       child: Text(
                         "vos_tournois".tr(),
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w900,
                           color: AppColors.blackBlue,
                         ),
@@ -286,20 +287,24 @@ class Modal {
                               // padding: EdgeInsets.all(10),
                               child: Container(
                                 padding: EdgeInsets.only(
-                                    top: 15, bottom: 15, left: 15),
+                                  top: 15.h,
+                                  bottom: 15.h,
+                                  left: 15.w,
+                                ),
                                 decoration: BoxDecoration(
                                   color: colorSelect(
                                       currentItemAssociationList.tournois_code),
                                   borderRadius: BorderRadius.circular(7),
                                 ),
-                                margin: EdgeInsets.all(5),
+                                margin: EdgeInsets.all(5.r),
                                 child: Text(
                                   '${"tournoi".tr()} #${currentItemAssociationList.matricule}',
                                   style: TextStyle(
-                                      color: colorSelectText(
-                                          currentItemAssociationList
-                                              .tournois_code),
-                                      fontWeight: FontWeight.w800),
+                                    color: colorSelectText(
+                                      currentItemAssociationList.tournois_code,
+                                    ),
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
                               ),
                             ),
@@ -318,7 +323,7 @@ class Modal {
                   return Center(
                     child: EasyLoader(
                       backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                      iconSize: 50,
+                      iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
                         'assets/images/Groupe_ou_Asso.png',
@@ -330,7 +335,7 @@ class Modal {
                     ? Center(
                         child: EasyLoader(
                           backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50,
+                          iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
                             'assets/images/Groupe_ou_Asso.png',
@@ -354,8 +359,8 @@ class Modal {
       builder: (context) {
         return Container(
           // height: 500,
-          padding: EdgeInsets.only(top: 10),
-          margin: EdgeInsets.only(left: 5, right: 5),
+          padding: EdgeInsets.only(top: 10.h),
+          margin: EdgeInsets.only(left: 5.w, right: 5.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(7),
@@ -366,8 +371,8 @@ class Modal {
           child: Column(
             children: [
               Container(
-                height: 5,
-                width: 55,
+                height: 5.h,
+                width: 55.w,
                 decoration: BoxDecoration(
                     color: AppColors.blackBlue,
                     borderRadius: BorderRadius.circular(50)),
@@ -375,11 +380,11 @@ class Modal {
               Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                     child: Text(
                       "Historique de la tontine",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w900,
                         color: AppColors.blackBlueAccent1,
                       ),
@@ -397,11 +402,11 @@ class Modal {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: EdgeInsets.symmetric(vertical: 10.h),
                           child: Text(
                             "Contributions ",
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w800,
                               color: AppColors.blackBlue,
                             ),
@@ -417,8 +422,8 @@ class Modal {
                                         .isLoadingContibutionTontine ==
                                     true)
                               return Container(
-                                width: 10,
-                                height: 10,
+                                width: 10.w,
+                                height: 10.w,
                                 child: Center(
                                   child: CircularProgressIndicator(
                                     color: AppColors.bleuLight,
@@ -439,7 +444,9 @@ class Modal {
                               child: Text(
                                 "(${okayTontine.length}/${nonTontine.length + okayTontine.length})",
                                 style: TextStyle(
-                                    fontSize: 10, color: AppColors.blackBlue),
+                                  fontSize: 10.sp,
+                                  color: AppColors.blackBlue,
+                                ),
                               ),
                             );
                           },
@@ -459,7 +466,7 @@ class Modal {
                       child: Container(
                         child: EasyLoader(
                           backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50,
+                          iconSize: 50.sp,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
                             'assets/images/Groupe_ou_Asso.png',
@@ -484,8 +491,8 @@ class Modal {
                 List<Widget> listWidgetOkayTontine =
                     listeOkayTontine.map((monObjet) {
                   return Card(
-                    margin:
-                        EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                    margin: EdgeInsets.only(
+                        left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
                     child: widgetHistoriqueTontineCard(
                       date: formatDateLiteral(monObjet["updated_at"]),
                       imageProfil: monObjet["photo_profil"] == null
@@ -507,8 +514,8 @@ class Modal {
                 List<Widget> listWidgetNonTontine =
                     listeNonTontine.map((monObj) {
                   return Card(
-                    margin:
-                        EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                    margin: EdgeInsets.only(
+                        left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
                     child: widgetHistoriqueTontineCard(
                       date: AppCubitStorage().state.Language == "fr"
                           ? formatDateToFrench(monObj["updated_at"])
@@ -577,8 +584,8 @@ class Modal {
       builder: (context) {
         return Container(
           // height: 500,
-          padding: EdgeInsets.only(top: 10),
-          margin: EdgeInsets.only(left: 5, right: 5),
+          padding: EdgeInsets.only(top: 10.h),
+          margin: EdgeInsets.only(left: 5.w, right: 5.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(7),
@@ -589,8 +596,8 @@ class Modal {
           child: Column(
             children: [
               Container(
-                height: 5,
-                width: 55,
+                height: 5.h,
+                width: 55.w,
                 decoration: BoxDecoration(
                     color: AppColors.blackBlue,
                     borderRadius: BorderRadius.circular(50)),
@@ -598,11 +605,11 @@ class Modal {
               Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                     child: Text(
                       "Historique de la cotisation".tr(),
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w900,
                         color: AppColors.blackBlueAccent1,
                       ),
@@ -624,11 +631,11 @@ class Modal {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: EdgeInsets.symmetric(vertical: 10.h),
                               child: Text(
                                 "Contributions ",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w800,
                                   color: AppColors.blackBlue,
                                 ),
@@ -642,8 +649,8 @@ class Modal {
                                         null ||
                                     detailCotisationState.isLoading == true)
                                   return Container(
-                                    width: 10,
-                                    height: 10,
+                                    width: 10.w,
+                                    height: 10.w,
                                     child: Center(
                                       child: CircularProgressIndicator(
                                         color: AppColors.bleuLight,
@@ -664,7 +671,7 @@ class Modal {
                                   child: Text(
                                     "(${okayTontine.length}/${nonTontine.length + okayTontine.length})",
                                     style: TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 10.sp,
                                         color: AppColors.blackBlue),
                                   ),
                                 );
@@ -679,9 +686,9 @@ class Modal {
                           if (detailCotisationState.detailCotisation == null ||
                               detailCotisationState.isLoading == true)
                             return Container(
-                              padding: EdgeInsets.all(10),
-                              width: 10,
-                              height: 10,
+                              padding: EdgeInsets.all(10.r),
+                              width: 10.w,
+                              height: 10.w,
                               child: Center(
                                 child: CircularProgressIndicator(
                                   color: AppColors.bleuLight,
@@ -694,7 +701,7 @@ class Modal {
                                 handleDetailCotisation(codeCotisation);
 
                                 Navigator.pop(context);
-                                
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -712,14 +719,13 @@ class Modal {
                                     ),
                                   ),
                                 );
-
                               },
                               child: Container(
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(10.r),
                                 child: Icon(
                                   Icons.info_outline,
                                   color: AppColors.blackBlue,
-                                  size: 18,
+                                  size: 18.sp,
                                 ),
                               ));
                         }),
@@ -737,7 +743,7 @@ class Modal {
                       child: Center(
                         child: EasyLoader(
                           backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50,
+                          iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
                             'assets/images/Groupe_ou_Asso.png',
@@ -759,7 +765,11 @@ class Modal {
                       listeOkayCotisation.map((monObjet) {
                     return Card(
                       margin: EdgeInsets.only(
-                          left: 10, right: 10, top: 5, bottom: 5),
+                        left: 10.w,
+                        right: 10.w,
+                        top: 5.h,
+                        bottom: 5.h,
+                      ),
                       child: widgetHistoriqueTontineCard(
                         date: formatDateLiteral(monObjet["updated_at"]),
                         imageProfil: monObjet["photo_profil"] == null
@@ -784,7 +794,7 @@ class Modal {
                       listeNonCotisation.map((monObj) {
                     return Card(
                       margin: EdgeInsets.only(
-                          left: 10, right: 10, top: 5, bottom: 5),
+                          left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
                       child: widgetHistoriqueTontineCard(
                         date: AppCubitStorage().state.Language == "fr"
                             ? formatDateToFrench(monObj["updated_at"])
@@ -837,11 +847,11 @@ class Modal {
       barrierColor: AppColors.barrierColorModal,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
-        actionsPadding: EdgeInsets.all(10),
+        actionsPadding: EdgeInsets.all(10.r),
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
           // padding: EdgeInsets.only(left: 20, right: 20),
-          height: 450,
+          height: 450.h,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               color: AppColors.white, borderRadius: BorderRadius.circular(10)),
@@ -850,24 +860,28 @@ class Modal {
               Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 15),
+                    margin: EdgeInsets.only(bottom: 15.h),
                     child: Text(
                       "liste_de_vos_transactions".tr(),
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         color: AppColors.blackBlue,
                       ),
                     ),
-                    padding: EdgeInsets.only(top: 15),
+                    padding: EdgeInsets.only(top: 15.h),
                   ),
                   Container(
-                    padding: EdgeInsets.all(5),
-                    margin:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 2, right: 2),
+                    padding: EdgeInsets.all(5.r),
+                    margin: EdgeInsets.only(
+                      top: 15.h,
+                      bottom: 10.h,
+                      left: 2.w,
+                      right: 2.w,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
                       border: Border.all(
-                        width: 0.5,
+                        width: 0.5.r,
                         color: AppColors.blackBlue,
                       ),
                     ),
@@ -880,7 +894,7 @@ class Modal {
                               child: Text(
                                 "a_payer".tr(),
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.w300,
                                   // color: AppColors.blackBlue,
                                 ),
@@ -890,7 +904,7 @@ class Modal {
                               child: Text(
                                 "${formatMontantFrancais(double.parse(montantAPayer))} FCFA",
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.blackBlue,
                                 ),
@@ -904,18 +918,20 @@ class Modal {
                               child: Text(
                                 "déjà_payé".tr(),
                                 style: TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.w300),
+                                  fontSize: 11.sp,
+                                  color: AppColors.green,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ),
                             Container(
                               child: Text(
                                 "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_after"] : "0"))} FCFA",
                                 style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.green),
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.green,
+                                ),
                               ),
                             ),
                           ],
@@ -926,16 +942,17 @@ class Modal {
                               child: Text(
                                 "reste".tr(),
                                 style: TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.red,
-                                    fontWeight: FontWeight.w300),
+                                  fontSize: 11.sp,
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ),
                             Container(
                               child: Text(
                                 "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_remaining"] : "0"))} FCFA",
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.red,
                                 ),
@@ -958,7 +975,11 @@ class Modal {
                         width: MediaQuery.of(context).size.width,
                         child: Container(
                           margin: EdgeInsets.only(
-                              top: 7, right: 5, left: 5, bottom: 7),
+                            top: 7.h,
+                            right: 5.w,
+                            left: 5.w,
+                            bottom: 7.h,
+                          ),
                           color: AppColors.white,
                           child: Column(
                             children: [
@@ -971,11 +992,12 @@ class Modal {
                                     final detailVersement =
                                         versement[0]["transanctions"][index];
                                     return Container(
-                                        child: widgetListTransactionByEventCard(
-                                      date: formatDateLiteral(
-                                          detailVersement["created_at"]),
-                                      montant: detailVersement["amount"],
-                                    ));
+                                      child: widgetListTransactionByEventCard(
+                                        date: formatDateLiteral(
+                                            detailVersement["created_at"]),
+                                        montant: detailVersement["amount"],
+                                      ),
+                                    );
                                   },
                                 ),
                               )
@@ -1003,13 +1025,13 @@ class Modal {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
-        actionsPadding: EdgeInsets.all(10),
+        actionsPadding: EdgeInsets.all(10.r),
         contentPadding: EdgeInsets.only(top: 0),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 15),
+              margin: EdgeInsets.only(bottom: 15.h),
               child: Text(
                 'les_transactions_sur_la_cotisation'.tr(),
                 textAlign: TextAlign.center,
@@ -1017,7 +1039,7 @@ class Modal {
                   color: AppColors.blackBlue,
                 ),
               ),
-              padding: EdgeInsets.only(top: 15),
+              padding: EdgeInsets.only(top: 15.h),
             ),
           ],
         ),
@@ -1028,7 +1050,7 @@ class Modal {
           // padding: EdgeInsets.only(top: 10),
           // margin: EdgeInsets.only(bottom: 1, left: 1, right: 1),
           child: Container(
-            padding: EdgeInsets.only(top: 7),
+            padding: EdgeInsets.only(top: 7.h),
             child: Column(
               children: [
                 Expanded(
@@ -1036,7 +1058,7 @@ class Modal {
                     itemCount: 15,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.only(left: 5, right: 5),
+                        margin: EdgeInsets.only(left: 5.w, right: 5.w),
                         child: widgetListTransactionCotisationAllCard(),
                       );
                     },
@@ -1067,7 +1089,7 @@ class Modal {
       barrierColor: AppColors.barrierColorModal,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
-        actionsPadding: EdgeInsets.all(10),
+        actionsPadding: EdgeInsets.all(10.r),
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
           height: 450,
@@ -1080,16 +1102,16 @@ class Modal {
           // width: MediaQuery.of(context).size.width,
           // padding: EdgeInsets.only(top: 10),
           // color: Color.fromARGB(120, 226, 226, 226),
-          padding: EdgeInsets.only(top: 5),
+          padding: EdgeInsets.only(top: 5.h),
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 15, bottom: 15),
+                padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
                 alignment: Alignment.center,
                 child: Text(
                   'les_personnes_sanctionnées'.tr(),
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     color: AppColors.blackBlue,
                   ),
                 ),
@@ -1102,7 +1124,7 @@ class Modal {
                           final itemLListSanction = listSanction[index];
 
                           return Container(
-                            margin: EdgeInsets.only(left: 5, right: 5),
+                            margin: EdgeInsets.only(left: 5.w, right: 5.w),
                             child: WidgetPersonSanctionner(
                               motif: itemLListSanction["motif"],
                               nom: itemLListSanction["membre"]["first_name"] ==
@@ -1129,14 +1151,15 @@ class Modal {
                         },
                       )
                     : Container(
-                        padding: EdgeInsets.only(top: 200),
+                        padding: EdgeInsets.only(top: 200.h),
                         alignment: Alignment.topCenter,
                         child: Text(
                           "aucune_sanction".tr(),
                           style: TextStyle(
-                              color: Color.fromRGBO(20, 45, 99, 0.26),
-                              fontWeight: FontWeight.w100,
-                              fontSize: 20),
+                            color: Color.fromRGBO(20, 45, 99, 0.26),
+                            fontWeight: FontWeight.w100,
+                            fontSize: 20.sp,
+                          ),
                         ),
                       ),
               ),
@@ -1158,7 +1181,7 @@ class Modal {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         titlePadding: EdgeInsets.all(0),
-        actionsPadding: EdgeInsets.all(10),
+        actionsPadding: EdgeInsets.all(10.r),
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
           height: 550,
@@ -1170,70 +1193,73 @@ class Modal {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 15, bottom: 15),
+                padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
                 alignment: Alignment.center,
                 child: Text(
                   'liste_de_presence'.tr(),
-                  style: TextStyle(color: AppColors.blackBlue, fontSize: 18),
+                  style: TextStyle(
+                    color: AppColors.blackBlue,
+                    fontSize: 18.sp,
+                  ),
                 ),
               ),
               Container(
                 color: AppColors.blackBlueAccent2,
-                child: TabBar(
-                  isScrollable: true,
-                  labelColor: AppColors.blackBlue,
-                  labelStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  padding: EdgeInsets.all(0),
-                  unselectedLabelStyle: TextStyle(
-                    color: AppColors.blackBlueAccent1,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  indicator: UnderlineTabIndicator(
-                    borderSide: BorderSide(
-                      color: AppColors.blackBlue,
-                      width: 5.0,
-                    ),
-                    insets: EdgeInsets.symmetric(
-                      horizontal: 36.0,
-                    ),
-                  ),
+                // child: TabBar(
+                //   isScrollable: true,
+                //   labelColor: AppColors.blackBlue,
+                //   labelStyle:
+                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                //   padding: EdgeInsets.all(0),
+                //   unselectedLabelStyle: TextStyle(
+                //     color: AppColors.blackBlueAccent1,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                //   indicator: UnderlineTabIndicator(
+                //     borderSide: BorderSide(
+                //       color: AppColors.blackBlue,
+                //       width: 5.0,
+                //     ),
+                //     insets: EdgeInsets.symmetric(
+                //       horizontal: 36.0,
+                //     ),
+                //   ),
 
-                  // indicatorWeight: 0,
-                  controller: tabController,
-                  tabs: [
-                    Tab(
-                      child: Row(
-                        children: [
-                          Container(
-                            child: Text("présents".tr()),
-                          ),
-                          Container(
-                            child: Text(
-                              "(${listPrsent.length})",
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Tab(
-                      child: Row(
-                        children: [
-                          Container(
-                            child: Text("absents".tr()),
-                          ),
-                          Container(
-                            child: Text(
-                              "(${listAbs.length})",
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                //   // indicatorWeight: 0,
+                //   controller: tabController,
+                //   // tabs: [
+                //   //   Tab(
+                //   //     child: Row(
+                //   //       children: [
+                //   //         Container(
+                //   //           child: Text("présents".tr()),
+                //   //         ),
+                //   //         Container(
+                //   //           child: Text(
+                //   //             "(${listPrsent.length})",
+                //   //             style: TextStyle(fontSize: 10),
+                //   //           ),
+                //   //         )
+                //   //       ],
+                //   //     ),
+                //   //   ),
+                //   //   Tab(
+                //   //     child: Row(
+                //   //       children: [
+                //   //         Container(
+                //   //           child: Text("absents".tr()),
+                //   //         ),
+                //   //         Container(
+                //   //           child: Text(
+                //   //             "(${listAbs.length})",
+                //   //             style: TextStyle(fontSize: 10),
+                //   //           ),
+                //   //         )
+                //   //       ],
+                //   //     ),
+                //   //   )
+                //   // ],
+                // ),
               ),
               Expanded(
                 child: Container(
@@ -1244,7 +1270,7 @@ class Modal {
                     ),
                     color: AppColors.blackBlueAccent2,
                   ),
-                  padding: EdgeInsets.only(bottom: 5),
+                  padding: EdgeInsets.only(bottom: 5.h),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -1254,102 +1280,68 @@ class Modal {
                       color: AppColors.white,
                     ),
                     padding: EdgeInsets.only(
-                      top: 2,
-                      bottom: 3,
-                      left: 5,
-                      right: 5,
+                      top: 2.h,
+                      bottom: 3.h,
+                      left: 5.w,
+                      right: 5.w,
                     ),
                     margin: EdgeInsets.only(
-                      top: 2,
-                      left: 5,
-                      right: 5,
+                      top: 2.h,
+                      left: 5.w,
+                      right: 5.w,
                     ),
-                    child: TabBarView(
-                      controller: tabController,
+                    child: Column(
+                      // controller: tabController,
                       children: [
-                        listPrsent.length > 0
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.all(0),
-                                itemCount: listPrsent.length,
-                                itemBuilder: (context, index) {
-                                  final currentListPrsent = listPrsent[index];
-                                  return Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: widgetListPresenceCard(
-                                      imageProfil: currentListPrsent[
-                                                  "photo_profil"] ==
-                                              null
-                                          ? ""
-                                          : currentListPrsent['photo_profil'],
-                                      nom: currentListPrsent['first_name'] ==
-                                              null
-                                          ? ""
-                                          : currentListPrsent['first_name'],
-                                      prenom:
-                                          currentListPrsent['last_name'] == null
-                                              ? ""
-                                              : currentListPrsent['last_name'],
-                                      presence: '1',
-                                    ),
-                                  );
-                                },
-                              )
-                            : ListView.builder(
-                                itemCount: 1,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 100),
-                                    alignment: Alignment.topCenter,
-                                    child: Icon(
-                                      Icons.playlist_remove,
-                                      size: 100,
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
-                                    ),
-                                  );
-                                },
+                        ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(0),
+                          itemCount: listPrsent.length,
+                          itemBuilder: (context, index) {
+                            final currentListPrsent = listPrsent[index];
+                            return Container(
+                              padding: EdgeInsets.all(5.r),
+                              child: widgetListPresenceCard(
+                                imageProfil:
+                                    currentListPrsent["photo_profil"] == null
+                                        ? ""
+                                        : currentListPrsent['photo_profil'],
+                                nom: currentListPrsent['first_name'] == null
+                                    ? ""
+                                    : currentListPrsent['first_name'],
+                                prenom: currentListPrsent['last_name'] == null
+                                    ? ""
+                                    : currentListPrsent['last_name'],
+                                presence: '1',
                               ),
-                        listAbs.length > 0
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.all(0),
-                                itemCount: listAbs.length,
-                                itemBuilder: (context, index) {
-                                  final currentListAbs = listAbs[index];
+                            );
+                          },
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(0),
+                          itemCount: listAbs.length,
+                          itemBuilder: (context, index) {
+                            final currentListAbs = listAbs[index];
 
-                                  return Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: widgetListPresenceCard(
-                                      imageProfil:
-                                          currentListAbs["photo_profil"] == null
-                                              ? ""
-                                              : currentListAbs['photo_profil'],
-                                      nom: currentListAbs['first_name'] == null
-                                          ? " "
-                                          : currentListAbs['first_name'],
-                                      prenom:
-                                          currentListAbs['last_name'] == null
-                                              ? " "
-                                              : currentListAbs['last_name'],
-                                      presence: '0',
-                                    ),
-                                  );
-                                },
-                              )
-                            : ListView.builder(
-                                itemCount: 1,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 100),
-                                    alignment: Alignment.topCenter,
-                                    child: Icon(
-                                      Icons.playlist_add_check,
-                                      size: 100,
-                                      color: Color.fromRGBO(20, 45, 99, 0.26),
-                                    ),
-                                  );
-                                },
+                            return Container(
+                              padding: EdgeInsets.all(5.r),
+                              child: widgetListPresenceCard(
+                                imageProfil:
+                                    currentListAbs["photo_profil"] == null
+                                        ? ""
+                                        : currentListAbs['photo_profil'],
+                                nom: currentListAbs['first_name'] == null
+                                    ? " "
+                                    : currentListAbs['first_name'],
+                                prenom: currentListAbs['last_name'] == null
+                                    ? " "
+                                    : currentListAbs['last_name'],
+                                presence: '0',
                               ),
+                            );
+                          },
+                        )
                         //  Text("2"),
                       ],
                     ),
@@ -1369,8 +1361,6 @@ class Modal {
       final allCotisationAss = await context
           .read<AuthCubit>()
           .detailAuthCubit(userCode, codeTournoi);
-
-
     }
 
     Future<void> handleUpdateInfoUser(
@@ -1397,14 +1387,14 @@ class Modal {
           child: Container(
             color: AppColors.white,
             child: Padding(
-              padding: const EdgeInsets.only(top: 15, bottom: 15),
+              padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: 5,
-                    width: 55,
-                    margin: EdgeInsets.only(bottom: 10),
+                    height: 5.h,
+                    width: 55.w,
+                    margin: EdgeInsets.only(bottom: 10.h),
                     decoration: BoxDecoration(
                       color: AppColors.blackBlue,
                       borderRadius: BorderRadius.circular(50),
@@ -1415,9 +1405,13 @@ class Modal {
                       _pickImage;
                     },
                     child: Container(
-                      height: 50,
-                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                      padding: EdgeInsets.only(left: 25),
+                      height: 50.h,
+                      margin: EdgeInsets.only(
+                        left: 20.w,
+                        right: 20.w,
+                        bottom: 10.h,
+                      ),
+                      padding: EdgeInsets.only(left: 25.w),
                       // height: 40,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(7),
@@ -1430,11 +1424,11 @@ class Modal {
                             color: AppColors.blackBlue,
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 20),
+                            margin: EdgeInsets.only(left: 20.w),
                             child: Text(
                               "Camera",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   color: AppColors.blackBlue,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -1444,12 +1438,12 @@ class Modal {
                     ),
                   ),
                   Container(
-                    height: 50,
+                    height: 50.h,
                     margin: EdgeInsets.only(
-                      left: 20,
-                      right: 20,
+                      left: 20.w,
+                      right: 20.w,
                     ),
-                    padding: EdgeInsets.only(left: 25),
+                    padding: EdgeInsets.only(left: 25.w),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
                       color: Color.fromARGB(15, 20, 45, 99),
@@ -1461,13 +1455,14 @@ class Modal {
                           color: AppColors.blackBlue,
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 20),
+                          margin: EdgeInsets.only(left: 20.w),
                           child: Text(
                             "Galerie",
                             style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.blackBlue,
-                                fontWeight: FontWeight.w400),
+                              fontSize: 20.sp,
+                              color: AppColors.blackBlue,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         )
                       ],
@@ -1490,7 +1485,6 @@ class Modal {
       final allCotisationAss = await context
           .read<AuthCubit>()
           .detailAuthCubit(userCode, codeTournoi);
-
     }
 
     Future<void> handleUpdateInfoUser(
@@ -1521,23 +1515,23 @@ class Modal {
               color: AppColors.white,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 15, bottom: 15),
+              padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: 5,
-                    width: 55,
+                    height: 5.h,
+                    width: 55.w,
                     decoration: BoxDecoration(
                         color: AppColors.blackBlue,
                         borderRadius: BorderRadius.circular(50)),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                     child: Text(
                       "entrer_la_nouvelle_valeur".tr(),
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 17.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColors.blackBlueAccent1,
                       ),
@@ -1545,10 +1539,10 @@ class Modal {
                   ),
                   Container(
                     margin: EdgeInsets.only(
-                      left: 20,
-                      right: 20,
+                      left: 20.w,
+                      right: 20.w,
                     ),
-                    padding: EdgeInsets.only(left: 15),
+                    padding: EdgeInsets.only(left: 15.w),
                     // height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
@@ -1557,7 +1551,7 @@ class Modal {
                     child: TextField(
                       controller: infoUserController,
                       autofocus: true,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 15.sp),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                       ),
@@ -1575,10 +1569,11 @@ class Modal {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10.r),
                       margin: EdgeInsets.only(
-                          top: 10,
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                        top: 10.h,
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.colorButton,
                         borderRadius: BorderRadius.circular(7),
@@ -1607,22 +1602,22 @@ class Modal {
       builder: (BuildContext context) => AlertDialog(
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          height: 150,
+          padding: EdgeInsets.only(left: 20.w, right: 20.w),
+          height: 150.h,
           decoration: BoxDecoration(
               color: AppColors.white, borderRadius: BorderRadius.circular(10)),
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 10),
+                margin: EdgeInsets.only(bottom: 10.h),
                 child: Text(
                   'effectuer_le_paiement'.tr(),
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     color: AppColors.blackBlue,
                   ),
                 ),
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.only(top: 15.h),
               ),
               GestureDetector(
                 onTap: () async {
@@ -1640,9 +1635,9 @@ class Modal {
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(7),
+                  padding: EdgeInsets.all(7.r),
                   width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.only(bottom: 11),
+                  margin: EdgeInsets.only(bottom: 11.h),
                   decoration: BoxDecoration(
                     color: AppColors.colorButton,
                     borderRadius: BorderRadius.circular(15),
@@ -1650,7 +1645,7 @@ class Modal {
                   child: Text(
                     "payer_vous_même".tr(),
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.white,
                     ),
@@ -1668,7 +1663,7 @@ class Modal {
                   alignment: Alignment.center,
 
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(7),
+                  padding: EdgeInsets.all(7.r),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
@@ -1678,7 +1673,7 @@ class Modal {
                   child: Text(
                     "partager_le_lien_de_paiement".tr(),
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.colorButton,
                     ),
@@ -1711,11 +1706,11 @@ class widgetListPresenceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(5.r),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            width: 0.5,
+            width: 0.5.w,
             color: Color.fromARGB(34, 20, 45, 99),
           ),
         ),
@@ -1726,8 +1721,8 @@ class widgetListPresenceCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: Container(
-              width: 25,
-              height: 25,
+              width: 25.w,
+              height: 25.w,
               child: Image.network(
                 "${Variables.LienAIP}${imageProfil}",
                 fit: BoxFit.cover,
@@ -1736,13 +1731,13 @@ class widgetListPresenceCard extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(left: 10),
+              margin: EdgeInsets.only(left: 10.w),
               child: Container(
                 child: Text(
                   "${nom} ${prenom}",
                   overflow: TextOverflow.clip,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.blackBlue,
                   ),
@@ -1752,7 +1747,7 @@ class widgetListPresenceCard extends StatelessWidget {
           ),
           presence == "0"
               ? Container(
-                  padding: EdgeInsets.all(3),
+                  padding: EdgeInsets.all(3.r),
                   child: Icon(
                     Icons.close,
                     color: Colors.red,
@@ -1760,7 +1755,7 @@ class widgetListPresenceCard extends StatelessWidget {
                   ),
                 )
               : Container(
-                  padding: EdgeInsets.all(3),
+                  padding: EdgeInsets.all(3.r),
                   child: Icon(
                     Icons.check,
                     color: AppColors.green,
@@ -1792,14 +1787,18 @@ class WidgetPersonSanctionner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.white,
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(5.r),
       child: Container(
-        padding: EdgeInsets.only(top: 2, bottom: 5, left: 5),
+        padding: EdgeInsets.only(
+          top: 2.h,
+          bottom: 5.h,
+          left: 5.w,
+        ),
         decoration: BoxDecoration(
           color: AppColors.white,
           border: Border(
             bottom: BorderSide(
-              width: 0.5,
+              width: 0.5.r,
               color: Color.fromARGB(88, 20, 45, 99),
             ),
           ),
@@ -1810,8 +1809,8 @@ class WidgetPersonSanctionner extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Container(
-                width: 40,
-                height: 40,
+                width: 40.w,
+                height: 40.w,
                 child: Image.network(
                   '${Variables.LienAIP}${photoProfil}',
                   fit: BoxFit.cover,
@@ -1820,7 +1819,7 @@ class WidgetPersonSanctionner extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(left: 10),
+                margin: EdgeInsets.only(left: 10.w),
                 // color: Colors.blueGrey,
                 // alignment: Alignment.centerLeft,
                 child: Column(
@@ -1831,34 +1830,35 @@ class WidgetPersonSanctionner extends StatelessWidget {
                         "${nom} ${prenom}",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w700,
                           color: AppColors.blackBlue,
                         ),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 3),
+                      margin: EdgeInsets.only(top: 3.h),
                       child: Text(
                         "${motif}",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.blackBlueAccent1),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.blackBlueAccent1,
+                        ),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 3),
+                      margin: EdgeInsets.only(top: 3.h),
                       child: Row(
                         children: [
                           Text(
                             "${outilSanction}",
                             overflow: TextOverflow.clip,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
-                              color: const Color.fromARGB(113, 244, 67, 54),
+                              color: Color.fromARGB(113, 244, 67, 54),
                             ),
                           ),
                         ],

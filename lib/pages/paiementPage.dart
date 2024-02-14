@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaiementPage extends StatefulWidget {
@@ -25,9 +27,19 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "Effectuer_le_paiement".tr(),
-          style: TextStyle(fontSize: 16, color : AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color : AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.close,
+            color: AppColors.white,
+            size: 22.sp,
+          ),
+        ),
       ),
       child: child,
     );
@@ -38,7 +50,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Effectuer_le_paiement".tr(),
-        style: TextStyle(fontSize: 16, color : AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color : AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -67,7 +79,7 @@ class _PaiementPageState extends State<PaiementPage> {
         NavigationDelegate(
           onProgress: (int progress) {
             // Update loading bar.
-            print("zzzzzzzzzzz${progress}");
+            print("hfhhhhhh${progress}");
             setState(() {
               progression = progress;
             });
@@ -83,12 +95,30 @@ class _PaiementPageState extends State<PaiementPage> {
       context: context,
       child: progression < 100
           ? Center(
-            child: Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: LinearProgressIndicator(
-                  value: (progression / 100).toDouble(),
-                ),
-            ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: EasyLoader(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      iconSize: 50.r,
+                      iconColor: AppColors.blackBlueAccent1,
+                      image: AssetImage(
+                        'assets/images/Groupe_ou_Asso.png',
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: LinearProgressIndicator(
+                      backgroundColor: AppColors.blackBlueAccent1,
+                      color: AppColors.colorButton,
+                      value: (progression / 100).toDouble(),
+                    ),
+                  ),
+                ],
+              ),
+            
           )
           : WebViewWidget(controller: _controller),
     );

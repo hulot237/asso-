@@ -19,6 +19,7 @@ import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dar
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailCotisationPage extends StatefulWidget {
   DetailCotisationPage({
@@ -56,12 +57,21 @@ Widget PageScaffold({
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
       backgroundColor: AppColors.pageBackground,
+
       navigationBar: CupertinoNavigationBar(
+        backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
           "detail_de_la_cotisations".tr(),
-          style: TextStyle(
-            fontSize: 16,
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
             color: AppColors.white,
+            size: 20.sp,
           ),
         ),
       ),
@@ -75,7 +85,7 @@ Widget PageScaffold({
       title: Text(
         "detail_de_la_cotisations".tr(),
         style: TextStyle(
-          fontSize: 16,
+          fontSize: 16.sp,
           color: AppColors.white,
         ),
       ),
@@ -105,8 +115,8 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {} else {
-    }
+    if (detailCotisation != null) {
+    } else {}
   }
 
   Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
@@ -115,8 +125,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
         .AllCotisationAssTournoiCubit(codeTournoi, codeMembre);
 
     if (allCotisationAss != null) {
-    } else {
-    }
+    } else {}
   }
 
   Future refresh() async {
@@ -129,666 +138,698 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
 
     return PageScaffold(
       context: context,
-      child: Container(
-        margin: EdgeInsets.only(top: 0, left: 5, right: 5),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: widgetDetailCotisationCard(
-                type: widget.type,
-                dateCotisation: widget.dateCotisation,
-                heureCotisation: widget.heureCotisation,
-                montantCotisations: widget.montantCotisations,
-                motifCotisations: widget.motifCotisations,
-                soldeCotisation: widget.soldeCotisation,
-                lienDePaiement: widget.lienDePaiement,
-                isPassed: widget.isPassed,
-                isPayed: widget.isPayed,
+      child: Material(
+        type: MaterialType.transparency,
+        child: Container(
+          margin: EdgeInsets.only(top: 0, left: 5.w, right: 5.w),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 10.h),
+                child: widgetDetailCotisationCard(
+                  type: widget.type,
+                  dateCotisation: widget.dateCotisation,
+                  heureCotisation: widget.heureCotisation,
+                  montantCotisations: widget.montantCotisations,
+                  motifCotisations: widget.motifCotisations,
+                  soldeCotisation: widget.soldeCotisation,
+                  lienDePaiement: widget.lienDePaiement,
+                  isPassed: widget.isPassed,
+                  isPayed: widget.isPayed,
+                ),
               ),
-            ),
-            checkTransparenceStatus(
-                    context
-                        .read<UserGroupCubit>()
-                        .state.changeAssData!.user_group!.configs,
-                    context.read<AuthCubit>().state.detailUser!["isMember"])
-                ? Container(
-                    // color: Colors.deepOrange,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(top: 20, bottom: 10),
-                    child: Text(
-                      "historique_des_cotisations".tr(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.blackBlue,
+              checkTransparenceStatus(
+                      context
+                          .read<UserGroupCubit>()
+                          .state
+                          .changeAssData!
+                          .user_group!
+                          .configs,
+                      context.read<AuthCubit>().state.detailUser!["isMember"])
+                  ? Container(
+                      // color: Colors.deepOrange,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(top: 20.h, bottom: 10.h),
+                      child: Text(
+                        "historique_des_cotisations".tr(),
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.blackBlue,
+                        ),
+                      ),
+                    )
+                  : Container(
+                      // color: Colors.deepOrange,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(top: 20.h, bottom: 10.h),
+                      child: Text(
+                        "liste_de_vos_transactions".tr(),
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.blackBlue,
+                        ),
                       ),
                     ),
-                  )
-                : Container(
-                    // color: Colors.deepOrange,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(top: 20, bottom: 10),
-                    child: Text(
-                      "liste_de_vos_transactions".tr(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.blackBlue,
-                      ),
-                    ),
-                  ),
-            // Container(
-            //   margin: EdgeInsets.only(top: 15, bottom: 15),
-            //   padding: EdgeInsets.only(top: 15, bottom: 15),
-            //   color: Color.fromARGB(120, 226, 226, 226),
-            //   alignment: Alignment.center,
-            //   child: checkTransparenceStatus(
-            //           context
-            //               .read<UserGroupCubit>()
-            //               .state
-            //               .ChangeAssData!["user_group"]["configs"],
-            //           context.read<AuthCubit>().state.detailUser!["isMember"])
-            //       ? TabBar(
-            //           controller: _tabController,
-            //           isScrollable: true,
-            //           labelColor: AppColors.blackBlue,
-            //           labelStyle:
-            //               TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            //           padding: EdgeInsets.all(0),
-            //           unselectedLabelStyle: TextStyle(
-            //             color: AppColors.blackBlueAccent1,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //           indicator: UnderlineTabIndicator(
-            //             borderSide: BorderSide(
-            //               color: AppColors.blackBlue,
-            //               width: 5.0,
-            //             ),
-            //             insets: EdgeInsets.symmetric(
-            //               horizontal: 36.0,
-            //             ),
-            //           ),
-            //           tabs: [
-            //             Container(
-            //               margin: EdgeInsets.only(bottom: 5),
-            //               child: Row(
-            //                 children: [
-            //                   Text(
-            //                     "${"cotisé".tr()}",
-            //                   ),
-            //                   BlocBuilder<CotisationDetailCubit,
-            //                           CotisationDetailState>(
-            //                       builder:
-            //                           (CotisationContext, CotisationState) {
-            //                     if (CotisationState.isLoading == null ||
-            //                         CotisationState.isLoading == true ||
-            //                         CotisationState.detailCotisation == null)
-            //                       return Container(
-            //                         width: 10,
-            //                         height: 10,
-            //                         child: Center(
-            //                           child: Container(
-            //                             width: 10,
-            //                             height: 10,
-            //                             child: CircularProgressIndicator(
-            //                               strokeWidth: 0.5,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         ),
-            //                       );
-            //                     final currentDetailCotisation =
-            //                         CotisationContext.read<
-            //                                 CotisationDetailCubit>()
-            //                             .state
-            //                             .detailCotisation;
-            //                     return Text(
-            //                       "(${currentDetailCotisation!["versements"].length == null ? 0 : currentDetailCotisation!["versements"].length})",
-            //                       style: TextStyle(fontSize: 10),
-            //                     );
-            //                   }),
-            //                 ],
-            //               ),
-            //             ),
-            //             Container(
-            //               margin: EdgeInsets.only(bottom: 5),
-            //               child: Row(
-            //                 children: [
-            //                   Text(
-            //                     'non_cotisé'.tr(),
-            //                   ),
-            //                   BlocBuilder<CotisationDetailCubit,
-            //                           CotisationDetailState>(
-            //                       builder:
-            //                           (CotisationContext, CotisationState) {
-            //                     if (CotisationState.isLoading == null ||
-            //                         CotisationState.isLoading == true ||
-            //                         CotisationState.detailCotisation == null)
-            //                       return Container(
-            //                         width: 10,
-            //                         height: 10,
-            //                         child: Center(
-            //                           child: Container(
-            //                             width: 10,
-            //                             height: 10,
-            //                             child: CircularProgressIndicator(
-            //                               strokeWidth: 0.5,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         ),
-            //                       );
-            //                     final currentDetailCotisation =
-            //                         CotisationContext.read<
-            //                                 CotisationDetailCubit>()
-            //                             .state
-            //                             .detailCotisation;
-            //                     return Text(
-            //                       "(${currentDetailCotisation!["members"].length == null ? 0 : currentDetailCotisation!["members"].length})",
-            //                       style: TextStyle(fontSize: 10),
-            //                     );
-            //                   }),
-            //                 ],
-            //               ),
-            //             ),
-            //           ],
-            //         )
-            //       : Container(
-            //           margin: EdgeInsets.only(left: 5, right: 5),
-            //           child: Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               Column(
-            //                 children: [
-            //                   Container(
-            //                     margin: EdgeInsets.only(bottom: 2),
-            //                     child: Text(
-            //                       "a_payer".tr(),
-            //                       style: TextStyle(
-            //                         fontSize: 12,
-            //                         fontWeight: FontWeight.w300,
-            //                         color: AppColors.blackBlue,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                   Container(
-            //                     child: Text(
-            //                       widget.type == "0"
-            //                           ? "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA"
-            //                           : "Volontaire",
-            //                       style: TextStyle(
-            //                         fontSize: 10,
-            //                         fontWeight: FontWeight.w500,
-            //                         color: AppColors.blackBlue,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //               Column(
-            //                 children: [
-            //                   Container(
-            //                     margin: EdgeInsets.only(bottom: 2),
-            //                     child: Text(
-            //                       "déjà_payé".tr(),
-            //                       style: TextStyle(
-            //                           fontSize: 12,
-            //                           color: AppColors.blackBlue,
-            //                           fontWeight: FontWeight.w300),
-            //                     ),
-            //                   ),
-            //                   BlocBuilder<CotisationDetailCubit,
-            //                       CotisationDetailState>(
-            //                     builder: (CotisationContext, CotisationState) {
-            //                       if (CotisationState.isLoading == null ||
-            //                           CotisationState.isLoading == true ||
-            //                           CotisationState.detailCotisation == null)
-            //                         return Container(
-            //                           width: 10,
-            //                           height: 10,
-            //                           child: Center(
-            //                             child: Container(
-            //                               width: 10,
-            //                               height: 10,
-            //                               child: CircularProgressIndicator(
-            //                                 strokeWidth: 0.5,
-            //                                 color: AppColors.blackBlue,
-            //                               ),
-            //                             ),
-            //                           ),
-            //                         );
-
-            //                       final currentDetailCotisation =
-            //                           CotisationContext.read<
-            //                                   CotisationDetailCubit>()
-            //                               .state
-            //                               .detailCotisation;
-
-            //                       var detailCotisationMemberNoOkay =
-            //                           currentDetailCotisation!["members"]
-            //                               .firstWhere(
-            //                         (member) =>
-            //                             member['membre']['membre_code'] ==
-            //                             AppCubitStorage().state.membreCode,
-            //                         orElse: () => null,
-            //                       );
-
-            //                       var detailCotisationMemberIsOkay =
-            //                           currentDetailCotisation!["versements"]
-            //                               .firstWhere(
-            //                         (member) =>
-            //                             member['membre_code'] ==
-            //                             AppCubitStorage().state.membreCode,
-            //                         orElse: () => null,
-            //                       );
-
-            //                       if (currentDetailCotisation!["members"]
-            //                                   .length >
-            //                               0 &&
-            //                           detailCotisationMemberNoOkay != null) {
-            //                         // print("memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556 ${memberWithCodeM79556['membre']['versement'][0]['balance_after']}");
-            //                         return Container(
-            //                           child: Text(
-            //                             "${formatMontantFrancais(double.parse(detailCotisationMemberNoOkay['membre']['versement'].length > 0 ? detailCotisationMemberNoOkay['membre']['versement'][0]['balance_after'] : "0"))} FCFA",
-            //                             // "FCFA",
-            //                             style: TextStyle(
-            //                               fontSize: 10,
-            //                               fontWeight: FontWeight.w500,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         );
-            //                       } else if (detailCotisationMemberIsOkay !=
-            //                               null &&
-            //                           detailCotisationMemberIsOkay!["versement"]
-            //                                   .length >
-            //                               0) {
-            //                         return Container(
-            //                           child: Text(
-            //                             "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 != null ? detailCotisationMemberIsOkay['versement'][0]['balance_after'] : "0"))} FCFA",
-            //                             // "FCFA",
-            //                             style: TextStyle(
-            //                               fontSize: 10,
-            //                               fontWeight: FontWeight.w500,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         );
-            //                       } else {
-            //                         return Container(
-            //                           child: Text(
-            //                             // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
-            //                             "0 FCFA",
-            //                             style: TextStyle(
-            //                               fontSize: 10,
-            //                               fontWeight: FontWeight.w500,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         );
-            //                       }
-            //                     },
-            //                   ),
-            //                 ],
-            //               ),
-            //               Column(
-            //                 children: [
-            //                   Container(
-            //                     margin: EdgeInsets.only(bottom: 2),
-            //                     child: Text(
-            //                       "reste".tr(),
-            //                       style: TextStyle(
-            //                         fontSize: 12,
-            //                         color: AppColors.blackBlue,
-            //                         fontWeight: FontWeight.w300,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                   BlocBuilder<CotisationDetailCubit,
-            //                       CotisationDetailState>(
-            //                     builder: (CotisationContext, CotisationState) {
-            //                       if (CotisationState.isLoading == null ||
-            //                           CotisationState.isLoading == true ||
-            //                           CotisationState.detailCotisation == null)
-            //                         return Container(
-            //                           width: 10,
-            //                           height: 10,
-            //                           child: Center(
-            //                             child: Container(
-            //                               width: 10,
-            //                               height: 10,
-            //                               child: CircularProgressIndicator(
-            //                                 strokeWidth: 0.5,
-            //                                 color: AppColors.blackBlue,
-            //                               ),
-            //                             ),
-            //                           ),
-            //                         );
-
-            //                       final currentDetailCotisation =
-            //                           CotisationContext.read<
-            //                                   CotisationDetailCubit>()
-            //                               .state
-            //                               .detailCotisation;
-
-            //                       var detailCotisationMemberNoOkay =
-            //                           currentDetailCotisation!["members"]
-            //                               .firstWhere(
-            //                         (member) =>
-            //                             member['membre']['membre_code'] ==
-            //                             AppCubitStorage().state.membreCode,
-            //                         orElse: () => null,
-            //                       );
-
-            //                       var detailCotisationMemberIsOkay =
-            //                           currentDetailCotisation!["versements"]
-            //                               .firstWhere(
-            //                         (member) =>
-            //                             member['membre_code'] ==
-            //                             AppCubitStorage().state.membreCode,
-            //                         orElse: () => null,
-            //                       );
-
-            //                       if (currentDetailCotisation!["members"]
-            //                                   .length >
-            //                               0 &&
-            //                           detailCotisationMemberNoOkay != null) {
-            //                         // print("memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556 ${memberWithCodeM79556['membre']['versement'][0]['balance_after']}");
-            //                         return Container(
-            //                           child: Text(
-            //                             "${formatMontantFrancais(double.parse(detailCotisationMemberNoOkay['membre']['versement'].length > 0 ? detailCotisationMemberNoOkay['membre']['versement'][0]['balance_remaining'] : "${widget.montantCotisations}"))} FCFA",
-            //                             // "FCFA",
-            //                             style: TextStyle(
-            //                               fontSize: 10,
-            //                               fontWeight: FontWeight.w500,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         );
-            //                       } else if (detailCotisationMemberIsOkay !=
-            //                               null &&
-            //                           detailCotisationMemberIsOkay!['versement']
-            //                                   .length >
-            //                               0) {
-            //                         return Container(
-            //                           child: Text(
-            //                             "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
-            //                             // "FCFA",
-            //                             style: TextStyle(
-            //                               fontSize: 10,
-            //                               fontWeight: FontWeight.w500,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         );
-            //                       } else {
-            //                         return Container(
-            //                           child: Text(
-            //                             // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
-            //                             "0 FCFA",
-            //                             style: TextStyle(
-            //                               fontSize: 10,
-            //                               fontWeight: FontWeight.w500,
-            //                               color: AppColors.blackBlue,
-            //                             ),
-            //                           ),
-            //                         );
-            //                       }
-            //                     },
-            //                   ),
-            //                 ],
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            // ),
-            checkTransparenceStatus(
-                    context
-                        .read<UserGroupCubit>()
-                        .state.changeAssData!.user_group!.configs,
-                    context.read<AuthCubit>().state.detailUser!["isMember"])
-                ? BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                    builder: (CotisationDetailcontext, CotisationDetailstate) {
-                      if (CotisationDetailstate.isLoading == null ||
-                          CotisationDetailstate.isLoading == true ||
-                          CotisationDetailstate.detailCotisation == null)
+              // Container(
+              //   margin: EdgeInsets.only(top: 15, bottom: 15),
+              //   padding: EdgeInsets.only(top: 15, bottom: 15),
+              //   color: Color.fromARGB(120, 226, 226, 226),
+              //   alignment: Alignment.center,
+              //   child: checkTransparenceStatus(
+              //           context
+              //               .read<UserGroupCubit>()
+              //               .state
+              //               .ChangeAssData!["user_group"]["configs"],
+              //           context.read<AuthCubit>().state.detailUser!["isMember"])
+              //       ? TabBar(
+              //           controller: _tabController,
+              //           isScrollable: true,
+              //           labelColor: AppColors.blackBlue,
+              //           labelStyle:
+              //               TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              //           padding: EdgeInsets.all(0),
+              //           unselectedLabelStyle: TextStyle(
+              //             color: AppColors.blackBlueAccent1,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //           indicator: UnderlineTabIndicator(
+              //             borderSide: BorderSide(
+              //               color: AppColors.blackBlue,
+              //               width: 5.0,
+              //             ),
+              //             insets: EdgeInsets.symmetric(
+              //               horizontal: 36.0,
+              //             ),
+              //           ),
+              //           tabs: [
+              //             Container(
+              //               margin: EdgeInsets.only(bottom: 5),
+              //               child: Row(
+              //                 children: [
+              //                   Text(
+              //                     "${"cotisé".tr()}",
+              //                   ),
+              //                   BlocBuilder<CotisationDetailCubit,
+              //                           CotisationDetailState>(
+              //                       builder:
+              //                           (CotisationContext, CotisationState) {
+              //                     if (CotisationState.isLoading == null ||
+              //                         CotisationState.isLoading == true ||
+              //                         CotisationState.detailCotisation == null)
+              //                       return Container(
+              //                         width: 10,
+              //                         height: 10,
+              //                         child: Center(
+              //                           child: Container(
+              //                             width: 10,
+              //                             height: 10,
+              //                             child: CircularProgressIndicator(
+              //                               strokeWidth: 0.5,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         ),
+              //                       );
+              //                     final currentDetailCotisation =
+              //                         CotisationContext.read<
+              //                                 CotisationDetailCubit>()
+              //                             .state
+              //                             .detailCotisation;
+              //                     return Text(
+              //                       "(${currentDetailCotisation!["versements"].length == null ? 0 : currentDetailCotisation!["versements"].length})",
+              //                       style: TextStyle(fontSize: 10),
+              //                     );
+              //                   }),
+              //                 ],
+              //               ),
+              //             ),
+              //             Container(
+              //               margin: EdgeInsets.only(bottom: 5),
+              //               child: Row(
+              //                 children: [
+              //                   Text(
+              //                     'non_cotisé'.tr(),
+              //                   ),
+              //                   BlocBuilder<CotisationDetailCubit,
+              //                           CotisationDetailState>(
+              //                       builder:
+              //                           (CotisationContext, CotisationState) {
+              //                     if (CotisationState.isLoading == null ||
+              //                         CotisationState.isLoading == true ||
+              //                         CotisationState.detailCotisation == null)
+              //                       return Container(
+              //                         width: 10,
+              //                         height: 10,
+              //                         child: Center(
+              //                           child: Container(
+              //                             width: 10,
+              //                             height: 10,
+              //                             child: CircularProgressIndicator(
+              //                               strokeWidth: 0.5,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         ),
+              //                       );
+              //                     final currentDetailCotisation =
+              //                         CotisationContext.read<
+              //                                 CotisationDetailCubit>()
+              //                             .state
+              //                             .detailCotisation;
+              //                     return Text(
+              //                       "(${currentDetailCotisation!["members"].length == null ? 0 : currentDetailCotisation!["members"].length})",
+              //                       style: TextStyle(fontSize: 10),
+              //                     );
+              //                   }),
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //         )
+              //       : Container(
+              //           margin: EdgeInsets.only(left: 5, right: 5),
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               Column(
+              //                 children: [
+              //                   Container(
+              //                     margin: EdgeInsets.only(bottom: 2),
+              //                     child: Text(
+              //                       "a_payer".tr(),
+              //                       style: TextStyle(
+              //                         fontSize: 12,
+              //                         fontWeight: FontWeight.w300,
+              //                         color: AppColors.blackBlue,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                   Container(
+              //                     child: Text(
+              //                       widget.type == "0"
+              //                           ? "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA"
+              //                           : "Volontaire",
+              //                       style: TextStyle(
+              //                         fontSize: 10,
+              //                         fontWeight: FontWeight.w500,
+              //                         color: AppColors.blackBlue,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //               Column(
+              //                 children: [
+              //                   Container(
+              //                     margin: EdgeInsets.only(bottom: 2),
+              //                     child: Text(
+              //                       "déjà_payé".tr(),
+              //                       style: TextStyle(
+              //                           fontSize: 12,
+              //                           color: AppColors.blackBlue,
+              //                           fontWeight: FontWeight.w300),
+              //                     ),
+              //                   ),
+              //                   BlocBuilder<CotisationDetailCubit,
+              //                       CotisationDetailState>(
+              //                     builder: (CotisationContext, CotisationState) {
+              //                       if (CotisationState.isLoading == null ||
+              //                           CotisationState.isLoading == true ||
+              //                           CotisationState.detailCotisation == null)
+              //                         return Container(
+              //                           width: 10,
+              //                           height: 10,
+              //                           child: Center(
+              //                             child: Container(
+              //                               width: 10,
+              //                               height: 10,
+              //                               child: CircularProgressIndicator(
+              //                                 strokeWidth: 0.5,
+              //                                 color: AppColors.blackBlue,
+              //                               ),
+              //                             ),
+              //                           ),
+              //                         );
+        
+              //                       final currentDetailCotisation =
+              //                           CotisationContext.read<
+              //                                   CotisationDetailCubit>()
+              //                               .state
+              //                               .detailCotisation;
+        
+              //                       var detailCotisationMemberNoOkay =
+              //                           currentDetailCotisation!["members"]
+              //                               .firstWhere(
+              //                         (member) =>
+              //                             member['membre']['membre_code'] ==
+              //                             AppCubitStorage().state.membreCode,
+              //                         orElse: () => null,
+              //                       );
+        
+              //                       var detailCotisationMemberIsOkay =
+              //                           currentDetailCotisation!["versements"]
+              //                               .firstWhere(
+              //                         (member) =>
+              //                             member['membre_code'] ==
+              //                             AppCubitStorage().state.membreCode,
+              //                         orElse: () => null,
+              //                       );
+        
+              //                       if (currentDetailCotisation!["members"]
+              //                                   .length >
+              //                               0 &&
+              //                           detailCotisationMemberNoOkay != null) {
+              //                         // print("memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556 ${memberWithCodeM79556['membre']['versement'][0]['balance_after']}");
+              //                         return Container(
+              //                           child: Text(
+              //                             "${formatMontantFrancais(double.parse(detailCotisationMemberNoOkay['membre']['versement'].length > 0 ? detailCotisationMemberNoOkay['membre']['versement'][0]['balance_after'] : "0"))} FCFA",
+              //                             // "FCFA",
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                               fontWeight: FontWeight.w500,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         );
+              //                       } else if (detailCotisationMemberIsOkay !=
+              //                               null &&
+              //                           detailCotisationMemberIsOkay!["versement"]
+              //                                   .length >
+              //                               0) {
+              //                         return Container(
+              //                           child: Text(
+              //                             "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 != null ? detailCotisationMemberIsOkay['versement'][0]['balance_after'] : "0"))} FCFA",
+              //                             // "FCFA",
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                               fontWeight: FontWeight.w500,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         );
+              //                       } else {
+              //                         return Container(
+              //                           child: Text(
+              //                             // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
+              //                             "0 FCFA",
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                               fontWeight: FontWeight.w500,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         );
+              //                       }
+              //                     },
+              //                   ),
+              //                 ],
+              //               ),
+              //               Column(
+              //                 children: [
+              //                   Container(
+              //                     margin: EdgeInsets.only(bottom: 2),
+              //                     child: Text(
+              //                       "reste".tr(),
+              //                       style: TextStyle(
+              //                         fontSize: 12,
+              //                         color: AppColors.blackBlue,
+              //                         fontWeight: FontWeight.w300,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                   BlocBuilder<CotisationDetailCubit,
+              //                       CotisationDetailState>(
+              //                     builder: (CotisationContext, CotisationState) {
+              //                       if (CotisationState.isLoading == null ||
+              //                           CotisationState.isLoading == true ||
+              //                           CotisationState.detailCotisation == null)
+              //                         return Container(
+              //                           width: 10,
+              //                           height: 10,
+              //                           child: Center(
+              //                             child: Container(
+              //                               width: 10,
+              //                               height: 10,
+              //                               child: CircularProgressIndicator(
+              //                                 strokeWidth: 0.5,
+              //                                 color: AppColors.blackBlue,
+              //                               ),
+              //                             ),
+              //                           ),
+              //                         );
+        
+              //                       final currentDetailCotisation =
+              //                           CotisationContext.read<
+              //                                   CotisationDetailCubit>()
+              //                               .state
+              //                               .detailCotisation;
+        
+              //                       var detailCotisationMemberNoOkay =
+              //                           currentDetailCotisation!["members"]
+              //                               .firstWhere(
+              //                         (member) =>
+              //                             member['membre']['membre_code'] ==
+              //                             AppCubitStorage().state.membreCode,
+              //                         orElse: () => null,
+              //                       );
+        
+              //                       var detailCotisationMemberIsOkay =
+              //                           currentDetailCotisation!["versements"]
+              //                               .firstWhere(
+              //                         (member) =>
+              //                             member['membre_code'] ==
+              //                             AppCubitStorage().state.membreCode,
+              //                         orElse: () => null,
+              //                       );
+        
+              //                       if (currentDetailCotisation!["members"]
+              //                                   .length >
+              //                               0 &&
+              //                           detailCotisationMemberNoOkay != null) {
+              //                         // print("memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556memberWithCodeM79556 ${memberWithCodeM79556['membre']['versement'][0]['balance_after']}");
+              //                         return Container(
+              //                           child: Text(
+              //                             "${formatMontantFrancais(double.parse(detailCotisationMemberNoOkay['membre']['versement'].length > 0 ? detailCotisationMemberNoOkay['membre']['versement'][0]['balance_remaining'] : "${widget.montantCotisations}"))} FCFA",
+              //                             // "FCFA",
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                               fontWeight: FontWeight.w500,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         );
+              //                       } else if (detailCotisationMemberIsOkay !=
+              //                               null &&
+              //                           detailCotisationMemberIsOkay!['versement']
+              //                                   .length >
+              //                               0) {
+              //                         return Container(
+              //                           child: Text(
+              //                             "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
+              //                             // "FCFA",
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                               fontWeight: FontWeight.w500,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         );
+              //                       } else {
+              //                         return Container(
+              //                           child: Text(
+              //                             // "${formatMontantFrancais(double.parse(detailCotisationMemberIsOkay['versement'].length > 0 ? detailCotisationMemberIsOkay['versement'][0]['balance_remaining'] : "0"))} FCFA",
+              //                             "0 FCFA",
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                               fontWeight: FontWeight.w500,
+              //                               color: AppColors.blackBlue,
+              //                             ),
+              //                           ),
+              //                         );
+              //                       }
+              //                     },
+              //                   ),
+              //                 ],
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              // ),
+              checkTransparenceStatus(
+                      context
+                          .read<UserGroupCubit>()
+                          .state
+                          .changeAssData!
+                          .user_group!
+                          .configs,
+                      context.read<AuthCubit>().state.detailUser!["isMember"])
+                  ? BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                      builder: (CotisationDetailcontext, CotisationDetailstate) {
+                        if (CotisationDetailstate.isLoading == null ||
+                            CotisationDetailstate.isLoading == true ||
+                            CotisationDetailstate.detailCotisation == null)
+                          return Expanded(
+                            child: Center(
+                              child: EasyLoader(
+                                backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                                iconSize: 50.h,
+                                iconColor: AppColors.blackBlueAccent1,
+                                image: AssetImage(
+                                  'assets/images/Groupe_ou_Asso.png',
+                                ),
+                              ),
+                            ),
+                          );
+        
+                        final currentDetailCotisation =
+                            CotisationDetailcontext.read<CotisationDetailCubit>()
+                                .state
+                                .detailCotisation;
+        
+                        List listeOkayCotisation =
+                            currentDetailCotisation!["versements"];
+                        List listeNonCotisation =
+                            currentDetailCotisation["members"];
+        
+                        List<Widget> listWidgetOkayCotis =
+                            listeOkayCotisation.map((monObjet) {
+                          return Card(
+                            child: WidgetHistoriqueCotisation(
+                              is_versement_finished:
+                                  monObjet["versement"].length == 0
+                                      ? 0
+                                      : monObjet["versement"][0]
+                                          ["is_versement_finished"],
+                              matricule: monObjet["matricule"] == null
+                                  ? ""
+                                  : monObjet["matricule"],
+                              montantTotalAVerser:
+                                  monObjet["versement"].length == 0
+                                      ? "0"
+                                      : monObjet["versement"][0]["source_amount"],
+                              montantVersee: monObjet["versement"].length == 0
+                                  ? "0"
+                                  : monObjet["versement"][0]["balance_after"],
+                              nom: monObjet["first_name"] == null
+                                  ? ""
+                                  : monObjet["first_name"],
+                              photoProfil: monObjet["photo_profil"] == null
+                                  ? ""
+                                  : monObjet["photo_profil"],
+                              prenom: monObjet["last_name"] == null
+                                  ? ""
+                                  : monObjet["last_name"],
+                            ),
+                          );
+                        }).toList();
+        
+                        List<Widget> listWidgetNonCotis =
+                            listeNonCotisation.map((monObjet) {
+                          return Card(
+                              child: WidgetHistoriqueCotisation(
+                            is_versement_finished:
+                                monObjet["membre"]["versement"].length == 0
+                                    ? 0
+                                    : monObjet["membre"]["versement"][0]
+                                        ["is_versement_finished"],
+                            matricule: monObjet["membre"]["matricule"] == null
+                                ? ""
+                                : monObjet["membre"]["matricule"],
+                            montantTotalAVerser:
+                                monObjet["membre"]["versement"].length == 0
+                                    ? "0"
+                                    : monObjet["membre"]["versement"][0]
+                                        ["source_amount"],
+                            montantVersee:
+                                monObjet["membre"]["versement"].length == 0
+                                    ? "0"
+                                    : monObjet["membre"]["versement"][0]
+                                        ["balance_after"],
+                            nom: monObjet["membre"]["first_name"] == null
+                                ? ""
+                                : monObjet["membre"]["first_name"],
+                            photoProfil:
+                                monObjet["membre"]["photo_profil"] == null
+                                    ? ""
+                                    : monObjet["membre"]["photo_profil"],
+                            prenom: monObjet["membre"]["last_name"] == null
+                                ? ""
+                                : monObjet["membre"]["last_name"],
+                          ));
+                        }).toList();
+        
+                        final listeFinale = [
+                          ...listWidgetOkayCotis,
+                          ...listWidgetNonCotis
+                        ];
+        
                         return Expanded(
+                            child: SingleChildScrollView(
+                          child: Column(
+                            children: listeFinale,
+                          ),
+                        ));
+                      },
+                    )
+                  : BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                      builder: (CotisationContext, CotisationState) {
+                      if (CotisationState.isLoading == null ||
+                          CotisationState.isLoading == true ||
+                          CotisationState.detailCotisation == null)
+                        return Container(
+                          // width: 10,
+                          // height: 10,
                           child: Center(
-                            child: EasyLoader(
-                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                              iconSize: 50,
-                              iconColor: AppColors.blackBlueAccent1,
-                              image: AssetImage(
-                                'assets/images/Groupe_ou_Asso.png',
+                            child: Container(
+                              width: 30.w,
+                              height: 30.h,
+                              child: CircularProgressIndicator(
+                                color: AppColors.bleuLight,
+                                // strokeWidth: 0.5,
+                                // color:
+                                //     AppColors.blackBlue,
                               ),
                             ),
                           ),
                         );
-
-                      final currentDetailCotisation = CotisationDetailcontext.read<CotisationDetailCubit>().state.detailCotisation;
-
-                      List listeOkayCotisation = currentDetailCotisation!["versements"];
-                      List listeNonCotisation = currentDetailCotisation["members"];
-
-                      List<Widget> listWidgetOkayCotis = listeOkayCotisation.map((monObjet) {
-                        return Card(
-                          child: WidgetHistoriqueCotisation(
-                            is_versement_finished:
-                                monObjet["versement"].length == 0
-                                    ? 0
-                                    : monObjet["versement"][0]
-                                        ["is_versement_finished"],
-                            matricule: monObjet["matricule"] == null
-                                ? ""
-                                : monObjet["matricule"],
-                            montantTotalAVerser:
-                                monObjet["versement"].length == 0
-                                    ? "0"
-                                    : monObjet["versement"][0]["source_amount"],
-                            montantVersee: monObjet["versement"].length == 0
-                                ? "0"
-                                : monObjet["versement"][0]["balance_after"],
-                            nom: monObjet["first_name"] == null
-                                ? ""
-                                : monObjet["first_name"],
-                            photoProfil: monObjet["photo_profil"] == null
-                                ? ""
-                                : monObjet["photo_profil"],
-                            prenom: monObjet["last_name"] == null
-                                ? ""
-                                : monObjet["last_name"],
-                          ),
-                        );
-                      }).toList();
-
-                      List<Widget> listWidgetNonCotis = listeNonCotisation.map((monObjet) {
-                        return Card(
-                            child: WidgetHistoriqueCotisation(
-                          is_versement_finished:
-                              monObjet["membre"]["versement"].length == 0
-                                  ? 0
-                                  : monObjet["membre"]["versement"][0]
-                                      ["is_versement_finished"],
-                          matricule: monObjet["membre"]["matricule"] == null
-                              ? ""
-                              : monObjet["membre"]["matricule"],
-                          montantTotalAVerser:
-                              monObjet["membre"]["versement"].length == 0
-                                  ? "0"
-                                  : monObjet["membre"]["versement"][0]
-                                      ["source_amount"],
-                          montantVersee:
-                              monObjet["membre"]["versement"].length == 0
-                                  ? "0"
-                                  : monObjet["membre"]["versement"][0]
-                                      ["balance_after"],
-                          nom: monObjet["membre"]["first_name"] == null
-                              ? ""
-                              : monObjet["membre"]["first_name"],
-                          photoProfil:
-                              monObjet["membre"]["photo_profil"] == null
-                                  ? ""
-                                  : monObjet["membre"]["photo_profil"],
-                          prenom: monObjet["membre"]["last_name"] == null
-                              ? ""
-                              : monObjet["membre"]["last_name"],
-                        ));
-                      }).toList();
-
-                      final listeFinale = [
-                        ...listWidgetOkayCotis,
-                        ...listWidgetNonCotis
-                      ];
-
-                      return Expanded(
-                          child: SingleChildScrollView(
-                        child: Column(
-                          children: listeFinale,
-                        ),
-                      ));
-                    },
-                  )
-                : BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                    builder: (CotisationContext, CotisationState) {
-                    if (CotisationState.isLoading == null ||
-                        CotisationState.isLoading == true ||
-                        CotisationState.detailCotisation == null)
-                      return Container(
-                        // width: 10,
-                        // height: 10,
-                        child: Center(
-                          child: Container(
-                            width: 30,
-                            height: 30,
-                            child: CircularProgressIndicator(
-                              color: AppColors.bleuLight,
-                              // strokeWidth: 0.5,
-                              // color:
-                              //     AppColors.blackBlue,
-                            ),
-                          ),
-                        ),
+        
+                      final currentDetailCotisation =
+                          CotisationContext.read<CotisationDetailCubit>()
+                              .state
+                              .detailCotisation;
+        
+                      print("eeeeeeeeeeee ${currentDetailCotisation!['membre']}");
+        
+                      var detailCotisationMemberNoOkay =
+                          currentDetailCotisation!["members"].firstWhere(
+                        (member) =>
+                            member['membre']['membre_code'] ==
+                            AppCubitStorage().state.membreCode,
+                        orElse: () => null,
                       );
-
-                    final currentDetailCotisation =
-                        CotisationContext.read<CotisationDetailCubit>()
-                            .state
-                            .detailCotisation;
-
-                    var detailCotisationMemberNoOkay =
-                        currentDetailCotisation!["members"].firstWhere(
-                      (member) =>
-                          member['membre']['membre_code'] ==
-                          AppCubitStorage().state.membreCode,
-                      orElse: () => null,
-                    );
-
-                    var detailCotisationMemberIsOkay =
-                        currentDetailCotisation!["versements"].firstWhere(
-                      (member) =>
-                          member['membre_code'] ==
-                          AppCubitStorage().state.membreCode,
-                      orElse: () => null,
-                    );
-                    return Container(
-                      padding: EdgeInsets.only(right: 7, left: 7),
-                      color: AppColors.white,
-                      child: Column(
+                      print("rrrrrrrrrr ${detailCotisationMemberNoOkay}");
+        
+                      var detailCotisationMemberIsOkay =
+                          currentDetailCotisation["versements"].firstWhere(
+                        (member) =>
+                            member['membre_code'] ==
+                            AppCubitStorage().state.membreCode,
+                        orElse: () => null,
+                      );
+        
+                      print("cdcdcdcdcdcdcdc ${detailCotisationMemberIsOkay}");
+                      return Column(
                         children: [
-                          Expanded(
-                              child: RefreshIndicator(
-                            onRefresh: refresh,
-                            child: detailCotisationMemberNoOkay != null &&
-                                    detailCotisationMemberNoOkay['membre']
-                                                ['versement']
-                                            .length >
-                                        0
-                                ? ListView.builder(
-                                    itemCount:
-                                        detailCotisationMemberNoOkay['membre']
-                                                    ['versement'][0]
-                                                ["transanctions"]
-                                            .length,
-                                    itemBuilder: (context, index) {
-                                      final detailVersement =
-                                          detailCotisationMemberNoOkay['membre']
-                                                  ['versement'][0]
-                                              ["transanctions"][index];
-
-                                      return Container(
-                                          child:
-                                              widgetListTransactionByEventCard(
-                                        date: AppCubitStorage()
-                                                    .state
-                                                    .Language ==
-                                                "fr"
-                                            ? formatDateToFrench(
-                                                detailVersement["created_at"])
-                                            : formatDateToEnglish(
-                                                detailVersement["created_at"]),
-                                        //  formatDateString(
-                                        // detailVersement["created_at"]),
-                                        montant: detailVersement["amount"],
-                                      ));
-                                    },
-                                  )
-                                : detailCotisationMemberIsOkay != null &&
-                                        detailCotisationMemberIsOkay[
-                                                'versement'] !=
-                                            null
-                                    ? ListView.builder(
-                                        itemCount: detailCotisationMemberIsOkay[
-                                                'versement'][0]["transanctions"]
-                                            .length,
-                                        itemBuilder: (context, index) {
-                                          final detailVersement =
-                                              detailCotisationMemberIsOkay[
-                                                      'versement'][0]
-                                                  ["transanctions"][index];
-
-                                          return Container(
-                                              child:
-                                                  widgetListTransactionByEventCard(
-                                            date: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    detailVersement[
-                                                        "created_at"])
-                                                : formatDateToEnglish(
-                                                    detailVersement[
-                                                        "created_at"]),
-                                            //  formatDateString(
-                                            // detailVersement["created_at"]),
-                                            montant: detailVersement["amount"],
-                                          ));
-                                        },
-                                      )
-                                    : ListView.builder(
-                                        itemCount: 1,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            padding: EdgeInsets.only(top: 200),
-                                            alignment: Alignment.topCenter,
-                                            child: Text(
-                                              "aucune_transaction".tr(),
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      20, 45, 99, 0.26),
-                                                  fontWeight: FontWeight.w100,
-                                                  fontSize: 20),
-                                            ),
-                                          );
-                                        }),
-                          ))
+                          if (detailCotisationMemberNoOkay != null &&
+                              detailCotisationMemberNoOkay['membre']['versement']
+                                      .length >
+                                  0)
+                            for (var item
+                                in detailCotisationMemberNoOkay['membre']
+                                    ['versement'][0]["transanctions"])
+                              Container(
+                                child: widgetListTransactionByEventCard(
+                                  date: AppCubitStorage().state.Language == "fr"
+                                      ? formatDateToFrench(item["created_at"])
+                                      : formatDateToEnglish(item["created_at"]),
+                                  montant: item["amount"],
+                                ),
+                              ),
+                          if (detailCotisationMemberIsOkay != null &&
+                              detailCotisationMemberIsOkay['versement'] != null)
+                            for (var item
+                                in detailCotisationMemberIsOkay['versement'][0]
+                                    ["transanctions"])
+                              Container(
+                                child: widgetListTransactionByEventCard(
+                                  date: AppCubitStorage().state.Language == "fr"
+                                      ? formatDateToFrench(item["created_at"])
+                                      : formatDateToEnglish(item["created_at"]),
+                                  //  formatDateString(
+                                  // detailVersement["created_at"]),
+                                  montant: item["amount"],
+                                ),
+                              ),
+                          if (detailCotisationMemberIsOkay != null &&
+                              detailCotisationMemberNoOkay != null)
+                            Container(
+                              padding: EdgeInsets.only(top: 200.h),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "aucune_transaction".tr(),
+                                style: TextStyle(
+                                    color: Color.fromRGBO(20, 45, 99, 0.26),
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 20.sp),
+                              ),
+                            )
                         ],
-                      ),
-                    );
-                  }),
-          ],
+                      );
+        
+                      // return  Column(
+                      //     children: [
+                      //       Expanded( child: RefreshIndicator(
+                      //         onRefresh: refresh,
+                      //         child:
+                      //         detailCotisationMemberNoOkay != null && detailCotisationMemberNoOkay['membre']['versement'].length > 0 ?
+        
+                      //         ListView.builder( itemCount: detailCotisationMemberNoOkay['membre']['versement'][0]["transanctions"].length,
+                      //                 shrinkWrap: true,
+                      //                 itemBuilder: (context, index) {
+                      //                   final detailVersement = detailCotisationMemberNoOkay['membre']['versement'][0]["transanctions"][index];
+                      //                   return Container(
+                      //                     child: widgetListTransactionByEventCard(
+                      //                     date: AppCubitStorage() .state .Language == "fr" ? formatDateToFrench( detailVersement["created_at"]) : formatDateToEnglish( detailVersement["created_at"]),
+                      //                     montant: detailVersement["amount"],
+                      //                   ),
+                      //                   );
+                      //                 },
+                      //               )
+                      //             : detailCotisationMemberIsOkay != null && detailCotisationMemberIsOkay['versement'] != null
+                      //                 ? ListView.builder(
+                      //                     itemCount: detailCotisationMemberIsOkay['versement'][0]["transanctions"].length,
+                      //                     itemBuilder: (context, index) {
+                      //                       final detailVersement = detailCotisationMemberIsOkay['versement'][0]["transanctions"][index];
+        
+                      //                       return Container(
+                      //                           child: widgetListTransactionByEventCard(
+                      //                         date: AppCubitStorage().state.Language == "fr"
+                      //                             ? formatDateToFrench(detailVersement["created_at"])
+                      //                             : formatDateToEnglish(detailVersement[ "created_at"]),
+                      //                         //  formatDateString(
+                      //                         // detailVersement["created_at"]),
+                      //                         montant: detailVersement["amount"],
+                      //                       ));
+                      //                     },
+                      //                   )
+                      //                 : ListView.builder(
+                      //                     itemCount: 1,
+                      //                     itemBuilder:
+                      //                         (BuildContext context, int index) {
+                      //                       return Container(
+                      //                         padding: EdgeInsets.only(top: 200),
+                      //                         alignment: Alignment.topCenter,
+                      //                         child: Text(
+                      //                           "aucune_transaction".tr(),
+                      //                           style: TextStyle(
+                      //                               color: Color.fromRGBO(
+                      //                                   20, 45, 99, 0.26),
+                      //                               fontWeight: FontWeight.w100,
+                      //                               fontSize: 20),
+                      //                         ),
+                      //                       );
+                      //                     },
+                      //                 ),
+                      //       ),
+                      //     ),
+                      //     ],
+        
+                      // );
+                    }),
+            ],
+          ),
         ),
       ),
     );

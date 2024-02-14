@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class widgetDetailTontine extends StatefulWidget {
   widgetDetailTontine({
@@ -54,14 +55,14 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
         borderRadius: BorderRadius.circular(15),
       ),
       alignment: Alignment.center,
-      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+      padding: EdgeInsets.only(left: 10.w, top: 5.h, bottom: 5.h, right: 10.w),
       child: Row(
         children: [
           Expanded(
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.only(top: 10.h),
                   width: MediaQuery.of(context).size.width / 1.1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,7 +82,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                       child: Text(
                                         "${"Tontine".tr()} :",
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                           fontWeight: FontWeight.bold,
                                           color:
                                               Color.fromRGBO(20, 45, 99, 0.534),
@@ -98,7 +99,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                       child: Text(
                                         "${widget.nomTontine}",
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
@@ -123,9 +124,9 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                        width: 72,
+                        width: 72.w,
                           padding: EdgeInsets.only(
-                              left: 8, right: 8, top: 5, bottom: 5),
+                              left: 8.w, right: 8.w, top: 5.h, bottom: 5.h,),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton,
                             borderRadius: BorderRadius.circular(15),
@@ -135,7 +136,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                               "Tontiner",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: AppColors.white,
                               ),
                             ),
@@ -146,7 +147,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 7, top: 7),
+                  margin: EdgeInsets.only(bottom: 7.h, top: 7.h,),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -163,7 +164,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                       child: Text(
                                         "${"Bénéficiaire".tr()} :",
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                           fontWeight: FontWeight.bold,
                                           color:
                                               Color.fromRGBO(20, 45, 99, 0.534),
@@ -177,11 +178,11 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(top: 3),
+                                      margin: EdgeInsets.only(top: 3.h),
                                       child: Text(
                                         "${widget.nomBeneficiaire}",
                                         style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
@@ -203,11 +204,11 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                               
                               Container(
                                 child: Container(
-                                  margin: EdgeInsets.only(top: 3),
+                                  margin: EdgeInsets.only(top: 3.h),
                                   child: Text(
                                     "${formatDateLiteral(widget.dateClose)}",
                                     style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 10.sp,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.blackBlueAccent1,
@@ -224,7 +225,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                 ),
                 Container(
                   // width: MediaQuery.of(context).size.width / 1.1,
-                  margin: EdgeInsets.only(bottom: 7),
+                  margin: EdgeInsets.only(bottom: 7.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -236,7 +237,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                               child: Text(
                                 "${"montant".tr()} :",
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   fontWeight: FontWeight.w500,
                                   color: Color.fromARGB(125, 20, 45, 99),
                                 ),
@@ -248,12 +249,12 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 children: [
                                   Flexible(
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 3),
+                                      margin: EdgeInsets.only(top: 3.h,),
                                       child: Text(
                                         "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.sp,
                                             color: AppColors.blackBlue,
                                             fontWeight: FontWeight.w600),
                                       ),
@@ -281,7 +282,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 child: Text(
                                   "${"montant_collecté".tr()} :",
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    fontSize: 10.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Color.fromARGB(125, 20, 45, 99),
                                   ),
@@ -292,7 +293,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 child: Text(
                                   "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
                                   style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                       color: AppColors.green,
                                       fontWeight: FontWeight.w600),
                                 ),

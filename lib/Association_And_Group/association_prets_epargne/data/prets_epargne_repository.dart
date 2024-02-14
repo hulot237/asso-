@@ -3,25 +3,22 @@ import 'package:faroty_association_1/Association_And_Group/association_notificat
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 
-class NotificationRepository {
+class PretEpargneRepository {
   final dio = Dio();
-  Future<List<NotificationModel>> getNotification(
-      tokenUser, codeAssociation) async {
+  Future<Map<String, dynamic>> getEpargne() async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/membre/$codeAssociation/notifications/get',
-      options: Options(
-        headers: {
-          "token": tokenUser,
-        },
-      ),
+      '${Variables.LienAIP}/api/v1/tournois/${AppCubitStorage().state.codeTournois}/membre/${AppCubitStorage().state.membreCode}/get-details-saving',
+      // options: Options(
+      //   headers: {
+      //     "token": tokenUser,
+      //   },
+      // ),
     );
-    var data = response.data['data']['notifications'];
+    var data = response.data['data'];
     print('dcdcd');
-    print("ßssssssssssssssssssssssssssssssssssssss ${data}");
+    print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr ${data}");
     // return NotificationModel.fromJson(data['data']['notifications']);
-    return data
-        .map<NotificationModel>((json) => NotificationModel.fromJson(json))
-        .toList();
+    return data;
   }
 
   Future<void> updateNotification(idNotification) async {

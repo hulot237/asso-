@@ -12,6 +12,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WidgetCotisation extends StatefulWidget {
   WidgetCotisation({
@@ -89,18 +90,18 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
         child: Container(
           decoration: widget.is_passed == 0
               ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(15.r),
                   color: AppColors.white,
                 )
               : BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(15.r),
                   color: AppColors.whiteAccent,
                   border: Border.all(
-                    width: 1,
+                    width: 1.r,
                     color: AppColors.white,
                   ),
                 ),
-          padding: EdgeInsets.only(left: 10, top: 5, bottom: 10, right: 10),
+          padding: EdgeInsets.only(left: 10.w, top: 5.h, bottom: 10.h, right: 10.w),
           width: MediaQuery.of(context).size.width,
           child: Row(
             children: [
@@ -109,7 +110,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(
-                        top: 10,
+                        top: 10.h,
                       ),
                       width: MediaQuery.of(context).size.width / 1.1,
                       child: Row(
@@ -117,19 +118,19 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                         children: [
                           Expanded(
                             child: Container(
-                              margin: EdgeInsets.only(right: 15),
+                              margin: EdgeInsets.only(right: 15.w),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   if (widget.rubrique != "")
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 3),
+                                      margin: EdgeInsets.only(bottom: 3.h),
                                       child: Text(
                                         '${widget.rubrique}'.toUpperCase(),
                                         style: TextStyle(
                                           color: AppColors.blackBlueAccent1,
                                           fontWeight: FontWeight.w900,
-                                          fontSize: 13,
+                                          fontSize: 13.sp,
                                         ),
                                       ),
                                     ),
@@ -138,11 +139,11 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(bottom: 2),
+                                        margin: EdgeInsets.only(bottom: 2.h),
                                         child: Text(
                                           widget.motifCotisations,
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.blackBlue,
                                           ),
@@ -155,7 +156,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                               ? "${(widget.nomBeneficiaire)}"
                                               : "${(widget.source)}",
                                           style: TextStyle(
-                                            fontSize: 10,
+                                            fontSize: 10.sp,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.blackBlueAccent1,
                                           ),
@@ -181,24 +182,24 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                         );
                                       },
                                       child: Container(
-                                        width: 72,
+                                        width: 72.w,
                                         alignment: Alignment.center,
                                         padding: EdgeInsets.only(
-                                            left: 8,
-                                            right: 8,
-                                            top: 5,
-                                            bottom: 5),
+                                            left: 8.w,
+                                            right: 8.w,
+                                            top: 5.h,
+                                            bottom: 5.h,),
                                         decoration: BoxDecoration(
                                           color: AppColors.colorButton,
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(15.r),
                                         ),
                                         child: Container(
                                           child: Text(
                                             "cotiser".tr(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12,
+                                              fontSize: 12.sp,
                                               color: AppColors.white,
                                             ),
                                           ),
@@ -210,14 +211,14 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(7),
+                                              BorderRadius.circular(7.r),
                                         ),
                                         child: Container(
                                           child: Text(
                                             "expiré".tr(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 8,
+                                              fontSize: 8.sp,
                                               color: AppColors.red,
                                             ),
                                           ),
@@ -237,10 +238,10 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 7, bottom: 7),
+                      margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
                       width: MediaQuery.of(context).size.width / 1.1,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
+                        borderRadius: BorderRadius.circular(7.r),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -251,7 +252,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   ? "type_volontaire".tr()
                                   : "type_fixe".tr(),
                               style: TextStyle(
-                                  color: AppColors.blackBlue, fontSize: 12),
+                                  color: AppColors.blackBlue, fontSize: 12.sp),
                             ),
                           ),
                           Container(
@@ -262,7 +263,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   child: Text(
                                     "montant".tr(),
                                     style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 10.sp,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.blackBlue,
                                     ),
@@ -273,7 +274,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                     "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
                                     style: TextStyle(
                                       color: AppColors.blackBlue,
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                     ),
                                   ),
                                 ),
@@ -283,6 +284,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                         ],
                       ),
                     ),
+                    
                     if (checkTransparenceStatus(
                         context
                             .read<UserGroupCubit>()
@@ -307,15 +309,15 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                     child: Icon(
                                       Icons.wallet_rounded,
                                       color: AppColors.blackBlue,
-                                      size: 16,
+                                      size: 16.sp,
                                     ),
-                                    margin: EdgeInsets.only(right: 5),
+                                    margin: EdgeInsets.only(right: 5.w),
                                   ),
                                   Container(
                                       child: Text(
                                     "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
                                     style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.w800,
                                         color: AppColors.green),
                                   ))
@@ -327,7 +329,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                 formatDateLiteral(widget.dateCotisation),
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   color: AppColors.blackBlueAccent1,
                                   fontWeight: FontWeight.w600,
                                 ),

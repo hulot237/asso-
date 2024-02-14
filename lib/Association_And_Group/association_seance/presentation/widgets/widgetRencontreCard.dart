@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class WidgetRencontreCard extends StatefulWidget {
@@ -104,7 +105,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
           );
         },
         child: Container(
-          padding: EdgeInsets.all(14),
+          padding: EdgeInsets.all(14.r),
           decoration: BoxDecoration(
             color: widget.isActiveRencontre == 1
                 ? AppColors.white
@@ -132,12 +133,12 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(bottom: 7),
+                            margin: EdgeInsets.only(bottom: 7.h),
                             child: Text(
                               "recepteur".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10,
+                                fontSize: 10.sp,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
@@ -148,8 +149,8 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  height: 15,
-                                  width: 15,
+                                  height: 15.w,
+                                  width: 15.w,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
@@ -161,7 +162,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 Container(
                                   // alignment: Alignment.center,
                                   // color: Colors.deepOrange,
-                                  margin: EdgeInsets.only(left: 5),
+                                  margin: EdgeInsets.only(left: 5.w),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -177,7 +178,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w400,
                                             color: AppColors.blackBlue,
                                           ),
@@ -206,7 +207,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                     "rencontre".tr(),
                                     style: TextStyle(
                                         color: AppColors.blackBlue,
-                                        fontSize: 12),
+                                        fontSize: 12.sp,),
                                   ),
                                 ),
                                 Container(
@@ -214,7 +215,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                     " ${widget.identifiantRencontre}",
                                     style: TextStyle(
                                         color: AppColors.blackBlue,
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -223,53 +224,53 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                           ),
                           if (widget.isActiveRencontre == 0)
                             Container(
-                              padding: EdgeInsets.only(top: 5),
+                              padding: EdgeInsets.only(top: 5.h),
 
                               // decoration: BoxDecoration(
                               // color: Color.fromARGB(24, 212, 0, 0),
                               // borderRadius: BorderRadius.circular(7)),
                               child: Container(
-                                padding: EdgeInsets.all(1),
+                                padding: EdgeInsets.all(1.r),
                                 child: Text(
                                   "Archivé".tr(),
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 10),
+                                      fontSize: 10.sp,),
                                 ),
                               ),
                             ),
                           if (widget.isActiveRencontre == 1 && isPasseDate())
                             Container(
-                              padding: EdgeInsets.only(top: 5),
+                              padding: EdgeInsets.only(top: 5.h,),
                               // decoration: BoxDecoration(
                               //     color: Color.fromARGB(24, 212, 0, 0),
                               //     borderRadius: BorderRadius.circular(7)),
                               child: Container(
-                                padding: EdgeInsets.all(1),
+                                padding: EdgeInsets.all(1.r),
                                 child: Text(
                                   "terminé".tr(),
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 10),
+                                      fontSize: 10.sp,),
                                 ),
                               ),
                             ),
                           if (!isPasseDate() && widget.isActiveRencontre == 1)
                             Container(
-                              padding: EdgeInsets.only(top: 5),
+                              padding: EdgeInsets.only(top: 5.h),
                               // decoration: BoxDecoration(
                               //     color: Color.fromARGB(43, 0, 212, 7),
                               //     borderRadius: BorderRadius.circular(7)),
                               child: Container(
-                                padding: EdgeInsets.all(1),
+                                padding: EdgeInsets.all(1.r),
                                 child: Text(
                                   "en_cours".tr(),
                                   style: TextStyle(
                                       color: AppColors.green,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 10),
+                                      fontSize: 10.sp,),
                                 ),
                               ),
                             )
@@ -283,20 +284,20 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(17, 131, 131, 131),
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(4.r),
                       ),
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5.r),
                       child: Container(
                         child: Text(
                           widget.descriptionRencontre,
                           // textAlign: TextAlign.start,
                           style: TextStyle(
                             letterSpacing: 0.3,
-                            height: 1.3,
-                            fontSize: 16,
+                            height: 1.3.r,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
                             color: AppColors.blackBlue,
                           ),
@@ -308,7 +309,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
               ),
               Container(
                 // margin: EdgeInsets.only(top: 7),
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(5.r),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(29, 131, 131, 131),
                   borderRadius: BorderRadius.circular(5),
@@ -328,13 +329,13 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               "lieu".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10,
+                                fontSize: 10.sp,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 1),
+                            margin: EdgeInsets.only(top: 1.h),
                             child: Row(
                               children: [
                                 Flexible(
@@ -343,17 +344,17 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                       widget.lieuRencontre,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 10.sp,
                                           color: AppColors.blackBlue,
-                                          fontWeight: FontWeight.w500),
+                                          fontWeight: FontWeight.bold,),
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 5),
+                                  margin: EdgeInsets.only(left: 5.w),
                                   child: Icon(
                                     Icons.maps_home_work_rounded,
-                                    size: 13,
+                                    size: 13.sp,
                                     color: AppColors.blackBlueAccent1,
                                   ),
                                 )
@@ -373,20 +374,20 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               "Type".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10,
+                                fontSize: 10.sp,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 1),
+                            margin: EdgeInsets.only(top: 1.h),
                             child: Text(
                               widget.typeRencontre == "0"? "Ordinaire".tr(): widget.typeRencontre == "1"? "Extraordinaire".tr(): "Comité",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],

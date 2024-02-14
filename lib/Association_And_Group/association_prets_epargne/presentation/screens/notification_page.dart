@@ -17,7 +17,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -37,19 +36,9 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "Notifications".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+          style: TextStyle(fontSize: 16, color: AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.white,
-            size: 18.sp,
-          ),
-        ),
       ),
       child: child,
     );
@@ -60,7 +49,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Notifications".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(fontSize: 16, color: AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -68,7 +57,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white,),
+        child: Icon(Icons.arrow_back, color: AppColors.white),
       ),
     ),
     body: child,
@@ -112,7 +101,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   return Container(
                     child: EasyLoader(
                       backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                      iconSize: 50.r,
+                      iconSize: 50,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
                         'assets/images/Groupe_ou_Asso.png',
@@ -133,20 +122,20 @@ class _NotificationPageState extends State<NotificationPage> {
                       item1.createdAt!.compareTo(item2.createdAt!),
                   order: GroupedListOrder.ASC,
                   groupSeparatorBuilder: (String value) => Container(
-                    margin: EdgeInsets.only(left: 30.w, right: 30.w, top: 15.h),
-                    padding: EdgeInsets.only(bottom: 7.h),
+                    margin: EdgeInsets.only(left: 30, right: 30, top: 15),
+                    padding: EdgeInsets.only(bottom: 7),
                     decoration: BoxDecoration(
                         border: Border(
                       bottom: BorderSide(
-                        width: 0.2.r,
+                        width: 0.2,
                         color: AppColors.blackBlue,
                       ),
                     )),
                     child: Text(
                       value,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 15.sp,
+                      style: const TextStyle(
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: AppColors.blackBlue,
                       ),
@@ -214,7 +203,7 @@ class notificationWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 10.h, bottom: 0),
+            margin: EdgeInsets.only(top: 10, bottom: 0),
             // child: Text(
             //   dateCreate,
             //   style: TextStyle(
@@ -227,9 +216,9 @@ class notificationWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
-                width: 45.w,
-                height: 45.w,
+                margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                width: 45,
+                height: 45,
                 decoration: BoxDecoration(
                   color: const Color(0xff7c94b6),
                   image: DecorationImage(
@@ -247,7 +236,7 @@ class notificationWidget extends StatelessWidget {
                           : AppColors.colorButtonAccent,
                       borderRadius: BorderRadius.circular(10)),
                   // width: 200,
-                  margin: EdgeInsets.only(right: 20.w),
+                  margin: EdgeInsets.only(right: 20),
                   // padding: EdgeInsets.all(3),
                   // child: Text('${parsedstring}'),
                   child: isReaded == 1
@@ -262,11 +251,11 @@ class notificationWidget extends StatelessWidget {
                               children: [
                                 Container(),
                                 Container(
-                                  margin: EdgeInsets.only(right: 10.w, bottom: 9.h),
+                                  margin: EdgeInsets.only(right: 10, bottom: 9),
                                   child: Text(
                                     "${formatHeurUnikLiteral(dateCreate)}",
                                     style: TextStyle(
-                                      fontSize: 12.sp,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.blackBlue,
                                     ),
@@ -279,19 +268,19 @@ class notificationWidget extends StatelessWidget {
                       : Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(7.r),
+                              padding: EdgeInsets.all(7),
                               child: Text(
                                 "$descriptionSansBalise",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    fontSize: 13.sp,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.blackBlue),
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.all(7.r),
+                              padding: EdgeInsets.all(7),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -301,14 +290,14 @@ class notificationWidget extends StatelessWidget {
                                       Text(
                                         "AFFICHER".tr(),
                                         style: TextStyle(
-                                          fontSize: 12.sp,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w900,
                                           color: AppColors.backgroundAppBAr,
                                         ),
                                       ),
                                       Icon(
                                         Icons.keyboard_double_arrow_right,
-                                        size: 16.sp,
+                                        size: 16,
                                         color: AppColors.backgroundAppBAr,
                                       )
                                     ],
@@ -316,7 +305,7 @@ class notificationWidget extends StatelessWidget {
                                   Text(
                                     "${formatHeurUnikLiteral(dateCreate)}",
                                     style: TextStyle(
-                                      fontSize: 12.sp,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.blackBlue,
                                     ),
@@ -345,9 +334,9 @@ _showSimpleModalDialog(context, description) {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: Container(
-            constraints: BoxConstraints(maxHeight: 350.h),
+            constraints: BoxConstraints(maxHeight: 350),
             child: Padding(
-              padding:  EdgeInsets.all(12.0.r),
+              padding: const EdgeInsets.all(12.0),
               child: Html(
                 data:
                     "<p style='color:#142D63 ; text-align:center; font-size:16px;'>${description}</p>",

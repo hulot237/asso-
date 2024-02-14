@@ -10,6 +10,8 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -43,13 +45,12 @@ class _AccountPageState extends State<AccountPage> {
     return PageScaffold(
       context: context,
       child: Material(
-                                      type: MaterialType.transparency,
-
+        type: MaterialType.transparency,
         child: Column(
           children: [
             Container(
               padding: EdgeInsets.only(
-                top: 25,
+                top: 25.h,
               ),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
@@ -59,7 +60,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 color: AppColors.blackBlue,
               ),
-              height: 180,
+              height: 190.h,
               child: Column(
                 children: [
                   Row(
@@ -70,21 +71,24 @@ class _AccountPageState extends State<AccountPage> {
                           Navigator.of(context).pop();
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 20, left: 10),
+                          padding: EdgeInsets.only(top: 30.h, left: 20.w),
                           child: Icon(
-                            Icons.arrow_back,
+                            Platform.isAndroid
+                                ? Icons.arrow_back
+                                : Icons.arrow_back_ios,
                             color: AppColors.white,
+                            size: 18.sp,
                           ),
                         ),
                       ),
                       Expanded(
                         child: Container(
-                          margin: EdgeInsets.only(right: 30),
+                          margin: EdgeInsets.only(right: 40.w),
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(top: 15, bottom: 3),
-                                padding: EdgeInsets.all(2),
+                                margin: EdgeInsets.only(top: 15.h, bottom: 3.h),
+                                padding: EdgeInsets.all(2.r),
                                 decoration: BoxDecoration(
                                   color: AppColors.white,
                                   borderRadius: BorderRadius.circular(100),
@@ -92,8 +96,8 @@ class _AccountPageState extends State<AccountPage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                   child: Container(
-                                    width: 70,
-                                    height: 70,
+                                    width: 70.r,
+                                    height: 70.r,
                                     child: Image.network(
                                       "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
                                       fit: BoxFit.cover,
@@ -106,12 +110,15 @@ class _AccountPageState extends State<AccountPage> {
                                   children: [
                                     Container(
                                       padding: EdgeInsets.only(
-                                          left: 5, right: 5, top: 5),
+                                        left: 5.w,
+                                        right: 5.w,
+                                        top: 5.h,
+                                      ),
                                       child: Text(
                                         "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w300,
                                           color: AppColors.white,
                                         ),
@@ -127,7 +134,7 @@ class _AccountPageState extends State<AccountPage> {
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 5),
+                    margin: EdgeInsets.only(top: 5.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -136,7 +143,7 @@ class _AccountPageState extends State<AccountPage> {
                             Text(
                               "Type".tr(),
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.whiteAccent1,
                               ),
@@ -147,8 +154,8 @@ class _AccountPageState extends State<AccountPage> {
                             Text(
                               "${currentDetailUser["type"] == "2" ? "Fondateur" : currentDetailUser["type"] == "3" ? "Membre" : "Super Admin"}",
                               style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w700,
                                 color: AppColors.green,
                               ),
                             )
@@ -159,19 +166,19 @@ class _AccountPageState extends State<AccountPage> {
                             Text(
                               "matricule".tr(),
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.whiteAccent1,
                               ),
                             ),
                             SizedBox(
-                              height: 2,
+                              height: 2.h,
                             ),
                             Text(
                               "${currentDetailUser["matricule"]}",
                               style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w700,
                                 color: AppColors.green,
                               ),
                             )
@@ -180,7 +187,7 @@ class _AccountPageState extends State<AccountPage> {
                         GestureDetector(
                           onTap: () async {
                             String msg =
-                                "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["inscription_balance"]) - int.parse(currentDetailUser["entry_amount"])).toString()))} FCFA.\nMerci de suivre le lien ${currentDetailUser["inscription_pay_link"]} pour valider";
+                                "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
                             if (currentDetailUser["is_inscription_payed"] != 1)
                               Modal().showModalActionPayement(
                                 context,
@@ -193,27 +200,27 @@ class _AccountPageState extends State<AccountPage> {
                               Text(
                                 "Fonds de caisse".tr(),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.whiteAccent1,
                                 ),
                               ),
                               SizedBox(
-                                height: 2,
+                                height: 2.h,
                               ),
                               currentDetailUser["is_inscription_payed"] == 1
                                   ? Text(
                                       "payé".tr(),
                                       style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w500,
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w700,
                                         color: AppColors.green,
                                       ),
                                     )
                                   : GestureDetector(
                                       onTap: () async {
                                         String msg =
-                                            "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse(currentDetailUser["entry_amount"]))} FCFA.\nMerci de suivre le lien ${currentDetailUser["inscription_pay_link"]} pour valider";
+                                            "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien ${currentDetailUser["inscription_pay_link"]} pour valider";
                                         Modal().showModalActionPayement(
                                           context,
                                           msg,
@@ -226,8 +233,8 @@ class _AccountPageState extends State<AccountPage> {
                                           Text(
                                             "non_payé".tr(),
                                             style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w500,
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w700,
                                               color: AppColors.red,
                                             ),
                                           ),
@@ -235,15 +242,16 @@ class _AccountPageState extends State<AccountPage> {
                                             height: 2,
                                           ),
                                           Container(
-                                              margin: EdgeInsets.only(left: 2),
-                                              child: Icon(
-                                                Icons.open_in_new,
-                                                color: AppColors.red,
-                                                size: 10,
-                                              ))
+                                            margin: EdgeInsets.only(left: 2.w),
+                                            child: Icon(
+                                              Icons.open_in_new,
+                                              color: AppColors.red,
+                                              size: 10.sp,
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    )
+                                    ),
                             ],
                           ),
                         ),
@@ -257,349 +265,241 @@ class _AccountPageState extends State<AccountPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      // alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 10, right: 10),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 15, bottom: 5),
-                            width: MediaQuery.of(context).size.width,
-                            child: Text(
-                              "Votre situation".tr(),
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.blackBlueAccent1),
+                    if (currentDetailUser["situation_membre"] != null)
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        // alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 15.h, bottom: 5.h),
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                "Votre situation".tr(),
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.blackBlueAccent1),
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              color: AppColors.blackBlueAccent2,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "${"TOTAL A PAYER".tr()} :  ${formatMontantFrancais(currentDetailUser["situation_membre"]["sum_remain"].toDouble())} FCFA",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w900,
-                                      color: AppColors.blackBlue,
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.all(7.r),
+                              decoration: BoxDecoration(
+                                color: AppColors.blackBlueAccent2,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(top: 5.h, bottom: 5.h),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "${"TOTAL A PAYER".tr()} :  ${formatMontantFrancais(currentDetailUser["situation_membre"]["sum_remain"].toDouble())} FCFA",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w900,
+                                        color: AppColors.blackBlue,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.white,
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        width: MediaQuery.of(context).size.width /
-                                            2.1,
-                                        padding: EdgeInsets.all(7),
-                                        margin: EdgeInsets.only(
-                                            left: 5, right: 5, top: 5),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(bottom: 5),
-                                              padding: EdgeInsets.only(bottom: 2),
-                                              alignment: Alignment.centerLeft,
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    width: 0.3,
-                                                    color: AppColors.blackBlue,
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    ("Fonds de caisse".tr())
-                                                        .toUpperCase(),
-                                                    style: TextStyle(
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                      fontSize: 10,
-                                                      fontWeight: FontWeight.w800,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "a_payer"
-                                                          .tr()
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(double.parse(currentDetailUser["situation_membre"]["cash_fund"]["total"]))}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "payé".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(double.parse(currentDetailUser["situation_membre"]["cash_fund"]["verse"]))}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: AppColors.green,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      "reste".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["cash_fund"]["remain"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
                                             color: AppColors.white,
                                             borderRadius:
-                                                BorderRadius.circular(5)),
-                                        width: MediaQuery.of(context).size.width /
-                                            2.1,
-                                        padding: EdgeInsets.all(7),
-                                        margin: EdgeInsets.only(
-                                            left: 5, right: 5, top: 5),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(bottom: 5),
-                                              padding: EdgeInsets.only(bottom: 2),
-                                              alignment: Alignment.centerLeft,
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    width: 0.3,
-                                                    color: AppColors.blackBlue,
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "TONTINES",
-                                                    style: TextStyle(
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                      fontSize: 10,
-                                                      fontWeight: FontWeight.w800,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    " (${currentDetailUser["situation_membre"]["tontine"]["nbre"]})",
-                                                    style: TextStyle(
-                                                      fontSize: 9,
-                                                      fontWeight: FontWeight.w900,
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "a_payer"
-                                                          .tr()
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["tontine"]["total"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "payé".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["tontine"]["verse"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: AppColors.green,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      "reste".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["tontine"]["remain"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: AppColors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        width: MediaQuery.of(context).size.width /
-                                            2.1,
-                                        padding: EdgeInsets.all(7),
-                                        margin: EdgeInsets.only(
-                                            left: 5, right: 5, top: 5),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 5),
-                                                padding:
-                                                    EdgeInsets.only(bottom: 2),
+                                                BorderRadius.circular(5),
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.1,
+                                          padding: EdgeInsets.all(7.r),
+                                          margin: EdgeInsets.only(
+                                            left: 5.w,
+                                            right: 5.w,
+                                            top: 5.h,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 5.h),
+                                                padding: EdgeInsets.only(
+                                                    bottom: 2.h),
                                                 alignment: Alignment.centerLeft,
                                                 decoration: BoxDecoration(
                                                   border: Border(
                                                     bottom: BorderSide(
-                                                      width: 0.3,
-                                                      color: AppColors.blackBlue,
+                                                      width: 0.3.r,
+                                                      color:
+                                                          AppColors.blackBlue,
                                                     ),
                                                   ),
                                                 ),
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      '${"cotisation".tr().toUpperCase()}S',
+                                                      ("Fonds de caisse".tr())
+                                                          .toUpperCase(),
                                                       style: TextStyle(
                                                         color: AppColors
                                                             .blackBlueAccent1,
-                                                        fontSize: 10,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "a_payer"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(double.parse(currentDetailUser["situation_membre"]["cash_fund"]["total"]))}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "payé"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(double.parse(currentDetailUser["situation_membre"]["cash_fund"]["verse"]))}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color:
+                                                              AppColors.green,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "reste"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["cash_fund"]["remain"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.1,
+                                          padding: EdgeInsets.all(7.r),
+                                          margin: EdgeInsets.only(
+                                            left: 5.w,
+                                            right: 5.w,
+                                            top: 5.h,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 5.h),
+                                                padding: EdgeInsets.only(
+                                                    bottom: 2.h),
+                                                alignment: Alignment.centerLeft,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      width: 0.3.r,
+                                                      color:
+                                                          AppColors.blackBlue,
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "TONTINES",
+                                                      style: TextStyle(
+                                                        color: AppColors
+                                                            .blackBlueAccent1,
+                                                        fontSize: 10.sp,
                                                         fontWeight:
                                                             FontWeight.w800,
                                                       ),
                                                     ),
                                                     Text(
-                                                      " (${currentDetailUser["situation_membre"]["cotisation"]["nbre"]})",
+                                                      " (${currentDetailUser["situation_membre"]["tontine"]["nbre"]})",
                                                       style: TextStyle(
-                                                        fontSize: 9,
+                                                        fontSize: 9.sp,
                                                         fontWeight:
                                                             FontWeight.w900,
                                                         color: AppColors
@@ -607,256 +507,436 @@ class _AccountPageState extends State<AccountPage> {
                                                       ),
                                                     ),
                                                   ],
-                                                )),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "a_payer"
-                                                          .tr()
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["cotisation"]["total"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "payé".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["cotisation"]["verse"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: AppColors.green,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      "reste".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["cotisation"]["remain"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: AppColors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        width: MediaQuery.of(context).size.width /
-                                            2.1,
-                                        padding: EdgeInsets.all(7),
-                                        margin: EdgeInsets.only(
-                                            left: 5, right: 5, top: 5),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(bottom: 5),
-                                              padding: EdgeInsets.only(bottom: 2),
-                                              alignment: Alignment.centerLeft,
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    width: 0.3,
-                                                    color: AppColors.blackBlue,
-                                                  ),
                                                 ),
                                               ),
-                                              child: Row(
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    "SANCTIONS",
-                                                    style: TextStyle(
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                      fontSize: 10,
-                                                      fontWeight: FontWeight.w800,
-                                                    ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "a_payer"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["tontine"]["total"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Text(
-                                                    " (${currentDetailUser["situation_membre"]["sanction"]["nbre"]})",
-                                                    style: TextStyle(
-                                                      fontSize: 9,
-                                                      fontWeight: FontWeight.w900,
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                    ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "payé"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["tontine"]["verse"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color:
+                                                              AppColors.green,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "reste"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["tontine"]["remain"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "a_payer"
-                                                          .tr()
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["sanction"]["total"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "payé".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["sanction"]["verse"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: AppColors.green,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      "reste".tr().toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${formatMontantFrancais(currentDetailUser["situation_membre"]["sanction"]["remain"].toDouble())}",
-                                                      style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                          ],
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.1,
+                                          padding: EdgeInsets.all(7.r),
+                                          margin: EdgeInsets.only(
+                                            left: 5.w,
+                                            right: 5.w,
+                                            top: 5.h,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                  margin: EdgeInsets.only(
+                                                    bottom: 5.h,
+                                                  ),
+                                                  padding: EdgeInsets.only(
+                                                    bottom: 2.h,
+                                                  ),
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        width: 0.3.r,
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '${"cotisation".tr().toUpperCase()}S',
+                                                        style: TextStyle(
+                                                          color: AppColors
+                                                              .blackBlueAccent1,
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        " (${currentDetailUser["situation_membre"]["cotisation"]["nbre"]})",
+                                                        style: TextStyle(
+                                                          fontSize: 9.sp,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          color: AppColors
+                                                              .blackBlueAccent1,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "a_payer"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["cotisation"]["total"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "payé"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["cotisation"]["verse"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color:
+                                                              AppColors.green,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "reste"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["cotisation"]["remain"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.1,
+                                          padding: EdgeInsets.all(7.r),
+                                          margin: EdgeInsets.only(
+                                            left: 5.w,
+                                            right: 5.w,
+                                            top: 5.h,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                  bottom: 5.h,
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                  bottom: 2.h,
+                                                ),
+                                                alignment: Alignment.centerLeft,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      width: 0.3.r,
+                                                      color:
+                                                          AppColors.blackBlue,
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "SANCTIONS",
+                                                      style: TextStyle(
+                                                        color: AppColors
+                                                            .blackBlueAccent1,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      " (${currentDetailUser["situation_membre"]["sanction"]["nbre"]})",
+                                                      style: TextStyle(
+                                                        fontSize: 9.sp,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        color: AppColors
+                                                            .blackBlueAccent1,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "a_payer"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["sanction"]["total"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "payé"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["sanction"]["verse"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color:
+                                                              AppColors.green,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "reste"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${formatMontantFrancais(currentDetailUser["situation_membre"]["sanction"]["remain"].toDouble())}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-        
+                    /**/
+
                     Container(
                       width: MediaQuery.of(context).size.width,
                       // alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 10, right: 10),
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 15, bottom: 5),
+                            margin: EdgeInsets.only(top: 15.h, bottom: 5.h),
                             width: MediaQuery.of(context).size.width,
                             child: Text(
                               "informations_personnelles".tr(),
                               style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.blackBlueAccent1),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(7),
+                            padding: EdgeInsets.all(7.r),
                             decoration: BoxDecoration(
                               color: AppColors.blackBlueAccent2,
                               borderRadius: BorderRadius.circular(10),
@@ -866,9 +946,11 @@ class _AccountPageState extends State<AccountPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  width: MediaQuery.of(context).size.width / 2.2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.2,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         child: Column(
@@ -879,10 +961,11 @@ class _AccountPageState extends State<AccountPage> {
                                               children: [
                                                 Container(
                                                   margin: EdgeInsets.only(
-                                                      right: 7, bottom: 20),
+                                                      right: 7.w, bottom: 20.h),
                                                   child: Icon(
-                                                    Icons.phone_android_outlined,
-                                                    size: 18,
+                                                    Icons
+                                                        .phone_android_outlined,
+                                                    size: 18.sp,
                                                     color: Color.fromARGB(
                                                         255, 20, 45, 99),
                                                   ),
@@ -897,7 +980,7 @@ class _AccountPageState extends State<AccountPage> {
                                                         style: TextStyle(
                                                           color: Color.fromARGB(
                                                               139, 20, 45, 99),
-                                                          fontSize: 12,
+                                                          fontSize: 12.sp,
                                                           fontWeight:
                                                               FontWeight.w800,
                                                         ),
@@ -907,11 +990,16 @@ class _AccountPageState extends State<AccountPage> {
                                                       child: Text(
                                                         "${currentDetailUser["first_phone"]}",
                                                         style: TextStyle(
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
-                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontSize: 12.sp,
                                                             fontWeight:
-                                                                FontWeight.w500),
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
                                                     ),
                                                   ],
@@ -921,7 +1009,7 @@ class _AccountPageState extends State<AccountPage> {
                                           ],
                                         ),
                                       ),
-        
+
                                       if (currentDetailUser["email"] != null)
                                         Container(
                                           // margin: EdgeInsets.only(bottom: 5),
@@ -933,12 +1021,12 @@ class _AccountPageState extends State<AccountPage> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                      right: 7,
-                                                      bottom: 20,
+                                                      right: 7.w,
+                                                      bottom: 20.h,
                                                     ),
                                                     child: Icon(
                                                       Icons.email_outlined,
-                                                      size: 18,
+                                                      size: 18.sp,
                                                       color: Color.fromARGB(
                                                         255,
                                                         20,
@@ -949,39 +1037,44 @@ class _AccountPageState extends State<AccountPage> {
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Container(
                                                         child: Text(
                                                           "Email",
                                                           style: TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
+                                                              color: Color
+                                                                  .fromARGB(
                                                                       139,
                                                                       20,
                                                                       45,
                                                                       99),
-                                                              fontSize: 12,
+                                                              fontSize: 12.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w800),
                                                         ),
                                                       ),
                                                       Container(
-                                                        width:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .width /
-                                                                2.6,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            2.6,
                                                         child: Text(
                                                           currentDetailUser[
                                                               "email"],
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: TextStyle(
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
-                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontSize: 12.sp,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
@@ -994,7 +1087,7 @@ class _AccountPageState extends State<AccountPage> {
                                             ],
                                           ),
                                         ),
-        
+
                                       if (currentDetailUser["date_adhesion"] !=
                                           null)
                                         Container(
@@ -1007,12 +1100,12 @@ class _AccountPageState extends State<AccountPage> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                      right: 7,
-                                                      bottom: 20,
+                                                      right: 7.w,
+                                                      bottom: 20.h,
                                                     ),
                                                     child: Icon(
                                                       Icons.calendar_month,
-                                                      size: 18,
+                                                      size: 18.sp,
                                                       color: Color.fromARGB(
                                                         255,
                                                         20,
@@ -1023,19 +1116,20 @@ class _AccountPageState extends State<AccountPage> {
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Container(
                                                         child: Text(
                                                           "date_adhesion".tr(),
                                                           style: TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
+                                                              color: Color
+                                                                  .fromARGB(
                                                                       139,
                                                                       20,
                                                                       45,
                                                                       99),
-                                                              fontSize: 12,
+                                                              fontSize: 12.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w800),
@@ -1045,13 +1139,13 @@ class _AccountPageState extends State<AccountPage> {
                                                         child: Text(
                                                           '${formatDateLiteral(currentDetailUser["date_adhesion"])}',
                                                           style: TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
+                                                              color: Color
+                                                                  .fromARGB(
                                                                       255,
                                                                       20,
                                                                       45,
                                                                       99),
-                                                              fontSize: 12,
+                                                              fontSize: 12.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),
@@ -1117,13 +1211,20 @@ class _AccountPageState extends State<AccountPage> {
                                     ],
                                   ),
                                 ),
-        
                                 Container(
-                                  width: MediaQuery.of(context).size.width / 2.2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.2,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      if (currentDetailUser["country"] != null)
+                                      if (currentDetailUser["country"] !=
+                                              null &&
+                                          currentDetailUser["country"] !=
+                                              "undefined" &&
+                                          int.tryParse(currentDetailUser[
+                                                  "country"]) ==
+                                              null)
                                         Container(
                                           child: Column(
                                             crossAxisAlignment:
@@ -1133,25 +1234,31 @@ class _AccountPageState extends State<AccountPage> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                        right: 7, bottom: 20),
+                                                        right: 7.w,
+                                                        bottom: 20.h),
                                                     child: Icon(
                                                       Icons.flag_outlined,
-                                                      size: 18,
+                                                      size: 18.sp,
                                                       color: Color.fromARGB(
                                                           255, 20, 45, 99),
                                                     ),
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Container(
                                                         child: Text(
                                                           "Pays".tr(),
                                                           style: TextStyle(
-                                                            color: Color.fromARGB(
-                                                                139, 20, 45, 99),
-                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    139,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontSize: 12.sp,
                                                             fontWeight:
                                                                 FontWeight.w800,
                                                           ),
@@ -1161,13 +1268,13 @@ class _AccountPageState extends State<AccountPage> {
                                                         child: Text(
                                                           "${currentDetailUser["country"]}",
                                                           style: TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
+                                                              color: Color
+                                                                  .fromARGB(
                                                                       255,
                                                                       20,
                                                                       45,
                                                                       99),
-                                                              fontSize: 12,
+                                                              fontSize: 12.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),
@@ -1180,7 +1287,9 @@ class _AccountPageState extends State<AccountPage> {
                                             ],
                                           ),
                                         ),
-                                      if (currentDetailUser["city"] != null)
+                                      if (currentDetailUser["city"] != null &&
+                                          currentDetailUser["city"] !=
+                                              "undefined")
                                         Container(
                                           // margin: EdgeInsets.only(bottom: 5),
                                           child: Column(
@@ -1191,12 +1300,12 @@ class _AccountPageState extends State<AccountPage> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                      right: 7,
-                                                      bottom: 20,
+                                                      right: 7.w,
+                                                      bottom: 20.h,
                                                     ),
                                                     child: Icon(
                                                       Icons.home_work_outlined,
-                                                      size: 18,
+                                                      size: 18.sp,
                                                       color: Color.fromARGB(
                                                         255,
                                                         20,
@@ -1207,39 +1316,44 @@ class _AccountPageState extends State<AccountPage> {
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Container(
                                                         child: Text(
                                                           "Ville".tr(),
                                                           style: TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
+                                                              color: Color
+                                                                  .fromARGB(
                                                                       139,
                                                                       20,
                                                                       45,
                                                                       99),
-                                                              fontSize: 12,
+                                                              fontSize: 12.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w800),
                                                         ),
                                                       ),
                                                       Container(
-                                                        width:
-                                                            MediaQuery.of(context)
-                                                                    .size
-                                                                    .width /
-                                                                2.6,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            2.6,
                                                         child: Text(
                                                           currentDetailUser[
                                                               "city"],
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: TextStyle(
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
-                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontSize: 12.sp,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
@@ -1264,12 +1378,12 @@ class _AccountPageState extends State<AccountPage> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                      right: 7,
-                                                      bottom: 20,
+                                                      right: 7.w,
+                                                      bottom: 20.h,
                                                     ),
                                                     child: Icon(
                                                       Icons.diversity_1,
-                                                      size: 18,
+                                                      size: 18.sp,
                                                       color: Color.fromARGB(
                                                         255,
                                                         20,
@@ -1280,20 +1394,21 @@ class _AccountPageState extends State<AccountPage> {
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Container(
                                                         child: Text(
                                                           "Situation matrimoniale"
                                                               .tr(),
                                                           style: TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
+                                                              color: Color
+                                                                  .fromARGB(
                                                                       139,
                                                                       20,
                                                                       45,
                                                                       99),
-                                                              fontSize: 12,
+                                                              fontSize: 12.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w800),
@@ -1303,13 +1418,13 @@ class _AccountPageState extends State<AccountPage> {
                                                         child: Text(
                                                           '${currentDetailUser["marital_status"] == "0" ? "Célibataire".tr() : currentDetailUser["marital_status"] == "1" ? "Marié".tr() : currentDetailUser["marital_status"] == "2" ? "Divorcé".tr() : currentDetailUser["marital_status"] == "3" ? "Veuf".tr() : ""}',
                                                           style: TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(
+                                                              color: Color
+                                                                  .fromARGB(
                                                                       255,
                                                                       20,
                                                                       45,
                                                                       99),
-                                                              fontSize: 12,
+                                                              fontSize: 12.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),
@@ -1334,23 +1449,23 @@ class _AccountPageState extends State<AccountPage> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       // alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 10, right: 10),
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 15, bottom: 5),
+                            margin: EdgeInsets.only(top: 15.h, bottom: 5.h),
                             width: MediaQuery.of(context).size.width,
                             child: Text(
                               "vos_bénéficiaires".tr(),
                               style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.blackBlueAccent1),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(7),
+                            padding: EdgeInsets.all(7.r),
                             decoration: BoxDecoration(
                               color: Color.fromARGB(19, 20, 45, 99),
                               borderRadius: BorderRadius.circular(10),
@@ -1365,7 +1480,8 @@ class _AccountPageState extends State<AccountPage> {
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       final itemCurrentDetailUser =
-                                          currentDetailUser["beneficiary"][index];
+                                          currentDetailUser["beneficiary"]
+                                              [index];
                                       if (currentDetailUser["beneficiary"]
                                               .length !=
                                           0) {
@@ -1385,7 +1501,7 @@ class _AccountPageState extends State<AccountPage> {
                                             children: [
                                               Container(
                                                 margin: EdgeInsets.only(
-                                                    bottom: 2, top: 3),
+                                                    bottom: 2.h, top: 3.h),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -1393,14 +1509,16 @@ class _AccountPageState extends State<AccountPage> {
                                                     Row(
                                                       children: [
                                                         Container(
-                                                          margin: EdgeInsets.only(
-                                                            right: 7,
-                                                            bottom: 20,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            right: 7.w,
+                                                            bottom: 20.h,
                                                           ),
                                                           child: Icon(
                                                             Icons.person,
-                                                            size: 18,
-                                                            color: Color.fromARGB(
+                                                            size: 18.sp,
+                                                            color:
+                                                                Color.fromARGB(
                                                               255,
                                                               20,
                                                               45,
@@ -1424,7 +1542,8 @@ class _AccountPageState extends State<AccountPage> {
                                                                             20,
                                                                             45,
                                                                             99),
-                                                                    fontSize: 12,
+                                                                    fontSize:
+                                                                        12.sp,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w800),
@@ -1440,7 +1559,8 @@ class _AccountPageState extends State<AccountPage> {
                                                                             20,
                                                                             45,
                                                                             99),
-                                                                    fontSize: 12,
+                                                                    fontSize:
+                                                                        12.sp,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
@@ -1461,16 +1581,21 @@ class _AccountPageState extends State<AccountPage> {
                                                     Row(
                                                       children: [
                                                         Container(
-                                                          margin: EdgeInsets.only(
-                                                            right: 7,
-                                                            bottom: 20,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            right: 7.w,
+                                                            bottom: 20.h,
                                                           ),
                                                           child: Icon(
                                                             Icons
                                                                 .phone_android_outlined,
-                                                            size: 18,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
+                                                            size: 18.sp,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                           ),
                                                         ),
                                                         Column(
@@ -1480,19 +1605,23 @@ class _AccountPageState extends State<AccountPage> {
                                                           children: [
                                                             Container(
                                                               child: Text(
-                                                                "téléphone".tr(),
-                                                                style: TextStyle(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                      139,
-                                                                      20,
-                                                                      45,
-                                                                      99,
-                                                                    ),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w800,
-                                                                    fontSize: 12),
+                                                                "téléphone"
+                                                                    .tr(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                    139,
+                                                                    20,
+                                                                    45,
+                                                                    99,
+                                                                  ),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                ),
                                                               ),
                                                             ),
                                                             Container(
@@ -1508,7 +1637,8 @@ class _AccountPageState extends State<AccountPage> {
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500,
-                                                                    fontSize: 12),
+                                                                    fontSize:
+                                                                        12.sp),
                                                               ),
                                                             ),
                                                           ],
@@ -1527,35 +1657,36 @@ class _AccountPageState extends State<AccountPage> {
                                 : Text(
                                     "Vous n'avez pas de bénéficiaire".tr(),
                                     style: TextStyle(
-                                        color: Color.fromARGB(112, 20, 45, 99),
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 12),
+                                      color: Color.fromARGB(112, 20, 45, 99),
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12.sp,
+                                    ),
                                   ),
                           )
                         ],
                       ),
                     ),
-        
+
                     Container(
                       width: MediaQuery.of(context).size.width,
                       // alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 10, right: 10),
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 15, bottom: 5),
+                            margin: EdgeInsets.only(top: 15.h, bottom: 5.h),
                             width: MediaQuery.of(context).size.width,
                             child: Text(
                               "vos_transactions".tr(),
                               style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.blackBlueAccent1),
                             ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(7),
+                            padding: EdgeInsets.all(7.r),
                             decoration: BoxDecoration(
                               color: Color.fromARGB(19, 20, 45, 99),
                               borderRadius: BorderRadius.circular(10),
@@ -1575,25 +1706,26 @@ class _AccountPageState extends State<AccountPage> {
                                         decoration: BoxDecoration(
                                           border: Border(
                                             bottom: BorderSide(
-                                              width: 0.5,
-                                              color:
-                                                  Color.fromARGB(76, 20, 45, 99),
+                                              width: 0.5.r,
+                                              color: Color.fromARGB(
+                                                  76, 20, 45, 99),
                                             ),
                                           ),
                                         ),
                                         margin: EdgeInsets.only(
-                                          bottom: 10,
+                                          bottom: 10.h,
                                           // left: 5,
                                           // right: 5,
                                           // top: 5,
                                         ),
                                         padding: EdgeInsets.only(
-                                          bottom: 5,
+                                          bottom: 5.h,
                                           // left: 5,
                                           // right: 5,
                                           // top: 5,
                                         ),
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -1602,118 +1734,112 @@ class _AccountPageState extends State<AccountPage> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          child: Text(
-                                                            "Date : ",
-                                                            style: TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Color.fromARGB(
-                                                                      255,
-                                                                      20,
-                                                                      45,
-                                                                      99),
-                                                              fontWeight:
-                                                                  FontWeight.w300,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          child: Text(
-                                                            formatDateLiteral(
-                                                                itemCurrentDetailUser[
-                                                                    "created_at"]),
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              color:
-                                                                  Color.fromARGB(
-                                                                      255,
-                                                                      20,
-                                                                      45,
-                                                                      99),
-                                                              fontWeight:
-                                                                  FontWeight.w700,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
                                                 Container(
-                                                  margin: EdgeInsets.only(
-                                                      top: 5, bottom: 5),
+                                                  // margin: EdgeInsets.only(
+                                                  //     top: 5, bottom: 5),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
                                                     children: [
+                                                      // Container(
+                                                      //   color: AppColors.blackBlueAccent1,
+                                                      //   child: Text(
+                                                      //     "Motif : ",
+                                                      //     style: TextStyle(
+                                                      //       fontSize: 12,
+                                                      //       color:
+                                                      //           Color.fromARGB(
+                                                      //               255,
+                                                      //               20,
+                                                      //               45,
+                                                      //               99),
+                                                      //       fontWeight:
+                                                      //           FontWeight.w300,
+                                                      //     ),
+                                                      //   ),
+                                                      // ),
                                                       Container(
-                                                        child: Text(
-                                                          "Motif : ",
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
-                                                            fontWeight:
-                                                                FontWeight.w300,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        width: MediaQuery.sizeOf(
-                                                                    context)
-                                                                .width /
-                                                            1.5,
-                                                        child: Text(
-                                                          "${itemCurrentDetailUser["description"]}",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Color.fromARGB(
-                                                              255,
-                                                              20,
-                                                              45,
-                                                              99,
-                                                            ),
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width /
+                                                                1.5,
+                                                        child: Html(
+                                                          data:
+                                                              "<p style='color:#142D63 ; font-size: 12px; padding: 0 0 0 0; margin: 0 0 0 0'> <Span style='color:#142D63 ; font-size: 12px; padding: 0 0 0 0; margin: 0 0 0 0'></Span>${itemCurrentDetailUser["description"]}</p>",
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 Container(
+                                                  // color: AppColors.bleuLight,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width /
+                                                          1.16,
                                                   child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
-                                                      Container(
-                                                        child: Text(
-                                                          "${"montant".tr()} : ",
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
-                                                            fontWeight:
-                                                                FontWeight.w300,
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            child: Text(
+                                                              "${"montant".tr()} : ",
+                                                              style: TextStyle(
+                                                                fontSize: 12.sp,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        20,
+                                                                        45,
+                                                                        99),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
+                                                          Container(
+                                                            child: Text(
+                                                              "${"${formatMontantFrancais(double.parse(itemCurrentDetailUser["amount"]))} FCFA"}",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .clip,
+                                                              style: TextStyle(
+                                                                fontSize: 12.sp,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        20,
+                                                                        45,
+                                                                        99),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                       Container(
                                                         child: Text(
-                                                          "${"${formatMontantFrancais(double.parse(itemCurrentDetailUser["amount"]))} FCFA"}",
-                                                          overflow:
-                                                              TextOverflow.clip,
+                                                          formatDateLiteral(
+                                                              itemCurrentDetailUser[
+                                                                  "created_at"]),
                                                           style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
+                                                            fontSize: 10.sp,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
                                                                 FontWeight.w700,
                                                           ),
@@ -1725,15 +1851,16 @@ class _AccountPageState extends State<AccountPage> {
                                               ],
                                             ),
                                             Container(
-                                              padding: EdgeInsets.all(3),
+                                              padding: EdgeInsets.all(3.r),
                                               decoration: BoxDecoration(
                                                   color: Color.fromARGB(
                                                       28, 228, 0, 0),
                                                   borderRadius:
-                                                      BorderRadius.circular(360)),
+                                                      BorderRadius.circular(
+                                                          360)),
                                               child: Icon(
                                                 Icons.close_fullscreen,
-                                                size: 12,
+                                                size: 12.sp,
                                                 color: Colors.red,
                                               ),
                                             )
@@ -1745,9 +1872,10 @@ class _AccountPageState extends State<AccountPage> {
                                     "Vous n'avez éffectuer aucune transaction"
                                         .tr(),
                                     style: TextStyle(
-                                        color: Color.fromARGB(112, 20, 45, 99),
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 12),
+                                      color: Color.fromARGB(112, 20, 45, 99),
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12.sp,
+                                    ),
                                   ),
                           )
                         ],

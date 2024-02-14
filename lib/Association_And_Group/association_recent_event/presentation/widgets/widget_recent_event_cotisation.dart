@@ -13,6 +13,7 @@ import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class widgetRecentEventCotisation extends StatefulWidget {
   widgetRecentEventCotisation({
@@ -59,7 +60,6 @@ class _widgetRecentEventCotisationState
         .detailCotisationCubit(codeCotisation);
 
     if (detailCotisation != null) {
-     
     } else {
       print("userGroupDefault null");
     }
@@ -67,262 +67,324 @@ class _widgetRecentEventCotisationState
 
   @override
   Widget build(BuildContext context) {
-        return BlocBuilder<UserGroupCubit, UserGroupState>(
-                builder: (UserGroupcontext, UserGroupstate) {
-                  if (UserGroupstate.isLoadingChangeAss == true &&
-                      UserGroupstate.changeAssData == null )
-                      return Container(
-                      child: EasyLoader(
-                        backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                        iconSize: 50,
-                        iconColor: AppColors.blackBlueAccent1,
-                        image: AssetImage(
-                          'assets/images/Groupe_ou_Asso.png',
+    return BlocBuilder<UserGroupCubit, UserGroupState>(
+        builder: (UserGroupcontext, UserGroupstate) {
+      if (UserGroupstate.isLoadingChangeAss == true &&
+          UserGroupstate.changeAssData == null)
+        return Container(
+          child: EasyLoader(
+            backgroundColor: Color.fromARGB(0, 255, 255, 255),
+            iconSize: 50.sp,
+            iconColor: AppColors.blackBlueAccent1,
+            image: AssetImage(
+              'assets/images/Groupe_ou_Asso.png',
+            ),
+          ),
+        );
+      return GestureDetector(
+        onTap: () {
+          if (checkTransparenceStatus(
+              context
+                  .read<UserGroupCubit>()
+                  .state
+                  .changeAssData!
+                  .user_group!
+                  .configs,
+              context.read<AuthCubit>().state.detailUser!["isMember"])) {
+            handleDetailCotisation(widget.codeCotisation);
+
+            Modal().showBottomSheetHistCotisation(
+                context,
+                widget.codeCotisation,
+                widget.lienDePaiement,
+                widget.dateOpen,
+                widget.dateOpen,
+                widget.montantCotisation,
+                widget.motif,
+                widget.montantCollecte,
+                widget.type,
+                widget.isPassed,
+                0);
+          } else {
+            handleDetailCotisation(widget.codeCotisation);
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailCotisationPage(
+                  codeCotisation: widget.codeCotisation,
+                  lienDePaiement: widget.lienDePaiement,
+                  dateCotisation: widget.dateOpen,
+                  heureCotisation: widget.dateOpen,
+                  montantCotisations: widget.montantCotisation,
+                  motifCotisations: widget.motif,
+                  soldeCotisation: widget.montantCollecte,
+                  type: widget.type,
+                  isPassed: widget.isPassed,
+                  isPayed: 0,
+                ),
+              ),
+            );
+          }
+        },
+        // onTap: () {
+
+        //   handleDetailCotisation(widget.codeCotisation);
+
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => DetailCotisationPage(
+        //         codeCotisation: widget.codeCotisation,
+        //         lienDePaiement: widget.lienDePaiement,
+        //         dateCotisation: widget.dateOpen,
+        //         heureCotisation: widget.dateOpen,
+        //         montantCotisations: widget.montantCotisation,
+        //         motifCotisations: widget.motif,
+        //         soldeCotisation: widget.montantCollecte,
+        //         type: widget.type,
+        //         isPassed: widget.isPassed,
+        //         isPayed: 0,
+        //       ),
+        //     ),
+        //   );
+        // },
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: widget.isPassed == 0
+                    ? AppColors.white
+                    : Color.fromARGB(255, 255, 247, 247),
+                // borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(15.r),
+                border: Border.all(
+                  color: widget.isPassed == 0 ? AppColors.white : AppColors.red,
+                  width: 0.5.r,
+                ),
+              ),
+              padding: EdgeInsets.all(10.r
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 5.w),
+                            width: 11.w,
+                            height: 11.h,
+                            decoration: BoxDecoration(
+                              color: widget.isPassed == 0
+                                  ? AppColors.colorButton
+                                  : AppColors.red,
+                              borderRadius: BorderRadius.circular(360.r),
+                            ),
+                          ),
+                          Text(
+                            "${'cotisation_capital'.tr()} ${widget.rublique}"
+                                .toUpperCase(),
+                            style: TextStyle(
+                              color: AppColors.blackBlue,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          String msg =
+                              "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+
+                          Modal().showModalActionPayement(
+                            context,
+                            msg,
+                            widget.lienDePaiement,
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 72.w,
+                          padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 5.w,),
+                          decoration: BoxDecoration(
+                            color: AppColors.colorButton,
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          child: Container(
+                            child: Text(
+                              "cotiser".tr(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12.sp,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    );
-        return GestureDetector(
-          onTap: () {
-            if (checkTransparenceStatus(context.read<UserGroupCubit>().state.changeAssData!.user_group!.configs,
-                context.read<AuthCubit>().state.detailUser!["isMember"])) {
-              handleDetailCotisation(  widget.codeCotisation);
-        
-              Modal().showBottomSheetHistCotisation(context, widget.codeCotisation, widget.lienDePaiement,
-          widget.dateOpen,
-          widget.dateOpen,
-          widget.montantCotisation,
-          widget.motif,
-          widget.montantCollecte,
-           widget.type,
-          widget.isPassed,
-          0);
-            }
-          },
-          // onTap: () {
-        
-          //   handleDetailCotisation(widget.codeCotisation);
-        
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => DetailCotisationPage(
-          //         codeCotisation: widget.codeCotisation,
-          //         lienDePaiement: widget.lienDePaiement,
-          //         dateCotisation: widget.dateOpen,
-          //         heureCotisation: widget.dateOpen,
-          //         montantCotisations: widget.montantCotisation,
-          //         motifCotisations: widget.motif,
-          //         soldeCotisation: widget.montantCollecte,
-          //         type: widget.type,
-          //         isPassed: widget.isPassed,
-          //         isPayed: 0,
-          //       ),
-          //     ),
-          //   );
-          // },
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: widget.isPassed == 0
-                      ? AppColors.white
-                      : Color.fromARGB(255, 255, 247, 247),
-                  // borderRadius: BorderRadius.circular(15),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: widget.isPassed == 0 ? AppColors.white : AppColors.red,
-                    width: 0.5,
+                    ],
                   ),
-                ),
-                padding: EdgeInsets.only(
-                  top: 10,
-                  left: 10,
-                  right: 10,
-                  bottom: 10,
-                ),
-                child: Column(
-                  children: [
-                    Row(
+                  Container(
+                    margin: EdgeInsets.only(top: 8.h),
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            "${widget.motif}",
+                            // 'Voir bebe de l"enfant de djousse',
+                            style: TextStyle(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.blackBlue,
+                            ),
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                        Text(
+                          widget.source == ''
+                              ? "(${(widget.nomBeneficiaire)})"
+                              : "(${(widget.source)})",
+                          style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.blackBlueAccent1,
+                              overflow: TextOverflow.ellipsis,),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5.h,),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        if (!checkTransparenceStatus(
+                            context
+                                .read<UserGroupCubit>()
+                                .state
+                                .changeAssData!
+                                .user_group!
+                                .configs,
+                            context
+                                .read<AuthCubit>()
+                                .state
+                                .detailUser!["isMember"]))
+                          Container(
+                            margin: EdgeInsetsDirectional.only(top: 5.h,),
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              "${formatCompareDateReturnWellValue(widget.dateClose)}",
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.blackBlueAccent1,
+                              ),
+                            ),
+                          ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (checkTransparenceStatus(
+                                context
+                                    .read<UserGroupCubit>()
+                                    .state
+                                    .changeAssData!
+                                    .user_group!
+                                    .configs,
+                                context
+                                    .read<AuthCubit>()
+                                    .state
+                                    .detailUser!["isMember"]))
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      "montant_collecté".tr(),
+                                      style: TextStyle(
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      "${formatMontantFrancais(
+                                        double.parse(
+                                            "${widget.montantCollecte}"),
+                                      )} FCFA",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: AppColors.green,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(right: 5),
-                              width: 11,
-                              height: 11,
-                              decoration: BoxDecoration(
-                                  color: widget.isPassed == 0 ? AppColors.colorButton : AppColors.red,
-                                  borderRadius: BorderRadius.circular(360),),
+                              child: Text(
+                                "montant".tr(),
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
                             ),
-                            Text(
-                              "${'cotisation_capital'.tr()} ${widget.rublique}".toUpperCase(),
-                              style: TextStyle(
-                                color: AppColors.blackBlue,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
+                            Container(
+                              child: Text(
+                                "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColors.blackBlue,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            String msg =
-                                "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-        
-                            Modal().showModalActionPayement(
-                              context,
-                              msg,
-                              widget.lienDePaiement,
-                            );
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 72,
-                            padding: EdgeInsets.only(
-                                left: 8, right: 8, top: 5, bottom: 5),
-                            decoration: BoxDecoration(
-                              color: AppColors.colorButton,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Container(
-                              child: Text(
-                                "cotiser".tr(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
+                  ),
+                  if (checkTransparenceStatus(
+                      context
+                          .read<UserGroupCubit>()
+                          .state
+                          .changeAssData!
+                          .user_group!
+                          .configs,
+                      context.read<AuthCubit>().state.detailUser!["isMember"]))
                     Container(
-                      margin: EdgeInsets.only(top: 8),
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Text(
-                              "${widget.motif}",
-                              // 'Voir bebe de l"enfant de djousse',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.blackBlue,
-                              ),
-                              overflow: TextOverflow.clip,
-                            ),
-                          ),
-                          Text(
-                            widget.source == ''
-                                ? "(${(widget.nomBeneficiaire)})"
-                                : "(${(widget.source)})",
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.blackBlueAccent1,
-                                overflow: TextOverflow.ellipsis),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (checkTransparenceStatus(
-                                  context
-                            .read<UserGroupCubit>()
-                            .state.changeAssData!.user_group!.configs,
-                                  context
-                                      .read<AuthCubit>()
-                                      .state
-                                      .detailUser!["isMember"]))
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "montant_collecté".tr(),
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.blackBlueAccent1,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        "${formatMontantFrancais(
-                                          double.parse("${widget.montantCollecte}"),
-                                        )} FCFA",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: AppColors.green,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                child: Text(
-                                  "montant".tr(),
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.blackBlueAccent1,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                child: Text(
-                                  "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.blackBlue,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsetsDirectional.only(top: 5),
+                      margin: EdgeInsetsDirectional.only(top: 5.h),
                       alignment: Alignment.bottomRight,
                       child: Text(
                         "${formatCompareDateReturnWellValue(widget.dateClose)}",
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
                           color: AppColors.blackBlueAccent1,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
-              // Container(),
-            ],
-          ),
-        );
-      }
-    );
+            ),
+            // Container(),
+          ],
+        ),
+      );
+    });
   }
 }

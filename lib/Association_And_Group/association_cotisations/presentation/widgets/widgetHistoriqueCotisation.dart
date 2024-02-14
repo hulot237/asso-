@@ -2,6 +2,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WidgetHistoriqueCotisation extends StatefulWidget {
   WidgetHistoriqueCotisation({
@@ -36,12 +37,12 @@ class _WidgetHistoriqueCotisationState
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
+        padding: EdgeInsets.only(top: 10.h, bottom: 10.h, left: 5.w, right: 5.w),
         decoration: BoxDecoration(
             color: AppColors.white,
             border: Border(
                 bottom: BorderSide(
-              width: 1,
+              width: 1.r,
               color: Color.fromARGB(85, 9, 185, 255),
             ))),
         width: double.infinity,
@@ -53,13 +54,13 @@ class _WidgetHistoriqueCotisationState
               child: Row(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(50.r),
                     child: Container(
-                      height: 50,
-                      width: 50,
+                      height: 50.h,
+                      width: 50.w,
                       decoration: BoxDecoration(
                           color: Colors.lightBlue,
-                          borderRadius: BorderRadius.circular(50)),
+                          borderRadius: BorderRadius.circular(50.r)),
                       child: Image.network(
                         "${Variables.LienAIP}${widget.photoProfil}",
                         fit: BoxFit.cover,
@@ -67,18 +68,18 @@ class _WidgetHistoriqueCotisationState
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 5),
+                    margin: EdgeInsets.only(left: 5.w),
                     width: MediaQuery.of(context).size.width / 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(bottom: 15),
+                          margin: EdgeInsets.only(bottom: 15.h),
                           child: Text(
                             "${widget.nom} ${widget.prenom}",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w800,
                               color: AppColors.blackBlue,
                             ),
@@ -88,7 +89,7 @@ class _WidgetHistoriqueCotisationState
                           child: Text(
                             "${widget.matricule}",
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w800,
                               color: Color.fromRGBO(20, 45, 99, 0.349),
                             ),
@@ -115,9 +116,9 @@ class _WidgetHistoriqueCotisationState
                             child: Text(
                               "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA",
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w800,
-                                  color: Colors.red),
+                                  color: Colors.red,),
                             ),
                           ),
                           // Container(
@@ -133,16 +134,16 @@ class _WidgetHistoriqueCotisationState
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(1),
-                      margin: EdgeInsets.only(left: 5),
+                      padding: EdgeInsets.all(1.r),
+                      margin: EdgeInsets.only(left: 5.w),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.circular(50.r),
                         color: Color.fromARGB(40, 175, 76, 76),
                       ),
                       child: Icon(
                         Icons.close,
                         color: Colors.red,
-                        size: 10,
+                        size: 10.sp,
                       ),
                     ),
                   ],
@@ -164,7 +165,7 @@ class _WidgetHistoriqueCotisationState
                             child: Text(
                               "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA",
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w800,
                                   color: Colors.orange),
                             ),
@@ -182,16 +183,16 @@ class _WidgetHistoriqueCotisationState
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(1),
-                      margin: EdgeInsets.only(left: 5),
+                      padding: EdgeInsets.all(1.r),
+                      margin: EdgeInsets.only(left: 5.w),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.circular(50.r),
                         color: Color.fromARGB(40, 175, 76, 76),
                       ),
                       child: Icon(
                         Icons.close,
                         color: Colors.orange,
-                        size: 10,
+                        size: 10.sp,
                       ),
                     ),
                   ],
@@ -210,9 +211,9 @@ class _WidgetHistoriqueCotisationState
                             child: Text(
                               "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA",
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w800,
-                                  color: AppColors.green),
+                                  color: AppColors.green,),
                             ),
                           ),
                           // Container(
@@ -228,16 +229,16 @@ class _WidgetHistoriqueCotisationState
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(1),
-                      margin: EdgeInsets.only(left: 5),
+                      padding: EdgeInsets.all(1.r),
+                      margin: EdgeInsets.only(left: 5.w),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.circular(50.r),
                         color: Color.fromARGB(40, 83, 175, 76),
                       ),
                       child: Icon(
                         Icons.done,
                         color: AppColors.green,
-                        size: 10,
+                        size: 10.sp,
                       ),
                     ),
                   ],

@@ -10,6 +10,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class widgetRecentEventSanction extends StatefulWidget {
   widgetRecentEventSanction({
@@ -45,156 +46,117 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {} else {
+    if (detailCotisation != null) {
+    } else {
       print("userGroupDefault null");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-        return BlocBuilder<UserGroupCubit, UserGroupState>(
-                builder: (UserGroupcontext, UserGroupstate) {
-                  if (UserGroupstate.isLoadingChangeAss == true &&
-                      UserGroupstate.changeAssData == null )
-                      return Container(
-                      child: EasyLoader(
-                        backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                        iconSize: 50,
-                        iconColor: AppColors.blackBlueAccent1,
-                        image: AssetImage(
-                          'assets/images/Groupe_ou_Asso.png',
+    return BlocBuilder<UserGroupCubit, UserGroupState>(
+        builder: (UserGroupcontext, UserGroupstate) {
+      if (UserGroupstate.isLoadingChangeAss == true &&
+          UserGroupstate.changeAssData == null) return Container();
+      return GestureDetector(
+        onTap: () {
+          if (widget.type == "1")
+            Modal().showModalTransactionByEvent(
+                context, widget.versement, widget.montantSanction.toString());
+        },
+        child: Container(
+          padding: EdgeInsets.all(10.r
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.r),
+            color: AppColors.white,
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 5.w),
+                        width: 11.w,
+                        height: 11.h,
+                        decoration: BoxDecoration(
+                            color: AppColors.colorButton,
+                            borderRadius: BorderRadius.circular(360.r)),
+                      ),
+                      Text(
+                        'sanction_capital'.tr(),
+                        style: TextStyle(
+                          color: AppColors.blackBlue,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12.sp,
                         ),
                       ),
-                    );
-        return GestureDetector(
-          onTap: () {
-            if (widget.type == "1")
-              Modal().showModalTransactionByEvent(
-                  context, widget.versement, widget.montantSanction.toString());
-          },
-          child: Container(
-            padding: EdgeInsets.only(
-              top: 10,
-              left: 10,
-              right: 10,
-              bottom: 10,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: AppColors.white,
-            ),
-            child: Column(
-              children: [
-                Row(
+                    ],
+                  ),
+                  if (widget.type == "1")
+                    GestureDetector(
+                      onTap: () async {
+                        String msg =
+                            "Aide-moi à payer ma sanction de *${widget.motif}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* directement via le lien https://${widget.lienDePaiement}.";
+                        Modal().showModalActionPayement(
+                          context,
+                          msg,
+                          widget.lienDePaiement,
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 72.w,
+                        padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 5.w,),
+                        decoration: BoxDecoration(
+                          color: AppColors.colorButton,
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
+                        child: Container(
+                          child: Text(
+                            "Payer".tr(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.sp,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 8.h),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "${widget.motif}",
+                  // 'Voir bebe de l"enfant de djousse',
+                  style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.blackBlue,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 5.h),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 5),
-                          width: 11,
-                              height: 11,
-                          decoration: BoxDecoration(
-                              color: AppColors.colorButton,
-                              borderRadius: BorderRadius.circular(360)),
-                        ),
-                        Text(
-                          'sanction_capital'.tr(),
-                          style: TextStyle(
-                            color: AppColors.blackBlue,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
                     if (widget.type == "1")
-                      GestureDetector(
-                        onTap: () async {
-                          String msg =
-                              "Aide-moi à payer ma sanction de *${widget.motif}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* directement via le lien https://${widget.lienDePaiement}.";
-                          Modal().showModalActionPayement(
-                            context,
-                            msg,
-                            widget.lienDePaiement,
-                          );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                            width: 72,
-                          padding:
-                              EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            color: AppColors.colorButton,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Container(
-                            child: Text(
-                              "Payer".tr(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 8),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "${widget.motif}",
-                    // 'Voir bebe de l"enfant de djousse',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.blackBlue,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (widget.type == "1")
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Text(
-                                "Avance".tr(),
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.blackBlueAccent1,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.green,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       Column(
-                        crossAxisAlignment: widget.type == "0"? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             child: Text(
-                              "a_payer".tr(),
+                              "Avance".tr(),
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 10.sp,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.blackBlueAccent1,
                               ),
@@ -202,39 +164,65 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                           ),
                           Container(
                             child: Text(
-                              widget.type == "1"
-                                  ? "${formatMontantFrancais(double.parse("${widget.montantSanction}"))} FCFA"
-                                  : "${widget.libelleSanction}",
-                              overflow: TextOverflow.ellipsis,
+                              "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
                               style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.blackBlue,
+                                fontSize: 12.sp,
+                                color: AppColors.green,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5),
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "${formatCompareDateReturnWellValueSanctionRecent(widget.dateOpen)}",
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.blackBlueAccent1,
+                    Column(
+                      crossAxisAlignment: widget.type == "0"
+                          ? CrossAxisAlignment.start
+                          : CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          child: Text(
+                            "a_payer".tr(),
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.blackBlueAccent1,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            widget.type == "1"
+                                ? "${formatMontantFrancais(double.parse("${widget.montantSanction}"))} FCFA"
+                                : "${widget.libelleSanction}",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: AppColors.blackBlue,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 5.h),
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  "${formatCompareDateReturnWellValueSanctionRecent(widget.dateOpen)}",
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.blackBlueAccent1,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }
