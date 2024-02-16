@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class TontineRepository {
   final dio = Dio();
@@ -9,7 +10,7 @@ class TontineRepository {
     try {
       log("response DetailTontineDetailTontine");
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/tontine/$codeTontine/all',
+        '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/tontine/$codeTontine/all?membre_code=${AppCubitStorage().state.membreCode}',
       );
       final List<dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");

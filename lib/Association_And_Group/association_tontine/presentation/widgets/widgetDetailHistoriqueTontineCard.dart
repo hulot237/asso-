@@ -23,6 +23,7 @@ class widgetDetailHistoriqueTontineCard extends StatefulWidget {
     required this.codeCotisation,
     required this.lienDePaiement,
     required this.nomTontine,
+    required this.isPayed,
   });
   String nomBeneficiaire;
   String dateClose;
@@ -33,6 +34,7 @@ class widgetDetailHistoriqueTontineCard extends StatefulWidget {
   String codeCotisation;
   String lienDePaiement;
   String nomTontine;
+  int isPayed;
 
   @override
   State<widgetDetailHistoriqueTontineCard> createState() =>
@@ -116,6 +118,7 @@ class _widgetDetailHistoriqueTontineCardState
                           ),
                         ),
                       ),
+                      widget.isPayed == 0?
                       GestureDetector(
                         onTap: () async {
                           String msg =
@@ -146,7 +149,14 @@ class _widgetDetailHistoriqueTontineCardState
                             ),
                           ),
                         ),
-                      ),
+                      ):Text(
+                                  "payé".tr(),
+                                  style: TextStyle(
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic
+                                  ),
+                                ),
 
                     ],
                   ),

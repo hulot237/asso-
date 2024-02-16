@@ -245,7 +245,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                     EdgeInsets.only(top: 0, left: 5.w, right: 5.w, bottom: 5.h),
                 padding: EdgeInsets.only(top: 15.h),
                 child: Text(
-                  "Historique de la tontine",
+                  "Historique de la tontine".tr(),
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
@@ -275,6 +275,11 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                   tontineContext.read<TontineCubit>().state.detailTontine;
               return Expanded(
                 child: Container(
+                  margin: EdgeInsets.only(
+                                                bottom: Platform.isIOS
+                                                    ? 70.h
+                                                    : 10.h,
+                                              ),
                   // color: AppColors.blackBlue,
                   // margin: EdgeInsets.only(top: 0, left: 5.w, right: 5.w),
                   // decoration: BoxDecoration(
@@ -315,6 +320,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                         child: Container(
                             margin: EdgeInsets.all(5.r),
                             child: widgetDetailHistoriqueTontineCard(
+                              isPayed: itemTontine['is_payed'],
                               nomTontine: widget.nomTontine,
                               lienDePaiement: itemTontine['tontine_pay_link'],
                               dateClose: itemTontine['end_date'],

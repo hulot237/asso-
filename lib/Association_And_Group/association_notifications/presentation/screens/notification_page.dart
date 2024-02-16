@@ -103,6 +103,9 @@ class _NotificationPageState extends State<NotificationPage> {
         child: Material(
           type: MaterialType.transparency,
           child: Container(
+            margin: EdgeInsets.only(
+            bottom: Platform.isIOS ? 70.h : 10.h,
+          ),
             // margin: EdgeInsets.only(top: 10),
             child: Container(
               child: BlocBuilder<NotificationCubit, NotificationState>(
@@ -211,6 +214,7 @@ class notificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       child: Column(
         children: [
           Container(

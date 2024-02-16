@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -132,12 +133,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     handleTournoiDefault();
     handleRecentEvent(AppCubitStorage().state.membreCode);
     handleChangeAss(AppCubitStorage().state.codeAssDefaul);
-    handleDetailUser(AppCubitStorage().state.membreCode,
-        AppCubitStorage().state.codeTournois);
+    handleDetailUser(AppCubitStorage().state.membreCode, AppCubitStorage().state.codeTournois);
     // handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
 
     super.initState();
   }
+
+
 
   Future refresh() async {
     handleRecentEvent(AppCubitStorage().state.membreCode);
@@ -827,8 +829,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     if (currentDetailUser!["is_inscription_payed"] == 0)
                       SliverToBoxAdapter(
                         child: Container(
-                          margin:
-                              EdgeInsets.only(left: 8.w, right: 8.w, top: 7.h),
+                          margin: EdgeInsets.only(
+                            left: 8.w,
+                            right: 8.w,
+                            top: 7.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.white,
                             borderRadius: BorderRadius.circular(15.r),
@@ -1089,9 +1094,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         }).toList();
 
                         final listeWidgetFinale = [
+                          
                           ...listWidgetTontine,
                           ...listWidgetCotisation,
-                          ...listWidgetSanction
+                          ...listWidgetSanction,
+                          Container(
+                                    
+                                    margin: EdgeInsets.only(
+                                                bottom: Platform.isIOS
+                                                    ? 70.h
+                                                    : 10.h,
+                                              ),
+                                  ),
                         ];
 
                         return listeWidgetFinale.length > 0
@@ -1101,6 +1115,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   final itemEventRecent =
                                       listeWidgetFinale[index];
                                   return Container(
+                                    
                                     margin: EdgeInsets.only(
                                       top: 7.h,
                                       left: 7.w,
@@ -1260,9 +1275,10 @@ class FixedHeaderBar extends SliverPersistentHeaderDelegate {
                         child: Text(
                           "rencontre".tr().toUpperCase(),
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.sp,
-                              color: AppColors.blackBlue,),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.sp,
+                            color: AppColors.blackBlue,
+                          ),
                           // ),
                         ),
                       ),

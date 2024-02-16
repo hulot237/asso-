@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -24,20 +26,122 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+// Widget PageScaffold({
+//   required BuildContext context,
+//   required List<Widget> child,
+//   required List<BottomNavigationBarItem> itemListAndroid,
+//   required List<BottomNavigationBarItem> itemListIos,
+//   required Widget childBottomNavBar,
+//   required int indexPage,
+// }) {
+//   Future<void> handleAllUserGroup() async {
+//     final AllUserGroup = await context
+//         .read<UserGroupCubit>()
+//         .AllUserGroupOfUserCubit(AppCubitStorage().state.tokenUser);
+//   }
+
+//   Future<void> handleTournoiDefault() async {
+//     final detailTournoiCourant = await context
+//         .read<DetailTournoiCourantCubit>()
+//         .detailTournoiCourantCubit(AppCubitStorage().state.codeTournois);
+//   }
+
+//   Future handleRecentEvent(codeMembre) async {
+//     final allRecentEvent =
+//         await context.read<RecentEventCubit>().AllRecentEventCubit(codeMembre);
+//   }
+
+//   Future handleChangeAss(codeAss) async {
+//     final allCotisationAss =
+//         await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+//   }
+
+//   Future<void> handleDetailUser(userCode, codeTournoi) async {
+//     final allCotisationAss =
+//         await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
+//   }
+
+//   Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
+//     final allCotisationAss = await context
+//         .read<CotisationCubit>()
+//         .AllCotisationAssTournoiCubit(codeTournoi, codeMembre);
+//   }
+
+//   Future<void> handleAllCompteAss(codeAssociation) async {
+//     final allCotisationAss =
+//         await context.read<CompteCubit>().AllCompteAssCubit(codeAssociation);
+//   }
+
+//   Future countNotifications() async {
+//     final countNotificationsVar =
+//         await context.read<NotificationCubit>().countNotification();
+//   }
+
+//   if (Platform.isIOS) {
+//     return CupertinoTabScaffold(
+//       backgroundColor: AppColors.pageBackground,
+//       tabBar: CupertinoTabBar(
+//         iconSize: 25.sp,
+//         activeColor: AppColors.colorButton,
+//         inactiveColor: AppColors.blackBlueAccent1,
+//         height: 60.h,
+//         items: itemListIos,
+//         onTap: (index) {
+//           if (index == 0) {
+//             handleAllUserGroup();
+//             handleTournoiDefault();
+//             handleRecentEvent(AppCubitStorage().state.membreCode);
+//             handleChangeAss(AppCubitStorage().state.codeAssDefaul);
+//             handleDetailUser(AppCubitStorage().state.membreCode,
+//                 AppCubitStorage().state.codeTournois);
+//           }
+
+//           if (index == 1) {
+//             handleTournoiDefault();
+//             handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois,
+//                 AppCubitStorage().state.membreCode);
+//             handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+//           }
+
+//           if (index == 2) {
+//             countNotifications();
+//           }
+//           // setState(
+//           //   () {
+//           //     widget.pageIndex = index;
+//           //   },
+//           // );
+//         },
+//       ),
+//       tabBuilder: (BuildContext context, int index) {
+//         return CupertinoTabView(
+//           builder: (BuildContext context) {
+//             return child[index];
+//           },
+//         );
+//       },
+//     );
+//   }
+
+//   return Scaffold(
+//     backgroundColor: AppColors.pageBackground,
+//     // bottomNavigationBar:
+//     body: child[indexPage],
+//   );
+// }
+
 Widget PageScaffold({
   required BuildContext context,
   required List<Widget> child,
   required List<BottomNavigationBarItem> itemListAndroid,
   required List<BottomNavigationBarItem> itemListIos,
-  required Widget childBottomNavBar,
+  required dynamic childBottomNavBar,
   required int indexPage,
 }) {
   if (Platform.isIOS) {
     return CupertinoTabScaffold(
       backgroundColor: AppColors.pageBackground,
-      tabBar: CupertinoTabBar(
-        items: itemListIos,
-      ),
+      tabBar: childBottomNavBar,
       tabBuilder: (BuildContext context, int index) {
         return CupertinoTabView(
           builder: (BuildContext context) {
@@ -56,8 +160,6 @@ Widget PageScaffold({
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   int _pageIndex = 0;
   final screens = [
     HomeScreen(),
@@ -107,38 +209,116 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> handleAllUserGroup() async {
+      final AllUserGroup = await context
+          .read<UserGroupCubit>()
+          .AllUserGroupOfUserCubit(AppCubitStorage().state.tokenUser);
+    }
+
+    Future<void> handleTournoiDefault() async {
+      final detailTournoiCourant = await context
+          .read<DetailTournoiCourantCubit>()
+          .detailTournoiCourantCubit(AppCubitStorage().state.codeTournois);
+    }
+
+    Future handleRecentEvent(codeMembre) async {
+      final allRecentEvent = await context
+          .read<RecentEventCubit>()
+          .AllRecentEventCubit(codeMembre);
+    }
+
+    Future handleChangeAss(codeAss) async {
+      final allCotisationAss =
+          await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+    }
+
+    Future<void> handleDetailUser(userCode, codeTournoi) async {
+      final allCotisationAss = await context
+          .read<AuthCubit>()
+          .detailAuthCubit(userCode, codeTournoi);
+    }
+
+    Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
+      final allCotisationAss = await context
+          .read<CotisationCubit>()
+          .AllCotisationAssTournoiCubit(codeTournoi, codeMembre);
+    }
+
+    Future<void> handleAllCompteAss(codeAssociation) async {
+      final allCotisationAss =
+          await context.read<CompteCubit>().AllCompteAssCubit(codeAssociation);
+    }
+
+    Future countNotifications() async {
+      final countNotificationsVar =
+          await context.read<NotificationCubit>().countNotification();
+    }
+
     return PageScaffold(
       context: context,
       indexPage: _pageIndex,
       child: screens,
       itemListIos: itemListIos,
       itemListAndroid: itemListAndroid,
-      childBottomNavBar: Material(
-        type: MaterialType.transparency,
-        child: ClipRRect(
-          borderRadius:  BorderRadius.only(
-            topLeft: Radius.circular(20.r),
-            topRight: Radius.circular(20.r),
-          ),
-          child: BottomNavigationBar(
-            backgroundColor: Color.fromARGB(255, 226, 226, 226),
-            type: BottomNavigationBarType.shifting,
-            selectedIconTheme: IconThemeData(size: 25.sp),
-            unselectedIconTheme: IconThemeData(size: 15.sp),
-            selectedFontSize: 12.sp,
-            unselectedItemColor: AppColors.blackBlue,
-            selectedItemColor: AppColors.colorButton,
-            selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-            items: itemListAndroid,
-            currentIndex: _pageIndex,
-            onTap: (index) {
-              setState(() {
-                _pageIndex = index;
-              });
-            },
-          ),
-        ),
-      ),
+      childBottomNavBar: Platform.isAndroid
+          ? Material(
+              type: MaterialType.transparency,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.r),
+                    topRight: Radius.circular(20.r),
+                  ),
+                  child: BottomNavigationBar(
+                    backgroundColor: Color.fromARGB(255, 226, 226, 226),
+                    type: BottomNavigationBarType.shifting,
+                    selectedIconTheme: IconThemeData(size: 25.sp),
+                    unselectedIconTheme: IconThemeData(size: 15.sp),
+                    selectedFontSize: 12.sp,
+                    unselectedItemColor: AppColors.blackBlue,
+                    selectedItemColor: AppColors.colorButton,
+                    selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    items: itemListAndroid,
+                    currentIndex: _pageIndex,
+                    onTap: (index) {
+                      setState(() {
+                        _pageIndex = index;
+                      });
+                    },
+                  )),
+            )
+          : CupertinoTabBar(
+              iconSize: 25.sp,
+              activeColor: AppColors.colorButton,
+              inactiveColor: AppColors.blackBlueAccent1,
+              height: 60.h,
+              items: itemListIos,
+              onTap: (index) {
+                setState(() {
+                        _pageIndex = index;
+                      });
+                print("object");
+                if (_pageIndex == 0) {
+                  handleAllUserGroup();
+                  handleTournoiDefault();
+                  handleRecentEvent(AppCubitStorage().state.membreCode);
+                  handleChangeAss(AppCubitStorage().state.codeAssDefaul);
+                  handleDetailUser(AppCubitStorage().state.membreCode,
+                      AppCubitStorage().state.codeTournois);
+                }
+
+                if (_pageIndex == 1) {
+                  handleTournoiDefault();
+                  handleAllCotisationAssTournoi(
+                      AppCubitStorage().state.codeTournois,
+                      AppCubitStorage().state.membreCode);
+                  handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+                }
+
+                if (_pageIndex == 2) {
+                  countNotifications();
+                }
+              },
+            ),
     );
   }
 }

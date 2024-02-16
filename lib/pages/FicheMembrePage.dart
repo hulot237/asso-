@@ -1686,6 +1686,9 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.only(
+            bottom: Platform.isIOS ? 70.h : 10.h,
+          ),
                             padding: EdgeInsets.all(7.r),
                             decoration: BoxDecoration(
                               color: Color.fromARGB(19, 20, 45, 99),

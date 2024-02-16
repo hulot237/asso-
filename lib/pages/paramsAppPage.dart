@@ -51,6 +51,7 @@ Widget PageScaffold({
             size: 20.sp,
           ),
         ),
+        
       ),
       child: child,
     );

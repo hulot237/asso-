@@ -441,6 +441,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             top: 10.h,
                             left: 10.w,
                             right: 10.w,
+                            
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -171,8 +171,10 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                   controller: _tabController,
                   isScrollable: true,
                   labelColor: AppColors.blackBlue,
-                  labelStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp,),
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17.sp,
+                  ),
                   padding: EdgeInsets.all(0),
                   unselectedLabelStyle: TextStyle(
                     color: AppColors.blackBlueAccent1,
@@ -232,84 +234,95 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                           return currentDetailSeance.length > 0
                               ? RefreshIndicator(
                                   onRefresh: refresh,
-                                  child: ListView.builder(
-                                    itemCount: currentDetailSeance.length,
-                                    padding: EdgeInsets.all(0),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      final ItemDetailCotisation =
-                                          currentDetailSeance[index];
-                                      return GestureDetector(
-                                        onTap: () {
-                                          if (checkTransparenceStatus(
-                                              context
-                                                  .read<UserGroupCubit>()
-                                                  .state
-                                                  .changeAssData!
-                                                  .user_group!
-                                                  .configs,
-                                              context
-                                                  .read<AuthCubit>()
-                                                  .state
-                                                  .detailUser!["isMember"])) {
-                                            handleDetailContributionTontine(
-                                              ItemDetailCotisation["code"],
-                                            );
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: Platform.isIOS ? 70.h : 10.h,
+                                    ),
+                                    child: ListView.builder(
+                                      itemCount: currentDetailSeance.length,
+                                      padding: EdgeInsets.all(0),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        final ItemDetailCotisation =
+                                            currentDetailSeance[index];
+                                        return GestureDetector(
+                                          onTap: () {
+                                            if (checkTransparenceStatus(
+                                                context
+                                                    .read<UserGroupCubit>()
+                                                    .state
+                                                    .changeAssData!
+                                                    .user_group!
+                                                    .configs,
+                                                context
+                                                    .read<AuthCubit>()
+                                                    .state
+                                                    .detailUser!["isMember"])) {
+                                              handleDetailContributionTontine(
+                                                ItemDetailCotisation["code"],
+                                              );
 
-                                            Modal().showBottomSheetHistTontine(
-                                                context);
-                                          }
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(
+                                              Modal()
+                                                  .showBottomSheetHistTontine(
+                                                      context);
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.only(
                                               left: 7.w,
                                               right: 7.w,
                                               top: 3.h,
-                                              bottom: 7.h,),
-                                          child: widgetDetailTontine(
-                                            nomBeneficiaire:
-                                                ItemDetailCotisation["membre"]
-                                                            ["first_name"] ==
-                                                        null
-                                                    ? ""
-                                                    : ItemDetailCotisation[
-                                                        "membre"]["first_name"],
-                                            prenomBeneficiaire:
-                                                ItemDetailCotisation["membre"]
-                                                            ["last_name"] ==
-                                                        null
-                                                    ? ""
-                                                    : ItemDetailCotisation[
-                                                        "membre"]["last_name"],
-                                            dateOpen: AppCubitStorage()
-                                                        .state
-                                                        .Language ==
-                                                    "fr"
-                                                ? formatDateToFrench(
-                                                    ItemDetailCotisation[
-                                                        "start_date"])
-                                                : formatDateToEnglish(
-                                                    ItemDetailCotisation[
-                                                        "start_date"]),
-                                            dateClose: ItemDetailCotisation[
-                                                "end_date"],
-                                            // ItemDetailCotisation["end_date"],
-                                            montantTontine:
-                                                ItemDetailCotisation["amount"],
-                                            montantCollecte:
-                                                ItemDetailCotisation[
-                                                    "tontine_balance"],
-                                            codeCotisation:
-                                                ItemDetailCotisation["code"],
-                                            lienDePaiement:
-                                                ItemDetailCotisation[
-                                                    "tontine_pay_link"],
-                                            nomTontine: ItemDetailCotisation[
-                                                "matricule"],
+                                              bottom: 7.h,
+                                            ),
+                                            child: widgetDetailTontine(
+                                              isPayed: ItemDetailCotisation["is_payed"],
+                                              nomBeneficiaire:
+                                                  ItemDetailCotisation["membre"]
+                                                              ["first_name"] ==
+                                                          null
+                                                      ? ""
+                                                      : ItemDetailCotisation[
+                                                              "membre"]
+                                                          ["first_name"],
+                                              prenomBeneficiaire:
+                                                  ItemDetailCotisation["membre"]
+                                                              ["last_name"] ==
+                                                          null
+                                                      ? ""
+                                                      : ItemDetailCotisation[
+                                                              "membre"]
+                                                          ["last_name"],
+                                              dateOpen: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatDateToFrench(
+                                                      ItemDetailCotisation[
+                                                          "start_date"])
+                                                  : formatDateToEnglish(
+                                                      ItemDetailCotisation[
+                                                          "start_date"]),
+                                              dateClose: ItemDetailCotisation[
+                                                  "end_date"],
+                                              // ItemDetailCotisation["end_date"],
+                                              montantTontine:
+                                                  ItemDetailCotisation[
+                                                      "amount"],
+                                              montantCollecte:
+                                                  ItemDetailCotisation[
+                                                      "tontine_balance"],
+                                              codeCotisation:
+                                                  ItemDetailCotisation["code"],
+                                              lienDePaiement:
+                                                  ItemDetailCotisation[
+                                                      "tontine_pay_link"],
+                                              nomTontine: ItemDetailCotisation[
+                                                  "matricule"],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 )
                               : RefreshIndicator(
@@ -361,75 +374,84 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                         return objetCotisationUniquement.length > 0
                             ? RefreshIndicator(
                                 onRefresh: refresh,
-                                child: ListView.builder(
-                                  itemCount: objetCotisationUniquement.length,
-                                  padding: EdgeInsets.all(0),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final ItemDetailCotisation =
-                                        objetCotisationUniquement[index];
-                                    return Container(
-                                        margin: EdgeInsets.only(
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: Platform.isIOS ? 70.h : 10.h,
+                                  ),
+                                  child: ListView.builder(
+                                    itemCount: objetCotisationUniquement.length,
+                                    padding: EdgeInsets.all(0),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final ItemDetailCotisation =
+                                          objetCotisationUniquement[index];
+                                      return Container(
+                                          margin: EdgeInsets.only(
                                             left: 7.w,
                                             right: 7.w,
                                             top: 3.h,
-                                            bottom: 7.h,),
-                                        child: WidgetCotisation(
-                                          isPayed:
-                                              ItemDetailCotisation["is_payed"],
-                                          montantCotisations:
-                                              ItemDetailCotisation["amount"],
-                                          motifCotisations:
-                                              ItemDetailCotisation["name"],
-                                          dateCotisation: ItemDetailCotisation[
-                                              "start_date"],
-                                          heureCotisation: AppCubitStorage()
-                                                      .state
-                                                      .Language ==
-                                                  "fr"
-                                              ? formatTimeToFrench(
-                                                  ItemDetailCotisation[
-                                                      "start_date"])
-                                              : formatTimeToEnglish(
-                                                  ItemDetailCotisation[
-                                                      "start_date"]),
-                                          soldeCotisation: ItemDetailCotisation[
-                                              "cotisation_balance"],
-                                          codeCotisation: ItemDetailCotisation[
-                                              "cotisation_code"],
-                                          type: ItemDetailCotisation["type"],
-                                          lienDePaiement: ItemDetailCotisation[
-                                                      "cotisation_pay_link"] ==
-                                                  null
-                                              ? "le lien n'a pas été généré"
-                                              : ItemDetailCotisation[
-                                                  "cotisation_pay_link"],
-                                          is_passed:
-                                              ItemDetailCotisation["is_passed"],
-                                          is_tontine: ItemDetailCotisation[
-                                              "is_tontine"],
-                                          source: ItemDetailCotisation[
-                                                      "seance"] ==
-                                                  null
-                                              ? ''
-                                              : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
-                                          nomBeneficiaire: ItemDetailCotisation[
-                                                      "membre"] ==
-                                                  null
-                                              ? ''
-                                              : ItemDetailCotisation["membre"]
-                                                          ["last_name"] ==
-                                                      null
-                                                  ? "${ItemDetailCotisation["membre"]["first_name"]}"
-                                                  : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
-                                          rubrique: ItemDetailCotisation[
-                                                      "ass_rubrique"] ==
-                                                  null
-                                              ? ""
-                                              : ItemDetailCotisation[
-                                                  "ass_rubrique"]["name"],
-                                        ));
-                                  },
+                                            bottom: 7.h,
+                                          ),
+                                          child: WidgetCotisation(
+                                            isPayed: ItemDetailCotisation[
+                                                "is_payed"],
+                                            montantCotisations:
+                                                ItemDetailCotisation["amount"],
+                                            motifCotisations:
+                                                ItemDetailCotisation["name"],
+                                            dateCotisation:
+                                                ItemDetailCotisation[
+                                                    "start_date"],
+                                            heureCotisation: AppCubitStorage()
+                                                        .state
+                                                        .Language ==
+                                                    "fr"
+                                                ? formatTimeToFrench(
+                                                    ItemDetailCotisation[
+                                                        "start_date"])
+                                                : formatTimeToEnglish(
+                                                    ItemDetailCotisation[
+                                                        "start_date"]),
+                                            soldeCotisation:
+                                                ItemDetailCotisation[
+                                                    "cotisation_balance"],
+                                            codeCotisation:
+                                                ItemDetailCotisation[
+                                                    "cotisation_code"],
+                                            type: ItemDetailCotisation["type"],
+                                            lienDePaiement: ItemDetailCotisation[
+                                                        "cotisation_pay_link"] ==
+                                                    null
+                                                ? "le lien n'a pas été généré"
+                                                : ItemDetailCotisation[
+                                                    "cotisation_pay_link"],
+                                            is_passed: ItemDetailCotisation[
+                                                "is_passed"],
+                                            is_tontine: ItemDetailCotisation[
+                                                "is_tontine"],
+                                            source: ItemDetailCotisation[
+                                                        "seance"] ==
+                                                    null
+                                                ? ''
+                                                : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
+                                            nomBeneficiaire: ItemDetailCotisation[
+                                                        "membre"] ==
+                                                    null
+                                                ? ''
+                                                : ItemDetailCotisation["membre"]
+                                                            ["last_name"] ==
+                                                        null
+                                                    ? "${ItemDetailCotisation["membre"]["first_name"]}"
+                                                    : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
+                                            rubrique: ItemDetailCotisation[
+                                                        "ass_rubrique"] ==
+                                                    null
+                                                ? ""
+                                                : ItemDetailCotisation[
+                                                    "ass_rubrique"]["name"],
+                                          ));
+                                    },
+                                  ),
                                 ),
                               )
                             : RefreshIndicator(
@@ -448,10 +470,11 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                         child: Text(
                                           "aucune_cotisation".tr(),
                                           style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  20, 45, 99, 0.26),
-                                              fontWeight: FontWeight.w100,
-                                              fontSize: 20.sp,),
+                                            color: Color.fromRGBO(
+                                                20, 45, 99, 0.26),
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 20.sp,
+                                          ),
                                         ),
                                       );
                                     }),
@@ -484,45 +507,57 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 .toList();
 
                         return allSanctionUserConnect.length > 0
-                            ? ListView.builder(
-                                itemCount: allSanctionUserConnect.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final currentSaction =
-                                      allSanctionUserConnect[index];
-                                  return Container(
-                                    margin: EdgeInsets.only(
-                                        left: 7.w, right: 7.w, top: 3.h, bottom: 7.h,),
-                                    child: WidgetSanction(
-                                      objetSanction:
-                                          currentSaction["libelle"] == null
-                                              ? " "
-                                              : currentSaction["libelle"],
-                                      heureSanction:
-                                          AppCubitStorage().state.Language ==
-                                                  "fr"
-                                              ? formatTimeToFrench(
-                                                  currentSaction["start_date"])
-                                              : formatTimeToEnglish(
-                                                  currentSaction["start_date"]),
-                                      dateSanction:
-                                          currentSaction["start_date"],
-                                      motifSanction: currentSaction["motif"],
-                                      montantSanction:
-                                          currentSaction["amount"].toString(),
-                                      montantPayeeSanction:
-                                          currentSaction["sanction_balance"],
-                                      lienPaiement: currentSaction[
-                                                  "sanction_pay_link"] ==
-                                              null
-                                          ? " "
-                                          : currentSaction["sanction_pay_link"],
-                                      versement: currentSaction["versement"],
-                                      isSanctionPayed:
-                                          currentSaction["is_sanction_payed"],
-                                      typeSaction: currentSaction["type"],
-                                    ),
-                                  );
-                                },
+                            ? Container(
+                                margin: EdgeInsets.only(
+                                  bottom: Platform.isIOS ? 70.h : 10.h,
+                                ),
+                                child: ListView.builder(
+                                  itemCount: allSanctionUserConnect.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final currentSaction =
+                                        allSanctionUserConnect[index];
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                        left: 7.w,
+                                        right: 7.w,
+                                        top: 3.h,
+                                        bottom: 7.h,
+                                      ),
+                                      child: WidgetSanction(
+                                        objetSanction:
+                                            currentSaction["libelle"] == null
+                                                ? " "
+                                                : currentSaction["libelle"],
+                                        heureSanction: AppCubitStorage()
+                                                    .state
+                                                    .Language ==
+                                                "fr"
+                                            ? formatTimeToFrench(
+                                                currentSaction["start_date"])
+                                            : formatTimeToEnglish(
+                                                currentSaction["start_date"]),
+                                        dateSanction:
+                                            currentSaction["start_date"],
+                                        motifSanction: currentSaction["motif"],
+                                        montantSanction:
+                                            currentSaction["amount"].toString(),
+                                        montantPayeeSanction:
+                                            currentSaction["sanction_balance"],
+                                        lienPaiement: currentSaction[
+                                                    "sanction_pay_link"] ==
+                                                null
+                                            ? " "
+                                            : currentSaction[
+                                                "sanction_pay_link"],
+                                        versement: currentSaction["versement"],
+                                        isSanctionPayed:
+                                            currentSaction["is_sanction_payed"],
+                                        typeSaction: currentSaction["type"],
+                                      ),
+                                    );
+                                  },
+                                ),
                               )
                             : RefreshIndicator(
                                 onRefresh: refresh,

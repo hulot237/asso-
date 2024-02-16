@@ -473,7 +473,10 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                             Container(
                               alignment: Alignment.center,
                               padding: EdgeInsets.only(
-                                  top: 10.h, left: 5.w, bottom: 15.h),
+                                top: 10.h,
+                                left: 5.w,
+                                bottom: 15.h,
+                              ),
                               child: Text(
                                 "toutes_les_rencontres".tr(),
                                 style: TextStyle(
@@ -511,9 +514,10 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                           children: [
                                             Container(
                                               margin: EdgeInsets.only(
-                                                  bottom: Platform.isAndroid
-                                                      ? 70.h
-                                                      : 10.h,),
+                                                bottom: Platform.isIOS
+                                                    ? 70.h
+                                                    : 10.h,
+                                              ),
                                               width: MediaQuery.of(context)
                                                   .size
                                                   .width,
@@ -707,6 +711,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         child: Stack(
                                           children: [
                                             Container(
+                                              margin: EdgeInsets.only(
+                                                bottom: Platform.isIOS
+                                                    ? 70.h
+                                                    : 10.h,
+                                              ),
                                               width: MediaQuery.of(context)
                                                   .size
                                                   .width,
@@ -900,6 +909,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         child: Stack(
                                           children: [
                                             Container(
+                                              margin: EdgeInsets.only(
+                                                bottom: Platform.isIOS
+                                                    ? 70.h
+                                                    : 10.h,
+                                              ),
                                               width: MediaQuery.of(context)
                                                   .size
                                                   .width,
@@ -1070,6 +1084,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         child: Stack(
                                           children: [
                                             Container(
+                                              margin: EdgeInsets.only(
+                                                bottom: Platform.isIOS
+                                                    ? 70.h
+                                                    : 10.h,
+                                              ),
                                               width: MediaQuery.of(context)
                                                   .size
                                                   .width,
@@ -1257,7 +1276,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                 ];
                                 int i = 0;
 
-                                List<Widget> listWidgetSanction =
+                                List<Widget> listWidgetCompte =
                                     currentCompteAss!.map((item) {
                                   i++;
                                   return GestureDetector(
@@ -1286,10 +1305,15 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         onRefresh: refreshCompte,
                                         child: SingleChildScrollView(
                                           child: Container(
+                                            margin: EdgeInsets.only(
+                                                bottom: Platform.isIOS
+                                                    ? 70.h
+                                                    : 10.h,
+                                              ),
                                             child: Wrap(
                                               alignment:
                                                   WrapAlignment.spaceBetween,
-                                              children: listWidgetSanction,
+                                              children: listWidgetCompte,
                                             ),
                                           ),
                                         ),

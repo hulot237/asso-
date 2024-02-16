@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class SeanceRepository {
   final dio = Dio();
@@ -9,7 +10,7 @@ class SeanceRepository {
     try {
       log("response DetailSeance");
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/seance/$codeSeance/show',
+        '${Variables.LienAIP}/api/v1/seance/$codeSeance/show?membre_code=${AppCubitStorage().state.membreCode}',
       );
       final Map<String, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");

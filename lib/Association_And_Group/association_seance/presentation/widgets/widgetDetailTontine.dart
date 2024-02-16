@@ -21,6 +21,7 @@ class widgetDetailTontine extends StatefulWidget {
     required this.codeCotisation,
     required this.lienDePaiement,
     required this.nomTontine,
+    required this.isPayed,
   });
   String nomBeneficiaire;
   String dateClose;
@@ -31,6 +32,7 @@ class widgetDetailTontine extends StatefulWidget {
   String codeCotisation;
   String lienDePaiement;
   String nomTontine;
+  int isPayed;
 
   @override
   State<widgetDetailTontine> createState() => _widgetDetailTontineState();
@@ -42,7 +44,8 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {} else {
+    if (detailCotisation != null) {
+    } else {
       print("userGroupDefault null");
     }
   }
@@ -112,6 +115,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                           ),
                         ),
                       ),
+                      widget.isPayed == 0?
                       GestureDetector(
                         onTap: () async {
                           String msg =
@@ -124,9 +128,13 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                        width: 72.w,
+                          width: 72.w,
                           padding: EdgeInsets.only(
-                              left: 8.w, right: 8.w, top: 5.h, bottom: 5.h,),
+                            left: 8.w,
+                            right: 8.w,
+                            top: 5.h,
+                            bottom: 5.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton,
                             borderRadius: BorderRadius.circular(15),
@@ -142,12 +150,22 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                             ),
                           ),
                         ),
-                      ),
+                      ):Text(
+                                  "payé".tr(),
+                                  style: TextStyle(
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic
+                                  ),
+                                ),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 7.h, top: 7.h,),
+                  margin: EdgeInsets.only(
+                    bottom: 7.h,
+                    top: 7.h,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -201,7 +219,6 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              
                               Container(
                                 child: Container(
                                   margin: EdgeInsets.only(top: 3.h),
@@ -249,7 +266,9 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 children: [
                                   Flexible(
                                     child: Container(
-                                      margin: EdgeInsets.only(top: 3.h,),
+                                      margin: EdgeInsets.only(
+                                        top: 3.h,
+                                      ),
                                       child: Text(
                                         "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                         overflow: TextOverflow.ellipsis,
@@ -269,7 +288,10 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                       if (checkTransparenceStatus(
                           context
                               .read<UserGroupCubit>()
-                              .state.changeAssData!.user_group!.configs,
+                              .state
+                              .changeAssData!
+                              .user_group!
+                              .configs,
                           context
                               .read<AuthCubit>()
                               .state

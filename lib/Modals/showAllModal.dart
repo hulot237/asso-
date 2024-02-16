@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
@@ -73,7 +75,10 @@ class Modal {
           return Stack(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 10.h),
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  bottom: Platform.isIOS ? 70.h : 10.h,
+                ),
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -232,7 +237,10 @@ class Modal {
           return Stack(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 10.h),
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  bottom: Platform.isIOS ? 70.h : 10.h,
+                ),
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -541,7 +549,12 @@ class Modal {
 
                 final listeFinale = [
                   ...listWidgetOkayTontine,
-                  ...listWidgetNonTontine
+                  ...listWidgetNonTontine,
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: Platform.isIOS ? 70.h : 10.h,
+                    ),
+                  )
                 ];
 
                 return Expanded(
@@ -822,7 +835,12 @@ class Modal {
 
                   final listeFinale = [
                     ...listWidgetOkayCotis,
-                    ...listWidgetNonCotis
+                    ...listWidgetNonCotis,
+                    Container(
+                      margin: EdgeInsets.only(
+                        bottom: Platform.isIOS ? 70.h : 10.h,
+                      ),
+                    )
                   ];
 
                   return Expanded(
@@ -850,6 +868,9 @@ class Modal {
         actionsPadding: EdgeInsets.all(10.r),
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
+          margin: EdgeInsets.only(
+            bottom: Platform.isIOS ? 70.h : 10.h,
+          ),
           // padding: EdgeInsets.only(left: 20, right: 20),
           height: 450.h,
           width: MediaQuery.of(context).size.width,
