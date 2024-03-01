@@ -160,11 +160,22 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                   onTap: () {
                                     String msg =
                                         "Aide-moi à payer ma sanction de *${widget.motifSanction}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA* directement via le lien https://${widget.lienPaiement}.";
-                                    Modal().showModalActionPayement(
-                                      context,
-                                      msg,
-                                      widget.lienPaiement,
-                                    );
+                                    String raisonComplete =
+                                            "Paiement de la sanction".tr();
+                                        String motif = "payer_vous_même".tr();
+                                        String paiementProcheMsg =
+                                            "partager_le_lien_de_paiement".tr();
+                                        String msgAppBarPaiementPage =
+                                            "${'Paiement de la sanction'.tr()} ${widget.motifSanction}";
+                                        Modal().showModalActionPayement(
+                                          context,
+                                          msg,
+                                          widget.lienPaiement,
+                                          raisonComplete,
+                                          motif,
+                                          paiementProcheMsg,
+                                          msgAppBarPaiementPage,
+                                        );
                                   },
                                   child: Container(
                                     child: Row(
@@ -324,6 +335,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                               "${widget.objetSanction}",
                                               style: TextStyle(
                                                 color: AppColors.blackBlue,
+                                                fontSize: 12.sp
                                               ),
                                             ),
                                             margin: EdgeInsets.only(

@@ -31,7 +31,7 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
       margin: EdgeInsets.all(5.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
         // boxShadow: [
         //   BoxShadow(
         //       color: Color.fromARGB(120, 180, 180, 180),

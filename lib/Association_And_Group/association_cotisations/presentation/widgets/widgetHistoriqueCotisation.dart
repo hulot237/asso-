@@ -56,8 +56,8 @@ class _WidgetHistoriqueCotisationState
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50.r),
                     child: Container(
-                      height: 50.h,
-                      width: 50.w,
+                      height: 50.r,
+                      width: 50.r,
                       decoration: BoxDecoration(
                           color: Colors.lightBlue,
                           borderRadius: BorderRadius.circular(50.r)),

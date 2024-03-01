@@ -26,7 +26,7 @@ import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/screens/detailTontinePage.dart';
-import 'package:faroty_association_1/pages/administrationPage.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/presentation/widgets/widgetCompteCard.dart';
 import 'package:faroty_association_1/widget/widgetCallFunctionFailled.dart';
@@ -76,7 +76,11 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+          size: 16.sp,
+        ),
       ),
       actions: [widgetAction],
     ),
@@ -213,19 +217,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
         AppCubitStorage().state.membreCode);
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
 
-    // handleAllSeanceAss(AppCubitStorage().state.codeAssDefaul);
-    // handleChangeAss(AppCubitStorage().state.codeAssDefaul);
-
     _tabController = TabController(length: 0, vsync: this);
   }
-
-  // List<Color> listeDeCouleurs = [
-  //   Colors.red, // Rouge
-  //   Colors.blue, // Bleu
-  //   AppColors.green, // Vert
-  //   Colors.brown, // Jaune
-  //   Colors.purple, // Violet
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +230,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
             iconSize: 50.r,
             iconColor: AppColors.blackBlueAccent1,
             image: AssetImage(
-              'assets/images/Groupe_ou_Asso.png',
+              "assets/images/AssoplusFinal.png",
             ),
           ),
         );
@@ -251,29 +244,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                 iconSize: 50.r,
                 iconColor: AppColors.blackBlueAccent1,
                 image: AssetImage(
-                  'assets/images/Groupe_ou_Asso.png',
+                  "assets/images/AssoplusFinal.png",
                 ),
               ),
             );
 
-          // if (UserGroupState.isLoading == false &&
-          //     UserGroupState.ChangeAssData == {} &&
-          //     UserGroupState.userGroup == [])
-          //   return Container(
-          //     color: AppColors.pageBackground,
-          //     width: MediaQuery.of(context).size.width,
-          //     height: MediaQuery.of(context).size.height,
-          //     child: callFunctionFailled(reFunction: () async {
-          //       await UserGroupContext.read<UserGroupCubit>()
-          //           .AllUserGroupOfUserCubit(
-          //         AppCubitStorage().state.tokenUser,
-          //       );
-
-          //       await UserGroupContext.read<UserGroupCubit>().ChangeAssCubit(
-          //         AppCubitStorage().state.codeAssDefaul,
-          //       );
-          //     }),
-          //   );
           _tabController = TabController(
             length: UserGroupState.changeAssData!.user_group!.is_tontine ==
                         false ||
@@ -305,150 +280,194 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
               },
               child: Scaffold(
                 backgroundColor: AppColors.pageBackground,
-                appBar: AppBar(
-                  title: Text(
-                    "historiques".tr(),
-                    style: TextStyle(fontSize: 16.sp, color: AppColors.white),
-                  ),
-                  actions: [
-                    Row(
-                      children: [
-                        if (!context
-                            .read<AuthCubit>()
-                            .state
-                            .detailUser!["isMember"])
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(120.h),
+                  child: AppBar(
+                    title: Text(
+                      "historiques".tr(),
+                      style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+                    ),
+                    actions: [
+                      Row(
+                        children: [
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AdministrationPage(
-                                    lienDePaiement: '',
+                                    forAdmin: false,
+                                    urlPage:
+                                       'https://business.faroty.com/groups',
                                   ),
                                 ),
                               );
                             },
                             child: Container(
-                              // margin: EdgeInsets.only(bottom: 5),
-                              padding: EdgeInsets.all(1.r),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1.r, color: AppColors.blackBlue),
-                                color: AppColors.blackBlueAccent2,
-                                borderRadius: BorderRadius.circular(50.r),
-                              ),
-                              height: 25.w,
-                              width: 25.w,
-                              child: Image.asset(
-                                "assets/images/Groupe_ou_Asso.png",
-                                scale: 4,
+                                margin:
+                                    EdgeInsets.only(right: 10.w),
+                                padding: EdgeInsets.all(1.r),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1.r, color: AppColors.blackBlue),
+                                  color: AppColors.blackBlueAccent2,
+                                  borderRadius: BorderRadius.circular(50.r),
+                                ),
+                                height: 30.h,
+                                width: 30.h,
+                                child: Icon(
+                                  Icons.add,
+                                  size: 16.sp,
+                                )),
+                          ),
+                          if (!context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"])
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AdministrationPage(
+                                      forAdmin: true,
+                                      urlPage: "https://groups.faroty.com/"
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                // margin: EdgeInsets.only(bottom: 5),
+                                padding: EdgeInsets.all(1.r),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1.r, color: AppColors.blackBlue),
+                                  color: AppColors.blackBlueAccent2,
+                                  borderRadius: BorderRadius.circular(50.r),
+                                ),
+                                height: 30.h,
+                                width: 30.h,
+                                child: Image.asset(
+                                  "assets/images/Groupe_ou_Asso.png",
+                                  scale: 4,
+                                ),
                               ),
                             ),
-                          ),
-                        GestureDetector(
-                          onTap: () {
-                            Modal().showBottomSheetListAss(
-                              context,
-                              context.read<UserGroupCubit>().state.userGroup,
-                            );
-                          },
-                          child: Container(
+                          GestureDetector(
+                            onTap: () {
+                              Modal().showBottomSheetListAss(
+                                context,
+                                context.read<UserGroupCubit>().state.userGroup,
+                              );
+                            },
                             child: Container(
-                              margin: EdgeInsets.only(right: 15.w, left: 10.w),
-                              height: 25.w,
-                              width: 25.w,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.red,
-                                ),
-                                borderRadius: BorderRadius.circular(360.r),
-                              ),
-                              padding: EdgeInsets.all(1.r),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(360.r),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(360.r),
+                              child: Container(
+                                margin:
+                                    EdgeInsets.only(right: 15.w, left: 10.w),
+                                height: 30.h,
+                                width: 30.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.red,
                                   ),
-                                  child: Image.network(
-                                    "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
-                                    fit: BoxFit.cover,
+                                  borderRadius: BorderRadius.circular(360.r),
+                                ),
+                                padding: EdgeInsets.all(1.r),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(360.r),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(360.r),
+                                    ),
+                                    child: Image.network(
+                                      "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                  elevation: 0,
-                  backgroundColor: AppColors.backgroundAppBAr,
-                  leading: Platform.isAndroid
-                      ? GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => HomePage(),
-                              ),
-                              (route) => false,
-                            );
-                          },
-                          child: Icon(Icons.arrow_back, color: AppColors.white),
-                        )
-                      : Container(),
-                  bottom: TabBar(
-                      controller: _tabController,
-                      isScrollable: true,
-                      labelColor: AppColors.white,
-                      labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17.sp),
-                      padding: EdgeInsets.all(0),
-                      unselectedLabelStyle: TextStyle(
-                        color: AppColors.whiteAccent1,
-                        fontWeight: FontWeight.bold,
+                        ],
                       ),
-                      indicator: UnderlineTabIndicator(
-                        borderSide: BorderSide(
-                          color: AppColors.white,
-                          width: 5.0.w,
+                    ],
+                    elevation: 0,
+                    backgroundColor: AppColors.backgroundAppBAr,
+                    leading: Platform.isAndroid
+                        ? GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => HomePage(),
+                                ),
+                                (route) => false,
+                              );
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: AppColors.white,
+                              size: 16.sp,
+                            ),
+                          )
+                        : Container(),
+                    bottom: TabBar(
+                        labelPadding: EdgeInsets.only(right: 10.w, left: 10.w),
+                        controller: _tabController,
+                        isScrollable: true,
+                        labelColor: AppColors.white,
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
                         ),
-                        insets: EdgeInsets.symmetric(
-                          horizontal: 36.0.w,
+                        padding: EdgeInsets.all(0),
+                        unselectedLabelStyle: TextStyle(
+                          color: AppColors.whiteAccent1,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
                         ),
-                      ),
-                      indicatorWeight: 0,
-                      tabs: [
-                        Tab(
-                          text: "rencontres".tr(),
-                        ),
-                        if (UserGroupState
-                                .changeAssData!.user_group!.is_tontine ==
-                            true)
-                          Tab(
-                            text: "Tontines",
+                        indicator: UnderlineTabIndicator(
+                          borderSide: BorderSide(
+                            color: AppColors.white,
+                            width: 2.h,
                           ),
-                        Tab(
-                          text: "cotisations".tr(),
-                        ),
-                        Tab(
-                          text: "Sanctions",
-                        ),
-                        if (checkTransparenceStatus(
-                            context
-                                .read<UserGroupCubit>()
-                                .state
-                                .changeAssData!
-                                .user_group!
-                                .configs,
-                            context
-                                .read<AuthCubit>()
-                                .state
-                                .detailUser!["isMember"]))
-                          Tab(
-                            text: "comptes".tr(),
+                          insets: EdgeInsets.symmetric(
+                            horizontal: 20.0.w,
                           ),
-                      ]),
+                        ),
+                        // indicatorWeight: 30.h,
+                        tabs: [
+                          Tab(
+                            text: "rencontres".tr(),
+                          ),
+                          if (UserGroupState
+                                  .changeAssData!.user_group!.is_tontine ==
+                              true)
+                            Tab(
+                              text: "Tontines",
+                            ),
+                          Tab(
+                            text: "cotisations".tr(),
+                          ),
+                          Tab(
+                            text: "Sanctions",
+                          ),
+                          if (checkTransparenceStatus(
+                              context
+                                  .read<UserGroupCubit>()
+                                  .state
+                                  .changeAssData!
+                                  .user_group!
+                                  .configs,
+                              context
+                                  .read<AuthCubit>()
+                                  .state
+                                  .detailUser!["isMember"]))
+                            Tab(
+                              text: "comptes".tr(),
+                            ),
+                        ]),
+                  ),
                 ),
                 body: Container(
                   // decoration: BoxDecoration(
@@ -619,7 +638,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 iconColor:
                                                     AppColors.blackBlueAccent1,
                                                 image: AssetImage(
-                                                  'assets/images/Groupe_ou_Asso.png',
+                                                  "assets/images/AssoplusFinal.png",
                                                 ),
                                               )
                                           ],
@@ -811,7 +830,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 iconColor:
                                                     AppColors.blackBlueAccent1,
                                                 image: AssetImage(
-                                                  'assets/images/Groupe_ou_Asso.png',
+                                                  "assets/images/AssoplusFinal.png",
                                                 ),
                                               )
                                           ],
@@ -888,7 +907,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         iconSize: 50.r,
                                         iconColor: AppColors.blackBlueAccent1,
                                         image: AssetImage(
-                                          'assets/images/Groupe_ou_Asso.png',
+                                          "assets/images/AssoplusFinal.png",
                                         ),
                                       ),
                                     ),
@@ -1017,7 +1036,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 iconColor:
                                                     AppColors.blackBlueAccent1,
                                                 image: AssetImage(
-                                                  'assets/images/Groupe_ou_Asso.png',
+                                                  "assets/images/AssoplusFinal.png",
                                                 ),
                                               )
                                           ],
@@ -1171,7 +1190,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 iconColor:
                                                     AppColors.blackBlueAccent1,
                                                 image: AssetImage(
-                                                  'assets/images/Groupe_ou_Asso.png',
+                                                  "assets/images/AssoplusFinal.png",
                                                 ),
                                               )
                                           ],
@@ -1256,7 +1275,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         iconSize: 50.r,
                                         iconColor: AppColors.blackBlueAccent1,
                                         image: AssetImage(
-                                          'assets/images/Groupe_ou_Asso.png',
+                                          "assets/images/AssoplusFinal.png",
                                         ),
                                       ),
                                     ),
@@ -1306,10 +1325,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         child: SingleChildScrollView(
                                           child: Container(
                                             margin: EdgeInsets.only(
-                                                bottom: Platform.isIOS
-                                                    ? 70.h
-                                                    : 10.h,
-                                              ),
+                                              bottom:
+                                                  Platform.isIOS ? 70.h : 10.h,
+                                            ),
                                             child: Wrap(
                                               alignment:
                                                   WrapAlignment.spaceBetween,
@@ -1325,7 +1343,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                           iconSize: 50.r,
                                           iconColor: AppColors.blackBlueAccent1,
                                           image: AssetImage(
-                                            'assets/images/Groupe_ou_Asso.png',
+                                            "assets/images/AssoplusFinal.png",
                                           ),
                                         )
                                     ],
@@ -1384,7 +1402,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                       iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
-                        'assets/images/Groupe_ou_Asso.png',
+                        "assets/images/AssoplusFinal.png",
                       ),
                     ),
                   );
@@ -1411,7 +1429,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
 
                                 Html(
                                   data:
-                                      "<p style='color:#142D63 ;'>${itemTransaction["description"]}</p>",
+                                      "<p style='color:#142D63 ; font-size:${14.sp}px'>${itemTransaction["description"]}</p>",
                                 ),
 
                                 Container(
@@ -1525,7 +1543,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                           iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
-                            'assets/images/Groupe_ou_Asso.png',
+                            "assets/images/AssoplusFinal.png",
                           ),
                         ),
                     ],

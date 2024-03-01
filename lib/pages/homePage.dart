@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
@@ -143,11 +144,11 @@ Widget PageScaffold({
       backgroundColor: AppColors.pageBackground,
       tabBar: childBottomNavBar,
       tabBuilder: (BuildContext context, int index) {
-        return CupertinoTabView(
-          builder: (BuildContext context) {
+        // return CupertinoTabView(
+        //   builder: (BuildContext context) {
             return child[index];
-          },
-        );
+          // },
+        // );
       },
     );
   }
@@ -294,8 +295,8 @@ class _HomePageState extends State<HomePage> {
               items: itemListIos,
               onTap: (index) {
                 setState(() {
-                        _pageIndex = index;
-                      });
+                  _pageIndex = index;
+                });
                 print("object");
                 if (_pageIndex == 0) {
                   handleAllUserGroup();
@@ -304,6 +305,9 @@ class _HomePageState extends State<HomePage> {
                   handleChangeAss(AppCubitStorage().state.codeAssDefaul);
                   handleDetailUser(AppCubitStorage().state.membreCode,
                       AppCubitStorage().state.codeTournois);
+                  context.read<AuthCubit>().getUid();
+                  context.read<PretEpargneCubit>().getEpargne();
+                  context.read<PretEpargneCubit>().getPret();
                 }
 
                 if (_pageIndex == 1) {

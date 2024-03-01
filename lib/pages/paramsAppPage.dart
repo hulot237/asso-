@@ -6,6 +6,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -51,7 +52,6 @@ Widget PageScaffold({
             size: 20.sp,
           ),
         ),
-        
       ),
       child: child,
     );
@@ -70,7 +70,11 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+          size: 16.sp,
+        ),
       ),
     ),
     body: child,
@@ -544,7 +548,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         ),
                       ),
                     ],
-                    onExpansionChanged: (e) {
+                    onExpansionChanged: (e) async {
+
                       setState(() {
                         // print(e);
                         _customIconLangue = e;
@@ -555,6 +560,10 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             "Code ass: ${AppCubitStorage().state.codeAssDefaul}");
                         print(
                             "Code tournoi: ${AppCubitStorage().state.codeTournois}");
+                        print(
+                            "Code usernamekey: ${AppCubitStorage().state.userNameKey}");
+                        print(
+                            "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
                       });
                     },
                   ),
@@ -893,20 +902,43 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                 // ),
                 Expanded(
                   child: Container(
-                    // width: MediaQuery.sizeOf(context).width,
-                    alignment: Alignment.bottomCenter,
-                    margin: EdgeInsets.only(bottom: 20.h),
-                    // color: Colors.amber,
-                    child: Text(
-                      "Version 1.0.3-beta",
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: Color.fromARGB(52, 20, 45, 99),
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w900,
+              margin: EdgeInsets.only(bottom: 5.h),
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "By".tr(),
+                        style: TextStyle(
+                            fontSize: 9.sp,
+                            color: Colors.grey[600],
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w900),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
+                      Container(
+                        width: 40.r,
+                        child: Image.asset("assets/images/FAroty_gris.png"),
+                      ),
+                      Text(
+                        "Version ${Variables.version}".tr(),
+                        style: TextStyle(
+                          fontSize: 9.sp,
+                          color: Colors.grey[600],
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w900,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
+                ],
+              ),
+            ),
                 )
               ],
             ),

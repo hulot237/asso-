@@ -10,8 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaiementPage extends StatefulWidget {
-  PaiementPage({super.key, required this.lienDePaiement});
+  PaiementPage({super.key, required this.lienDePaiement, required this.msgAppBarPaiementPage});
   String lienDePaiement;
+  String msgAppBarPaiementPage;
 
   @override
   State<PaiementPage> createState() => _PaiementPageState();
@@ -20,13 +21,14 @@ class PaiementPage extends StatefulWidget {
 Widget PageScaffold({
   required BuildContext context,
   required Widget child,
+  required String msgAppBarPaiementPage,
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
       backgroundColor: AppColors.white,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
-          "Effectuer_le_paiement".tr(),
+          "$msgAppBarPaiementPage",
           style: TextStyle(fontSize: 16.sp, color : AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
@@ -49,7 +51,7 @@ Widget PageScaffold({
     backgroundColor: AppColors.white,
     appBar: AppBar(
       title: Text(
-        "Effectuer_le_paiement".tr(),
+        "$msgAppBarPaiementPage",
         style: TextStyle(fontSize: 16.sp, color : AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
@@ -58,7 +60,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
       ),
     ),
     body: child,
@@ -104,7 +106,7 @@ class _PaiementPageState extends State<PaiementPage> {
                       iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
-                        'assets/images/Groupe_ou_Asso.png',
+                        "assets/images/AssoplusFinal.png",
                       ),
                     ),
                   ),
@@ -120,7 +122,7 @@ class _PaiementPageState extends State<PaiementPage> {
               ),
             
           )
-          : WebViewWidget(controller: _controller),
+          : WebViewWidget(controller: _controller), msgAppBarPaiementPage: '${widget.msgAppBarPaiementPage}',
     );
   }
 }

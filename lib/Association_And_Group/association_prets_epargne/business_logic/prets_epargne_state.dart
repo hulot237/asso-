@@ -7,41 +7,61 @@ import 'package:faroty_association_1/Association_And_Group/association_notificat
 class PretEpargneState extends Equatable {
   final Map<String, dynamic>? epargne;
   final bool isLoadingEpargne;
-  final bool isLoadingNomberNotif;
+    final Map<String, dynamic>? pret;
+  final bool isLoadingPret;
+  final bool isLoadingDetailEpargne;
   final String? messageError;
-  final int? nomberNotif;
-  
+  final List<dynamic>? detailEpargne;
+  final List<dynamic>? detailPret;
+  final bool isLoadingDetailPret;
+
 
   PretEpargneState({
     this.epargne,
+    this.pret,
+    this.isLoadingPret = false,
     this.isLoadingEpargne = false,
-    this.isLoadingNomberNotif = false,
+    this.isLoadingDetailEpargne = false,
     this.messageError,
-    this.nomberNotif,
+    this.detailEpargne,
+    this.detailPret,
+    this.isLoadingDetailPret= false,
   });
 
   @override
   List<Object?> get props => [
         epargne,
         isLoadingEpargne,
+        isLoadingDetailEpargne,
         messageError,
-        nomberNotif,
+        detailEpargne,
+        pret,
+        isLoadingPret,
+        detailPret,
+        isLoadingDetailPret,
       ];
 
   PretEpargneState copyWith({
     Map<String, dynamic>? epargne,
     bool? isLoadingEpargne,
-    bool? isLoadingNomberNotif,
+    Map<String, dynamic>? pret,
+    bool? isLoadingPret,
+    bool? isLoadingDetailEpargne,
     String? messageError,
-    int? nomberNotif,
+    List<dynamic>? detailEpargne,
+    List<dynamic>? detailPret,
+    bool? isLoadingDetailPret,
   }) {
     return PretEpargneState(
       epargne: epargne ?? this.epargne,
       isLoadingEpargne: isLoadingEpargne ?? this.isLoadingEpargne,
-      isLoadingNomberNotif: isLoadingNomberNotif ?? this.isLoadingNomberNotif,
+      pret: pret ?? this.pret,
+      isLoadingPret: isLoadingPret ?? this.isLoadingPret,
+      isLoadingDetailEpargne: isLoadingDetailEpargne ?? this.isLoadingDetailEpargne,
       messageError: messageError ?? this.messageError,
-      nomberNotif: nomberNotif ?? this.nomberNotif,
+      detailEpargne: detailEpargne ?? this.detailEpargne,
+      detailPret: detailPret ?? this.detailPret,
+      isLoadingDetailPret: isLoadingDetailPret ?? this.isLoadingDetailPret,
     );
   }
-
 }

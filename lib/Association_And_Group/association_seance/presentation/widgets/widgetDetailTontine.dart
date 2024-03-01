@@ -120,11 +120,22 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                         onTap: () async {
                           String msg =
                               "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                          Modal().showModalActionPayement(
-                            context,
-                            msg,
-                            widget.lienDePaiement,
-                          );
+                           String raisonComplete =
+                                            "Paiement de la tontine".tr();
+                                        String motif = "payer_vous_même".tr();
+                                        String paiementProcheMsg =
+                                            "partager_le_lien_de_paiement".tr();
+                                        String msgAppBarPaiementPage =
+                                            "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
+                                        Modal().showModalActionPayement(
+                                          context,
+                                          msg,
+                                          widget.lienDePaiement,
+                                          raisonComplete,
+                                          motif,
+                                          paiementProcheMsg,
+                                          msgAppBarPaiementPage,
+                                        );
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -153,6 +164,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                       ):Text(
                                   "payé".tr(),
                                   style: TextStyle(
+                                    fontSize: 14.sp,
                                     color: AppColors.green,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FontStyle.italic

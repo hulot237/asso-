@@ -66,7 +66,7 @@ Future<void> main() async {
       supportedLocales: [
         Locale("en", "US"),
         Locale("fr", "FR"),
-      ],
+      ], 
       saveLocale: true,
       path: "assets/languages",
     ),
@@ -142,7 +142,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(
             useMaterial3: false,
-            fontFamily: GoogleFonts.roboto().fontFamily,
+            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,

@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RetraitPage extends StatefulWidget {
   const RetraitPage({super.key});
@@ -29,7 +30,7 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "active_de_retrait".tr(),
-          style: TextStyle(fontSize: 16, color : AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color : AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
       ),
@@ -42,7 +43,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "active_de_retrait".tr(),
-        style: TextStyle(fontSize: 16, color : AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color : AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -50,7 +51,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
       ),
     ),
     
@@ -89,7 +90,7 @@ class _RetraitPageState extends State<RetraitPage> {
     return PageScaffold(
         context: context,
         child: Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: EdgeInsets.only(top: 10.h),
           child: BlocBuilder<AuthCubit, AuthState>(
               builder: (authContext, authState) {
             if (authState.isLoading == null || authState.isLoading == true)
@@ -174,8 +175,8 @@ class widgetRetraitCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         color: AppColors.white,
       ),
-      margin: EdgeInsets.only(bottom: 10, left: 5, right: 5),
-      padding: EdgeInsets.all(15),
+      margin: EdgeInsets.only(bottom: 10.h, left: 5.w, right: 5.w,),
+      padding: EdgeInsets.symmetric(vertical:15.h, horizontal: 15.w),
       // height: 20,
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -189,7 +190,7 @@ class widgetRetraitCard extends StatelessWidget {
                     child: Text(
                       "Date : ",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: AppColors.blackBlue,
                         fontWeight: FontWeight.w300,
                       ),
@@ -199,7 +200,7 @@ class widgetRetraitCard extends StatelessWidget {
                     child: Text(
                       "${AppCubitStorage().state.Language == "fr" ? formatDateToFrench(date) : formatDateToEnglish(date)}",
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 10.sp,
                         color: AppColors.blackBlue,
                         fontWeight: FontWeight.w700,
                       ),
@@ -212,7 +213,7 @@ class widgetRetraitCard extends StatelessWidget {
                       child: Text(
                         "En attente (${nbrApprouvee}/${nbrMembre})",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: Colors.orangeAccent,
                           fontWeight: FontWeight.w300,
                         ),
@@ -222,7 +223,7 @@ class widgetRetraitCard extends StatelessWidget {
                       child: Text(
                         "Approuvé (${nbrApprouvee}/${nbrMembre})",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppColors.green,
                           fontWeight: FontWeight.w300,
                         ),
@@ -232,7 +233,7 @@ class widgetRetraitCard extends StatelessWidget {
           ),
           Container(
             // color: Color.fromARGB(6, 0, 0, 0),
-            margin: EdgeInsets.only(top: 10, bottom: 10),
+            margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -243,7 +244,7 @@ class widgetRetraitCard extends StatelessWidget {
                       child: Text(
                         "Compte",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppColors.blackBlue,
                           fontWeight: FontWeight.w300,
                         ),
@@ -255,7 +256,7 @@ class widgetRetraitCard extends StatelessWidget {
                         "${nomCompte}",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppColors.blackBlue,
                           fontWeight: FontWeight.w700,
                         ),
@@ -270,7 +271,7 @@ class widgetRetraitCard extends StatelessWidget {
                       child: Text(
                         "Montant",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppColors.blackBlue,
                           fontWeight: FontWeight.w300,
                         ),
@@ -282,7 +283,7 @@ class widgetRetraitCard extends StatelessWidget {
                         "${formatMontantFrancais(double.parse(montant))} FCFA",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppColors.blackBlue,
                           fontWeight: FontWeight.w700,
                         ),
@@ -303,7 +304,7 @@ class widgetRetraitCard extends StatelessWidget {
                     child: Text(
                       "Initié par:",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: AppColors.blackBlue,
                         fontWeight: FontWeight.w300,
                       ),
@@ -313,7 +314,7 @@ class widgetRetraitCard extends StatelessWidget {
                     child: Text(
                       "${nomInitiateur}",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: AppColors.blackBlue,
                         fontWeight: FontWeight.w600,
                       ),
@@ -324,7 +325,7 @@ class widgetRetraitCard extends StatelessWidget {
               isApprovedForThisUser == 0
                   ? Container(
                       padding:
-                          EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
+                          EdgeInsets.only(left: 8.w, right: 8.w, top: 5.h, bottom: 5.h),
                       decoration: BoxDecoration(
                         color: AppColors.colorButton,
                         borderRadius: BorderRadius.circular(15),
@@ -334,7 +335,7 @@ class widgetRetraitCard extends StatelessWidget {
                           "Approuver",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: AppColors.white,
                           ),
                         ),
@@ -344,7 +345,7 @@ class widgetRetraitCard extends StatelessWidget {
                       child: Text(
                         "Approuvé",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppColors.green,
                           fontWeight: FontWeight.w300,
                         ),

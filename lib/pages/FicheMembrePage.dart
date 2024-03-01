@@ -49,9 +49,7 @@ class _AccountPageState extends State<AccountPage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.only(
-                top: 25.h,
-              ),
+              padding: EdgeInsets.only(top: 25.h, bottom: 10.h),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -60,7 +58,8 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 color: AppColors.blackBlue,
               ),
-              height: 190.h,
+
+              // height: 210.h,
               child: Column(
                 children: [
                   Row(
@@ -188,11 +187,21 @@ class _AccountPageState extends State<AccountPage> {
                           onTap: () async {
                             String msg =
                                 "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
+                            String raisonComplete = "Paiement du fonds de caisse".tr();
+                            String motif = "payer_vous_même".tr();
+                            String paiementProcheMsg =
+                                "partager_le_lien_de_paiement".tr();
+                            String msgAppBarPaiementPage =
+                                "Effectuer le paiement de votre fond de caisse".tr();
                             if (currentDetailUser["is_inscription_payed"] != 1)
                               Modal().showModalActionPayement(
                                 context,
                                 msg,
                                 currentDetailUser["inscription_pay_link"],
+                                raisonComplete,
+                                motif,
+                                paiementProcheMsg,
+                                msgAppBarPaiementPage,
                               );
                           },
                           child: Column(
@@ -220,13 +229,27 @@ class _AccountPageState extends State<AccountPage> {
                                   : GestureDetector(
                                       onTap: () async {
                                         String msg =
-                                            "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien ${currentDetailUser["inscription_pay_link"]} pour valider";
-                                        Modal().showModalActionPayement(
-                                          context,
-                                          msg,
-                                          currentDetailUser[
-                                              "inscription_pay_link"],
-                                        );
+                                            "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
+                                        String raisonComplete =
+                                            "Paiement du fonds de caisse".tr();
+                                        String motif = "payer_vous_même".tr();
+                                        String paiementProcheMsg =
+                                            "partager_le_lien_de_paiement".tr();
+                                        String msgAppBarPaiementPage =
+                                            "Effectuer le paiement de votre fond de caisse".tr();
+                                        if (currentDetailUser[
+                                                "is_inscription_payed"] !=
+                                            1)
+                                          Modal().showModalActionPayement(
+                                            context,
+                                            msg,
+                                            currentDetailUser[
+                                                "inscription_pay_link"],
+                                            raisonComplete,
+                                            motif,
+                                            paiementProcheMsg,
+                                            msgAppBarPaiementPage,
+                                          );
                                       },
                                       child: Row(
                                         children: [
@@ -1687,8 +1710,8 @@ class _AccountPageState extends State<AccountPage> {
                           Container(
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.only(
-            bottom: Platform.isIOS ? 70.h : 10.h,
-          ),
+                              bottom: Platform.isIOS ? 70.h : 10.h,
+                            ),
                             padding: EdgeInsets.all(7.r),
                             decoration: BoxDecoration(
                               color: Color.fromARGB(19, 20, 45, 99),
@@ -1772,7 +1795,7 @@ class _AccountPageState extends State<AccountPage> {
                                                                 1.5,
                                                         child: Html(
                                                           data:
-                                                              "<p style='color:#142D63 ; font-size: 12px; padding: 0 0 0 0; margin: 0 0 0 0'> <Span style='color:#142D63 ; font-size: 12px; padding: 0 0 0 0; margin: 0 0 0 0'></Span>${itemCurrentDetailUser["description"]}</p>",
+                                                              "<p style='color:#142D63 ; font-size: ${12.sp}px; padding: 0 0 0 0; margin: 0 0 0 0'> <Span style='color:#142D63 ; font-size: 12px; padding: 0 0 0 0; margin: 0 0 0 0'></Span>${itemCurrentDetailUser["description"]}</p>",
                                                         ),
                                                       ),
                                                     ],
@@ -1833,8 +1856,9 @@ class _AccountPageState extends State<AccountPage> {
                                                       Container(
                                                         child: Text(
                                                           formatDateLiteral(
-                                                              itemCurrentDetailUser[
-                                                                  "created_at"]),
+                                                            itemCurrentDetailUser[
+                                                                "created_at"],
+                                                          ),
                                                           style: TextStyle(
                                                             fontSize: 10.sp,
                                                             color:

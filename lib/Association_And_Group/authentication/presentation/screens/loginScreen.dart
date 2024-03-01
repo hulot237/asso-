@@ -6,6 +6,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/verificationPage.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,8 +93,11 @@ class _LoginPageState extends State<LoginPage> {
                   width: 40.w,
                   transformAlignment: Alignment.centerLeft,
                   child: Icon(
-                    Icons.arrow_back_outlined,
+                    Platform.isAndroid
+                        ? Icons.arrow_back_outlined
+                        : Icons.arrow_back_ios,
                     color: AppColors.blackBlue,
+                    size: 16.sp,
                   ),
                 ),
               ),
@@ -105,9 +109,12 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Column(
                             children: [
-                              Image.asset(
-                                "assets/images/Groupe_ou_Asso.png",
-                                scale: 4,
+                              Container(
+                                width: 130.w,
+                                child: Image.asset(
+                                  "assets/images/AssoplusFinal.png",
+                                  scale: 1,
+                                ),
                               ),
                               SizedBox(height: 70.h),
                               Text(
@@ -122,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               SizedBox(height: 50.h),
                               IntlPhoneField(
-                                autofocus: true,
+                                // autofocus: true,
                                 style: TextStyle(
                                   color: AppColors.blackBlue,
                                   fontWeight: FontWeight.w400,
@@ -247,6 +254,46 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+
+
+              Container(
+              margin: EdgeInsets.only(bottom: 5.h),
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "By".tr(),
+                        style: TextStyle(
+                            fontSize: 9.sp,
+                            color: Colors.grey[600],
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w900),
+                        textAlign: TextAlign.center,
+                      ),
+                      Container(
+                        width: 40.r,
+                        child: Image.asset("assets/images/FAroty_gris.png"),
+                      ),
+                      Text(
+                        "Version ${Variables.version}".tr(),
+                        style: TextStyle(
+                          fontSize: 9.sp,
+                          color: Colors.grey[600],
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w900,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             ],
           ),
         ),

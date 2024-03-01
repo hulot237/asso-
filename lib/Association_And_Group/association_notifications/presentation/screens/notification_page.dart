@@ -68,7 +68,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white,),
+        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
       ),
     ),
     body: child,
@@ -104,7 +104,7 @@ class _NotificationPageState extends State<NotificationPage> {
           type: MaterialType.transparency,
           child: Container(
             margin: EdgeInsets.only(
-            bottom: Platform.isIOS ? 70.h : 10.h,
+            bottom: 10.h,
           ),
             // margin: EdgeInsets.only(top: 10),
             child: Container(
@@ -118,7 +118,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
-                        'assets/images/Groupe_ou_Asso.png',
+                        "assets/images/AssoplusFinal.png",
                       ),
                     ),
                   );
@@ -259,7 +259,7 @@ class notificationWidget extends StatelessWidget {
                           children: [
                             Html(
                               data:
-                                  "<p style='color:#142D63 ; text-align:center;'>${description}</p>",
+                                  "<p style='color:#142D63 ; text-align:center; font-size:${14.sp}px'>${description}</p>",
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -354,7 +354,7 @@ _showSimpleModalDialog(context, description) {
               padding:  EdgeInsets.all(12.0.r),
               child: Html(
                 data:
-                    "<p style='color:#142D63 ; text-align:center; font-size:16px;'>${description}</p>",
+                    "<p style='color:#142D63 ; text-align:center; font-size:${16.sp}px;'>${description}</p>",
               ),
             ),
           ),

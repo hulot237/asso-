@@ -53,9 +53,10 @@ class _widgetDetailCotisationCardState
           color: AppColors.white,
           boxShadow: [
             BoxShadow(
-                color: Color.fromARGB(69, 0, 0, 0),
-                spreadRadius: 0.5,
-                blurRadius: 2,),
+              color: Color.fromARGB(69, 0, 0, 0),
+              spreadRadius: 0.5,
+              blurRadius: 2,
+            ),
           ],
           borderRadius: BorderRadius.circular(15.r),
         ),
@@ -74,8 +75,7 @@ class _widgetDetailCotisationCardState
                         Expanded(
                           // flex: 1,
                           child: Container(
-                            margin: EdgeInsets.only(right: 15.w
-                            ),
+                            margin: EdgeInsets.only(right: 15.w),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -93,8 +93,6 @@ class _widgetDetailCotisationCardState
                             ),
                           ),
                         ),
-
-
                         widget.isPayed == 0
                             ? BlocBuilder<CotisationDetailCubit,
                                 CotisationDetailState>(
@@ -106,7 +104,10 @@ class _widgetDetailCotisationCardState
                                       width: 60.w,
                                       height: 25.h,
                                       padding: EdgeInsets.only(
-                                          left: 8.w, right: 8.w, top: 5.h, bottom: 5.h),
+                                          left: 8.w,
+                                          right: 8.w,
+                                          top: 5.h,
+                                          bottom: 5.h),
                                       decoration: BoxDecoration(
                                         color: AppColors.colorButton,
                                         borderRadius: BorderRadius.circular(15),
@@ -141,108 +142,117 @@ class _widgetDetailCotisationCardState
                                       //         AppCubitStorage()
                                       //             .state
                                       //             .membreCode)
-                                            GestureDetector(
-                                                onTap: () async {
-                                                  String msg =
-                                                      "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                                  Modal()
-                                                      .showModalActionPayement(
-                                                    context,
-                                                    msg,
-                                                    widget.lienDePaiement,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  width: 72.w,
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: 8.w,
-                                                    vertical: 5.h,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        AppColors.colorButton,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.r),
-                                                  ),
-                                                  child: Text(
-                                                    "cotiser".tr(),
-                                                    style: TextStyle(
-                                                        color: AppColors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 12.sp),
-                                                  ),
-                                                )
+                                      GestureDetector(
+                                          onTap: () async {
+                                            String msg =
+                                                "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                            String raisonComplete =
+                                                'Paiement de la cotisation'.tr();
+                                            String motif =
+                                                "payer_vous_même".tr();
+                                            String paiementProcheMsg =
+                                                "partager_le_lien_de_paiement"
+                                                    .tr();
+                                            String msgAppBarPaiementPage =
+                                                "${'Paiement de la cotisation'.tr()} ${widget.motifCotisations}";
+                                            Modal().showModalActionPayement(
+                                              context,
+                                              msg,
+                                              widget.lienDePaiement,
+                                              raisonComplete,
+                                              motif,
+                                              paiementProcheMsg,
+                                              msgAppBarPaiementPage,
+                                            );
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: 75.w,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.w,
+                            vertical: 5.h,
+                          ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.colorButton,
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                            ),
+                                            child: Text(
+                                              "cotiser".tr(),
+                                              style: TextStyle(
+                                                  color: AppColors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12.sp),
+                                            ),
+                                          )
 
-                                                // : Column(
-                                                //     children: [
-                                                //       GestureDetector(
-                                                //         onTap: () async {
-                                                //           String msg =
-                                                //               "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                                                //           Modal()
-                                                //               .showModalActionPayement(
-                                                //             context,
-                                                //             msg,
-                                                //             widget.lienDePaiement,
-                                                //           );
-                                                //         },
-                                                //         child: Container(
-                                                //           alignment:
-                                                //               Alignment.center,
-                                                //           width: 72,
-                                                //           padding: EdgeInsets.only(
-                                                //             left: 8,
-                                                //             right: 8,
-                                                //             top: 5,
-                                                //             bottom: 5,
-                                                //           ),
-                                                //           decoration: BoxDecoration(
-                                                //             color: AppColors
-                                                //                 .colorButton,
-                                                //             borderRadius:
-                                                //                 BorderRadius
-                                                //                     .circular(15),
-                                                //           ),
-                                                //           child: Container(
-                                                //             child: Text(
-                                                //               "cotiser".tr(),
-                                                //               style: TextStyle(
-                                                //                 fontWeight:
-                                                //                     FontWeight.bold,
-                                                //                 fontSize: 12,
-                                                //                 color:
-                                                //                     AppColors.white,
-                                                //               ),
-                                                //             ),
-                                                //           ),
-                                                //         ),
-                                                //       ),
-                                                //       Container(
-                                                //         alignment: Alignment.center,
-                                                //         decoration: BoxDecoration(
-                                                //           borderRadius:
-                                                //               BorderRadius.circular(
-                                                //                   7),
-                                                //         ),
-                                                //         child: Container(
-                                                //           child: Text(
-                                                //             "expiré".tr(),
-                                                //             style: TextStyle(
-                                                //               fontWeight:
-                                                //                   FontWeight.bold,
-                                                //               fontSize: 8,
-                                                //               color: Color.fromARGB(
-                                                //                   255, 255, 0, 0),
-                                                //             ),
-                                                //           ),
-                                                //         ),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                ),
+                                          // : Column(
+                                          //     children: [
+                                          //       GestureDetector(
+                                          //         onTap: () async {
+                                          //           String msg =
+                                          //               "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                          //           Modal()
+                                          //               .showModalActionPayement(
+                                          //             context,
+                                          //             msg,
+                                          //             widget.lienDePaiement,
+                                          //           );
+                                          //         },
+                                          //         child: Container(
+                                          //           alignment:
+                                          //               Alignment.center,
+                                          //           width: 72,
+                                          //           padding: EdgeInsets.only(
+                                          //             left: 8,
+                                          //             right: 8,
+                                          //             top: 5,
+                                          //             bottom: 5,
+                                          //           ),
+                                          //           decoration: BoxDecoration(
+                                          //             color: AppColors
+                                          //                 .colorButton,
+                                          //             borderRadius:
+                                          //                 BorderRadius
+                                          //                     .circular(15),
+                                          //           ),
+                                          //           child: Container(
+                                          //             child: Text(
+                                          //               "cotiser".tr(),
+                                          //               style: TextStyle(
+                                          //                 fontWeight:
+                                          //                     FontWeight.bold,
+                                          //                 fontSize: 12,
+                                          //                 color:
+                                          //                     AppColors.white,
+                                          //               ),
+                                          //             ),
+                                          //           ),
+                                          //         ),
+                                          //       ),
+                                          //       Container(
+                                          //         alignment: Alignment.center,
+                                          //         decoration: BoxDecoration(
+                                          //           borderRadius:
+                                          //               BorderRadius.circular(
+                                          //                   7),
+                                          //         ),
+                                          //         child: Container(
+                                          //           child: Text(
+                                          //             "expiré".tr(),
+                                          //             style: TextStyle(
+                                          //               fontWeight:
+                                          //                   FontWeight.bold,
+                                          //               fontSize: 8,
+                                          //               color: Color.fromARGB(
+                                          //                   255, 255, 0, 0),
+                                          //             ),
+                                          //           ),
+                                          //         ),
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          ),
                                       if (widget.isPassed == 1)
                                         Container(
                                           child: Text(
@@ -262,6 +272,7 @@ class _widgetDetailCotisationCardState
                             : Text(
                                 "payé".tr(),
                                 style: TextStyle(
+                                    fontSize: 14.sp,
                                     color: AppColors.green,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FontStyle.italic),
@@ -287,6 +298,7 @@ class _widgetDetailCotisationCardState
                                   : "type_fixe".tr(),
                               style: TextStyle(
                                 color: AppColors.blackBlue,
+                                fontSize: 12.sp,
                               ),
                             ),
                           ),
@@ -404,7 +416,8 @@ class _widgetDetailCotisationCardState
                                                       255, 20, 45, 99),
                                                 ),
                                               ),
-                                              margin: EdgeInsets.only(right: 5.w),
+                                              margin:
+                                                  EdgeInsets.only(right: 5.w),
                                             ),
                                             Container(
                                               child: Text(
@@ -456,17 +469,23 @@ class _widgetDetailCotisationCardState
                                                       255, 20, 45, 99),
                                                 ),
                                               ),
-                                              margin: EdgeInsets.only(right: 5.w),
+                                              margin:
+                                                  EdgeInsets.only(right: 5.w),
                                             ),
                                             Container(
                                               child: Text(
                                                 "${formatMontantFrancais(double.parse(itemDetailCotisation["membre"]["versement"].length > 0 ? "${itemDetailCotisation["membre"]["versement"][0]["balance_after"]}" : "0"))} FCFA",
                                                 // "${itemDetailCotisation["membre"]["versement"].length}",
                                                 style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w800,
-                                                    color: Color.fromARGB(
-                                                        255, 20, 45, 99,),),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    20,
+                                                    45,
+                                                    99,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -511,9 +530,10 @@ class _widgetDetailCotisationCardState
                                         child: Text(
                                           "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
                                           style: TextStyle(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w800,
-                                              color: AppColors.green,),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: AppColors.green,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -575,10 +595,11 @@ class _widgetDetailCotisationCardState
                                                               fontSize: 11.sp,
                                                               color: Color
                                                                   .fromARGB(
-                                                                      255,
-                                                                      20,
-                                                                      45,
-                                                                      99,),
+                                                                255,
+                                                                20,
+                                                                45,
+                                                                99,
+                                                              ),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600),
@@ -669,10 +690,10 @@ class _widgetDetailCotisationCardState
                                       "montant".tr(),
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
-                                          fontSize: 11.sp,
-                                          color:
-                                              Color.fromARGB(160, 20, 45, 99),
-                                          fontWeight: FontWeight.w600),
+                                        fontSize: 11.sp,
+                                        color: Color.fromARGB(160, 20, 45, 99),
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                   Row(
@@ -683,11 +704,11 @@ class _widgetDetailCotisationCardState
                                                 " : Volontaire",
                                                 overflow: TextOverflow.clip,
                                                 style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: Color.fromARGB(
-                                                        255, 20, 45, 99),
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                  fontSize: 11.sp,
+                                                  color: Color.fromARGB(
+                                                      255, 20, 45, 99),
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                               ),
                                             )
                                           : Container(

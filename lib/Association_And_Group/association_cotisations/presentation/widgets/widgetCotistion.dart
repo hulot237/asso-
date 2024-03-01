@@ -101,7 +101,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                     color: AppColors.white,
                   ),
                 ),
-          padding: EdgeInsets.only(left: 10.w, top: 5.h, bottom: 10.h, right: 10.w),
+          padding:
+              EdgeInsets.only(left: 10.w, top: 5.h, bottom: 10.h, right: 10.w),
           width: MediaQuery.of(context).size.width,
           child: Row(
             children: [
@@ -175,20 +176,30 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       onTap: () async {
                                         String msg =
                                             "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                        String raisonComplete =
+                                            "Paiement de la cotisation".tr();
+                                        String motif = "payer_vous_même".tr();
+                                        String paiementProcheMsg =
+                                            "partager_le_lien_de_paiement".tr();
+                                        String msgAppBarPaiementPage =
+                                            "${'Paiement de la cotisation'.tr()} ${widget.motifCotisations}";
                                         Modal().showModalActionPayement(
                                           context,
                                           msg,
                                           widget.lienDePaiement,
+                                          raisonComplete,
+                                          motif,
+                                          paiementProcheMsg,
+                                          msgAppBarPaiementPage,
                                         );
                                       },
                                       child: Container(
-                                        width: 72.w,
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.only(
-                                            left: 8.w,
-                                            right: 8.w,
-                                            top: 5.h,
-                                            bottom: 5.h,),
+                                        width: 75.w,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.w,
+                            vertical: 5.h,
+                          ),
                                         decoration: BoxDecoration(
                                           color: AppColors.colorButton,
                                           borderRadius:
@@ -199,7 +210,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                             "cotiser".tr(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12.sp,
+                                              fontSize: 11.sp,
                                               color: AppColors.white,
                                             ),
                                           ),
@@ -229,10 +240,10 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               : Text(
                                   "payé".tr(),
                                   style: TextStyle(
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FontStyle.italic
-                                  ),
+                                      fontSize: 14.sp,
+                                      color: AppColors.green,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.italic),
                                 ),
                         ],
                       ),
@@ -252,7 +263,9 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   ? "type_volontaire".tr()
                                   : "type_fixe".tr(),
                               style: TextStyle(
-                                  color: AppColors.blackBlue, fontSize: 12.sp),
+                                color: AppColors.blackBlue,
+                                fontSize: 12.sp,
+                              ),
                             ),
                           ),
                           Container(
@@ -284,7 +297,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                         ],
                       ),
                     ),
-                    
                     if (checkTransparenceStatus(
                         context
                             .read<UserGroupCubit>()

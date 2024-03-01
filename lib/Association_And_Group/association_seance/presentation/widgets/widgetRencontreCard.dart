@@ -110,7 +110,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
             color: widget.isActiveRencontre == 1
                 ? AppColors.white
                 : Color.fromARGB(12, 0, 0, 0),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(15.r),
             boxShadow: [
               BoxShadow(
                 color: widget.isActiveRencontre == 1

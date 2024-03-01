@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.farotyAssociation1</string>
+	<string>com.faroty.groups</string>
 	<key>PROJECT_ID</key>
 	<string>groups-associations</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:643631488704:ios:33b238bef9e7c7a334d725</string>
+	<string>1:643631488704:ios:6002038f8f0e330634d725</string>
 </dict>
 </plist>

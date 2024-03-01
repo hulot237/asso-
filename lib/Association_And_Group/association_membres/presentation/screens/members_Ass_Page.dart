@@ -64,7 +64,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
       ),
     ),
     body: child,
@@ -103,7 +103,7 @@ class _MembersAssPageState extends State<MembersAssPage> {
                         iconSize: 50.r,
                         iconColor: AppColors.blackBlueAccent1,
                         image: AssetImage(
-                          'assets/images/Groupe_ou_Asso.png',
+                          "assets/images/AssoplusFinal.png",
                         ),
                       ),
                     ),
@@ -126,12 +126,33 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                   width: 65.w,
                                   child: Stack(
                                     children: [
-                                      CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                          "${Variables.LienAIP}${itemMembers!.photo_profil == null ? "" : itemMembers!.photo_profil}",
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Container(
+                                          width: 50.w,
+                                          height: 50.w,
+                                          child: Image.network(
+                                            "${Variables.LienAIP}${itemMembers!.photo_profil == null ? "" : itemMembers!.photo_profil}",
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                        radius: 25,
                                       ),
+                                      // Container(
+                                      //   width: 100.r,
+                                      //   height: 100.r,
+                                      //   child: Image.network(
+                                      //     "${Variables.LienAIP}${itemMembers!.photo_profil == null ? "" : itemMembers!.photo_profil}",
+                                      //   ),
+                                      //   decoration: BoxDecoration(
+                                      //       borderRadius:
+                                      //           BorderRadius.circular(360)),
+                                      // ),
+                                      // CircleAvatar(
+                                      //   backgroundImage: NetworkImage(
+                                      //     "${Variables.LienAIP}${itemMembers!.photo_profil == null ? "" : itemMembers!.photo_profil}",
+                                      //   ),
+                                      //   radius: 25,
+                                      // ),
                                       if (itemMembers.isSuperAdmin == true)
                                         Positioned(
                                           left: 35.w,
@@ -206,9 +227,10 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                           Text(
                                             "+${itemMembers.countrycode} ",
                                             style: TextStyle(
-                                                fontSize: 16.sp,
-                                                color: AppColors.blackBlue,
-                                                fontWeight: FontWeight.bold,),
+                                              fontSize: 16.sp,
+                                              color: AppColors.blackBlue,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         Text(
                                           "${formatMontantFrancais(double.parse("${itemMembers.first_phone}"))}",
@@ -251,7 +273,7 @@ class _MembersAssPageState extends State<MembersAssPage> {
                             iconSize: 50.r,
                             iconColor: AppColors.blackBlueAccent1,
                             image: AssetImage(
-                              'assets/images/Groupe_ou_Asso.png',
+                              "assets/images/AssoplusFinal.png",
                             ),
                           ),
                         ),

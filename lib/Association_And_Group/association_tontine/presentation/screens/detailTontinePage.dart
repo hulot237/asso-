@@ -87,7 +87,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
       ),
     ),
     body: child,
@@ -191,8 +191,8 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                                       : Color.fromRGBO(
                                                           15, 190, 24, 0.658),
                                             ),
-                                            width: 15,
-                                            height: 15,
+                                            width: 15.w,
+                                            height: 15.w,
                                             child: Container(
                                                 alignment: Alignment.center,
                                                 child: itemListMembre[
@@ -266,7 +266,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                       iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
-                        'assets/images/Groupe_ou_Asso.png',
+                        "assets/images/AssoplusFinal.png",
                       ),
                     ),
                   ),

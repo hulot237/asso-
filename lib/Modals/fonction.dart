@@ -123,6 +123,70 @@ String formatCompareDateReturnWellValue(
   return formattedDate;
 }
 
+
+
+
+
+String formatCompareDateUnikReturnWellValue(
+  String endDate,
+) {
+  final dateTime = DateTime.parse(endDate);
+  final formattedDate = DateFormat("yyy-MM-dd").format(dateTime);
+
+  DateTime endDateApi = DateTime.parse(formattedDate);
+  DateTime dt2 = DateTime.now();
+
+  Duration diff = endDateApi.difference(dt2);
+
+  if (endDateApi.compareTo(dt2) == 0) {
+    return ("À l'instant".tr());
+  }
+
+  if (endDateApi.compareTo(dt2) < 0) {
+    print("DT1 est avant DT2 ${endDateApi.compareTo(dt2)}");
+
+    if (diff.inMinutes * -1 < 1) {
+      return ("À l'instant".tr());
+    } else if (diff.inMinutes * -1 > 1 && (diff.inHours * -1) < 1) {
+      return ("${"Retard de".tr()} ${diff.inMinutes * -1} ${"minutes".tr()}");
+    } else if (diff.inHours * -1 > 1 && (diff.inDays * -1) < 1) {
+      return ("${"Retard de".tr()} ${diff.inHours * -1} ${"heures".tr()}");
+    } else if ((diff.inDays * -1) >= 1 && (diff.inDays * -1) <= 6) {
+      return ("${"Retard de".tr()} ${diff.inDays * -1} ${"jours".tr()}");
+    } else if ((diff.inDays * -1) == 7) {
+      return ("Retard de 1 semaine".tr());
+    } else if ((diff.inDays * -1) > 7) {
+      return ("${"Retard depuis".tr()} ${formatDateUnikLiteral(endDate)}");
+    }
+  }
+
+  if (endDateApi.compareTo(dt2) > 0) {
+    if (diff.inMinutes < 1) {
+      return ("Il vous reste moins d'une minute".tr());
+    } else if (diff.inMinutes > 1 && diff.inHours < 1) {
+      return ("${"Il vous reste".tr()} ${diff.inMinutes} ${"minutes".tr()}");
+    } else if (diff.inHours > 1 && diff.inDays < 1) {
+      return ("${"Il vous reste".tr()} ${diff.inHours} ${"heures".tr()}");
+    } else if (diff.inDays >= 1 && diff.inDays <= 6) {
+      return ("${"Il vous reste".tr()} ${diff.inDays} ${"jours".tr()}");
+    } else if (diff.inDays == 7) {
+      return ("Il vous reste 1 semaine".tr());
+    } else if (diff.inDays > 7) {
+      return ("${"Vous avez jusqu'au".tr()} ${formatDateUnikLiteral(endDate)}");
+    }
+  }
+
+  return formattedDate;
+}
+
+
+
+
+
+
+
+
+
 String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
   final dateTime = DateTime.parse(endDate);
   final formattedDate = DateFormat("yyy-MM-dd HH:mm:ss").format(dateTime);

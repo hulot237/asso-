@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -57,7 +58,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
       ),
     ),
     body: child,
@@ -101,10 +102,10 @@ class _NotificationPageState extends State<NotificationPage> {
                   return Container(
                     child: EasyLoader(
                       backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                      iconSize: 50,
+                      iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
-                        'assets/images/Groupe_ou_Asso.png',
+                       "assets/images/AssoplusFinal.png",
                       ),
                     ),
                   );
@@ -244,7 +245,7 @@ class notificationWidget extends StatelessWidget {
                           children: [
                             Html(
                               data:
-                                  "<p style='color:#142D63 ; text-align:center;'>${description}</p>",
+                                  "<p style='color:#142D63 ; text-align:center; '>${description}</p>",
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

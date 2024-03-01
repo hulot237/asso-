@@ -17,7 +17,12 @@ class PretEpargneCubit extends Cubit<PretEpargneState> {
           PretEpargneState(
             epargne: null,
             isLoadingEpargne: false,
-            nomberNotif: null,
+            isLoadingDetailEpargne: false,
+            detailEpargne: null,
+            pret: null,
+            isLoadingPret: false,
+            isLoadingDetailPret: false,
+            detailPret: null,
           ),
         );
 
@@ -42,24 +47,68 @@ class PretEpargneCubit extends Cubit<PretEpargneState> {
     }
   }
 
-  // Future<void> countNotification() async {
-  //   emit(state.copyWith(isLoadingNomberNotif: true, notifications: state.notifications));
-  //   try {
-  //     final data = await NotificationRepository().countNotification();
+  Future<void> getPret() async {
+    emit(state.copyWith(isLoadingPret: true, pret: state.pret));
+    try {
+      final data = await PretEpargneRepository().getPret();
 
-  //     emit(
-  //       state.copyWith(
-  //         nomberNotif: data,
-  //         isLoadingNomberNotif: false,
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     emit(
-  //       state.copyWith(
-  //         isLoadingNomberNotif: false,
-  //         messageError: e.toString(),
-  //       ),
-  //     );
-  //   }
-  // }
+      emit(
+        state.copyWith(
+          pret: data,
+          isLoadingPret: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoadingPret: false,
+          messageError: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> getDetailEpargne(codeEpargne) async {
+    emit(state.copyWith(
+        isLoadingDetailEpargne: true, detailEpargne: state.detailEpargne));
+
+    try {
+      final data = await PretEpargneRepository().getDetailEpargne(codeEpargne);
+      emit(
+        state.copyWith(
+          detailEpargne: data,
+          isLoadingDetailEpargne: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoadingDetailEpargne: false,
+          messageError: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> getDetailPret(codePret) async {
+    emit(state.copyWith(
+        isLoadingDetailPret: true, detailPret: state.detailPret));
+
+    try {
+      final data = await PretEpargneRepository().getDetailPret(codePret);
+      emit(
+        state.copyWith(
+          detailPret: data,
+          isLoadingDetailPret: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoadingDetailPret: false,
+          messageError: e.toString(),
+        ),
+      );
+    }
+  }
 }

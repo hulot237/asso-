@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/data/auth_model.dart';
@@ -13,7 +14,7 @@ class AuthRepository {
         '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi',
       );
       final Map<String, dynamic> dataJson = response.data["data"];
-      
+
       return dataJson;
     } catch (e) {
       log('erreur UserDetail rep');
@@ -22,13 +23,36 @@ class AuthRepository {
     }
   }
 
+  Future<String> getUid() async {
+    try {
+      final response = await dio.get(
+        '${Variables.LienAIP}/api/v1/getuid',
+        options: Options(
+          headers: {
+            "token": AppCubitStorage().state.tokenUser,
+          },
+        ),
+      );
+      final dataJson = json.encode(response.data);
+
+      return dataJson;
+    } catch (e) {
+      log('erreur getUid rep');
+      print(e);
+      return "";
+    }
+  }
+
   Future<bool> LoginRepository(numeroPhone, countrycode) async {
     try {
       log("response LoginRepository");
-      final response = await dio.post('${Variables.LienAIP}/login', data: {
-        "phone": numeroPhone,
-        "countrycode": countrycode,
-      });
+      final response = await dio.post(
+        '${Variables.LienAIP}/login',
+        data: {
+          "phone": numeroPhone,
+          "countrycode": countrycode,
+        },
+      );
 
       final bool dataJson = response.data["error"];
       log('Okay LoginRepository rep');
@@ -42,15 +66,15 @@ class AuthRepository {
 
   Future<AuthModel> ConfirmationRepository(codeConfirmation) async {
     final response = await dio.post(
-        '${Variables.LienAIP}/confirmation?notification_token=${AppCubitStorage().state.tokenNotification}',
-        data: {
-          "code": codeConfirmation,
-        },
-      );
+      '${Variables.LienAIP}/confirmation?notification_token=${AppCubitStorage().state.tokenNotification}',
+      data: {
+        "code": codeConfirmation,
+      },
+    );
 
-      var data = response.data;
-    
-      return AuthModel.fromJson(data['data']);
+    var data = response.data;
+
+    return AuthModel.fromJson(data['data']);
   }
 
   Future<Map<String, dynamic>> UpdateInfoUserRepository(
@@ -75,6 +99,3 @@ class AuthRepository {
     }
   }
 }
-
-  
-

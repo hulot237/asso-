@@ -162,17 +162,40 @@
     "Veuf": "Veuf",
     "reste à payer":"Reste à payer",
     "CRÉER UN GROUPE/UNE ASSOCIATION":"CRÉER UN GROUPE/UNE ASSOCIATION",
-    "Votre comptable express \net connecté":"Votre comptable express \net connecté",
+    "Le partenaire financier \nde votre association":"Le partenaire financier \nde votre association",
     "Simple et efficace":"Simple et efficace",
-    "Globale (cotisations, prêts et épagnes, \ntontines, bilans, ...)":"Globale (cotisations, prêts et épagnes, \ntontines, bilans, ...)",
+    "Interactive et globale":"Interactive et globale",
     "Rapide et sécurisé":"Rapide et sécurisé",
     "Votre groupe a déjà été créé ?":"Votre groupe a déjà été créé ?",
     "Connectez-vous":"Connectez-vous",
     "Solde après":"Balance after",
     "Toutes vos tontines":"Toutes vos tontines",
     "TOTAL EPARGNES":"TOTAL EPARGNES",
+    "ÉPARGNEZ" : "ÉPARGNEZ",
     "INTÉRÊTS EN COURS":"INTÉRÊTS EN COURS",
     "Detail de la tontine":"Détails de la tontine",
-    "Historique de la tontine":"Historique de la tontine"
+    "Historique de la tontine":"Historique de la tontine",
+    "Paiement de la cotisation":"Paiement de la cotisation",
+    "Paiement de la sanction":"Paiement de la sanction",
+    "Paiement du fonds de caisse":"Paiement du fonds de caisse",
+    "Effectuer le paiement de votre fond de caisse":"Effectuer le paiement de votre fond de caisse",
+    "Effectuer une épargne":"Effectuer une épargne",
+    "Epargner vous même":"Epargner vous même",
+    "Un proche épargne pour vous":"Un proche épargne pour vous",
+   "vos transaction sur l'épargne" : "Vos transaction sur l'épargne",
+   "Prêts en cours": "Prêts en cours",
+   "Rembourser" : "Rembourser",
+   "a rembourser":"A rembourser",
+   "intérêts" : "intérêts",
+   "Remboursement":"Remboursement",
+   "Rembourser vous même":"Rembourser vous même",
+   "Effectuer une remboursement":"Effectuer une remboursement",
+   "vos transaction sur le pret":"Vos transaction sur le prêt"
+
+
+
+
+
+
 
 }

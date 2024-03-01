@@ -57,7 +57,6 @@ Widget PageScaffold({
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
       backgroundColor: AppColors.pageBackground,
-
       navigationBar: CupertinoNavigationBar(
         backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
@@ -95,7 +94,11 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+          size: 16.sp,
+        ),
       ),
     ),
     body: child,
@@ -372,13 +375,13 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               //                             ),
               //                           ),
               //                         );
-        
+
               //                       final currentDetailCotisation =
               //                           CotisationContext.read<
               //                                   CotisationDetailCubit>()
               //                               .state
               //                               .detailCotisation;
-        
+
               //                       var detailCotisationMemberNoOkay =
               //                           currentDetailCotisation!["members"]
               //                               .firstWhere(
@@ -387,7 +390,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               //                             AppCubitStorage().state.membreCode,
               //                         orElse: () => null,
               //                       );
-        
+
               //                       var detailCotisationMemberIsOkay =
               //                           currentDetailCotisation!["versements"]
               //                               .firstWhere(
@@ -396,7 +399,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               //                             AppCubitStorage().state.membreCode,
               //                         orElse: () => null,
               //                       );
-        
+
               //                       if (currentDetailCotisation!["members"]
               //                                   .length >
               //                               0 &&
@@ -479,13 +482,13 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               //                             ),
               //                           ),
               //                         );
-        
+
               //                       final currentDetailCotisation =
               //                           CotisationContext.read<
               //                                   CotisationDetailCubit>()
               //                               .state
               //                               .detailCotisation;
-        
+
               //                       var detailCotisationMemberNoOkay =
               //                           currentDetailCotisation!["members"]
               //                               .firstWhere(
@@ -494,7 +497,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               //                             AppCubitStorage().state.membreCode,
               //                         orElse: () => null,
               //                       );
-        
+
               //                       var detailCotisationMemberIsOkay =
               //                           currentDetailCotisation!["versements"]
               //                               .firstWhere(
@@ -503,7 +506,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               //                             AppCubitStorage().state.membreCode,
               //                         orElse: () => null,
               //                       );
-        
+
               //                       if (currentDetailCotisation!["members"]
               //                                   .length >
               //                               0 &&
@@ -566,33 +569,35 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                           .configs,
                       context.read<AuthCubit>().state.detailUser!["isMember"])
                   ? BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                      builder: (CotisationDetailcontext, CotisationDetailstate) {
+                      builder:
+                          (CotisationDetailcontext, CotisationDetailstate) {
                         if (CotisationDetailstate.isLoading == null ||
                             CotisationDetailstate.isLoading == true ||
                             CotisationDetailstate.detailCotisation == null)
                           return Expanded(
                             child: Center(
                               child: EasyLoader(
-                                backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                                iconSize: 50.h,
+                                backgroundColor:
+                                    Color.fromARGB(0, 255, 255, 255),
+                                iconSize: 50.r,
                                 iconColor: AppColors.blackBlueAccent1,
                                 image: AssetImage(
-                                  'assets/images/Groupe_ou_Asso.png',
+                                  "assets/images/AssoplusFinal.png",
                                 ),
                               ),
                             ),
                           );
-        
-                        final currentDetailCotisation =
-                            CotisationDetailcontext.read<CotisationDetailCubit>()
-                                .state
-                                .detailCotisation;
-        
+
+                        final currentDetailCotisation = CotisationDetailcontext
+                                .read<CotisationDetailCubit>()
+                            .state
+                            .detailCotisation;
+
                         List listeOkayCotisation =
                             currentDetailCotisation!["versements"];
                         List listeNonCotisation =
                             currentDetailCotisation["members"];
-        
+
                         List<Widget> listWidgetOkayCotis =
                             listeOkayCotisation.map((monObjet) {
                           return Card(
@@ -608,7 +613,8 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                               montantTotalAVerser:
                                   monObjet["versement"].length == 0
                                       ? "0"
-                                      : monObjet["versement"][0]["source_amount"],
+                                      : monObjet["versement"][0]
+                                          ["source_amount"],
                               montantVersee: monObjet["versement"].length == 0
                                   ? "0"
                                   : monObjet["versement"][0]["balance_after"],
@@ -624,7 +630,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                             ),
                           );
                         }).toList();
-        
+
                         List<Widget> listWidgetNonCotis =
                             listeNonCotisation.map((monObjet) {
                           return Card(
@@ -659,12 +665,12 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                 : monObjet["membre"]["last_name"],
                           ));
                         }).toList();
-        
+
                         final listeFinale = [
                           ...listWidgetOkayCotis,
                           ...listWidgetNonCotis
                         ];
-        
+
                         return Expanded(
                             child: SingleChildScrollView(
                           child: Column(
@@ -684,7 +690,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                           child: Center(
                             child: Container(
                               width: 30.w,
-                              height: 30.h,
+                              height: 30.w,
                               child: CircularProgressIndicator(
                                 color: AppColors.bleuLight,
                                 // strokeWidth: 0.5,
@@ -694,14 +700,12 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                             ),
                           ),
                         );
-        
+
                       final currentDetailCotisation =
                           CotisationContext.read<CotisationDetailCubit>()
                               .state
                               .detailCotisation;
-        
-                      print("eeeeeeeeeeee ${currentDetailCotisation!['membre']}");
-        
+
                       var detailCotisationMemberNoOkay =
                           currentDetailCotisation!["members"].firstWhere(
                         (member) =>
@@ -709,8 +713,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                             AppCubitStorage().state.membreCode,
                         orElse: () => null,
                       );
-                      print("rrrrrrrrrr ${detailCotisationMemberNoOkay}");
-        
+
                       var detailCotisationMemberIsOkay =
                           currentDetailCotisation["versements"].firstWhere(
                         (member) =>
@@ -718,12 +721,12 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                             AppCubitStorage().state.membreCode,
                         orElse: () => null,
                       );
-        
-                      print("cdcdcdcdcdcdcdc ${detailCotisationMemberIsOkay}");
+
                       return Column(
                         children: [
                           if (detailCotisationMemberNoOkay != null &&
-                              detailCotisationMemberNoOkay['membre']['versement']
+                              detailCotisationMemberNoOkay['membre']
+                                          ['versement']
                                       .length >
                                   0)
                             for (var item
@@ -760,21 +763,22 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                               child: Text(
                                 "aucune_transaction".tr(),
                                 style: TextStyle(
-                                    color: Color.fromRGBO(20, 45, 99, 0.26),
-                                    fontWeight: FontWeight.w100,
-                                    fontSize: 20.sp),
+                                  color: Color.fromRGBO(20, 45, 99, 0.26),
+                                  fontWeight: FontWeight.w100,
+                                  fontSize: 20.sp,
+                                ),
                               ),
                             )
                         ],
                       );
-        
+
                       // return  Column(
                       //     children: [
                       //       Expanded( child: RefreshIndicator(
                       //         onRefresh: refresh,
                       //         child:
                       //         detailCotisationMemberNoOkay != null && detailCotisationMemberNoOkay['membre']['versement'].length > 0 ?
-        
+
                       //         ListView.builder( itemCount: detailCotisationMemberNoOkay['membre']['versement'][0]["transanctions"].length,
                       //                 shrinkWrap: true,
                       //                 itemBuilder: (context, index) {
@@ -792,7 +796,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                       //                     itemCount: detailCotisationMemberIsOkay['versement'][0]["transanctions"].length,
                       //                     itemBuilder: (context, index) {
                       //                       final detailVersement = detailCotisationMemberIsOkay['versement'][0]["transanctions"][index];
-        
+
                       //                       return Container(
                       //                           child: widgetListTransactionByEventCard(
                       //                         date: AppCubitStorage().state.Language == "fr"
@@ -825,7 +829,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                       //       ),
                       //     ),
                       //     ],
-        
+
                       // );
                     }),
             ],

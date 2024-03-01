@@ -65,8 +65,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                 context, widget.versement, widget.montantSanction.toString());
         },
         child: Container(
-          padding: EdgeInsets.all(10.r
-          ),
+          padding: EdgeInsets.all(10.r),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.r),
             color: AppColors.white,
@@ -80,11 +79,12 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(right: 5.w),
-                        width: 11.w,
-                        height: 11.h,
+                        width: 11.r,
+                        height: 11.r,
                         decoration: BoxDecoration(
-                            color: AppColors.colorButton,
-                            borderRadius: BorderRadius.circular(360.r)),
+                          color: AppColors.colorButton,
+                          borderRadius: BorderRadius.circular(360.r),
+                        ),
                       ),
                       Text(
                         'sanction_capital'.tr(),
@@ -101,20 +101,34 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                       onTap: () async {
                         String msg =
                             "Aide-moi à payer ma sanction de *${widget.motif}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* directement via le lien https://${widget.lienDePaiement}.";
-                        Modal().showModalActionPayement(
-                          context,
-                          msg,
-                          widget.lienDePaiement,
-                        );
+                        String raisonComplete =
+                                            "Paiement de la sanction".tr();
+                                        String motif = "payer_vous_même".tr();
+                                        String paiementProcheMsg =
+                                            "partager_le_lien_de_paiement".tr();
+                                        String msgAppBarPaiementPage =
+                                            "${'Paiement de la sanction'.tr()} ${widget.motif}";
+                                        Modal().showModalActionPayement(
+                                          context,
+                                          msg,
+                                          widget.lienDePaiement,
+                                          raisonComplete,
+                                          motif,
+                                          paiementProcheMsg,
+                                          msgAppBarPaiementPage,
+                                        );
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        width: 72.w,
-                        padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 5.w,),
-                        decoration: BoxDecoration(
-                          color: AppColors.colorButton,
-                          borderRadius: BorderRadius.circular(15.r),
-                        ),
+                          width: 72.w,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 5.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.colorButton,
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
                         child: Container(
                           child: Text(
                             "Payer".tr(),

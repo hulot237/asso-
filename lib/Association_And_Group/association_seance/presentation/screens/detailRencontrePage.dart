@@ -94,7 +94,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
       ),
     ),
     body: child,
@@ -222,7 +222,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 iconSize: 50.r,
                                 iconColor: AppColors.blackBlueAccent1,
                                 image: AssetImage(
-                                  'assets/images/Groupe_ou_Asso.png',
+                                  "assets/images/AssoplusFinal.png",
                                 ),
                               ),
                             );
@@ -236,7 +236,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                   onRefresh: refresh,
                                   child: Container(
                                     margin: EdgeInsets.only(
-                                      bottom: Platform.isIOS ? 70.h : 10.h,
+                                      bottom: 10.h,
                                     ),
                                     child: ListView.builder(
                                       itemCount: currentDetailSeance.length,
@@ -361,7 +361,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                               iconSize: 50.r,
                               iconColor: AppColors.blackBlueAccent1,
                               image: AssetImage(
-                                'assets/images/Groupe_ou_Asso.png',
+                                "assets/images/AssoplusFinal.png",
                               ),
                             ),
                           );
@@ -376,7 +376,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                 onRefresh: refresh,
                                 child: Container(
                                   margin: EdgeInsets.only(
-                                    bottom: Platform.isIOS ? 70.h : 10.h,
+                                    bottom: 10.h,
                                   ),
                                   child: ListView.builder(
                                     itemCount: objetCotisationUniquement.length,
@@ -490,7 +490,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                               iconSize: 50.r,
                               iconColor: AppColors.blackBlueAccent1,
                               image: AssetImage(
-                                'assets/images/Groupe_ou_Asso.png',
+                                "assets/images/AssoplusFinal.png",
                               ),
                             ),
                           );
@@ -509,7 +509,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                         return allSanctionUserConnect.length > 0
                             ? Container(
                                 margin: EdgeInsets.only(
-                                  bottom: Platform.isIOS ? 70.h : 10.h,
+                                  bottom: 10.h,
                                 ),
                                 child: ListView.builder(
                                   itemCount: allSanctionUserConnect.length,

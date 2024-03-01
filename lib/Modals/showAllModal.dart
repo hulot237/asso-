@@ -1,3 +1,4 @@
+// import 'dart:html';
 import 'dart:io';
 
 import 'package:easy_loader/easy_loader.dart';
@@ -6,12 +7,15 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
+import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -77,7 +81,7 @@ class Modal {
               Container(
                 padding: EdgeInsets.only(
                   top: 10.h,
-                  bottom: Platform.isIOS ? 70.h : 10.h,
+                  bottom: 10.h,
                 ),
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
@@ -142,7 +146,57 @@ class Modal {
                           );
                         },
                       ),
-                    )
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdministrationPage(
+                              forAdmin: false,
+                              urlPage: 'https://business.faroty.com/groups',
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            width: 0.4,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                right: 20.h,
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                size: 16.sp,
+                                color: AppColors.blackBlueAccent1,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
+                              child: Text(
+                                "Ajouter un nouveau groupe".tr(),
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -153,10 +207,10 @@ class Modal {
                   return Center(
                     child: EasyLoader(
                       backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                      iconSize: 50.sp,
+                      iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
-                        'assets/images/Groupe_ou_Asso.png',
+                        "assets/images/AssoplusFinal.png",
                       ),
                     ),
                   );
@@ -165,10 +219,10 @@ class Modal {
                     ? Center(
                         child: EasyLoader(
                           backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50.sp,
+                          iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
-                            'assets/images/Groupe_ou_Asso.png',
+                            "assets/images/AssoplusFinal.png",
                           ),
                         ),
                       )
@@ -239,7 +293,7 @@ class Modal {
               Container(
                 padding: EdgeInsets.only(
                   top: 10.h,
-                  bottom: Platform.isIOS ? 70.h : 10.h,
+                  bottom: 10.h,
                 ),
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
@@ -308,11 +362,12 @@ class Modal {
                                 child: Text(
                                   '${"tournoi".tr()} #${currentItemAssociationList.matricule}',
                                   style: TextStyle(
-                                    color: colorSelectText(
-                                      currentItemAssociationList.tournois_code,
-                                    ),
-                                    fontWeight: FontWeight.w800,
-                                  ),
+                                      color: colorSelectText(
+                                        currentItemAssociationList
+                                            .tournois_code,
+                                      ),
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 14.sp),
                                 ),
                               ),
                             ),
@@ -334,7 +389,7 @@ class Modal {
                       iconSize: 50.r,
                       iconColor: AppColors.blackBlueAccent1,
                       image: AssetImage(
-                        'assets/images/Groupe_ou_Asso.png',
+                        "assets/images/AssoplusFinal.png",
                       ),
                     ),
                   );
@@ -346,7 +401,7 @@ class Modal {
                           iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
-                            'assets/images/Groupe_ou_Asso.png',
+                            "assets/images/AssoplusFinal.png",
                           ),
                         ),
                       )
@@ -474,10 +529,10 @@ class Modal {
                       child: Container(
                         child: EasyLoader(
                           backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50.sp,
+                          iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
-                            'assets/images/Groupe_ou_Asso.png',
+                            "assets/images/AssoplusFinal.png",
                           ),
                         ),
                       ),
@@ -552,7 +607,7 @@ class Modal {
                   ...listWidgetNonTontine,
                   Container(
                     margin: EdgeInsets.only(
-                      bottom: Platform.isIOS ? 70.h : 10.h,
+                      bottom: 10.h,
                     ),
                   )
                 ];
@@ -759,7 +814,7 @@ class Modal {
                           iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
-                            'assets/images/Groupe_ou_Asso.png',
+                            "assets/images/AssoplusFinal.png",
                           ),
                         ),
                       ),
@@ -838,8 +893,8 @@ class Modal {
                     ...listWidgetNonCotis,
                     Container(
                       margin: EdgeInsets.only(
-                        bottom: Platform.isIOS ? 70.h : 10.h,
-                      ),
+                          // bottom: Platform.isIOS ? 70.h : 10.h,
+                          ),
                     )
                   ];
 
@@ -859,7 +914,11 @@ class Modal {
     );
   }
 
-  void showModalTransactionByEvent(context, versement, montantAPayer) {
+  void showModalTransactionByEvent(
+    context,
+    versement,
+    montantAPayer,
+  ) {
     showDialog<String>(
       context: context,
       barrierColor: AppColors.barrierColorModal,
@@ -869,7 +928,7 @@ class Modal {
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
           margin: EdgeInsets.only(
-            bottom: Platform.isIOS ? 70.h : 10.h,
+            bottom: 10.h,
           ),
           // padding: EdgeInsets.only(left: 20, right: 20),
           height: 450.h,
@@ -1028,15 +1087,512 @@ class Modal {
                       ),
                     )
                   : Container(
-                      // height: 350,
-                      child: Center(
-                        child: Text("aucune_transaction".tr()),
+                      padding: EdgeInsets.only(top: 200.h),
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        "aucune_transaction".tr(),
+                        style: TextStyle(
+                          color: Color.fromRGBO(20, 45, 99, 0.26),
+                          fontWeight: FontWeight.w100,
+                          fontSize: 20.sp,
+                        ),
                       ),
                     ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void showModalTransactionEpargne(
+    BuildContext context,
+  ) {
+    Future<void> handleDetailCotisation(codeCotisation) async {
+      final detailCotisation = await context
+          .read<CotisationDetailCubit>()
+          .detailCotisationCubit(codeCotisation);
+    }
+
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: AppColors.barrierColorModal,
+      context: context,
+      builder: (context) {
+        return Container(
+          // height: 500,
+          padding: EdgeInsets.only(top: 10.h),
+          margin: EdgeInsets.only(left: 5.w, right: 5.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(7),
+              topLeft: Radius.circular(7),
+            ),
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+          child: Column(
+            children: [
+              Container(
+                height: 5.h,
+                width: 55.w,
+                decoration: BoxDecoration(
+                    color: AppColors.blackBlue,
+                    borderRadius: BorderRadius.circular(50)),
+              ),
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                    child: Text(
+                      "vos transaction sur l'épargne".tr(),
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.blackBlueAccent1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              BlocBuilder<PretEpargneCubit, PretEpargneState>(
+                builder: (PretEpargnecontext, PretEpargnestate) {
+                  if (PretEpargnestate.isLoadingDetailEpargne == true &&
+                      PretEpargnestate.detailEpargne == null)
+                    return Expanded(
+                      child: Center(
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50.r,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            "assets/images/AssoplusFinal.png",
+                          ),
+                        ),
+                      ),
+                    );
+
+                  final currentDetailCotisation =
+                      PretEpargnecontext.read<PretEpargneCubit>()
+                          .state
+                          .detailEpargne;
+
+                  print("objectobjectobjectobject ${currentDetailCotisation}");
+
+                  return currentDetailCotisation!.length > 0
+                      ? Expanded(
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color.fromARGB(120, 226, 226, 226),
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    top: 7.h,
+                                    right: 5.w,
+                                    left: 5.w,
+                                    bottom: 7.h,
+                                  ),
+                                  color: AppColors.white,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount:
+                                              currentDetailCotisation.length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            final detailVersement =
+                                                currentDetailCotisation[index];
+                                            return Container(
+                                                child: Container(
+                                              width: MediaQuery.sizeOf(context)
+                                                  .width,
+                                              margin: EdgeInsets.only(top: 5.h),
+                                              child: Container(
+                                                padding: EdgeInsets.all(10.r),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      width: 0.5.r,
+                                                      color: Color.fromARGB(
+                                                          62, 20, 45, 99),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // margin: EdgeInsets.only(top: 5, left: 7, right: 7),
+                                                // padding: EdgeInsets.all(15),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 5.h),
+                                                          child: Text(
+                                                            "${formatMontantFrancais(double.parse(detailVersement["amount"]))} FCFA",
+                                                            style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: detailVersement[
+                                                                          "payment_type"] ==
+                                                                      "0"
+                                                                  ? AppColors
+                                                                      .green
+                                                                  : AppColors
+                                                                      .red,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Container(
+                                                          child: Icon(
+                                                            detailVersement[
+                                                                        "payment_type"] ==
+                                                                    "0"
+                                                                ? Icons
+                                                                    .call_received
+                                                                : Icons
+                                                                    .north_east,
+                                                            size: 18.sp,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 15.h,
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: Text(
+                                                            formatDateLiteral(
+                                                                detailVersement[
+                                                                    "created_at"]),
+                                                            style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+
+                                                // child: widgetListTransactionByEventCard(
+                                                //   date: formatDateLiteral(
+                                                //       detailVersement["created_at"]),
+                                                //   montant: detailVersement["amount"],
+                                                // ),
+                                                );
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              if (PretEpargnestate.isLoadingDetailEpargne ==
+                                      true &&
+                                  PretEpargnestate.detailEpargne != null)
+                                Center(
+                                  child: EasyLoader(
+                                    backgroundColor:
+                                        Color.fromARGB(0, 255, 255, 255),
+                                    iconSize: 50.r,
+                                    iconColor: AppColors.blackBlueAccent1,
+                                    image: AssetImage(
+                                      "assets/images/AssoplusFinal.png",
+                                    ),
+                                  ),
+                                )
+                            ],
+                          ),
+                        )
+                      : Container(
+                          padding: EdgeInsets.only(top: 200.h),
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            "aucune_transaction".tr(),
+                            style: TextStyle(
+                              color: Color.fromRGBO(20, 45, 99, 0.26),
+                              fontWeight: FontWeight.w100,
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                        );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void showModalTransactionPret(
+    BuildContext context,
+  ) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: AppColors.barrierColorModal,
+      context: context,
+      builder: (context) {
+        return Container(
+          // height: 500,
+          padding: EdgeInsets.only(top: 10.h),
+          margin: EdgeInsets.only(left: 5.w, right: 5.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(7),
+              topLeft: Radius.circular(7),
+            ),
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
+          child: Column(
+            children: [
+              Container(
+                height: 5.h,
+                width: 55.w,
+                decoration: BoxDecoration(
+                    color: AppColors.blackBlue,
+                    borderRadius: BorderRadius.circular(50)),
+              ),
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                    child: Text(
+                      "vos transaction sur le pret".tr(),
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.blackBlueAccent1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              BlocBuilder<PretEpargneCubit, PretEpargneState>(
+                builder: (PretEpargnecontext, PretEpargnestate) {
+                  if (PretEpargnestate.isLoadingDetailPret == true &&
+                      PretEpargnestate.detailPret == null)
+                    return Expanded(
+                      child: Center(
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50.r,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            "assets/images/AssoplusFinal.png",
+                          ),
+                        ),
+                      ),
+                    );
+
+                  final currentDetailPret =
+                      PretEpargnecontext.read<PretEpargneCubit>()
+                          .state
+                          .detailPret;
+
+                  print("objectobjectobjectobject ${currentDetailPret}");
+
+                  return currentDetailPret!.length > 0
+                      ? Expanded(
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color.fromARGB(120, 226, 226, 226),
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    top: 7.h,
+                                    right: 5.w,
+                                    left: 5.w,
+                                    bottom: 7.h,
+                                  ),
+                                  color: AppColors.white,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount: currentDetailPret.length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            final detailVersement =
+                                                currentDetailPret[index];
+                                            return Container(
+                                                child: Container(
+                                              width: MediaQuery.sizeOf(context)
+                                                  .width,
+                                              margin: EdgeInsets.only(top: 5.h),
+                                              child: Container(
+                                                padding: EdgeInsets.all(10.r),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      width: 0.5.r,
+                                                      color: Color.fromARGB(
+                                                          62, 20, 45, 99),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // margin: EdgeInsets.only(top: 5, left: 7, right: 7),
+                                                // padding: EdgeInsets.all(15),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 5.h),
+                                                          child: Text(
+                                                            "${formatMontantFrancais(double.parse(detailVersement["amount"]))} FCFA",
+                                                            style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: detailVersement[
+                                                                          "payment_type"] ==
+                                                                      "0"
+                                                                  ? AppColors
+                                                                      .green
+                                                                  : AppColors
+                                                                      .red,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Container(
+                                                          child: Icon(
+                                                            detailVersement[
+                                                                        "payment_type"] ==
+                                                                    "0"
+                                                                ? Icons
+                                                                    .north_east
+                                                                : Icons
+                                                                    .call_received,
+                                                            size: 18.sp,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 15.h,
+                                                        ),
+                                                        Container(
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: Text(
+                                                            formatDateLiteral(
+                                                                detailVersement[
+                                                                    "created_at"]),
+                                                            style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+
+                                                // child: widgetListTransactionByEventCard(
+                                                //   date: formatDateLiteral(
+                                                //       detailVersement["created_at"]),
+                                                //   montant: detailVersement["amount"],
+                                                // ),
+                                                );
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              if (PretEpargnestate.isLoadingDetailPret ==
+                                      true &&
+                                  PretEpargnestate.detailPret != null)
+                                Center(
+                                  child: EasyLoader(
+                                    backgroundColor:
+                                        Color.fromARGB(0, 255, 255, 255),
+                                    iconSize: 50.r,
+                                    iconColor: AppColors.blackBlueAccent1,
+                                    image: AssetImage(
+                                      "assets/images/AssoplusFinal.png",
+                                    ),
+                                  ),
+                                )
+                            ],
+                          ),
+                        )
+                      : Container(
+                          padding: EdgeInsets.only(top: 200.h),
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            "aucune_transaction".tr(),
+                            style: TextStyle(
+                              color: Color.fromRGBO(20, 45, 99, 0.26),
+                              fontWeight: FontWeight.w100,
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                        );
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -1536,7 +2092,8 @@ class Modal {
               color: AppColors.white,
             ),
             child: Padding(
-              padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
+              padding: EdgeInsets.only(
+                  top: 15.h, bottom: 15.h),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -1601,9 +2158,8 @@ class Modal {
                       ),
                       child: Text(
                         "confirmer".tr(),
-                        style: TextStyle(
-                          color: AppColors.white,
-                        ),
+                        style:
+                            TextStyle(color: AppColors.white, fontSize: 12.sp),
                       ),
                     ),
                   ),
@@ -1616,7 +2172,8 @@ class Modal {
     );
   }
 
-  void showModalActionPayement(BuildContext context, msg, lienDePaiement) {
+  void showModalActionPayement(BuildContext context, msg, lienDePaiement,
+      raisonComplete, motif, paiementProcheMsg, msgAppBarPaiementPage) {
     showDialog<String>(
       context: context,
       barrierColor: AppColors.barrierColorModal,
@@ -1626,19 +2183,23 @@ class Modal {
           padding: EdgeInsets.only(left: 20.w, right: 20.w),
           height: 150.h,
           decoration: BoxDecoration(
-              color: AppColors.white, borderRadius: BorderRadius.circular(10)),
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 margin: EdgeInsets.only(bottom: 10.h),
                 child: Text(
-                  'effectuer_le_paiement'.tr(),
+                  "$raisonComplete",
+                  // 'effectuer_le_paiement'.tr(),
                   style: TextStyle(
                     fontSize: 18.sp,
                     color: AppColors.blackBlue,
                   ),
                 ),
-                padding: EdgeInsets.only(top: 15.h),
+                // padding: EdgeInsets.only(top: 15.h),
               ),
               GestureDetector(
                 onTap: () async {
@@ -1650,6 +2211,7 @@ class Modal {
                     MaterialPageRoute(
                       builder: (context) => PaiementPage(
                         lienDePaiement: lienDePaiement,
+                        msgAppBarPaiementPage: msgAppBarPaiementPage,
                       ),
                     ),
                   );
@@ -1664,7 +2226,8 @@ class Modal {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Text(
-                    "payer_vous_même".tr(),
+                    // "payer_vous_même".tr(),
+                    "$motif",
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
@@ -1692,7 +2255,8 @@ class Modal {
                       )),
                   // height: 20,
                   child: Text(
-                    "partager_le_lien_de_paiement".tr(),
+                    '$paiementProcheMsg',
+                    // "partager_le_lien_de_paiement".tr(),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,

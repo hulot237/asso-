@@ -32,9 +32,9 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "votre_profil".tr(),
-          style: TextStyle(fontSize: 16.sp, color : AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
         ),
-        backgroundColor:AppColors.backgroundAppBAr,
+        backgroundColor: AppColors.backgroundAppBAr,
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -53,14 +53,21 @@ Widget PageScaffold({
   return Scaffold(
     backgroundColor: AppColors.white,
     appBar: AppBar(
-      title: Text("votre_profil".tr(), style: TextStyle(fontSize: 16.sp, color : AppColors.white),),
-      backgroundColor:AppColors.backgroundAppBAr,
+      title: Text(
+        "votre_profil".tr(),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+      ),
+      backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
       leading: GestureDetector(
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white),
+        child: Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+          size: 16.sp,
+        ),
       ),
     ),
     body: child,
@@ -73,7 +80,6 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
   Future<void> handleDetailUser(userCode, codeTournoi) async {
     final allCotisationAss =
         await context.read<AuthCubit>().detailAuthCubit(userCode, codeTournoi);
-
   }
 
   Future<void> handleUpdateInfoUser(
@@ -102,9 +108,8 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
           value: pickedImage,
           partner_urlcode: AppCubitStorage().state.codeAssDefaul,
           membre_code: AppCubitStorage().state.membreCode);
-      handleDetailUser(
-        AppCubitStorage().state.membreCode,AppCubitStorage().state.codeTournois
-      );
+      handleDetailUser(AppCubitStorage().state.membreCode,
+          AppCubitStorage().state.codeTournois);
     }
   }
 
@@ -119,24 +124,25 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
   Widget build(BuildContext context) {
     return PageScaffold(
       context: context,
-      child:
-          Material(
-            child: BlocBuilder<AuthCubit, AuthState>(builder: (authContext, authState) {
-                    if (authState.isLoading == null ||
+      child: Material(
+        child: BlocBuilder<AuthCubit, AuthState>(
+            builder: (authContext, authState) {
+          if (authState.isLoading == null ||
               authState.isLoading == true ||
               authState.detailUser == null)
             return Container(
-                  child: EasyLoader(
+              child: EasyLoader(
                 backgroundColor: Color.fromARGB(0, 255, 255, 255),
                 iconSize: 50.r,
                 iconColor: AppColors.blackBlueAccent1,
                 image: AssetImage(
-                  'assets/images/Groupe_ou_Asso.png',
+                  "assets/images/AssoplusFinal.png",
                 ),
-              ));
-                    final currentDetailUser =
+              ),
+            );
+          final currentDetailUser =
               authContext.read<AuthCubit>().state.detailUser;
-                    return Container(
+          return Container(
             // padding: EdgeInsets.only(top: 20),
             child: Column(
               children: [
@@ -159,7 +165,8 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                 Container(
                                   // color: Colors.deepOrange,
                                   width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.only(top: 15.h, bottom: 5.h),
+                                  margin:
+                                      EdgeInsets.only(top: 15.h, bottom: 5.h),
                                   child: Column(
                                     children: [
                                       Container(
@@ -167,10 +174,10 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                         decoration: BoxDecoration(
                                             color: AppColors.colorButton,
                                             borderRadius:
-                                                BorderRadius.circular(100)),
+                                                BorderRadius.circular(360)),
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(100),
+                                              BorderRadius.circular(360),
                                           child: Container(
                                             width: 110.w,
                                             height: 110.w,
@@ -228,18 +235,18 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                         "first_name");
                                   },
                                   child: Container(
-                                    padding:  EdgeInsets.only(
+                                    padding: EdgeInsets.only(
                                       top: 10.h,
                                       left: 10.w,
                                       right: 10.w,
                                       bottom: 15.h,
                                     ),
-                                    margin:  EdgeInsets.only(
+                                    margin: EdgeInsets.only(
                                       left: 10.w,
                                       right: 10.w,
                                       top: 20.h,
                                     ),
-                                    decoration:  BoxDecoration(
+                                    decoration: BoxDecoration(
                                       border: Border(
                                         bottom: BorderSide(
                                           width: 1.r,
@@ -257,17 +264,18 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                               Container(
                                                 padding: EdgeInsets.all(5.r),
                                                 decoration: BoxDecoration(
-                                                    color: Color.fromARGB(
-                                                        36, 20, 45, 99),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            360),),
+                                                  color: Color.fromARGB(
+                                                      36, 20, 45, 99),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360),
+                                                ),
                                                 child: Icon(
                                                   Icons.person_outlined,
                                                   color: Colors.blue,
                                                 ),
-                                                margin:
-                                                    EdgeInsets.only(right: 10.w),
+                                                margin: EdgeInsets.only(
+                                                    right: 10.w),
                                               ),
                                               Container(
                                                 child: Column(
@@ -281,25 +289,35 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 12.sp,
-                                                            color: Color.fromARGB(
-                                                                130, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    130,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w900),
+                                                                FontWeight
+                                                                    .w900),
                                                       ),
                                                     ),
                                                     Container(
-                                                      margin:
-                                                          EdgeInsets.only(top: 5.h),
+                                                      margin: EdgeInsets.only(
+                                                          top: 5.h),
                                                       child: Text(
                                                         "${currentDetailUser!["first_name"] == null ? "" : currentDetailUser["first_name"]}",
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 15.sp,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ),
                                                   ],
@@ -307,10 +325,11 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                               ),
                                             ],
                                           ),
-                                          Icon(Icons.mode_edit_rounded,
-                                              color:
-                                                  AppColors.blackBlue,
-                                              size: 14.sp,),
+                                          Icon(
+                                            Icons.mode_edit_rounded,
+                                            color: AppColors.blackBlue,
+                                            size: 14.sp,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -326,18 +345,18 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                         "last_name");
                                   },
                                   child: Container(
-                                    padding:  EdgeInsets.only(
+                                    padding: EdgeInsets.only(
                                       top: 10.h,
                                       left: 10.w,
                                       right: 10.w,
                                       bottom: 15.h,
                                     ),
-                                    margin:  EdgeInsets.only(
+                                    margin: EdgeInsets.only(
                                       left: 10.w,
                                       right: 10.w,
                                       top: 20.h,
                                     ),
-                                    decoration:  BoxDecoration(
+                                    decoration: BoxDecoration(
                                       border: Border(
                                         bottom: BorderSide(
                                           width: 1.r,
@@ -355,17 +374,18 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                               Container(
                                                 padding: EdgeInsets.all(5.r),
                                                 decoration: BoxDecoration(
-                                                    color: Color.fromARGB(
-                                                        36, 20, 45, 99),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            360),),
+                                                  color: Color.fromARGB(
+                                                      36, 20, 45, 99),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360),
+                                                ),
                                                 child: Icon(
                                                   Icons.person_outlined,
                                                   color: Colors.brown,
                                                 ),
-                                                margin:
-                                                    EdgeInsets.only(right: 10.w),
+                                                margin: EdgeInsets.only(
+                                                    right: 10.w),
                                               ),
                                               Container(
                                                 child: Column(
@@ -379,25 +399,35 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 12.sp,
-                                                            color: Color.fromARGB(
-                                                                130, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    130,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w900),
+                                                                FontWeight
+                                                                    .w900),
                                                       ),
                                                     ),
                                                     Container(
-                                                      margin:
-                                                          EdgeInsets.only(top: 5.h),
+                                                      margin: EdgeInsets.only(
+                                                          top: 5.h),
                                                       child: Text(
                                                         "${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 15.sp,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ),
                                                   ],
@@ -405,10 +435,11 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                               ),
                                             ],
                                           ),
-                                          Icon(Icons.mode_edit_rounded,
-                                              color:
-                                                  AppColors.blackBlue,
-                                              size: 14.sp,),
+                                          Icon(
+                                            Icons.mode_edit_rounded,
+                                            color: AppColors.blackBlue,
+                                            size: 14.sp,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -420,9 +451,16 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                   // },
                                   child: Container(
                                     padding: EdgeInsets.only(
-                                        top: 10.h, left: 10.w, right: 10.w, bottom: 15.h,),
+                                      top: 10.h,
+                                      left: 10.w,
+                                      right: 10.w,
+                                      bottom: 15.h,
+                                    ),
                                     margin: EdgeInsets.only(
-                                        left: 10.w, right: 10.w, top: 20.h,),
+                                      left: 10.w,
+                                      right: 10.w,
+                                      top: 20.h,
+                                    ),
                                     // margin: EdgeInsets.all(12),
                                     decoration: BoxDecoration(
                                       // color: Colors.black12,
@@ -442,17 +480,18 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                               Container(
                                                 padding: EdgeInsets.all(5.r),
                                                 decoration: BoxDecoration(
-                                                    color: Color.fromARGB(
-                                                        36, 20, 45, 99),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            360),),
+                                                  color: Color.fromARGB(
+                                                      36, 20, 45, 99),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360),
+                                                ),
                                                 child: Icon(
                                                   Icons.phone_android_outlined,
                                                   color: Colors.deepPurple,
                                                 ),
-                                                margin:
-                                                    EdgeInsets.only(right: 10.w),
+                                                margin: EdgeInsets.only(
+                                                    right: 10.w),
                                               ),
                                               Container(
                                                 child: Column(
@@ -467,10 +506,15 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 12.sp,
-                                                            color: Color.fromARGB(
-                                                                120, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    120,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w900),
+                                                                FontWeight
+                                                                    .w900),
                                                       ),
                                                     ),
                                                     Container(
@@ -480,10 +524,15 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 15.sp,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ),
                                                   ],
@@ -507,9 +556,16 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(
-                                        top: 10.h, left: 10.w, right: 10.w, bottom: 15.h,),
+                                      top: 10.h,
+                                      left: 10.w,
+                                      right: 10.w,
+                                      bottom: 15.h,
+                                    ),
                                     margin: EdgeInsets.only(
-                                        left: 10.w, right: 10.w, top: 20.h,),
+                                      left: 10.w,
+                                      right: 10.w,
+                                      top: 20.h,
+                                    ),
                                     // margin: EdgeInsets.all(12),
                                     decoration: BoxDecoration(
                                       // color: Colors.black12,
@@ -529,17 +585,18 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                               Container(
                                                 padding: EdgeInsets.all(5.r),
                                                 decoration: BoxDecoration(
-                                                    color: Color.fromARGB(
-                                                        36, 20, 45, 99),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            360),),
+                                                  color: Color.fromARGB(
+                                                      36, 20, 45, 99),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360),
+                                                ),
                                                 child: Icon(
                                                   Icons.email_outlined,
                                                   color: Colors.red,
                                                 ),
-                                                margin:
-                                                    EdgeInsets.only(right: 10.w),
+                                                margin: EdgeInsets.only(
+                                                    right: 10.w),
                                               ),
                                               Container(
                                                 child: Column(
@@ -553,10 +610,15 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 12.sp,
-                                                            color: Color.fromARGB(
-                                                                120, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    120,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w900),
+                                                                FontWeight
+                                                                    .w900),
                                                       ),
                                                     ),
                                                     Container(
@@ -566,10 +628,15 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontSize: 15.sp,
-                                                            color: Color.fromARGB(
-                                                                255, 20, 45, 99),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
                                                             fontWeight:
-                                                                FontWeight.w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ),
                                                   ],
@@ -578,8 +645,7 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                             ],
                                           ),
                                           Icon(Icons.mode_edit_rounded,
-                                              color:
-                                                  AppColors.blackBlue,
+                                              color: AppColors.blackBlue,
                                               size: 14.sp),
                                         ],
                                       ),
@@ -626,9 +692,9 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                 ),
               ],
             ),
-                    );
-                  }),
-          ),
+          );
+        }),
+      ),
     );
   }
 }

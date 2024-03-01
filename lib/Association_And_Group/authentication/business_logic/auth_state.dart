@@ -12,6 +12,7 @@ class AuthState extends Equatable {
   final bool errorLoading;
   final bool successLoading;
   final String? message;
+  final String? getUid;
 
   AuthState({
     this.detailUser,
@@ -22,6 +23,7 @@ class AuthState extends Equatable {
     this.errorLoading = false,
     this.successLoading = false,
     this.message,
+    this.getUid,
   });
 
   @override
@@ -34,6 +36,7 @@ class AuthState extends Equatable {
         errorLoading,
         message,
         successLoading,
+        getUid,
       ];
 
 
@@ -44,8 +47,9 @@ class AuthState extends Equatable {
     bool? isTrueNomber,
     bool? isLoadingDetailUser,
     bool? errorLoading,
-    String? message,
     bool? successLoading,
+    String? message,
+    String? getUid,
   }) {
     return AuthState(
       detailUser: detailUser ?? this.detailUser,
@@ -56,6 +60,7 @@ class AuthState extends Equatable {
       errorLoading: errorLoading ?? this.errorLoading,
       successLoading: successLoading ?? this.successLoading,
       message: message ?? this.message,
+      getUid: getUid ?? this.getUid,
     );
   }
 }

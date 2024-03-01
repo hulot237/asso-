@@ -17,7 +17,7 @@ import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/FicheMembrePage.dart';
-import 'package:faroty_association_1/pages/administrationPage.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/presentation/screens/members_Ass_Page.dart';
 import 'package:faroty_association_1/pages/paramsAppPage.dart';
@@ -99,7 +99,7 @@ class _SettingScreenState extends State<SettingScreen> {
           iconSize: 50.r,
           iconColor: AppColors.blackBlueAccent1,
           image: AssetImage(
-            'assets/images/Groupe_ou_Asso.png',
+            "assets/images/AssoplusFinal.png",
           ),
         ));
       final currentInfoAllTournoiAssCourant =
@@ -113,7 +113,7 @@ class _SettingScreenState extends State<SettingScreen> {
             iconSize: 50.r,
             iconColor: AppColors.blackBlueAccent1,
             image: AssetImage(
-              'assets/images/Groupe_ou_Asso.png',
+              "assets/images/AssoplusFinal.png",
             ),
           ));
         final currentDetailUser =
@@ -127,7 +127,7 @@ class _SettingScreenState extends State<SettingScreen> {
             //   ),
             //   (route) => false,
             // );
-            return Platform.isIOS?false:true;
+            return Platform.isIOS ? false : true;
           },
           child: Scaffold(
             backgroundColor: AppColors.pageBackground,
@@ -141,19 +141,60 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               backgroundColor: AppColors.backgroundAppBAr,
               elevation: 0,
-              leading: Platform.isAndroid? GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => HomePage(),
-                    ),
-                    (route) => false,
-                  );
-                },
-                child: Icon(Icons.arrow_back, color: AppColors.white),
-              ):Container(),
+              leading: Platform.isAndroid
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => HomePage(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: AppColors.white,
+                        size: 16.sp,
+                      ),
+                    )
+                  : Container(),
               actions: [
-                GestureDetector(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AdministrationPage(
+                                forAdmin: false,
+                                urlPage: 'https://business.faroty.com/groups',
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10.w),
+                          padding: EdgeInsets.all(1.r),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(width: 1.r, color: AppColors.blackBlue),
+                            color: AppColors.blackBlueAccent2,
+                            borderRadius: BorderRadius.circular(50.r),
+                          ),
+                          height: 25.h,
+                          width: 25.h,
+                          child: Icon(
+                            Icons.add,
+                            size: 11.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -164,63 +205,76 @@ class _SettingScreenState extends State<SettingScreen> {
                   },
                   child: Container(
                     child: Stack(
+                      alignment: Alignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 25.w, top: 15.h),
-                          child: Icon(Icons.notifications_active_outlined,
-                              color: AppColors.white),
+                          margin: EdgeInsets.only(right: 25.w, ),
+                          child: Icon(
+                            Icons.notifications_active_outlined,
+                            color: AppColors.white,
+                            size: 20.sp,
+                          ),
                         ),
                         BlocBuilder<NotificationCubit, NotificationState>(
-                            builder: (NotificationContext, NotificationState) {
-                          if (NotificationState.isLoadingNomberNotif == true &&
-                              NotificationState.nomberNotif == null)
-                            return Positioned(
-                              top: 12.h,
-                              left: 12.w,
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: 15.w,
-                                height: 15.w,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 0.1,
-                                  color: AppColors.blackBlue,
+                          builder: (NotificationContext, NotificationState) {
+                            if (NotificationState.isLoadingNomberNotif ==
+                                    true &&
+                                NotificationState.nomberNotif == null)
+                              return Positioned(
+                                top: 8.h,
+                                left: 8.w,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 15.w,
+                                  height: 15.w,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 0.1,
+                                    color: AppColors.blackBlue,
+                                  ),
                                 ),
-                              ),
-                            );
-                          final currentNotifications = context
-                              .read<NotificationCubit>()
-                              .state
-                              .nomberNotif;
+                              );
+                            final currentNotifications = context
+                                .read<NotificationCubit>()
+                                .state
+                                .nomberNotif;
 
-                          if (currentNotifications! > 0) {
-                            return Positioned(
-                              top: 12.h,
-                              left: 12.w,
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: 15.w,
-                                height: 15.w,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(360),
-                                  color: Colors.red,
-                                ),
-                                child: Text(
-                                  "${currentNotifications}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
+                            if (currentNotifications! > 0) {
+                              return Positioned(
+                                top: 0.r,
+                                left: 12.r,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 18.h,
+                                  height: 18.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(360),
+                                    color: Colors.red,
+                                    border: Border.all(
+                                      width: 1, color: AppColors.backgroundAppBAr
+                                    )
+                                  ),
+                                  child: Text(
+                                    "${currentNotifications}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
                                       fontSize: 7.sp,
                                       fontWeight: FontWeight.w700,
-                                      color: AppColors.white),
+                                      color: AppColors.white,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                          return Container();
-                        })
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
                       ],
                     ),
                   ),
                 )
+                  ],
+                ),
+                
               ],
               // leading: Icon(Icons.arrow_back),
             ),
@@ -441,7 +495,6 @@ class _SettingScreenState extends State<SettingScreen> {
                             top: 10.h,
                             left: 10.w,
                             right: 10.w,
-                            
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -478,10 +531,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                           children: [
                                             Container(
                                               child: Icon(
-                                                  Icons.phone_android_outlined,
-                                                  color: AppColors.bleuLight),
-                                              margin:
-                                                  EdgeInsets.only(right: 10.w),
+                                                Icons.phone_android_outlined,
+                                                color: AppColors.bleuLight,
+                                                size: 15.sp,
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                right: 10.w,
+                                              ),
                                             ),
                                             Text(
                                               "votre_compte".tr(),
@@ -494,9 +550,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      Icon(Icons.arrow_right,
-                                          color: AppColors.blackBlue,
-                                          size: 12.sp),
+                                      Icon(
+                                        Icons.arrow_right,
+                                        color: AppColors.blackBlue,
+                                        size: 12.sp,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -599,10 +657,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                           children: [
                                             Container(
                                               child: Icon(
-                                                  Icons.ads_click_outlined,
-                                                  color: Colors.red),
-                                              margin:
-                                                  EdgeInsets.only(right: 10.w),
+                                                Icons.ads_click_outlined,
+                                                color: Colors.red,
+                                                size: 15.sp,
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                right: 10.w,
+                                              ),
                                             ),
                                             Text(
                                               "tournoi".tr(),
@@ -669,15 +730,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                         child: Row(
                                           children: [
                                             Container(
+                                              width: 16.w,
                                               child: Image.asset(
                                                 "assets/images/Groupe_ou_Asso.png",
-                                                scale: 14,
+                                                // scale: ,
                                               ),
                                               margin:
                                                   EdgeInsets.only(right: 10.w),
                                             ),
                                             Text(
-                                              "Groups & Associations".tr(),
+                                              "Groups & associations".tr(),
                                               style: TextStyle(
                                                 fontSize: 15.sp,
                                                 color: AppColors.blackBlue,
@@ -746,6 +808,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                               child: Icon(
                                                 Icons.groups,
                                                 color: AppColors.blackBlue,
+                                                size: 15.sp,
                                               ),
                                               margin:
                                                   EdgeInsets.only(right: 10.w),
@@ -806,6 +869,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                               child: Icon(
                                                 Icons.settings_outlined,
                                                 color: Colors.brown,
+                                                size: 15.sp,
                                               ),
                                               margin:
                                                   EdgeInsets.only(right: 10.w),
@@ -864,6 +928,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 Icons.share_outlined,
                                                 color:
                                                     AppColors.greenAssociation,
+                                                size: 15.sp,
                                               ),
                                               margin:
                                                   EdgeInsets.only(right: 10.w),

@@ -108,8 +108,8 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                         children: [
                           Container(
                             margin: EdgeInsets.only(right: 5.w),
-                            width: 11.w,
-                            height: 11.h,
+                            width: 11.r,
+                            height: 11.r,
                             decoration: BoxDecoration(
                                 color: !isPasseDate(widget.dateClose)
                                     ? AppColors.colorButton
@@ -130,11 +130,22 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                         onTap: () async {
                           String msg =
                               "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                          Modal().showModalActionPayement(
-                            context,
-                            msg,
-                            widget.lienDePaiement,
-                          );
+                           String raisonComplete =
+                                            "Paiement de la tontine".tr();
+                                        String motif = "payer_vous_même".tr();
+                                        String paiementProcheMsg =
+                                            "partager_le_lien_de_paiement".tr();
+                                        String msgAppBarPaiementPage =
+                                            "${'Paiement de la tontine'.tr()} ${widget.nomTontine}";
+                                        Modal().showModalActionPayement(
+                                          context,
+                                          msg,
+                                          widget.lienDePaiement,
+                                          raisonComplete,
+                                          motif,
+                                          paiementProcheMsg,
+                                          msgAppBarPaiementPage,
+                                        );
                         },
                         child: Container(
                           alignment: Alignment.center,

@@ -74,10 +74,10 @@ class _widgetRecentEventCotisationState
         return Container(
           child: EasyLoader(
             backgroundColor: Color.fromARGB(0, 255, 255, 255),
-            iconSize: 50.sp,
+            iconSize: 50.r,
             iconColor: AppColors.blackBlueAccent1,
             image: AssetImage(
-              'assets/images/Groupe_ou_Asso.png',
+              "assets/images/AssoplusFinal.png",
             ),
           ),
         );
@@ -163,8 +163,7 @@ class _widgetRecentEventCotisationState
                   width: 0.5.r,
                 ),
               ),
-              padding: EdgeInsets.all(10.r
-              ),
+              padding: EdgeInsets.all(10.r),
               child: Column(
                 children: [
                   Row(
@@ -174,8 +173,8 @@ class _widgetRecentEventCotisationState
                         children: [
                           Container(
                             margin: EdgeInsets.only(right: 5.w),
-                            width: 11.w,
-                            height: 11.h,
+                            width: 11.r,
+                            height: 11.r,
                             decoration: BoxDecoration(
                               color: widget.isPassed == 0
                                   ? AppColors.colorButton
@@ -199,16 +198,29 @@ class _widgetRecentEventCotisationState
                           String msg =
                               "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
 
+                          String raisonComplete ='Paiement de la cotisation'.tr();
+                          String motif = "payer_vous_même".tr();
+                          String paiementProcheMsg =
+                              "partager_le_lien_de_paiement".tr();
+                          String msgAppBarPaiementPage =
+                              "${'Paiement de la cotisation'.tr()}  ${widget.motif}";
                           Modal().showModalActionPayement(
                             context,
                             msg,
                             widget.lienDePaiement,
+                            raisonComplete,
+                            motif,
+                            paiementProcheMsg,
+                            msgAppBarPaiementPage,
                           );
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: 72.w,
-                          padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 5.w,),
+                          width: 75.w,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.w,
+                            vertical: 5.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton,
                             borderRadius: BorderRadius.circular(15.r),
@@ -250,16 +262,19 @@ class _widgetRecentEventCotisationState
                               ? "(${(widget.nomBeneficiaire)})"
                               : "(${(widget.source)})",
                           style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.blackBlueAccent1,
-                              overflow: TextOverflow.ellipsis,),
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.blackBlueAccent1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 5.h,),
+                    margin: EdgeInsets.only(
+                      top: 5.h,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -275,7 +290,9 @@ class _widgetRecentEventCotisationState
                                 .state
                                 .detailUser!["isMember"]))
                           Container(
-                            margin: EdgeInsetsDirectional.only(top: 5.h,),
+                            margin: EdgeInsetsDirectional.only(
+                              top: 5.h,
+                            ),
                             alignment: Alignment.bottomRight,
                             child: Text(
                               "${formatCompareDateReturnWellValue(widget.dateClose)}",

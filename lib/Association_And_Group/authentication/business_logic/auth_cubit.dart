@@ -11,6 +11,7 @@ class AuthCubit extends Cubit<AuthState> {
             isLoading: false,
             isLoadingDetailUser: false,
             isTrueNomber: null,
+            getUid: null,
           ),
         );
 
@@ -66,11 +67,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> confirmationCubit(codeConfirmation) async {
     emit(state.copyWith(
-      isLoading: true,
-      isLoadingDetailUser: false,
-      errorLoading: false,
-      successLoading: false
-    ));
+        isLoading: true,
+        isLoadingDetailUser: false,
+        errorLoading: false,
+        successLoading: false));
     try {
       final data =
           await AuthRepository().ConfirmationRepository(codeConfirmation);
@@ -87,14 +87,12 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(
         state.copyWith(
-          isLoading: false,
-          isLoadingDetailUser: false,
-          errorLoading: true,
-          message: e.toString(),
-          successLoading: false
-        ),
+            isLoading: false,
+            isLoadingDetailUser: false,
+            errorLoading: true,
+            message: e.toString(),
+            successLoading: false),
       );
-      
     }
   }
 
@@ -146,6 +144,22 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
       return false;
+    }
+  }
+
+  Future<void> getUid() async {
+    try {
+      final data = await AuthRepository().getUid();
+
+      emit(
+        state.copyWith(
+          getUid: data,
+        ),
+      );
+      print("getUid getUid getUid getUid ${state.getUid}");
+
+    } catch (e) {
+      print("erreur cubit getUid");
     }
   }
 }
