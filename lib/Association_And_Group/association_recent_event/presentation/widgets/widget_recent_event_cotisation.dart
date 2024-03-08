@@ -59,10 +59,6 @@ class _widgetRecentEventCotisationState
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
 
-    if (detailCotisation != null) {
-    } else {
-      print("userGroupDefault null");
-    }
   }
 
   @override

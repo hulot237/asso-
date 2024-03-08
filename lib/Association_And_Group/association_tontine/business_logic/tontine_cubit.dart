@@ -8,40 +8,36 @@ class TontineCubit extends Cubit<TontineState> {
           TontineState(
             detailTontine: null,
             isLoading: false,
+            errorLoadDetailTontine: false,
           ),
         );
 
-  Future<bool> detailTontineCubit(codeTournoi, codeTontine) async {
-    emit(state.copyWith(isloading: true));
+  Future<void> detailTontineCubit(codeTournoi, codeTontine) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        detailTontine: state.detailTontine,
+        errorLoadDetailTontine: state.errorLoadDetailTontine,
+      ),
+    );
     try {
       final data =
           await TontineRepository().DetailTontine(codeTournoi, codeTontine);
 
-      if (data != null) {
-        emit(
-          state.copyWith(
-              detailtontine: data,
-              isloading: false,),
-        );
-
-        print("DetailSeance Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-              detailtontine: [],
-              isloading: false,),
-        );
-        return false;
-      }
+      emit(
+        state.copyWith(
+          detailTontine: data,
+          isLoading: false,
+          errorLoadDetailTontine : false,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
-            detailtontine: [],
-            isloading: false,),
+          isLoading: false,
+          errorLoadDetailTontine: true,
+        ),
       );
-      return true;
     }
   }
-
 }

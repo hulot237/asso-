@@ -7,8 +7,7 @@ class TontineRepository {
   final dio = Dio();
 
   Future<List<dynamic>> DetailTontine(codeTournoi, codeTontine) async {
-    try {
-      log("response DetailTontineDetailTontine");
+
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/tontine/$codeTontine/all?membre_code=${AppCubitStorage().state.membreCode}',
       );
@@ -16,10 +15,7 @@ class TontineRepository {
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
       log('Okay DetailTontineDetailTontine rep');
       return dataJson;
-    } catch (e) {
-      log('erreur DetailTontineDetailTontine rep');
-      return [];
-    }
+
   }
 
   Future<Map<dynamic, dynamic>> DetailContributionTontine(codeContribution) async {

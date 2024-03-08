@@ -13,6 +13,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,7 +69,11 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
+        child: Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+          size: 16.sp,
+        ),
       ),
     ),
     body: child,
@@ -95,97 +100,130 @@ class _NotificationPageState extends State<NotificationPage> {
       final allCotisationAss = await context
           .read<AuthCubit>()
           .detailAuthCubit(userCode, codeTournoi);
-
     }
 
     return PageScaffold(
         context: context,
         child: Material(
           type: MaterialType.transparency,
-          child: Container(
-            margin: EdgeInsets.only(
-            bottom: 10.h,
-          ),
-            // margin: EdgeInsets.only(top: 10),
-            child: Container(
-              child: BlocBuilder<NotificationCubit, NotificationState>(
-                  builder: (NotificationContext, NotificationState) {
-                if (NotificationState.isLoading == true &&
-                    NotificationState.notifications == null)
-                  return Container(
-                    child: EasyLoader(
-                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                      iconSize: 50.r,
-                      iconColor: AppColors.blackBlueAccent1,
-                      image: AssetImage(
-                        "assets/images/AssoplusFinal.png",
+
+          child:  BlocBuilder<NotificationCubit, NotificationState>(
+                      builder: (NotificationContext, NotificationState) {
+                        if (NotificationState.isLoading == true &&
+                        NotificationState.notifications == null)
+
+                      return Container(
+                        child: EasyLoader(
+                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                          iconSize: 50.r,
+                          iconColor: AppColors.blackBlueAccent1,
+                          image: AssetImage(
+                            "assets/images/AssoplusFinal.png",
+                          ),
+                        ),
+                      );
+              
+                      if (NotificationState.errorLoadNotif == true)
+                     return checkInternetConnectionPage(
+                      functionToCall: getNotification
+                     );
+                     
+                    final currentNotifications =
+                        context.read<NotificationCubit>().state.notifications;
+              return Container(
+                margin: EdgeInsets.only(
+                  bottom: 10.h,
+                ),
+                child: Container(
+                  child: Stack(
+                    children: [
+                      GroupedListView<NotificationModel, String>(
+                        elements: currentNotifications!,
+                        groupBy: (element) => DateFormat('yyyy-MM-dd')
+                            .parse(element.createdAt!)
+                            .toString(),
+                        groupComparator: (value1, value2) =>
+                            value1.compareTo(value2),
+                        itemComparator: (item1, item2) =>
+                            item1.createdAt!.compareTo(item2.createdAt!),
+                        order: GroupedListOrder.DESC,
+                        groupSeparatorBuilder: (String value) => Container(
+                          margin: EdgeInsets.only(
+                            left: 30.w,
+                            right: 30.w,
+                            top: 15.h,
+                          ),
+                          padding: EdgeInsets.only(bottom: 7.h),
+                          decoration: BoxDecoration(
+                              border: Border(
+                            bottom: BorderSide(
+                              width: 0.2.r,
+                              color: AppColors.blackBlue,
+                            ),
+                          )),
+                          child: Text(
+                            formatDateTimeintegral(
+                              context.locale.toString() == "en_US" ? "en" : "fr",
+                              value,
+                            ),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.blackBlue,
+                            ),
+                          ),
+                        ),
+                        itemBuilder: (c, element) {
+                          return GestureDetector(
+                            onTap: () async {
+                              _showSimpleModalDialog(
+                                  context, element.description);
+                                
+                              if (element.isReaded == 0) {
+                                await NotificationRepository()
+                                    .updateNotification(element.id);
+                              }
+                                
+                              context.read<NotificationCubit>().getNotification(
+                                  AppCubitStorage().state.tokenUser,
+                                  AppCubitStorage().state.codeAssDefaul);
+                              context
+                                  .read<NotificationCubit>()
+                                  .countNotification();
+                            },
+                            child: notificationWidget(
+                              idNotification: element.id!,
+                              description: element.description!,
+                              dateCreate: element.createdAt!,
+                              isReaded: element.isReaded!,
+                              source_name: element.sourceName!,
+                              photoProfil: element.authorAvatar == null
+                                  ? ""
+                                  : element.authorAvatar!,
+                              descriptionSansBalise:
+                                  removeBBalise(element.description!),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  );
-                final currentNotifications =
-                    context.read<NotificationCubit>().state.notifications;
-          
-                return GroupedListView<NotificationModel, String>(
-                  elements: currentNotifications!,
-                  groupBy: (element) => formatDateTimeintegral(
-                    context.locale.toString() == "en_US" ? "en" : "fr",
-                    element.createdAt!,
+                      if (NotificationState.isLoading == true &&
+                          NotificationState.notifications != null)
+                        Container(
+                          child: EasyLoader(
+                            backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                            iconSize: 50.r,
+                            iconColor: AppColors.blackBlueAccent1,
+                            image: AssetImage(
+                              "assets/images/AssoplusFinal.png",
+                            ),
+                          ),
+                        )
+                    ],
                   ),
-                  groupComparator: (value1, value2) => value2.compareTo(value1),
-                  itemComparator: (item1, item2) =>
-                      item1.createdAt!.compareTo(item2.createdAt!),
-                  order: GroupedListOrder.ASC,
-                  groupSeparatorBuilder: (String value) => Container(
-                    margin: EdgeInsets.only(left: 30.w, right: 30.w, top: 15.h),
-                    padding: EdgeInsets.only(bottom: 7.h),
-                    decoration: BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(
-                        width: 0.2.r,
-                        color: AppColors.blackBlue,
-                      ),
-                    )),
-                    child: Text(
-                      value,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.blackBlue,
-                      ),
-                    ),
-                  ),
-                  itemBuilder: (c, element) {
-                    return GestureDetector(
-                      onTap: () async {
-                        _showSimpleModalDialog(context, element.description);
-          
-                        if (element.isReaded == 0) {
-                          await NotificationRepository()
-                              .updateNotification(element.id);
-                        }
-          
-                        context.read<NotificationCubit>().getNotification(
-                            AppCubitStorage().state.tokenUser,
-                            AppCubitStorage().state.codeAssDefaul);
-                      },
-                      child: notificationWidget(
-                        idNotification: element.id!,
-                        description: element.description!,
-                        dateCreate: element.createdAt!,
-                        isReaded: element.isReaded!,
-                        source_name: element.sourceName!,
-                        photoProfil: element.authorAvatar == null
-                            ? ""
-                            : element.authorAvatar!,
-                        descriptionSansBalise:
-                            removeBBalise(element.description!),
-                      ),
-                    );
-                  },
-                );
-              }),
-            ),
+                ),
+              );
+            }
           ),
         ));
   }
@@ -214,7 +252,6 @@ class notificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       child: Column(
         children: [
           Container(
@@ -266,7 +303,8 @@ class notificationWidget extends StatelessWidget {
                               children: [
                                 Container(),
                                 Container(
-                                  margin: EdgeInsets.only(right: 10.w, bottom: 9.h),
+                                  margin:
+                                      EdgeInsets.only(right: 10.w, bottom: 9.h),
                                   child: Text(
                                     "${formatHeurUnikLiteral(dateCreate)}",
                                     style: TextStyle(
@@ -351,7 +389,7 @@ _showSimpleModalDialog(context, description) {
           child: Container(
             constraints: BoxConstraints(maxHeight: 350.h),
             child: Padding(
-              padding:  EdgeInsets.all(12.0.r),
+              padding: EdgeInsets.all(12.0.r),
               child: Html(
                 data:
                     "<p style='color:#142D63 ; text-align:center; font-size:${16.sp}px;'>${description}</p>",

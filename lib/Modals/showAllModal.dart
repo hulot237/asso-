@@ -160,7 +160,8 @@ class Modal {
                         );
                       },
                       child: Container(
-                        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                        margin:
+                            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
@@ -1761,7 +1762,7 @@ class Modal {
         actionsPadding: EdgeInsets.all(10.r),
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
-          height: 550,
+          height: 550.h,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -1780,104 +1781,23 @@ class Modal {
                   ),
                 ),
               ),
-              Container(
-                color: AppColors.blackBlueAccent2,
-                // child: TabBar(
-                //   isScrollable: true,
-                //   labelColor: AppColors.blackBlue,
-                //   labelStyle:
-                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                //   padding: EdgeInsets.all(0),
-                //   unselectedLabelStyle: TextStyle(
-                //     color: AppColors.blackBlueAccent1,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                //   indicator: UnderlineTabIndicator(
-                //     borderSide: BorderSide(
-                //       color: AppColors.blackBlue,
-                //       width: 5.0,
-                //     ),
-                //     insets: EdgeInsets.symmetric(
-                //       horizontal: 36.0,
-                //     ),
-                //   ),
 
-                //   // indicatorWeight: 0,
-                //   controller: tabController,
-                //   // tabs: [
-                //   //   Tab(
-                //   //     child: Row(
-                //   //       children: [
-                //   //         Container(
-                //   //           child: Text("présents".tr()),
-                //   //         ),
-                //   //         Container(
-                //   //           child: Text(
-                //   //             "(${listPrsent.length})",
-                //   //             style: TextStyle(fontSize: 10),
-                //   //           ),
-                //   //         )
-                //   //       ],
-                //   //     ),
-                //   //   ),
-                //   //   Tab(
-                //   //     child: Row(
-                //   //       children: [
-                //   //         Container(
-                //   //           child: Text("absents".tr()),
-                //   //         ),
-                //   //         Container(
-                //   //           child: Text(
-                //   //             "(${listAbs.length})",
-                //   //             style: TextStyle(fontSize: 10),
-                //   //           ),
-                //   //         )
-                //   //       ],
-                //   //     ),
-                //   //   )
-                //   // ],
-                // ),
-              ),
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                    color: AppColors.blackBlueAccent2,
-                  ),
-                  padding: EdgeInsets.only(bottom: 5.h),
+                child: SingleChildScrollView(
                   child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      color: AppColors.white,
-                    ),
-                    padding: EdgeInsets.only(
-                      top: 2.h,
-                      bottom: 3.h,
-                      left: 5.w,
-                      right: 5.w,
-                    ),
-                    margin: EdgeInsets.only(
-                      top: 2.h,
-                      left: 5.w,
-                      right: 5.w,
-                    ),
+                    // color: AppColors.blackBlueAccent2,
+                    padding: EdgeInsets.all(5.r),
                     child: Column(
-                      // controller: tabController,
                       children: [
                         ListView.builder(
                           shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.all(0),
                           itemCount: listPrsent.length,
                           itemBuilder: (context, index) {
                             final currentListPrsent = listPrsent[index];
                             return Container(
-                              padding: EdgeInsets.all(5.r),
+                              // padding: EdgeInsets.all(5.r),
                               child: widgetListPresenceCard(
                                 imageProfil:
                                     currentListPrsent["photo_profil"] == null
@@ -1896,13 +1816,14 @@ class Modal {
                         ),
                         ListView.builder(
                           shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.all(0),
                           itemCount: listAbs.length,
                           itemBuilder: (context, index) {
                             final currentListAbs = listAbs[index];
-
+              
                             return Container(
-                              padding: EdgeInsets.all(5.r),
+                              // padding: EdgeInsets.all(5.r),
                               child: widgetListPresenceCard(
                                 imageProfil:
                                     currentListAbs["photo_profil"] == null
@@ -1918,7 +1839,8 @@ class Modal {
                               ),
                             );
                           },
-                        )
+                        ),
+              
                         //  Text("2"),
                       ],
                     ),
@@ -2092,8 +2014,7 @@ class Modal {
               color: AppColors.white,
             ),
             child: Padding(
-              padding: EdgeInsets.only(
-                  top: 15.h, bottom: 15.h),
+              padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -2291,8 +2212,9 @@ class widgetListPresenceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5.r),
+      padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(
+        color: AppColors.white,
         border: Border(
           bottom: BorderSide(
             width: 0.5.w,

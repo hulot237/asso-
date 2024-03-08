@@ -9,18 +9,12 @@ class AuthRepository {
   final dio = Dio();
 
   Future<Map<String, dynamic>> UserDetail(userCode, codeTournoi) async {
-    try {
-      final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi',
-      );
-      final Map<String, dynamic> dataJson = response.data["data"];
+    final response = await dio.get(
+      '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi',
+    );
+    final Map<String, dynamic> dataJson = response.data["data"];
 
-      return dataJson;
-    } catch (e) {
-      log('erreur UserDetail rep');
-      print(e);
-      return {};
-    }
+    return dataJson;
   }
 
   Future<String> getUid() async {

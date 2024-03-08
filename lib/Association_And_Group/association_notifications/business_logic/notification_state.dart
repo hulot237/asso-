@@ -11,6 +11,7 @@ class NotificationState extends Equatable {
   final bool isLoadingNomberNotif;
   final String? messageError;
   final int? nomberNotif;
+  final bool errorLoadNotif;
   
 
   NotificationState({
@@ -18,6 +19,7 @@ class NotificationState extends Equatable {
     this.notifications,
     this.isLoading = false,
     this.isLoadingNomberNotif = false,
+    this.errorLoadNotif = false,
     this.messageError,
     this.nomberNotif,
   });
@@ -29,6 +31,7 @@ class NotificationState extends Equatable {
         notifications,
         messageError,
         nomberNotif,
+        errorLoadNotif
       ];
 
   NotificationState copyWith({
@@ -38,6 +41,7 @@ class NotificationState extends Equatable {
     bool? isLoadingNomberNotif,
     String? messageError,
     int? nomberNotif,
+    bool? errorLoadNotif,
   }) {
     return NotificationState(
       tokenNotification: tokenNotification ?? this.tokenNotification,
@@ -46,6 +50,7 @@ class NotificationState extends Equatable {
       isLoadingNomberNotif: isLoadingNomberNotif ?? this.isLoadingNomberNotif,
       messageError: messageError ?? this.messageError,
       nomberNotif: nomberNotif ?? this.nomberNotif,
+      errorLoadNotif: errorLoadNotif ?? this.errorLoadNotif,
     );
   }
 

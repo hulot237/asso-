@@ -40,7 +40,9 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
-          forAdmin ? "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}" : "Ajouter un nouveau groupe".tr(),
+          forAdmin
+              ? "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}"
+              : "Ajouter un nouveau groupe".tr(),
           style: TextStyle(fontSize: 16.sp, color: AppColors.white),
         ),
         leading: GestureDetector(
@@ -53,14 +55,14 @@ Widget PageScaffold({
             size: 20.sp,
           ),
         ),
-        // trailing: GestureDetector(
-        //   onTap: () {
-        //     reload();
-        //   },
-        //   child: Icon(
-        //     Icons.abc,
-        //   ),
-        // ),
+        trailing: GestureDetector(
+          onTap: () {
+            reload();
+          },
+          child: Icon(
+            Icons.abc,
+          ),
+        ),
       ),
       // navigationBar: CupertinoNavigationBar(
       //   middle: Text(
@@ -76,8 +78,13 @@ Widget PageScaffold({
   return Scaffold(
     backgroundColor: AppColors.white,
     appBar: AppBar(
+      actions: [
+        // Icon(Icons.abc)
+      ],
       title: Text(
-        forAdmin ? "Administration" : "Ajouter un nouveau groupe".tr(),
+        forAdmin
+            ? "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}"
+            : "Ajouter un nouveau groupe".tr(),
         style: TextStyle(fontSize: 16.sp, color: AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
@@ -102,7 +109,7 @@ class _AdministrationPageState extends State<AdministrationPage> {
   WebViewController webViewController = WebViewController();
   late final WebViewCookieManager cookieManager = WebViewCookieManager();
 
-  Future<void> reload() async {
+  void reload() async {
     return webViewController.reload();
   }
 
@@ -271,13 +278,12 @@ class _AdministrationPageState extends State<AdministrationPage> {
             ),
           )
         : cookieManager.clearCookies();
-    
-    
+
     if (widget.forAdmin) {
       print(
-        " AppCubitStorage().state.codeAssDefaul ${AppCubitStorage().state.codeAssDefaul}");
+          " AppCubitStorage().state.codeAssDefaul ${AppCubitStorage().state.codeAssDefaul}");
       print(
-        " AppCubitStorage().state.tokenUser} ${context.read<AuthCubit>().state.getUid!}");
+          " AppCubitStorage().state.tokenUser} ${context.read<AuthCubit>().state.getUid!}");
       print(
           "AppCubitStorage().state.userNameKey ${AppCubitStorage().state.tokenUser}");
 
@@ -299,17 +305,17 @@ class _AdministrationPageState extends State<AdministrationPage> {
           },
         ),
       )
-      ..loadRequest(
-        Uri.parse(
-          '${widget.urlPage}',
-        ),
-        headers: widget.forAdmin
-            ? {
-                "token": "${AppCubitStorage().state.tokenUser}",
-                // "password": "${AppCubitStorage().state.passwordKey}"
-              }
-            : {},
-      );
+    ..loadRequest(
+      Uri.parse(
+        '${widget.urlPage}',
+      ),
+      headers: widget.forAdmin
+          ? {
+              "token": "${AppCubitStorage().state.tokenUser}",
+              // "password": "${AppCubitStorage().state.passwordKey}"
+            }
+          : {},
+    );
   }
 
   @override
@@ -344,7 +350,7 @@ class _AdministrationPageState extends State<AdministrationPage> {
                 ],
               ),
             )
-          : WebViewWidget(controller: webViewController),
+          : WebViewWidget(controller: webViewController, ),
     );
   }
 }

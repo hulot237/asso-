@@ -7,8 +7,7 @@ class SeanceRepository {
   final dio = Dio();
 
   Future<Map<String, dynamic>> DetailSeance(codeSeance) async {
-    try {
-      log("response DetailSeance");
+
       final response = await dio.get(
         '${Variables.LienAIP}/api/v1/seance/$codeSeance/show?membre_code=${AppCubitStorage().state.membreCode}',
       );
@@ -16,11 +15,7 @@ class SeanceRepository {
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
       log('Okay DetailSeance rep');
       return dataJson;
-    } catch (e) {
-      log('erreur DetailSeance rep');
-      print(e);
-      return {};
-    }
+
   }
 
 

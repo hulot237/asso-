@@ -12,21 +12,22 @@ class AuthCubit extends Cubit<AuthState> {
             isLoadingDetailUser: false,
             isTrueNomber: null,
             getUid: null,
+            errorLoadDetailAuth: false,
           ),
         );
 
-  Future<bool> detailAuthCubit(userCode, codeTournoi) async {
+  Future<void> detailAuthCubit(userCode, codeTournoi) async {
     emit(state.copyWith(
       isLoadingDetailUser: true,
       isLoading: true,
       detailUser: state.detailUser,
       isTrueNomber: state.isTrueNomber,
       loginInfo: state.loginInfo,
+      errorLoadDetailAuth: state.errorLoadDetailAuth,
     ));
     try {
       final data = await AuthRepository().UserDetail(userCode, codeTournoi);
 
-      if (data != null) {
         emit(
           state.copyWith(
             detailUser: data,
@@ -34,23 +35,10 @@ class AuthCubit extends Cubit<AuthState> {
             isLoading: false,
             isTrueNomber: state.isTrueNomber,
             isLoadingDetailUser: false,
+            errorLoadDetailAuth: false,
           ),
         );
 
-        print("detailAuthCubit Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            detailUser: {},
-            loginInfo: state.loginInfo,
-            isLoading: false,
-            isTrueNomber: state.isTrueNomber,
-            isLoadingDetailUser: false,
-          ),
-        );
-        return false;
-      }
     } catch (e) {
       emit(
         state.copyWith(
@@ -59,9 +47,9 @@ class AuthCubit extends Cubit<AuthState> {
           isLoading: false,
           isTrueNomber: state.isTrueNomber,
           isLoadingDetailUser: false,
+          errorLoadDetailAuth: true,
         ),
       );
-      return false;
     }
   }
 

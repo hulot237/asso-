@@ -16,6 +16,7 @@ class NotificationCubit extends Cubit<NotificationState> {
             tokenNotification: null,
             notifications: null,
             nomberNotif: null,
+            errorLoadNotif: false,
           ),
         );
 
@@ -48,21 +49,29 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> getNotification(tokenUser, codeAssociation) async {
-    emit(state.copyWith(isLoading: true, notifications: state.notifications));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        notifications: state.notifications,
+        errorLoadNotif: state.errorLoadNotif,
+      ),
+    );
     try {
-      final data = await NotificationRepository()
-          .getNotification(tokenUser, codeAssociation);
+      final data = await NotificationRepository().getNotification(tokenUser, codeAssociation);
 
       emit(
         state.copyWith(
           notifications: data,
           isLoading: false,
+          errorLoadNotif: false,
         ),
       );
     } catch (e) {
+      print("erreuuuuuuur ${e}");
       emit(
         state.copyWith(
           isLoading: false,
+          errorLoadNotif: true,
           messageError: e.toString(),
         ),
       );
@@ -70,7 +79,8 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> countNotification() async {
-    emit(state.copyWith(isLoadingNomberNotif: true, notifications: state.notifications));
+    emit(state.copyWith(
+        isLoadingNomberNotif: true, notifications: state.notifications));
     try {
       final data = await NotificationRepository().countNotification();
 

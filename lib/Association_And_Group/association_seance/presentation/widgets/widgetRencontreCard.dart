@@ -50,10 +50,6 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
   Future<void> handleDefaultSeance(codeSeance) async {
     final detailSeance =
         await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
-
-    if (detailSeance != null) {} else {
-      print("userGroupDefault null");
-    }
   }
 
   isPasseDate() {

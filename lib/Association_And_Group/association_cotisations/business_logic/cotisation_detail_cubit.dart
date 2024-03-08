@@ -11,42 +11,45 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
           CotisationDetailState(
             detailCotisation: null,
             isLoading: false,
+            errorLoadDetailCotis: false,
           ),
         );
 
-  Future<bool> detailCotisationCubit(codeCotisation) async {
-    emit(state.copyWith(isloading: true));
+  Future<void> detailCotisationCubit(codeCotisation) async {
+      print("object detailCotisationCubit  ");
+
+    emit(
+      state.copyWith(
+        isLoading: true,
+        detailCotisation: state.detailCotisation,
+        errorLoadDetailCotis: state.errorLoadDetailCotis,
+      ),
+    );
+
+      print("object detailCotisationCubitdetailCotisationCubit  ");
+
     try {
-      final data =
-          await CotisationRepository().DetailCotisation(codeCotisation);
+      final data = await CotisationRepository().DetailCotisation(codeCotisation);
+      print("object detailCotisationCubitdetailCotisationCubitdetailCotisationCubit");
 
-      if (data != null) {
-        emit(
-          state.copyWith(
-            detailcotisation: data,
-            isloading: false,
-          ),
-        );
-
-
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            detailcotisation: {},
-            isloading: false,
-          ),
-        );
-        return false;
-      }
-    } catch (e) {
       emit(
         state.copyWith(
-          detailcotisation: {},
-          isloading: false,
+          detailCotisation: data,
+          isLoading: false,
+          errorLoadDetailCotis: false,
         ),
       );
-      return true;
+      // print("object DetailCotisation ${state.detailCotisation} ");
+    } catch (e) {
+      print("object erreurerreurerreurerreurerreurerreur  ");
+
+      // print("object erreur ${e}");
+      emit(
+        state.copyWith(
+          errorLoadDetailCotis: true,
+          isLoading: false,
+        ),
+      );
     }
   }
 }

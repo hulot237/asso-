@@ -5,91 +5,69 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class SeanceCubit extends Cubit<SeanceState> {
   SeanceCubit()
       : super(
-          SeanceState(detailSeance: null, allSeanceAss: null, isLoading: false),
+          SeanceState(
+            detailSeance: null,
+            allSeanceAss: null,
+            isLoading: false,
+            errorLoadDetailSeance: false,
+          ),
         );
 
-  Future<bool> AllAssSeanceCubit(codeAss) async {
-    emit(state.copyWith(isloading: true));
+  Future<void> AllAssSeanceCubit(codeAss) async {
+    emit(state.copyWith(
+      isLoading: true,
+      detailSeance: state.detailSeance,
+      allSeanceAss: state.allSeanceAss,
+    ));
     try {
       final data = await SeanceRepository().AllSeanceAss(codeAss);
 
-      if (data != null) {
-        emit(
-          state.copyWith(
-            allseanceass: data,
-            detailseance: state.detailSeance,
-            isloading: false,
-          ),
-        );
-
-        print("DetailSeance Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            allseanceass: [],
-            detailseance: state.detailSeance,
-            isloading: false,
-          ),
-        );
-        return false;
-      }
+      emit(
+        state.copyWith(
+          allSeanceAss: data,
+          isLoading: false,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
-          allseanceass: [],
-          detailseance: state.detailSeance,
-          isloading: false,
+          detailSeance: state.detailSeance,
+          errorLoadDetailSeance: true,
+          isLoading: false,
         ),
       );
-      return true;
+      // return true;
     }
   }
 
-  Future<bool> detailSeanceCubit(codeSeance) async {
-    emit(state.copyWith(isloading: true));
+  Future<void> detailSeanceCubit(codeSeance) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        detailSeance: state.detailSeance,
+        errorLoadDetailSeance: state.errorLoadDetailSeance,
+      ),
+    );
     try {
       final data = await SeanceRepository().DetailSeance(codeSeance);
 
-      if (data != null) {
-        // data.forEach((element) => print("AAAAAAAA ${element.user_group_code}"));
-
-        // print("data in cubit ${data.length}");
-
-        emit(
-          state.copyWith(
-            detailseance: data,
-            allseanceass: state.allSeanceAss,
-            isloading: false,
-          ),
-        );
-
-        print("DetailSeance Cubit ok");
-
-        // emit(state.copyWith(isloading: false));
-
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            detailseance: {},
-            allseanceass: state.allSeanceAss,
-            isloading: false,
-          ),
-        );
-        // emit(state.copyWith(isloading: false));
-
-        return false;
-      }
+      emit(
+        state.copyWith(
+          detailSeance: data,
+          allSeanceAss: state.allSeanceAss,
+          isLoading: false,
+          errorLoadDetailSeance: false,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
-          detailseance: {},
-          allseanceass: state.allSeanceAss,
-          isloading: false,
+          detailSeance: {},
+          allSeanceAss: state.allSeanceAss,
+          isLoading: false,
+          errorLoadDetailSeance: true,
         ),
       );
-      return true;
     }
   }
 }

@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Association_And_Group/association_notificat
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/presentation/screens/notification_page.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/create_new_ass.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
@@ -18,6 +19,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/FicheMembrePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
+import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/presentation/screens/members_Ass_Page.dart';
 import 'package:faroty_association_1/pages/paramsAppPage.dart';
@@ -91,7 +93,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserGroupCubit, UserGroupState>(
         builder: (userGroupContext, userGroupState) {
-      if (userGroupState.isLoading == true ||
+      if (userGroupState.isLoading == true &&
           userGroupState.changeAssData == null)
         return Container(
             child: EasyLoader(
@@ -106,7 +108,7 @@ class _SettingScreenState extends State<SettingScreen> {
           userGroupContext.read<UserGroupCubit>().state.changeAssData;
       return BlocBuilder<AuthCubit, AuthState>(
           builder: (authContext, authState) {
-        if (authState.isLoading == null || authState.isLoading == true)
+        if (authState.detailUser == null && authState.isLoading == true)
           return Container(
               child: EasyLoader(
             backgroundColor: Color.fromARGB(0, 255, 255, 255),
@@ -129,7 +131,13 @@ class _SettingScreenState extends State<SettingScreen> {
             // );
             return Platform.isIOS ? false : true;
           },
-          child: Scaffold(
+          child:(authState.errorLoadDetailAuth == true ||
+                      userGroupState.errorLoadDetailChangeAss == true)
+                  ? checkInternetConnectionPage(
+                    backToHome: true,
+                      functionToCall: () {},
+                    )
+                  :  Scaffold(
             backgroundColor: AppColors.pageBackground,
             appBar: AppBar(
               title: Text(
@@ -166,6 +174,15 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       child: GestureDetector(
                         onTap: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => createNewAss(
+                          //         // forAdmin: false,
+                          //         // urlPage: 'https://business.faroty.com/groups',
+                          //       ),
+                          //     ),
+                          //   );
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -180,8 +197,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           margin: EdgeInsets.only(right: 10.w),
                           padding: EdgeInsets.all(1.r),
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1.r, color: AppColors.blackBlue),
+                            border: Border.all(
+                                width: 1.r, color: AppColors.blackBlue),
                             color: AppColors.blackBlueAccent2,
                             borderRadius: BorderRadius.circular(50.r),
                           ),
@@ -195,86 +212,89 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                     GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NotificationPage(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 25.w, ),
-                          child: Icon(
-                            Icons.notifications_active_outlined,
-                            color: AppColors.white,
-                            size: 20.sp,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NotificationPage(),
                           ),
-                        ),
-                        BlocBuilder<NotificationCubit, NotificationState>(
-                          builder: (NotificationContext, NotificationState) {
-                            if (NotificationState.isLoadingNomberNotif ==
-                                    true &&
-                                NotificationState.nomberNotif == null)
-                              return Positioned(
-                                top: 8.h,
-                                left: 8.w,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 15.w,
-                                  height: 15.w,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 0.1,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                ),
-                              );
-                            final currentNotifications = context
-                                .read<NotificationCubit>()
-                                .state
-                                .nomberNotif;
-
-                            if (currentNotifications! > 0) {
-                              return Positioned(
-                                top: 0.r,
-                                left: 12.r,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 18.h,
-                                  height: 18.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(360),
-                                    color: Colors.red,
-                                    border: Border.all(
-                                      width: 1, color: AppColors.backgroundAppBAr
-                                    )
-                                  ),
-                                  child: Text(
-                                    "${currentNotifications}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 7.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.white,
+                        );
+                      },
+                      child: Container(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                right: 25.w,
+                              ),
+                              child: Icon(
+                                Icons.notifications_active_outlined,
+                                color: AppColors.white,
+                                size: 20.sp,
+                              ),
+                            ),
+                            BlocBuilder<NotificationCubit, NotificationState>(
+                              builder:
+                                  (NotificationContext, NotificationState) {
+                                if (NotificationState.isLoadingNomberNotif ==
+                                        true &&
+                                    NotificationState.nomberNotif == null)
+                                  return Positioned(
+                                    top: 8.h,
+                                    left: 8.w,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 15.w,
+                                      height: 15.w,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 0.1,
+                                        color: AppColors.blackBlue,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }
-                            return Container();
-                          },
+                                  );
+                                final currentNotifications = context
+                                    .read<NotificationCubit>()
+                                    .state
+                                    .nomberNotif;
+
+                                if (currentNotifications! > 0) {
+                                  return Positioned(
+                                    top: 0.r,
+                                    left: 12.r,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 18.h,
+                                      height: 18.h,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(360),
+                                          color: Colors.red,
+                                          border: Border.all(
+                                              width: 1,
+                                              color:
+                                                  AppColors.backgroundAppBAr)),
+                                      child: Text(
+                                        "${currentNotifications}",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 7.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return Container();
+                              },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                )
+                      ),
+                    )
                   ],
                 ),
-                
               ],
               // leading: Icon(Icons.arrow_back),
             ),

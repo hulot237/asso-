@@ -8,6 +8,7 @@ class UserGroupState extends Equatable {
   final InfoAssModel? changeAssData;
   final bool isLoading;
   final bool isLoadingChangeAss;
+  final bool errorLoadDetailChangeAss;
 
 
   UserGroupState({
@@ -15,6 +16,7 @@ class UserGroupState extends Equatable {
     this.changeAssData,
     this.isLoading = false,
     this.isLoadingChangeAss =false,
+    this.errorLoadDetailChangeAss = false,
   });
 
   @override
@@ -23,6 +25,7 @@ class UserGroupState extends Equatable {
         changeAssData,
         isLoading,
         isLoadingChangeAss,
+        errorLoadDetailChangeAss
       ];
 
   UserGroupState copyWith({
@@ -30,12 +33,14 @@ class UserGroupState extends Equatable {
     InfoAssModel? changeAssData,
     bool? isLoading,
     bool? isLoadingChangeAss,
+    bool? errorLoadDetailChangeAss,
   }) {
     return UserGroupState(
       userGroup: userGroup ?? this.userGroup,
       changeAssData: changeAssData ?? this.changeAssData,
       isLoading: isLoading ?? this.isLoading,
       isLoadingChangeAss: isLoadingChangeAss ?? this.isLoadingChangeAss,
+      errorLoadDetailChangeAss: errorLoadDetailChangeAss ?? this.errorLoadDetailChangeAss,
     );
   }
 

@@ -142,7 +142,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(
             useMaterial3: false,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
+            fontFamily: GoogleFonts.roboto().fontFamily,
           ),
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
