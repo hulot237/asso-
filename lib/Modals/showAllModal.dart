@@ -499,14 +499,21 @@ class Modal {
                             final okayTontine = DetailContributionContext.read<
                                     DetailContributionCubit>()
                                 .state
-                                .detailContributionTontine!["versements"];
+                                .detailContributionTontine!["membres"]
+                                .where((personne) => personne["is_payed"] == 1)
+                                .length;
                             final nonTontine = DetailContributionContext.read<
                                     DetailContributionCubit>()
                                 .state
-                                .detailContributionTontine!["members"];
+                                .detailContributionTontine!["membres"]
+                                .where((personne) => personne["is_payed"] == 0)
+                                .length;
+
+                            print(
+                                "objectobjectobjectobjectobjectobject ${nonTontine}");
                             return Container(
                               child: Text(
-                                "(${okayTontine.length}/${nonTontine.length + okayTontine.length})",
+                                "(${okayTontine}/${nonTontine + okayTontine})",
                                 style: TextStyle(
                                   fontSize: 10.sp,
                                   color: AppColors.blackBlue,
@@ -539,32 +546,31 @@ class Modal {
                       ),
                     ),
                   );
-                final nonTontine =
-                    DetailContributionContext.read<DetailContributionCubit>()
-                        .state
-                        .detailContributionTontine!["members"];
 
                 final okayTontine =
                     DetailContributionContext.read<DetailContributionCubit>()
                         .state
-                        .detailContributionTontine!["versements"];
+                        .detailContributionTontine!["membres"];
+                print("${okayTontine}");
 
                 List listeOkayTontine = okayTontine;
-                List listeNonTontine = nonTontine;
 
                 List<Widget> listWidgetOkayTontine =
                     listeOkayTontine.map((monObjet) {
                   return Card(
                     margin: EdgeInsets.only(
-                        left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
+                      left: 10.w,
+                      right: 10.w,
+                      top: 5.h,
+                      bottom: 5.h,
+                    ),
                     child: widgetHistoriqueTontineCard(
                       date: formatDateLiteral(monObjet["updated_at"]),
                       imageProfil: monObjet["photo_profil"] == null
                           ? ""
                           : monObjet["photo_profil"],
-                      is_versement_finished: monObjet["versements"][0]
-                          ["is_versement_finished"],
-                      montantVersee: monObjet["versements"][0]["balance_after"],
+                      is_versement_finished: monObjet["is_payed"],
+                      montantVersee: monObjet["balance"],
                       nom: monObjet["membre"]["first_name"] == null
                           ? ""
                           : monObjet["membre"]["first_name"],
@@ -575,37 +581,8 @@ class Modal {
                   );
                 }).toList();
 
-                List<Widget> listWidgetNonTontine =
-                    listeNonTontine.map((monObj) {
-                  return Card(
-                    margin: EdgeInsets.only(
-                        left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
-                    child: widgetHistoriqueTontineCard(
-                      date: AppCubitStorage().state.Language == "fr"
-                          ? formatDateToFrench(monObj["updated_at"])
-                          : formatDateToEnglish(monObj["updated_at"]),
-                      imageProfil: monObj["membre"]["photo_profil"] == null
-                          ? ""
-                          : monObj["membre"]["photo_profil"],
-                      is_versement_finished: monObj["versements"].length == 0
-                          ? 0
-                          : monObj["versements"][0]["is_versement_finished"],
-                      montantVersee: monObj["versements"].length == 0
-                          ? "0"
-                          : monObj["versements"][0]["balance_after"],
-                      nom: monObj["membre"]["first_name"] == null
-                          ? ""
-                          : monObj["membre"]["first_name"],
-                      prenom: monObj["membre"]["last_name"] == null
-                          ? ""
-                          : monObj["membre"]["last_name"],
-                    ),
-                  );
-                }).toList();
-
                 final listeFinale = [
                   ...listWidgetOkayTontine,
-                  ...listWidgetNonTontine,
                   Container(
                     margin: EdgeInsets.only(
                       bottom: 10.h,
@@ -731,14 +708,22 @@ class Modal {
                                 final okayTontine = detailCotisationContext
                                     .read<CotisationDetailCubit>()
                                     .state
-                                    .detailCotisation!["versements"];
+                                    .detailCotisation!["membres"]
+                                    .where(
+                                        (personne) => personne["is_payed"] == 1)
+                                    .length;
+                                ;
                                 final nonTontine = detailCotisationContext
                                     .read<CotisationDetailCubit>()
                                     .state
-                                    .detailCotisation!["members"];
+                                    .detailCotisation!["membres"]
+                                    .where(
+                                        (personne) => personne["is_payed"] == 0)
+                                    .length;
+
                                 return Container(
                                   child: Text(
-                                    "(${okayTontine.length}/${nonTontine.length + okayTontine.length})",
+                                    "(${okayTontine}/${nonTontine + okayTontine})",
                                     style: TextStyle(
                                         fontSize: 10.sp,
                                         color: AppColors.blackBlue),
@@ -827,8 +812,7 @@ class Modal {
                           .detailCotisation;
 
                   List listeOkayCotisation =
-                      currentDetailCotisation!["versements"];
-                  List listeNonCotisation = currentDetailCotisation["members"];
+                      currentDetailCotisation!["membres"];
 
                   List<Widget> listWidgetOkayCotis =
                       listeOkayCotisation.map((monObjet) {
@@ -841,57 +825,23 @@ class Modal {
                       ),
                       child: widgetHistoriqueTontineCard(
                         date: formatDateLiteral(monObjet["updated_at"]),
-                        imageProfil: monObjet["photo_profil"] == null
+                        imageProfil: monObjet["membre"]["photo_profil"] == null
                             ? ""
-                            : monObjet["photo_profil"],
-                        is_versement_finished: monObjet["versement"][0]
-                            ["is_versement_finished"],
-                        montantVersee: monObjet["versement"].length == 0
-                            ? "0"
-                            : monObjet["versement"][0]["balance_after"],
-                        nom: monObjet["first_name"] == null
+                            : monObjet["membre"]["photo_profil"],
+                        is_versement_finished: monObjet["is_payed"],
+                        montantVersee: monObjet["balance"],
+                        nom: monObjet["membre"]["first_name"] == null
                             ? ""
-                            : monObjet["first_name"],
-                        prenom: monObjet["last_name"] == null
+                            : monObjet["membre"]["first_name"],
+                        prenom: monObjet["membre"]["last_name"] == null
                             ? ""
-                            : monObjet["last_name"],
-                      ),
-                    );
-                  }).toList();
-
-                  List<Widget> listWidgetNonCotis =
-                      listeNonCotisation.map((monObj) {
-                    return Card(
-                      margin: EdgeInsets.only(
-                          left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
-                      child: widgetHistoriqueTontineCard(
-                        date: AppCubitStorage().state.Language == "fr"
-                            ? formatDateToFrench(monObj["updated_at"])
-                            : formatDateToEnglish(monObj["updated_at"]),
-                        imageProfil: monObj["membre"]["photo_profil"] == null
-                            ? ""
-                            : monObj["membre"]["photo_profil"],
-                        is_versement_finished:
-                            monObj["membre"]["versement"].length == 0
-                                ? 0
-                                : monObj["membre"]["versement"][0]
-                                    ["is_versement_finished"],
-                        montantVersee: monObj["membre"]["versement"].length == 0
-                            ? "0"
-                            : monObj["membre"]["versement"][0]["balance_after"],
-                        nom: monObj["membre"]["first_name"] == null
-                            ? ""
-                            : monObj["membre"]["first_name"],
-                        prenom: monObj["membre"]["last_name"] == null
-                            ? ""
-                            : monObj["membre"]["last_name"],
+                            : monObjet["membre"]["last_name"],
                       ),
                     );
                   }).toList();
 
                   final listeFinale = [
                     ...listWidgetOkayCotis,
-                    ...listWidgetNonCotis,
                     Container(
                       margin: EdgeInsets.only(
                           // bottom: Platform.isIOS ? 70.h : 10.h,
@@ -900,9 +850,11 @@ class Modal {
                   ];
 
                   return Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: listeFinale,
+                    child: Container(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: listeFinale,
+                        ),
                       ),
                     ),
                   );
@@ -915,11 +867,8 @@ class Modal {
     );
   }
 
-  void showModalTransactionByEvent(
-    context,
-    versement,
-    montantAPayer,
-  ) {
+  void showModalTransactionByEvent(context, versement, montantAPayer,
+      {resteAPayer, dejaPayer}) {
     showDialog<String>(
       context: context,
       barrierColor: AppColors.barrierColorModal,
@@ -970,6 +919,7 @@ class Modal {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               child: Text(
@@ -977,7 +927,7 @@ class Modal {
                                 style: TextStyle(
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.w300,
-                                  // color: AppColors.blackBlue,
+                                  color: AppColors.blackBlue,
                                 ),
                               ),
                             ),
@@ -1007,7 +957,9 @@ class Modal {
                             ),
                             Container(
                               child: Text(
-                                "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_after"] : "0"))} FCFA",
+                                dejaPayer == null
+                                    ? "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_after"] : "0"))} FCFA"
+                                    : "${formatMontantFrancais(double.parse(dejaPayer))} FCFA",
                                 style: TextStyle(
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
@@ -1018,6 +970,7 @@ class Modal {
                           ],
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Container(
                               child: Text(
@@ -1031,7 +984,9 @@ class Modal {
                             ),
                             Container(
                               child: Text(
-                                "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_remaining"] : "0"))} FCFA",
+                                resteAPayer == null
+                                    ? "${formatMontantFrancais(double.parse(versement.length > 0 ? versement[0]["balance_remaining"] : "0"))} FCFA"
+                                    : "${formatMontantFrancais(double.parse(resteAPayer))} FCFA",
                                 style: TextStyle(
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
@@ -1051,14 +1006,14 @@ class Modal {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Color.fromARGB(120, 226, 226, 226),
+                          // color: Color.fromARGB(120, 226, 226, 226),
                         ),
                         width: MediaQuery.of(context).size.width,
                         child: Container(
                           margin: EdgeInsets.only(
                             top: 7.h,
-                            right: 5.w,
-                            left: 5.w,
+                            right: 7.w,
+                            left: 7.w,
                             bottom: 7.h,
                           ),
                           color: AppColors.white,
@@ -1067,15 +1022,23 @@ class Modal {
                               Expanded(
                                 child: ListView.builder(
                                   itemCount:
-                                      versement[0]["transanctions"].length,
+                                      versement[0]["transanctions"] != null
+                                          ? versement[0]["transanctions"].length
+                                          : versement.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     final detailVersement =
-                                        versement[0]["transanctions"][index];
+                                        versement[0]["transanctions"] != null
+                                            ? versement[0]["transanctions"]
+                                                [index]
+                                            : versement[index];
+
+                                    print(detailVersement);
                                     return Container(
                                       child: widgetListTransactionByEventCard(
                                         date: formatDateLiteral(
-                                            detailVersement["created_at"]),
+                                          detailVersement["created_at"],
+                                        ),
                                         montant: detailVersement["amount"],
                                       ),
                                     );
@@ -1781,7 +1744,6 @@ class Modal {
                   ),
                 ),
               ),
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
@@ -1821,7 +1783,7 @@ class Modal {
                           itemCount: listAbs.length,
                           itemBuilder: (context, index) {
                             final currentListAbs = listAbs[index];
-              
+
                             return Container(
                               // padding: EdgeInsets.all(5.r),
                               child: widgetListPresenceCard(
@@ -1840,7 +1802,7 @@ class Modal {
                             );
                           },
                         ),
-              
+
                         //  Text("2"),
                       ],
                     ),

@@ -224,8 +224,7 @@ class _widgetDetailCotisationCardState
                             CotisationDetailState>(
                           builder:
                               (CotisationDetailContext, CotisationDetailState) {
-                            if (CotisationDetailState.isLoading == true ||
-                                CotisationDetailState.detailCotisation == null)
+                            if (CotisationDetailState.isLoading == true || CotisationDetailState.detailCotisation == null)
                               return GestureDetector(
                                 child: Container(
                                   child: Column(
@@ -259,120 +258,24 @@ class _widgetDetailCotisationCardState
                                 ),
                               );
 
-                            final currentDetailCotisation =
-                                CotisationDetailContext.read<
-                                        CotisationDetailCubit>()
-                                    .state
-                                    .detailCotisation;
+                            final currentDetailCotisation = CotisationDetailContext.read<CotisationDetailCubit>().state.detailCotisation;
+                            print("currentDetailCotisationcurrentDetailCotisationcurrentDetailCotisation ${currentDetailCotisation}");
                             return currentDetailCotisation != null
                                 ? Column(
                                     children: [
-                                      // GestureDetector(
-                                      //   onTap: () {
-                                      //   },
-                                      //   child: Container(
-                                      //     child: Column(
-                                      //       crossAxisAlignment:
-                                      //           CrossAxisAlignment
-                                      //               .center,
-                                      //       children: [
-                                      //         Container(
-                                      //           child: Text(
-                                      //             "vous_avez_cotisé"
-                                      //                 .tr(),
-                                      //             style: TextStyle(
-                                      //               fontSize: 11.sp,
-                                      //               fontWeight:
-                                      //                   FontWeight.bold,
-                                      //               color:
-                                      //                   Color.fromARGB(
-                                      //                       255,
-                                      //                       20,
-                                      //                       45,
-                                      //                       99),
-                                      //             ),
-                                      //           ),
-                                      //           margin: EdgeInsets.only(
-                                      //               right: 5.w),
-                                      //         ),
-                                      //         Container(
-                                      //           child: Text(
-                                      //             CotisationDetailState
-                                      //                         .errorLoadDetailCotis ==
-                                      //                     false
-                                      //                 ? "${formatMontantFrancais(double.parse(itemDetailCotisation["versement"] != null ? itemDetailCotisation["versement"][0]["balance_after"] : "0"))} FCFA"
-                                      //                 : "- - -  FCFA",
-                                      //             style: TextStyle(
-                                      //                 fontSize: 12.sp,
-                                      //                 fontWeight:
-                                      //                     FontWeight
-                                      //                         .w800,
-                                      //                 color: Color
-                                      //                     .fromARGB(
-                                      //                         255,
-                                      //                         20,
-                                      //                         45,
-                                      //                         99)),
-                                      //           ),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //   ),
-                                      // ),
-
-                                      // if (currentDetailCotisation!["members"].length > 0)
-                                      //   for (var itemDetailCotisation in currentDetailCotisation!["members"])
-                                      //     if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
                                       GestureDetector(
                                         onTap: () {
-                                          if (currentDetailCotisation![
-                                                      "versements"]
-                                                  .length >
-                                              0)
-                                            for (var itemDetailCotisation
-                                                in currentDetailCotisation[
-                                                    "versements"])
-                                              if (itemDetailCotisation[
-                                                      "membre_code"] ==
-                                                  AppCubitStorage()
-                                                      .state
-                                                      .membreCode)
-                                                Modal()
-                                                    .showModalTransactionByEvent(
+                                          // if (currentDetailCotisation!["versements"].length > 0)
+                                            for (var itemDetailCotisation in currentDetailCotisation["membres"])
+                                              if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
+                                                Modal().showModalTransactionByEvent(
                                                   context,
-                                                  itemDetailCotisation[
-                                                              "versement"] !=
-                                                          null
-                                                      ? itemDetailCotisation[
-                                                          "versement"]
-                                                      : [],
+                                                  itemDetailCotisation["payments"],
                                                   '${widget.montantCotisations}',
+                                                  resteAPayer: itemDetailCotisation["amount_remaining"],
+                                                  dejaPayer: itemDetailCotisation["balance"],
                                                 );
 
-                                          if (currentDetailCotisation![
-                                                      "members"]
-                                                  .length >
-                                              0)
-                                            for (var itemDetailCotisation
-                                                in currentDetailCotisation![
-                                                    "members"])
-                                              if (itemDetailCotisation["membre"]
-                                                      ["membre_code"] ==
-                                                  AppCubitStorage()
-                                                      .state
-                                                      .membreCode)
-                                                Modal()
-                                                    .showModalTransactionByEvent(
-                                                  context,
-                                                  itemDetailCotisation["membre"]
-                                                              ["versement"] ==
-                                                          null
-                                                      ? []
-                                                      : itemDetailCotisation[
-                                                              "membre"]
-                                                          ["versement"],
-                                                  '${widget.montantCotisations}',
-                                                );
                                         },
                                         child: Container(
                                           child: Column(
@@ -392,58 +295,11 @@ class _widgetDetailCotisationCardState
                                                 margin:
                                                     EdgeInsets.only(right: 5.w),
                                               ),
-                                              if (currentDetailCotisation[
-                                                      "members"] !=
-                                                  null)
-                                                if (currentDetailCotisation![
-                                                            "members"]
-                                                        .length >
-                                                    0)
-                                                  for (var itemDetailCotisation
-                                                      in currentDetailCotisation![
-                                                          "members"])
-                                                    if (itemDetailCotisation[
-                                                                "membre"]
-                                                            ["membre_code"] ==
-                                                        AppCubitStorage()
-                                                            .state
-                                                            .membreCode)
+                                              for (var itemDetailCotisation in currentDetailCotisation["membres"])
+                                                if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
                                                       Container(
                                                         child: Text(
-                                                          "${formatMontantFrancais(double.parse(itemDetailCotisation["membre"]["versement"].length > 0 ? "${itemDetailCotisation["membre"]["versement"][0]["balance_after"]}" : "0"))} FCFA",
-                                                          // "${itemDetailCotisation["membre"]["versement"].length}",
-                                                          style: TextStyle(
-                                                            fontSize: 12.sp,
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                            color:
-                                                                Color.fromARGB(
-                                                              255,
-                                                              20,
-                                                              45,
-                                                              99,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                              if (currentDetailCotisation[
-                                                      "versements"] !=
-                                                  null)
-                                                if (currentDetailCotisation![
-                                                            "versements"]
-                                                        .length >
-                                                    0)
-                                                  for (var itemDetailCotisation
-                                                      in currentDetailCotisation[
-                                                          "versements"])
-                                                    if (itemDetailCotisation[
-                                                            "membre_code"] ==
-                                                        AppCubitStorage()
-                                                            .state
-                                                            .membreCode)
-                                                      Container(
-                                                        child: Text(
-                                                          "${formatMontantFrancais(double.parse(itemDetailCotisation["versement"] != null ? itemDetailCotisation["versement"][0]["balance_after"] : "0"))} FCFA",
+                                                          "${formatMontantFrancais(double.parse( "${itemDetailCotisation["balance"]}"))} FCFA",
                                                           // "${itemDetailCotisation["membre"]["versement"].length}",
                                                           style: TextStyle(
                                                             fontSize: 12.sp,

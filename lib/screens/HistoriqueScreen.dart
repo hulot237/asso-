@@ -1186,18 +1186,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                       onRefresh:
                                                           refreshSanction,
                                                       child: ListView.builder(
-                                                        itemCount:
-                                                            currentDetailUser[
-                                                                    "sanctions"]
-                                                                .length,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          final currentSaction =
-                                                              currentDetailUser![
-                                                                      "sanctions"]
-                                                                  [index];
+                                                        itemCount: currentDetailUser["sanctions"].length,
+                                                        itemBuilder: (BuildContext context, int index) {
+                                                          final currentSaction = currentDetailUser!["sanctions"][index];
                                                           return Container(
                                                             margin:
                                                                 EdgeInsets.only(
@@ -1207,51 +1198,19 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                     bottom:
                                                                         7.h),
                                                             child:
-                                                                WidgetSanction(
-                                                              objetSanction: currentSaction[
-                                                                          "libelle"] ==
-                                                                      null
-                                                                  ? " "
-                                                                  : currentSaction[
-                                                                      "libelle"],
-                                                              heureSanction: AppCubitStorage()
-                                                                          .state
-                                                                          .Language ==
-                                                                      "fr"
-                                                                  ? formatTimeToFrench(
-                                                                      currentSaction[
-                                                                          "start_date"])
-                                                                  : formatTimeToEnglish(
-                                                                      currentSaction[
-                                                                          "start_date"]),
-                                                              dateSanction:
-                                                                  currentSaction[
-                                                                      "start_date"],
-                                                              motifSanction:
-                                                                  currentSaction[
-                                                                      "motif"],
-                                                              montantSanction:
-                                                                  currentSaction[
-                                                                          "amount"]
-                                                                      .toString(),
-                                                              montantPayeeSanction:
-                                                                  currentSaction[
-                                                                      "sanction_balance"],
-                                                              lienPaiement: currentSaction[
-                                                                          "sanction_pay_link"] ==
-                                                                      null
-                                                                  ? " "
-                                                                  : currentSaction[
-                                                                      "sanction_pay_link"],
-                                                              versement:
-                                                                  currentSaction[
-                                                                      "versement"],
-                                                              isSanctionPayed:
-                                                                  currentSaction[
-                                                                      "is_sanction_payed"],
-                                                              typeSaction:
-                                                                  currentSaction[
-                                                                      "type"],
+                                                            WidgetSanction(
+                                                              objetSanction: currentSaction["libelle"] == null ? " " : currentSaction["libelle"],
+                                                              heureSanction: AppCubitStorage().state.Language == "fr" ? formatTimeToFrench(currentSaction["start_date"]) : formatTimeToEnglish(currentSaction["start_date"]),
+                                                              dateSanction: currentSaction["start_date"],
+                                                              motifSanction: currentSaction["motif"],
+                                                              montantSanction: currentSaction["amount"].toString(),
+                                                              montantPayeeSanction: currentSaction["sanction_balance"],
+                                                              lienPaiement: currentSaction["sanction_pay_link"] == null ? " " : currentSaction["sanction_pay_link"],
+                                                              versement: currentSaction["payments"],
+                                                              isSanctionPayed: currentSaction["is_sanction_payed"],
+                                                              typeSaction: currentSaction["type"],
+                                                              resteAPayer: currentSaction["amount_remaining"],
+                                                              dejaPayer: currentSaction["sanction_balance"],
                                                             ),
                                                           );
                                                         },

@@ -1739,16 +1739,16 @@ class _AccountPageState extends State<AccountPage> {
                                           ),
                                         ),
                                         margin: EdgeInsets.only(
-                                          bottom: 10.h,
+                                          // bottom: 10.h,
                                           // left: 5,
                                           // right: 5,
                                           // top: 5,
                                         ),
                                         padding: EdgeInsets.only(
-                                          bottom: 5.h,
+                                          bottom: 10.h,
                                           // left: 5,
                                           // right: 5,
-                                          // top: 5,
+                                          top: 10.h,
                                         ),
                                         width:
                                             MediaQuery.of(context).size.width,
@@ -1770,23 +1770,23 @@ class _AccountPageState extends State<AccountPage> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
-                                                      // Container(
-                                                      //   color: AppColors.blackBlueAccent1,
-                                                      //   child: Text(
-                                                      //     "Motif : ",
-                                                      //     style: TextStyle(
-                                                      //       fontSize: 12,
-                                                      //       color:
-                                                      //           Color.fromARGB(
-                                                      //               255,
-                                                      //               20,
-                                                      //               45,
-                                                      //               99),
-                                                      //       fontWeight:
-                                                      //           FontWeight.w300,
-                                                      //     ),
-                                                      //   ),
-                                                      // ),
+                                                      Container(
+                                                        // color: AppColors.blackBlueAccent1,
+                                                        child: Text(
+                                                          "Motif : ",
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    20,
+                                                                    45,
+                                                                    99),
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                          ),
+                                                        ),
+                                                      ),
                                                       Container(
                                                         width:
                                                             MediaQuery.sizeOf(

@@ -12,12 +12,11 @@ class DetailContributionCubit extends Cubit<ContributionState> {
           ),
         );
 
-  Future<bool> detailContributionTontineCubit(codeContribution) async {
+  Future<void> detailContributionTontineCubit(codeContribution) async {
     emit(state.copyWith( isloadingcontibutionTontine: true));
     try {
       final data = await TontineRepository().DetailContributionTontine(codeContribution);
 
-      if (data != null) {
         emit(
           state.copyWith(
             detailcontributiontontine: data,
@@ -25,22 +24,13 @@ class DetailContributionCubit extends Cubit<ContributionState> {
         );
 
         print("detailContributionTontineCubit Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            detailcontributiontontine: {},
-              isloadingcontibutionTontine: false),
-        );
-        return false;
-      }
+        
     } catch (e) {
       emit(
         state.copyWith(
           detailcontributiontontine: {},
             isloadingcontibutionTontine: false),
       );
-      return true;
     }
   }
 }

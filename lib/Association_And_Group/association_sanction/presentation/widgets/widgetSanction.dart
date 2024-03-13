@@ -18,6 +18,8 @@ class WidgetSanction extends StatefulWidget {
     required this.isSanctionPayed,
     required this.typeSaction,
     required this.objetSanction,
+    required this.resteAPayer,
+    required this.dejaPayer,
   });
   String heureSanction;
   String dateSanction;
@@ -29,6 +31,8 @@ class WidgetSanction extends StatefulWidget {
   int isSanctionPayed;
   String typeSaction;
   String objetSanction;
+  String dejaPayer;
+  String resteAPayer;
 
   @override
   State<WidgetSanction> createState() => _WidgetSanctionState();
@@ -41,7 +45,12 @@ class _WidgetSanctionState extends State<WidgetSanction> {
       onTap: () {
         if (widget.typeSaction == "1")
           Modal().showModalTransactionByEvent(
-              context, widget.versement, widget.montantSanction);
+            context,
+            widget.versement,
+            widget.montantSanction,
+            resteAPayer: widget.resteAPayer,
+            dejaPayer: widget.dejaPayer,
+          );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15.r),
@@ -161,21 +170,21 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                     String msg =
                                         "Aide-moi à payer ma sanction de *${widget.motifSanction}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA* directement via le lien https://${widget.lienPaiement}.";
                                     String raisonComplete =
-                                            "Paiement de la sanction".tr();
-                                        String motif = "payer_vous_même".tr();
-                                        String paiementProcheMsg =
-                                            "partager_le_lien_de_paiement".tr();
-                                        String msgAppBarPaiementPage =
-                                            "${'Paiement de la sanction'.tr()} ${widget.motifSanction}";
-                                        Modal().showModalActionPayement(
-                                          context,
-                                          msg,
-                                          widget.lienPaiement,
-                                          raisonComplete,
-                                          motif,
-                                          paiementProcheMsg,
-                                          msgAppBarPaiementPage,
-                                        );
+                                        "Paiement de la sanction".tr();
+                                    String motif = "payer_vous_même".tr();
+                                    String paiementProcheMsg =
+                                        "partager_le_lien_de_paiement".tr();
+                                    String msgAppBarPaiementPage =
+                                        "${'Paiement de la sanction'.tr()} ${widget.motifSanction}";
+                                    Modal().showModalActionPayement(
+                                      context,
+                                      msg,
+                                      widget.lienPaiement,
+                                      raisonComplete,
+                                      motif,
+                                      paiementProcheMsg,
+                                      msgAppBarPaiementPage,
+                                    );
                                   },
                                   child: Container(
                                     child: Row(
@@ -334,9 +343,8 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                             child: Text(
                                               "${widget.objetSanction}",
                                               style: TextStyle(
-                                                color: AppColors.blackBlue,
-                                                fontSize: 12.sp
-                                              ),
+                                                  color: AppColors.blackBlue,
+                                                  fontSize: 12.sp),
                                             ),
                                             margin: EdgeInsets.only(
                                               right: 10.w,

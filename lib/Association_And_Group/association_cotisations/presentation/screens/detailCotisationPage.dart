@@ -213,96 +213,31 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                             .state
                             .detailCotisation;
 
-                    var detailCotisationMemberNoOkay =
-                        currentDetailCotisation!["members"].firstWhere(
-                      (member) =>
-                          member['membre']['membre_code'] ==
-                          AppCubitStorage().state.membreCode,
-                      orElse: () => null,
-                    );
-
-                    var detailCotisationMemberIsOkay =
-                        currentDetailCotisation["versements"].firstWhere(
-                      (member) =>
-                          member['membre_code'] ==
-                          AppCubitStorage().state.membreCode,
-                      orElse: () => null,
-                    );
-
                     List listeOkayCotisation =
-                        currentDetailCotisation!["versements"];
-                    List listeNonCotisation =
-                        currentDetailCotisation["members"];
+                        currentDetailCotisation!["membres"];
 
-                    List<Widget> listWidgetOkayCotis =
-                        listeOkayCotisation.map((monObjet) {
-                      return Card(
-                        child: WidgetHistoriqueCotisation(
-                          is_versement_finished:
-                              monObjet["versement"].length == 0
-                                  ? 0
-                                  : monObjet["versement"][0]
-                                      ["is_versement_finished"],
-                          matricule: monObjet["matricule"] == null
-                              ? ""
-                              : monObjet["matricule"],
-                          montantTotalAVerser: monObjet["versement"].length == 0
-                              ? "0"
-                              : monObjet["versement"][0]["source_amount"],
-                          montantVersee: monObjet["versement"].length == 0
-                              ? "0"
-                              : monObjet["versement"][0]["balance_after"],
-                          nom: monObjet["first_name"] == null
-                              ? ""
-                              : monObjet["first_name"],
-                          photoProfil: monObjet["photo_profil"] == null
-                              ? ""
-                              : monObjet["photo_profil"],
-                          prenom: monObjet["last_name"] == null
-                              ? ""
-                              : monObjet["last_name"],
-                        ),
-                      );
-                    }).toList();
-
-                    List<Widget> listWidgetNonCotis =
-                        listeNonCotisation.map((monObjet) {
-                      return Card(
+                    List<Widget> listWidgetCotis = listeOkayCotisation.map(
+                      (monObjet) {
+                        return Card(
                           child: WidgetHistoriqueCotisation(
-                        is_versement_finished:
-                            monObjet["membre"]["versement"].length == 0
-                                ? 0
-                                : monObjet["membre"]["versement"][0]
-                                    ["is_versement_finished"],
-                        matricule: monObjet["membre"]["matricule"] == null
-                            ? ""
-                            : monObjet["membre"]["matricule"],
-                        montantTotalAVerser:
-                            monObjet["membre"]["versement"].length == 0
-                                ? "0"
-                                : monObjet["membre"]["versement"][0]
-                                    ["source_amount"],
-                        montantVersee:
-                            monObjet["membre"]["versement"].length == 0
-                                ? "0"
-                                : monObjet["membre"]["versement"][0]
-                                    ["balance_after"],
-                        nom: monObjet["membre"]["first_name"] == null
-                            ? ""
-                            : monObjet["membre"]["first_name"],
-                        photoProfil: monObjet["membre"]["photo_profil"] == null
-                            ? ""
-                            : monObjet["membre"]["photo_profil"],
-                        prenom: monObjet["membre"]["last_name"] == null
-                            ? ""
-                            : monObjet["membre"]["last_name"],
-                      ));
-                    }).toList();
-
-                    final listeFinale = [
-                      ...listWidgetOkayCotis,
-                      ...listWidgetNonCotis
-                    ];
+                            versement_status: monObjet["statut"],
+                            matricule: monObjet["membre"]["matricule"],
+                            montantTotalAVerser: monObjet["amount_to_pay"],
+                            montantVersee: monObjet["balance"],
+                            nom: monObjet["membre"]["first_name"] == null
+                                ? ""
+                                : monObjet["membre"]["first_name"],
+                            photoProfil:
+                                monObjet["membre"]["photo_profil"] == null
+                                    ? ""
+                                    : monObjet["membre"]["photo_profil"],
+                            prenom: monObjet["membre"]["last_name"] == null
+                                ? ""
+                                : monObjet["membre"]["last_name"],
+                          ),
+                        );
+                      },
+                    ).toList();
 
                     return Expanded(
                       child: Stack(
@@ -321,62 +256,30 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                   .detailUser!["isMember"],
                             )
                                 ? Column(
-                                    children: listeFinale,
+                                    children: listWidgetCotis,
                                   )
                                 : Column(
                                     children: [
-                                      if (detailCotisationMemberNoOkay !=
-                                              null &&
-                                          detailCotisationMemberNoOkay['membre']
-                                                      ['versement']
-                                                  .length >
-                                              0)
-                                        for (var item
-                                            in detailCotisationMemberNoOkay[
-                                                    'membre']['versement'][0]
-                                                ["transanctions"])
-                                          Container(
-                                            child:
-                                                widgetListTransactionByEventCard(
-                                              date: AppCubitStorage()
-                                                          .state
-                                                          .Language ==
-                                                      "fr"
-                                                  ? formatDateToFrench(
-                                                      item["created_at"])
-                                                  : formatDateToEnglish(
-                                                      item["created_at"]),
-                                              montant: item["amount"],
+                                      for (var itemDetailCotisation in currentDetailCotisation["membres"])
+                                        if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
+                                          for (var item in itemDetailCotisation["payments"])
+                                            Container(
+                                              child:
+                                                  widgetListTransactionByEventCard(
+                                                date: AppCubitStorage()
+                                                            .state
+                                                            .Language ==
+                                                        "fr"
+                                                    ? formatDateToFrench(
+                                                        item["created_at"])
+                                                    : formatDateToEnglish(
+                                                        item["created_at"]),
+                                                montant: item["amount"],
+                                              ),
                                             ),
-                                          ),
-                                      if (detailCotisationMemberIsOkay !=
-                                              null &&
-                                          detailCotisationMemberIsOkay[
-                                                  'versement'] !=
-                                              null)
-                                        for (var item
-                                            in detailCotisationMemberIsOkay[
-                                                    'versement'][0]
-                                                ["transanctions"])
-                                          Container(
-                                            child:
-                                                widgetListTransactionByEventCard(
-                                              date: AppCubitStorage()
-                                                          .state
-                                                          .Language ==
-                                                      "fr"
-                                                  ? formatDateToFrench(
-                                                      item["created_at"])
-                                                  : formatDateToEnglish(
-                                                      item["created_at"]),
-                                              //  formatDateString(
-                                              // detailVersement["created_at"]),
-                                              montant: item["amount"],
-                                            ),
-                                          ),
-                                      if (detailCotisationMemberIsOkay !=
-                                              null &&
-                                          detailCotisationMemberNoOkay != null)
+                                      for (var itemDetailCotisation in currentDetailCotisation["membres"])
+                                        if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
+                                          if (itemDetailCotisation["payments"].length==0)
                                         Container(
                                           padding: EdgeInsets.only(top: 200.h),
                                           alignment: Alignment.topCenter,

@@ -68,6 +68,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
       return GestureDetector(
         onTap: () {
           handleDetailCotisation(widget.codeCotisation);
+          print("${widget.codeCotisation}");
 
           Navigator.push(
             context,

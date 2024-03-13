@@ -48,7 +48,7 @@ Future<void> main() async {
 
   await EasyLocalization.ensureInitialized();
 
-    // to handle foreground notifications
+  // to handle foreground notifications
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     String payloadData = jsonEncode(message.data);
     print("Got a message in foreground");
@@ -66,7 +66,7 @@ Future<void> main() async {
       supportedLocales: [
         Locale("en", "US"),
         Locale("fr", "FR"),
-      ], 
+      ],
       saveLocale: true,
       path: "assets/languages",
     ),
@@ -138,7 +138,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: ScreenUtilInit(
-      designSize: Size(404, 886),
+        designSize: Size(404, 886),
         child: MaterialApp(
           theme: ThemeData(
             useMaterial3: false,

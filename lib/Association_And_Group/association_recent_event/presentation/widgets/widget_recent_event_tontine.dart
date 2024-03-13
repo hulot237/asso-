@@ -49,10 +49,6 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
         .read<DetailContributionCubit>()
         .detailContributionTontineCubit(codeContribution);
 
-    if (detailCotisation != null) {
-    } else {
-      print("userGroupDefault null");
-    }
   }
 
   @override

@@ -1221,20 +1221,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     ],
                                                   ),
                                                 ),
-                                                // Authstate.isLoading == true ?
-                                                //  Container(
-                                                //         child: EasyLoader(
-                                                //           backgroundColor: Color.fromARGB(
-                                                //               0, 255, 255, 255),
-                                                //           iconSize: 25.sp,
-                                                //           iconColor:
-                                                //               AppColors.blackBlueAccent1,
-                                                //           image: AssetImage(
-                                                //             "assets/images/AssoplusFinal.png",
-                                                //           ),
-                                                //         ),
-                                                //       )
-                                                //     :
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -1262,9 +1248,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       onTap: () async {
                                                         String msg =
                                                             "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
-                                                        String raisonComplete =
-                                                            "Paiement du fonds de caisse"
-                                                                .tr();
+                                                        String raisonComplete = "Paiement du fonds de caisse" .tr();
                                                         String motif =
                                                             "payer_vous_même"
                                                                 .tr();
@@ -1700,15 +1684,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               List listeCotisation = currentCotisation;
                               List listeSanction = currentSanction;
 
-                              List<Widget> listWidgetTontine =
-                                  listeTontine.map((monObjet) {
+                              List<Widget> listWidgetTontine = listeTontine.map((monObjet) {
                                 return widgetRecentEventTontine(
-                                  nomBeneficiaire: monObjet["membre"]
-                                      ["first_name"],
-                                  prenomBeneficiaire:
-                                      monObjet["membre"]["last_name"] == null
-                                          ? ''
-                                          : monObjet["membre"]["last_name"],
+                                  nomBeneficiaire: monObjet["membre"]["first_name"],
+                                  prenomBeneficiaire: monObjet["membre"]["last_name"] == null ? '' : monObjet["membre"]["last_name"],
                                   dateOpen: monObjet["start_date"],
                                   dateClose: monObjet["end_date"],
                                   montantTontine: monObjet["amount"],
@@ -1722,28 +1701,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               List<Widget> listWidgetCotisation =
                                   listeCotisation.map((monObjet) {
                                 return widgetRecentEventCotisation(
-                                  rublique: monObjet["ass_rubrique"] == null
-                                      ? ""
-                                      : '(${monObjet["ass_rubrique"]["name"]})',
+                                  rublique: monObjet["ass_rubrique"] == null ? "" : '(${monObjet["ass_rubrique"]["name"]})',
                                   dateOpen: monObjet["start_date"],
                                   dateClose: monObjet["end_date"],
                                   montantCotisation: monObjet["amount"],
-                                  montantCollecte:
-                                      monObjet["cotisation_balance"],
+                                  montantCollecte: monObjet["cotisation_balance"],
                                   codeCotisation: monObjet["cotisation_code"],
-                                  lienDePaiement:
-                                      monObjet["cotisation_pay_link"],
+                                  lienDePaiement: monObjet["cotisation_pay_link"],
                                   motif: monObjet["name"],
                                   type: monObjet["type"],
                                   isPassed: monObjet["is_passed"],
-                                  source: monObjet["seance"] == null
-                                      ? ''
-                                      : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"]}',
-                                  nomBeneficiaire: monObjet["membre"] == null
-                                      ? ''
-                                      : monObjet["membre"]["last_name"] == null
-                                          ? "${monObjet["membre"]["first_name"]}"
-                                          : "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"]}",
+                                  source: monObjet["seance"] == null ? '' : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"]}',
+                                  nomBeneficiaire: monObjet["membre"] == null  ? '' : monObjet["membre"]["last_name"] == null ? "${monObjet["membre"]["first_name"]}" : "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"]}",
                                 );
                               }).toList();
 

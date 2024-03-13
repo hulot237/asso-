@@ -9,7 +9,7 @@ class CotisationRepository {
         '${Variables.LienAIP}/api/v1/cotisation/$codeCotisation/show',
       );
       final Map<String, dynamic> dataJson = response.data["data"];
-      log('Okay DetailCotisation rep');
+      log('Okay DetailCotisation rep   ${dataJson}');
       return dataJson;
    
   }

@@ -49,16 +49,9 @@ class widgetRecentEventCotisation extends StatefulWidget {
       _widgetRecentEventCotisationState();
 }
 
-class _widgetRecentEventCotisationState
-    extends State<widgetRecentEventCotisation> {
+class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisation> {
   Future<void> handleDetailCotisation(codeCotisation) async {
-    // final detailTournoiCourant = await context
-    //     .read<DetailTournoiCourantCubit>()
-    //     .detailTournoiCourantCubit();
-    final detailCotisation = await context
-        .read<CotisationDetailCubit>()
-        .detailCotisationCubit(codeCotisation);
-
+    final detailCotisation = await context.read<CotisationDetailCubit>().detailCotisationCubit(codeCotisation);
   }
 
   @override
@@ -123,28 +116,6 @@ class _widgetRecentEventCotisationState
             );
           }
         },
-        // onTap: () {
-
-        //   handleDetailCotisation(widget.codeCotisation);
-
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context) => DetailCotisationPage(
-        //         codeCotisation: widget.codeCotisation,
-        //         lienDePaiement: widget.lienDePaiement,
-        //         dateCotisation: widget.dateOpen,
-        //         heureCotisation: widget.dateOpen,
-        //         montantCotisations: widget.montantCotisation,
-        //         motifCotisations: widget.motif,
-        //         soldeCotisation: widget.montantCollecte,
-        //         type: widget.type,
-        //         isPassed: widget.isPassed,
-        //         isPayed: 0,
-        //       ),
-        //     ),
-        //   );
-        // },
         child: Column(
           children: [
             Container(
@@ -194,7 +165,8 @@ class _widgetRecentEventCotisationState
                           String msg =
                               "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
 
-                          String raisonComplete ='Paiement de la cotisation'.tr();
+                          String raisonComplete =
+                              'Paiement de la cotisation'.tr();
                           String motif = "payer_vous_même".tr();
                           String paiementProcheMsg =
                               "partager_le_lien_de_paiement".tr();

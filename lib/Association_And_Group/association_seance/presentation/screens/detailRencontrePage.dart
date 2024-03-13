@@ -121,10 +121,6 @@ class _detailRencontrePageState extends State<detailRencontrePage>
         .read<DetailContributionCubit>()
         .detailContributionTontineCubit(codeContribution);
 
-    if (detailCotisation != null) {
-    } else {
-      print("userGroupDefault null");
-    }
   }
 
   Future refresh() async {
@@ -219,7 +215,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                         detailSeancestate.isLoading == true)
                       return Center(
                         child: EasyLoader(
-                          backgroundColor: Color.fromARGB(0, 231, 3, 3),
+                          backgroundColor: Color.fromARGB(173, 255, 255, 255),
                           iconSize: 50.r,
                           iconColor: AppColors.blackBlueAccent1,
                           image: AssetImage(
@@ -578,6 +574,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                             isSanctionPayed: currentSaction[
                                                 "is_sanction_payed"],
                                             typeSaction: currentSaction["type"],
+
+                                                              resteAPayer: currentSaction["amount_remaining"],
+                                                              dejaPayer: currentSaction["sanction_balance"],
                                           ),
                                         );
                                       },

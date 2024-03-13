@@ -107,11 +107,6 @@ class _DetailTontinePageState extends State<DetailTontinePage>
     final detailCotisation = await context
         .read<DetailContributionCubit>()
         .detailContributionTontineCubit(codeContribution);
-
-    if (detailCotisation != null) {
-    } else {
-      print("userGroupDefault null");
-    }
   }
 
   Future<void> handleDetailTontine(codeTournoi, codeTontine) async {
@@ -286,7 +281,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
               ),
               BlocBuilder<TontineCubit, TontineState>(
                   builder: (tontineContext, tontineState) {
-                if (tontineState.isLoading == true ||
+                if (tontineState.isLoading == true &&
                     tontineState.detailTontine == null)
                   return Expanded(
                     child: Center(
@@ -303,60 +298,79 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                 final currentDetailTontineCard =
                     tontineContext.read<TontineCubit>().state.detailTontine;
                 return Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      bottom: Platform.isIOS ? 70.h : 10.h,
-                    ),
-                    child: ListView.builder(
-                      padding: EdgeInsets.all(0),
-                      shrinkWrap: true,
-                      itemCount: currentDetailTontineCard!.length,
-                      itemBuilder: (context, index) {
-                        final itemTontine = currentDetailTontineCard[index];
+                  child: Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          bottom: Platform.isIOS ? 70.h : 10.h,
+                        ),
+                        child: ListView.builder(
+                          padding: EdgeInsets.all(0),
+                          shrinkWrap: true,
+                          itemCount: currentDetailTontineCard!.length,
+                          itemBuilder: (context, index) {
+                            final itemTontine = currentDetailTontineCard[index];
 
-                        return GestureDetector(
-                          onTap: () {
-                            if (checkTransparenceStatus(
-                                context
-                                    .read<UserGroupCubit>()
-                                    .state
-                                    .changeAssData!
-                                    .user_group!
-                                    .configs,
-                                context
-                                    .read<AuthCubit>()
-                                    .state
-                                    .detailUser!["isMember"])) {
-                              handleDetailContributionTontine(
-                                itemTontine["code"],
-                              );
+                            return GestureDetector(
+                              onTap: () {
+                                if (checkTransparenceStatus(
+                                    context
+                                        .read<UserGroupCubit>()
+                                        .state
+                                        .changeAssData!
+                                        .user_group!
+                                        .configs,
+                                    context
+                                        .read<AuthCubit>()
+                                        .state
+                                        .detailUser!["isMember"])) {
+                                  handleDetailContributionTontine(
+                                    itemTontine["code"],
+                                  );
 
-                              Modal().showBottomSheetHistTontine(
-                                tontineContext,
-                              );
-                            }
+                                  Modal().showBottomSheetHistTontine(
+                                    tontineContext,
+                                  );
+                                }
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(5.r),
+                                child: widgetDetailHistoriqueTontineCard(
+                                  isPayed: itemTontine['is_payed'],
+                                  nomTontine: widget.nomTontine,
+                                  lienDePaiement:
+                                      itemTontine['tontine_pay_link'],
+                                  dateClose: itemTontine['end_date'],
+                                  dateOpen: itemTontine['start_date'],
+                                  montantCollecte:
+                                      itemTontine['tontine_balance'],
+                                  montantTontine: itemTontine['amount'],
+                                  nomBeneficiaire: itemTontine["membre"]
+                                      ["first_name"],
+                                  prenomBeneficiaire:
+                                      itemTontine["membre"]["last_name"] == null
+                                          ? ""
+                                          : itemTontine["membre"]["last_name"],
+                                  codeCotisation: itemTontine["code"],
+                                ),
+                              ),
+                            );
                           },
-                          child: Container(
-                              margin: EdgeInsets.all(5.r),
-                              child: widgetDetailHistoriqueTontineCard(
-                                isPayed: itemTontine['is_payed'],
-                                nomTontine: widget.nomTontine,
-                                lienDePaiement: itemTontine['tontine_pay_link'],
-                                dateClose: itemTontine['end_date'],
-                                dateOpen: itemTontine['start_date'],
-                                montantCollecte: itemTontine['tontine_balance'],
-                                montantTontine: itemTontine['amount'],
-                                nomBeneficiaire: itemTontine["membre"]
-                                    ["first_name"],
-                                prenomBeneficiaire:
-                                    itemTontine["membre"]["last_name"] == null
-                                        ? ""
-                                        : itemTontine["membre"]["last_name"],
-                                codeCotisation: itemTontine["code"],
-                              )),
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                      if (tontineState.isLoading == true &&
+                          tontineState.detailTontine != null)
+                        Center(
+                          child: EasyLoader(
+                            backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                            iconSize: 50.r,
+                            iconColor: AppColors.blackBlueAccent1,
+                            image: AssetImage(
+                              "assets/images/AssoplusFinal.png",
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 );
               }),
