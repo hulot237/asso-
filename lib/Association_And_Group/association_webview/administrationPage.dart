@@ -9,8 +9,10 @@ import 'package:faroty_association_1/Association_And_Group/user_group/business_l
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -93,7 +95,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(
+        child: const Icon(
           Icons.close,
           color: AppColors.white,
         ),
@@ -105,11 +107,34 @@ Widget PageScaffold({
 }
 
 class _AdministrationPageState extends State<AdministrationPage> {
-  int progression = 0;
+  final GlobalKey webViewKey = GlobalKey();
+
+  bool cookiesSetted = true;
+  bool pageRefreshed = false;
+
+  // int progression = 0;
   WebViewController webViewController = WebViewController();
+
+  InAppWebViewController? inAppWebViewController;
+
+  InAppWebViewSettings settings = InAppWebViewSettings(
+      isInspectable: kDebugMode,
+      mediaPlaybackRequiresUserGesture: false,
+      allowsInlineMediaPlayback: true,
+      iframeAllow: "camera; microphone",
+      iframeAllowFullscreen: true);
+
+  PullToRefreshController? pullToRefreshController;
+  String inAppUrl = "";
+  double inAppProgress = 0;
+  final inAppUrlController = TextEditingController();
+
   late final WebViewCookieManager cookieManager = WebViewCookieManager();
 
-  void reload() async {
+// get the CookieManager instance
+  CookieManager _cookieManager = CookieManager.instance();
+
+  Future<void> reload() async {
     return webViewController.reload();
   }
 
@@ -221,7 +246,7 @@ class _AdministrationPageState extends State<AdministrationPage> {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          duration: Duration(seconds: 60),
+          duration: const Duration(seconds: 60),
           content: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
@@ -266,18 +291,39 @@ class _AdministrationPageState extends State<AdministrationPage> {
   void initState() {
     super.initState();
 
-    AppCubitStorage().state.tokenUser != null &&
-            AppCubitStorage().state.codeAssDefaul != null
-        ? cookieManager.setCookie(
-            WebViewCookie(
-              // name: 'rush_user_data',
-              name: 'user_data',
-              value: context.read<AuthCubit>().state.getUid!,
-              // domain: '.rush.faroty.com',
-              domain: '.faroty.com',
+    print('START --> AppCubitStorage().state.codeAssDefaul');
+    print(AppCubitStorage().state.codeAssDefaul);
+    print('END --> AppCubitStorage().state.codeAssDefaul');
+
+    pullToRefreshController = kIsWeb
+        ? null
+        : PullToRefreshController(
+            settings: PullToRefreshSettings(
+              color: Colors.blue,
             ),
-          )
-        : cookieManager.clearCookies();
+            onRefresh: () async {
+              if (defaultTargetPlatform == TargetPlatform.android) {
+                inAppWebViewController?.reload();
+              } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+                inAppWebViewController?.loadUrl(
+                    urlRequest: URLRequest(
+                        url: await inAppWebViewController?.getUrl()));
+              }
+            },
+          );
+
+    _cookieManager.deleteCookie(
+      name: 'user_data',
+      url: WebUri('https://faroty.com'),
+    );
+
+    if (AppCubitStorage().state.tokenUser != null &&
+        AppCubitStorage().state.codeAssDefaul != null) {
+      // setCookies();
+    } else {
+      print('On efface ici');
+      cookieManager.clearCookies();
+    }
 
     if (widget.forAdmin) {
       print(
@@ -290,32 +336,46 @@ class _AdministrationPageState extends State<AdministrationPage> {
       print(
           "AppCubitStorage().state.passwordKey ${AppCubitStorage().state.passwordKey}");
     }
+  }
 
-    webViewController
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) async {
-            print("progress  ${progress}");
-            setState(() {
-              progression = progress;
-            });
-            print("progression  ${progression}");
-          },
-        ),
-      )
-    ..loadRequest(
-      Uri.parse(
-        '${widget.urlPage}',
-      ),
-      headers: widget.forAdmin
-          ? {
-              "token": "${AppCubitStorage().state.tokenUser}",
-              // "password": "${AppCubitStorage().state.passwordKey}"
-            }
-          : {},
+  void setCookies() async {
+// set the expiration date for the cookie in milliseconds
+    final expiresDate =
+        DateTime.now().add(const Duration(days: 3)).millisecondsSinceEpoch;
+
+    await _cookieManager.setCookie(
+      expiresDate: expiresDate,
+      // isHttpOnly: true,
+      domain: '.faroty.com',
+      isSecure: true,
+      sameSite: HTTPCookieSameSitePolicy.NONE,
+      webViewController: inAppWebViewController,
+      // name: 'rush_user_data',
+      name: 'user_data',
+      value: context.read<AuthCubit>().state.getUid!,
+      // domain: '.rush.faroty.com',
+      // url: WebUri(widget.urlPage),
+      url: WebUri('https://faroty.com'),
     );
+
+    setState(() {
+      cookiesSetted = true;
+    });
+  }
+
+  String get dataForCookies {
+    Map<String, dynamic> data =
+        json.decode(context.read<AuthCubit>().state.getUid!);
+
+    return json.encode({
+      "user": {
+        "is_confirm": data['user']['is_confirm'],
+        "is_wallet_confirm": data['user']['is_wallet_confirm'],
+        "hash_id": data['user']['hashid'],
+      },
+      "api_token": data['api_token'],
+      "api_password": data['api_password']
+    });
   }
 
   @override
@@ -324,33 +384,138 @@ class _AdministrationPageState extends State<AdministrationPage> {
       forAdmin: widget.forAdmin,
       reload: reload,
       context: context,
-      child: progression < 100
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: EasyLoader(
-                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                      iconSize: 50.r,
-                      iconColor: AppColors.blackBlueAccent1,
-                      image: AssetImage(
-                        "assets/images/AssoplusFinal.png",
+      child: Stack(
+        children: [
+          if (cookiesSetted)
+            InAppWebView(
+              key: webViewKey,
+              initialUrlRequest: URLRequest(
+                  url: WebUri(
+                      'https://auth.faroty.com/hello.html?user_data=${dataForCookies}&callback=${widget.urlPage}?source=mobile')),
+              initialSettings: settings,
+              pullToRefreshController: pullToRefreshController,
+              onWebViewCreated: (controller) {
+                inAppWebViewController = controller;
+                print('${context.read<AuthCubit>().state.getUid!}');
+              },
+              onLoadStart: (controller, url) {
+                print('Commence à tourner');
+                setState(() {
+                  this.inAppUrl = url.toString();
+                  inAppUrlController.text = this.inAppUrl;
+                });
+              },
+              onPermissionRequest: (controller, request) async {
+                return PermissionResponse(
+                    resources: request.resources,
+                    action: PermissionResponseAction.GRANT);
+              },
+              // shouldOverrideUrlLoading: (controller, navigationAction) async {
+              //   var uri = navigationAction.request.url!;
+
+              //   if (![
+              //     "http",
+              //     "https",
+              //     "file",
+              //     "chrome",
+              //     "data",
+              //     "javascript",
+              //     "about"
+              //   ].contains(uri.scheme)) {
+              //     if (await canLaunchUrl(uri)) {
+              //       // Launch the App
+              //       await launchUrl(
+              //         uri,
+              //       );
+              //       // and cancel the request
+              //       return NavigationActionPolicy.CANCEL;
+              //     }
+              //   }
+
+              //   return NavigationActionPolicy.ALLOW;
+              // },
+              onLoadStop: (controller, url) async {
+                pullToRefreshController?.endRefreshing();
+                setState(() {
+                  this.inAppUrl = url.toString();
+                  inAppUrlController.text = this.inAppUrl;
+                });
+              },
+              onReceivedError: (controller, request, error) {
+                pullToRefreshController?.endRefreshing();
+              },
+              onProgressChanged: (controller, progress) async {
+                print('Progress $progress');
+                setState(() {
+                  this.inAppProgress = progress / 100;
+                  inAppUrlController.text = this.inAppUrl;
+                });
+                if (progress == 100) {
+                  if (!pageRefreshed) {
+                    await Future.delayed(Duration(seconds: 5));
+
+                    if (defaultTargetPlatform == TargetPlatform.android) {
+                      inAppWebViewController?.reload();
+                    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+                      inAppWebViewController?.loadUrl(
+                          urlRequest: URLRequest(
+                              url: await inAppWebViewController?.getUrl()));
+                    }
+                    setState(() {
+                      pageRefreshed = true;
+                    });
+                  }
+
+                  pullToRefreshController?.endRefreshing();
+                }
+              },
+              onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                setState(() {
+                  this.inAppUrl = url.toString();
+                  inAppUrlController.text = this.inAppUrl;
+                });
+              },
+              onConsoleMessage: (controller, consoleMessage) {
+                if (kDebugMode) {
+                  print(consoleMessage);
+                }
+              },
+            ),
+          if (inAppProgress < 1 || !pageRefreshed)
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: AppColors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: EasyLoader(
+                        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+                        iconSize: 50.r,
+                        iconColor: AppColors.blackBlueAccent1,
+                        image: const AssetImage(
+                          "assets/images/AssoplusFinal.png",
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: LinearProgressIndicator(
-                      backgroundColor: AppColors.blackBlueAccent1,
-                      color: AppColors.colorButton,
-                      value: (progression / 100).toDouble(),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: LinearProgressIndicator(
+                        backgroundColor: AppColors.blackBlueAccent1,
+                        color: AppColors.colorButton,
+                        value: inAppProgress,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )
-          : WebViewWidget(controller: webViewController, ),
+            ),
+        ],
+      ),
     );
   }
 }
