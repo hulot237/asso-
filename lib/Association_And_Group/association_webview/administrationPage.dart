@@ -109,6 +109,8 @@ class _AdministrationPageState extends State<AdministrationPage> {
   bool cookiesSetted = true;
   bool pageRefreshed = false;
 
+  String userDataFromWebView = 'null';
+
   WebViewController webViewController = WebViewController();
 
   InAppWebViewController? inAppWebViewController;
@@ -362,8 +364,14 @@ class _AdministrationPageState extends State<AdministrationPage> {
   }
 
   String get dataForCookies {
-    Map<String, dynamic> data =
+    if (context.read<AuthCubit>().state.getUid == null) return '';
+
+    Map<String, dynamic> data = json.decode(userDataFromWebView) ??
         json.decode(context.read<AuthCubit>().state.getUid!);
+
+    // if (data == null) {
+    //   return '';
+    // }
 
     return json.encode(
       {
@@ -400,7 +408,7 @@ class _AdministrationPageState extends State<AdministrationPage> {
                       ?
                       // 'https://auth.rush.faroty.com/hello.html?callback=${widget.urlPage}?source=mobile':
                       // 'https://auth.rush.faroty.com/hello.html?user_data=${dataForCookies}&callback=${widget.urlPage}?source=mobile',
-                      'https://auth.faroty.com/hello.html?callback=${widget.urlPage}?source=mobile'
+                      'https://auth.faroty.com/hello.html?user_data=${dataForCookies}&callback=${widget.urlPage}?source=mobile'
                       : 'https://auth.faroty.com/hello.html?user_data=${dataForCookies}&group_current_page=${currentUrlCode}&callback=${widget.urlPage}?source=mobile',
                 ),
               ),
@@ -408,6 +416,19 @@ class _AdministrationPageState extends State<AdministrationPage> {
               pullToRefreshController: pullToRefreshController,
               onWebViewCreated: (controller) {
                 inAppWebViewController = controller;
+
+                controller.addJavaScriptHandler(
+                    handlerName: 'my_auth_tokens',
+                    callback: (args) {
+                      String userData = args[0];
+                      print('userData');
+                      print(userData);
+
+                      setState(() {
+                        userDataFromWebView = userData;
+                      });
+                      return {'success': true};
+                    });
                 // print(
                 //   '${context.read<AuthCubit>().state.getUid!}',
                 // );
