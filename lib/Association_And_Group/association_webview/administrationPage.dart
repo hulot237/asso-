@@ -35,7 +35,6 @@ Widget PageScaffold({
   required Widget child,
   required Function reload,
   required bool forAdmin,
-
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
@@ -296,9 +295,6 @@ class _AdministrationPageState extends State<AdministrationPage> {
     pullToRefreshController = kIsWeb
         ? null
         : PullToRefreshController(
-            settings: PullToRefreshSettings(
-              color: Colors.blue,
-            ),
             onRefresh: () async {
               if (defaultTargetPlatform == TargetPlatform.android) {
                 inAppWebViewController?.reload();
@@ -314,6 +310,7 @@ class _AdministrationPageState extends State<AdministrationPage> {
 
     _cookieManager.deleteCookie(
       name: 'user_data',
+      // url: Uri.parse('https://faroty.com'),
       url: WebUri('https://faroty.com'),
     );
 
@@ -348,13 +345,13 @@ class _AdministrationPageState extends State<AdministrationPage> {
       domain: '.faroty.com',
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      webViewController: inAppWebViewController,
+      // webViewController: inAppWebViewController,
       // name: 'rush_user_data',
       name: 'user_data',
       value: context.read<AuthCubit>().state.getUid!,
       // domain: '.rush.faroty.com',
-      // url: WebUri(widget.urlPage),
-      url: WebUri('https://faroty.com'),
+      url: WebUri(widget.urlPage),
+      // url: Uri.parse('https://faroty.com'),
     );
 
     setState(
@@ -365,7 +362,8 @@ class _AdministrationPageState extends State<AdministrationPage> {
   }
 
   String get dataForCookies {
-    Map<String, dynamic> data =  json.decode(context.read<AuthCubit>().state.getUid!);
+    Map<String, dynamic> data =
+        json.decode(context.read<AuthCubit>().state.getUid!);
 
     return json.encode(
       {
@@ -378,6 +376,10 @@ class _AdministrationPageState extends State<AdministrationPage> {
         "api_password": data['api_password']
       },
     );
+  }
+
+  String get currentUrlCode {
+    return AppCubitStorage().state.codeAssDefaul ?? '';
   }
 
   @override
@@ -394,11 +396,12 @@ class _AdministrationPageState extends State<AdministrationPage> {
               initialUrlRequest: URLRequest(
                 headers: {"token": "${AppCubitStorage().state.tokenUser}"},
                 url: WebUri(
-                  widget.forFirstPage! == true ?
-                  // 'https://auth.rush.faroty.com/hello.html?callback=${widget.urlPage}?source=mobile':
-                  // 'https://auth.rush.faroty.com/hello.html?user_data=${dataForCookies}&callback=${widget.urlPage}?source=mobile',
-                  'https://auth.faroty.com/hello.html?callback=${widget.urlPage}?source=mobile':
-                  'https://auth.faroty.com/hello.html?user_data=${dataForCookies}&callback=${widget.urlPage}?source=mobile',
+                  widget.forFirstPage! == true
+                      ?
+                      // 'https://auth.rush.faroty.com/hello.html?callback=${widget.urlPage}?source=mobile':
+                      // 'https://auth.rush.faroty.com/hello.html?user_data=${dataForCookies}&callback=${widget.urlPage}?source=mobile',
+                      'https://auth.faroty.com/hello.html?callback=${widget.urlPage}?source=mobile'
+                      : 'https://auth.faroty.com/hello.html?user_data=${dataForCookies}&group_current_page=${currentUrlCode}&callback=${widget.urlPage}?source=mobile',
                 ),
               ),
               initialSettings: settings,
@@ -473,12 +476,12 @@ class _AdministrationPageState extends State<AdministrationPage> {
                   if (!pageRefreshed) {
                     await Future.delayed(Duration(seconds: 5));
 
-                    if (defaultTargetPlatform == TargetPlatform.android) {
-                      inAppWebViewController?.reload();
-                    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                      inAppWebViewController?.loadUrl(
-                          urlRequest: URLRequest(
-                              url: await inAppWebViewController?.getUrl()));
+                    if (Platform.isAndroid) {
+                      controller.reload();
+                    } else if (Platform.isIOS) {
+                      controller.loadUrl(
+                          urlRequest:
+                              URLRequest(url: await controller.getUrl()));
                     }
                     setState(() {
                       pageRefreshed = true;
@@ -503,9 +506,7 @@ class _AdministrationPageState extends State<AdministrationPage> {
                   print(consoleMessage);
                 }
               },
-
             ),
-            
           if (inAppProgress < 1 || !pageRefreshed)
             Positioned(
               top: 0,
