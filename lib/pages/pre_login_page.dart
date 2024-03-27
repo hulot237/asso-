@@ -154,8 +154,9 @@ class _PreLoginPageState extends State<PreLoginPage> {
                                 MaterialPageRoute(
                                     builder: (context) => AdministrationPage(
                                           forAdmin: false,
-                                          urlPage:
-                                              'https://business.faroty.com/groups',
+                                          urlPage: 'https://business.faroty.com/groups',
+                                          // urlPage: 'https://business.rush.faroty.com/',
+                                          forFirstPage: true,
                                         )),
                               );
                             },

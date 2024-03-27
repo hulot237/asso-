@@ -140,10 +140,12 @@ class MyApp extends StatelessWidget {
       child: ScreenUtilInit(
         designSize: Size(404, 886),
         child: MaterialApp(
+          
           theme: ThemeData(
             useMaterial3: false,
             fontFamily: GoogleFonts.roboto().fontFamily,
           ),
+          
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,

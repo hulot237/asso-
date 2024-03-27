@@ -107,8 +107,7 @@ class _RetraitPageState extends State<RetraitPage> {
             return ListView.builder(
                 itemCount: currentDetailUser!["checked_withdrawals"].length,
                 itemBuilder: (BuildContext context, int index) {
-                  final itemWithdrawals =
-                      currentDetailUser!["checked_withdrawals"][index];
+                  final itemWithdrawals = currentDetailUser!["checked_withdrawals"][index];
                   int isApprouveValeur = 0;
 
                   for (var objet in itemWithdrawals["withdrawals_approvers"]) {

@@ -1,4 +1,5 @@
 import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,6 +54,10 @@ class _checkInternetConnectionPageState
             child: Center(
               child: GestureDetector(
                 onTap: () async {
+                  print("${AppCubitStorage().state.tokenUser}");
+                  print("${AppCubitStorage().state.codeTournois}");
+                  print("${AppCubitStorage().state.codeAssDefaul}");
+
                   if (widget.backToHome!)
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
