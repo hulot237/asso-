@@ -12,6 +12,7 @@ class NotificationState extends Equatable {
   final String? messageError;
   final int? nomberNotif;
   final bool errorLoadNotif;
+  final bool isFistFetch;
   
 
   NotificationState({
@@ -22,6 +23,7 @@ class NotificationState extends Equatable {
     this.errorLoadNotif = false,
     this.messageError,
     this.nomberNotif,
+    this.isFistFetch = false,
   });
 
   @override
@@ -31,7 +33,8 @@ class NotificationState extends Equatable {
         notifications,
         messageError,
         nomberNotif,
-        errorLoadNotif
+        errorLoadNotif,
+        isFistFetch,
       ];
 
   NotificationState copyWith({

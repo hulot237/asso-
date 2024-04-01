@@ -146,8 +146,8 @@ Widget PageScaffold({
       tabBuilder: (BuildContext context, int index) {
         // return CupertinoTabView(
         //   builder: (BuildContext context) {
-            return child[index];
-          // },
+        return child[index];
+        // },
         // );
       },
     );
@@ -265,27 +265,30 @@ class _HomePageState extends State<HomePage> {
           ? Material(
               type: MaterialType.transparency,
               child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.r),
-                    topRight: Radius.circular(20.r),
-                  ),
-                  child: BottomNavigationBar(
-                    backgroundColor: Color.fromARGB(255, 226, 226, 226),
-                    type: BottomNavigationBarType.shifting,
-                    selectedIconTheme: IconThemeData(size: 25.sp),
-                    unselectedIconTheme: IconThemeData(size: 15.sp),
-                    selectedFontSize: 12.sp,
-                    unselectedItemColor: AppColors.blackBlue,
-                    selectedItemColor: AppColors.colorButton,
-                    selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-                    items: itemListAndroid,
-                    currentIndex: _pageIndex,
-                    onTap: (index) {
-                      setState(() {
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
+                ),
+                child: BottomNavigationBar(
+                  backgroundColor: Color.fromARGB(255, 226, 226, 226),
+                  type: BottomNavigationBarType.shifting,
+                  selectedIconTheme: IconThemeData(size: 25.sp),
+                  unselectedIconTheme: IconThemeData(size: 15.sp),
+                  selectedFontSize: 12.sp,
+                  unselectedItemColor: AppColors.blackBlue,
+                  selectedItemColor: AppColors.colorButton,
+                  selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  items: itemListAndroid,
+                  currentIndex: _pageIndex,
+                  onTap: (index) {
+                    setState(
+                      () {
                         _pageIndex = index;
-                      });
-                    },
-                  )),
+                      },
+                    );
+                  },
+                ),
+              ),
             )
           : CupertinoTabBar(
               iconSize: 25.sp,
@@ -303,8 +306,7 @@ class _HomePageState extends State<HomePage> {
                   handleTournoiDefault();
                   handleRecentEvent(AppCubitStorage().state.membreCode);
                   handleChangeAss(AppCubitStorage().state.codeAssDefaul);
-                  handleDetailUser(AppCubitStorage().state.membreCode,
-                      AppCubitStorage().state.codeTournois);
+                  handleDetailUser(AppCubitStorage().state.membreCode, AppCubitStorage().state.codeTournois);
                   context.read<AuthCubit>().getUid();
                   context.read<PretEpargneCubit>().getEpargne();
                   context.read<PretEpargneCubit>().getPret();

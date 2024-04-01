@@ -547,7 +547,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     margin: EdgeInsets.only(
                                                       bottom: Platform.isIOS
                                                           ? 70.h
-                                                          : 10.h,
+                                                          : 0.h,
                                                     ),
                                                     width:
                                                         MediaQuery.of(context)

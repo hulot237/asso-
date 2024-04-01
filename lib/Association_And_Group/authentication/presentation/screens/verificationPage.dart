@@ -126,18 +126,13 @@ class _VerificationPageState extends State<VerificationPage> {
               print(
                   "objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject ${loginInfo!.username!}");
 
-              await AppCubitStorage()
-                  .updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
+              await AppCubitStorage().updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
               await AppCubitStorage().updateTokenUser(loginInfo.token!);
-              await AppCubitStorage()
-                  .updatemembreCode(loginInfo.user!.membre_code!);
-              await AppCubitStorage()
-                  .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
+              await AppCubitStorage().updatemembreCode(loginInfo.user!.membre_code!);
+              await AppCubitStorage().updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
               await AppCubitStorage().updateuserNameKey(loginInfo.username!);
               await AppCubitStorage().updatepasswordKey(loginInfo.password!);
-              await context
-                  .read<UserGroupCubit>()
-                  .AllUserGroupOfUserCubit(loginInfo.token);
+              await context.read<UserGroupCubit>().AllUserGroupOfUserCubit(loginInfo.token);
 
               Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
@@ -354,43 +349,44 @@ class _VerificationPageState extends State<VerificationPage> {
                     ),
                   ),
                   Container(
-              margin: EdgeInsets.only(bottom: 5.h),
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "By".tr(),
-                        style: TextStyle(
-                            fontSize: 9.sp,
-                            color: Colors.grey[600],
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w900),
-                        textAlign: TextAlign.center,
-                      ),
-                      Container(
-                        width: 40.r,
-                        child: Image.asset("assets/images/FAroty_gris.png"),
-                      ),
-                      Text(
-                        "Version ${Variables.version}".tr(),
-                        style: TextStyle(
-                          fontSize: 9.sp,
-                          color: Colors.grey[600],
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w900,
+                    margin: EdgeInsets.only(bottom: 5.h),
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "By".tr(),
+                              style: TextStyle(
+                                  fontSize: 9.sp,
+                                  color: Colors.grey[600],
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w900),
+                              textAlign: TextAlign.center,
+                            ),
+                            Container(
+                              width: 40.r,
+                              child:
+                                  Image.asset("assets/images/FAroty_gris.png"),
+                            ),
+                            Text(
+                              "Version ${Variables.version}".tr(),
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: Colors.grey[600],
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w900,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
                 ],
               ),
             );

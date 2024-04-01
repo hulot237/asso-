@@ -6,9 +6,9 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 class NotificationRepository {
   final dio = Dio();
   Future<List<NotificationModel>> getNotification(
-      tokenUser, codeAssociation) async {
+      tokenUser, codeAssociation, page, limit) async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/membre/$codeAssociation/notifications/get',
+      '${Variables.LienAIP}/api/v1/membre/$codeAssociation/notifications/get?page=$page&per_page=$limit',
       options: Options(
         headers: {
           "token": tokenUser,
@@ -48,32 +48,3 @@ class NotificationRepository {
     return numberNotif;
   }
 }
-// https://api.group.rush.faroty.com/api/v1/notification/60/read
-  // Future<List<CompteModel>> AllCompteAss(codeAssociation) async {
-  //   try {
-  //     log("response AllCotisationOfAss");
-  //     final response = await dio.get(
-  //       '${Variables.LienAIP}/api/v1/compte/$codeAssociation',
-  //     );
-  //     final List<dynamic> dataJson = response.data["data"];
-  //     final List<CompteModel> dataCompteModel = dataJson.map<CompteModel>((json)=> CompteModel.fromJson(json)).toList();
-
-  //     return dataCompteModel;
-  //   } catch (e) {
-  //     log('erreur AllCotisationOfAss rep');
-  //     return [];
-  //   }
-  // }
-
-  // Future<AuthModel> ConfirmationRepository(codeConfirmation) async {
-  //   final response = await dio.post(
-  //       '${Variables.LienAIP}/confirmation?notification_token=${AppCubitStorage().state.tokenNotification}',
-  //       data: {
-  //         "code": codeConfirmation,
-  //       },
-  //     );
-
-  //     var data = response.data;
-    
-  //     return AuthModel.fromJson(data['data']);
-  // }

@@ -45,7 +45,7 @@ Widget PageScaffold({
         middle: Text(
           forAdmin
               ? "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}"
-              : "Ajouter un nouveau groupe".tr(),
+              : "Créer un groupe ASSO+".tr(),
           style: TextStyle(fontSize: 16.sp, color: AppColors.white),
         ),
         leading: GestureDetector(
@@ -84,7 +84,7 @@ Widget PageScaffold({
       title: Text(
         forAdmin
             ? "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}"
-            : "Ajouter un nouveau groupe".tr(),
+            : "Créer un groupe ASSO+".tr(),
         style: TextStyle(fontSize: 16.sp, color: AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,

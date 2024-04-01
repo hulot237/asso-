@@ -19,6 +19,8 @@ class NotificationCubit extends Cubit<NotificationState> {
             errorLoadNotif: false,
           ),
         );
+  int page = 1;
+  int limit = 20;
 
   Future<bool> tokenNotificationCubitt(token) async {
     try {
@@ -57,7 +59,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       ),
     );
     try {
-      final data = await NotificationRepository().getNotification(tokenUser, codeAssociation);
+      final data = await NotificationRepository().getNotification(tokenUser, codeAssociation, page, limit);
 
       emit(
         state.copyWith(
