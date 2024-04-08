@@ -2,6 +2,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/data/notification_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/data/notification_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/data/association_payements_repository.dart';
@@ -17,10 +18,12 @@ class NotificationCubit extends Cubit<NotificationState> {
             notifications: null,
             nomberNotif: null,
             errorLoadNotif: false,
+            isAllElement: false
           ),
         );
   int page = 1;
   int limit = 20;
+  var notifsTab = <NotificationModel>[];
 
   Future<bool> tokenNotificationCubitt(token) async {
     try {
@@ -59,15 +62,60 @@ class NotificationCubit extends Cubit<NotificationState> {
       ),
     );
     try {
-      final data = await NotificationRepository().getNotification(tokenUser, codeAssociation, page, limit);
+      // final data = await NotificationRepository().getNotification(tokenUser, codeAssociation, page, limit);
 
-      emit(
-        state.copyWith(
-          notifications: data,
-          isLoading: false,
-          errorLoadNotif: false,
-        ),
-      );
+      // emit(
+      //   state.copyWith(
+      //     notifications: data,
+      //     isLoading: false,
+      //     errorLoadNotif: false,
+      //   ),
+      // );
+
+      if (state.isFistFetch == false) {
+        print("Cubit 5");
+        // var newPost;
+        final data = await NotificationRepository()
+            .getNotification(tokenUser, codeAssociation, page, limit);
+        notifsTab.addAll(data);
+        print("Cubit 6");
+
+        emit(
+          state.copyWith(
+            isAllElement: data.length < limit ? true : false,
+            isFistFetch: true,
+            notifications: data,
+            isLoading: false,
+            errorLoadNotif: false,
+          ),
+        );
+        print("Cubit 7 ${state.notifications}");
+        print("Cubit 7");
+
+        page++;
+      } else {
+        print("Cubit 8");
+        print("Cubit 8 ${state.notifications}");
+
+        final data = await NotificationRepository()
+            .getNotification(tokenUser, codeAssociation, page, limit);
+        notifsTab.addAll(data);
+        print("Cubit 9");
+
+        emit(
+          state.copyWith(
+            isAllElement: data.length < limit ? true : false,
+            isFistFetch: true,
+            notifications: notifsTab,
+            isLoading: false,
+            errorLoadNotif: false,
+          ),
+        );
+        print("Cubit 9 ${state.notifications}");
+        print("Cubit 10");
+
+        page++;
+      }
     } catch (e) {
       print("erreuuuuuuur ${e}");
       emit(

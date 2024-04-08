@@ -71,6 +71,28 @@ class AuthRepository {
     return AuthModel.fromJson(data['data']);
   }
 
+  Future<AuthModel> loginInfoConnectToWebViewFirstRepository(
+    apiToken,
+    apiPassword,
+  ) async {
+    print(
+        ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;${apiToken};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;${apiPassword};;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+    final response = await dio.get(
+      '${Variables.LienAIP}/api/v1/get-auth-user',
+      options: Options(
+        headers: {
+          "username": apiToken,
+          "password": apiPassword,
+        },
+      ),
+    );
+    print(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
+    var data = response.data;
+    print("############################### $data");
+
+    return AuthModel.fromJson(data['data']);
+  }
+
   Future<Map<String, dynamic>> UpdateInfoUserRepository(
       key, value, partner_urlcode, membre_code) async {
     try {

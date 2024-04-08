@@ -15,6 +15,7 @@ import 'package:faroty_association_1/Association_And_Group/association_seance/bu
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetRencontreCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -240,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AdministrationPage(
+                                                            AdministrationPageWebview(
                                                           forAdmin: false,
                                                           urlPage:
                                                               'https://business.faroty.com/groups',
@@ -286,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AdministrationPage(
+                                                              AdministrationPageWebview(
                                                             forAdmin: true,
                                                             urlPage:
                                                                 "https://groups.faroty.com",

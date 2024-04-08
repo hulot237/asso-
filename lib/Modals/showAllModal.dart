@@ -16,6 +16,7 @@ import 'package:faroty_association_1/Association_And_Group/association_tournoi/b
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -152,7 +153,7 @@ class Modal {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AdministrationPage(
+                            builder: (context) => AdministrationPageWebview(
                               forAdmin: false,
                               urlPage: 'https://business.faroty.com/groups',
                             ),

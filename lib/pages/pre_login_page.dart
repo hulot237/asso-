@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
@@ -152,7 +153,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AdministrationPage(
+                                    builder: (context) => AdministrationPageWebview(
                                           forAdmin: false,
                                           urlPage: 'https://business.faroty.com/groups',
                                           // urlPage: 'https://business.rush.faroty.com/',

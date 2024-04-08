@@ -122,9 +122,9 @@ class _VerificationPageState extends State<VerificationPage> {
               setState(() {
                 isLoading = true; // Démarre l'indicateur de chargement
               });
+              // print(
+              //     "objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject ${loginInfo!.username!}");
               var loginInfo = context.read<AuthCubit>().state.loginInfo;
-              print(
-                  "objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject ${loginInfo!.username!}");
 
               await AppCubitStorage().updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
               await AppCubitStorage().updateTokenUser(loginInfo.token!);

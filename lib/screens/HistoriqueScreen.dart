@@ -16,6 +16,7 @@ import 'package:faroty_association_1/Association_And_Group/association_tontine/b
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetTontineHistoriqueCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -294,7 +295,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            AdministrationPage(
+                                            AdministrationPageWebview(
                                           forAdmin: false,
                                           urlPage:
                                               'https://business.faroty.com/groups',
@@ -329,7 +330,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => AdministrationPage(
+                                          builder: (context) => AdministrationPageWebview(
                                               forAdmin: true,
                                               urlPage:
                                                   "https://groups.faroty.com/"),
@@ -554,11 +555,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             .size
                                                             .width,
                                                     child: RefreshIndicator(
-                                                      onRefresh:
-                                                          refreshRencontre,
+                                                      onRefresh: refreshRencontre,
                                                       child: ListView.builder(
-                                                        padding:
-                                                            EdgeInsets.all(0),
+                                                        padding: EdgeInsets.all(0),
                                                         shrinkWrap: true,
                                                         itemCount:
                                                             currentDetailtournoiCourant[

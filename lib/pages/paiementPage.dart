@@ -119,7 +119,7 @@ class _PaiementPageState extends State<PaiementPage> {
                     ),
                   ),
                 ],
-              ),
+              ), 
             
           )
           : WebViewWidget(controller: _controller), msgAppBarPaiementPage: '${widget.msgAppBarPaiementPage}',

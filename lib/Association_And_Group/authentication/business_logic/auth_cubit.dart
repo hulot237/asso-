@@ -28,17 +28,16 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final data = await AuthRepository().UserDetail(userCode, codeTournoi);
 
-        emit(
-          state.copyWith(
-            detailUser: data,
-            loginInfo: state.loginInfo,
-            isLoading: false,
-            isTrueNomber: state.isTrueNomber,
-            isLoadingDetailUser: false,
-            errorLoadDetailAuth: false,
-          ),
-        );
-
+      emit(
+        state.copyWith(
+          detailUser: data,
+          loginInfo: state.loginInfo,
+          isLoading: false,
+          isTrueNomber: state.isTrueNomber,
+          isLoadingDetailUser: false,
+          errorLoadDetailAuth: false,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -54,14 +53,54 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> confirmationCubit(codeConfirmation) async {
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         isLoading: true,
         isLoadingDetailUser: false,
         errorLoading: false,
-        successLoading: false));
+        successLoading: false,
+      ),
+    );
     try {
       final data =
           await AuthRepository().ConfirmationRepository(codeConfirmation);
+
+      emit(
+        state.copyWith(
+          loginInfo: data,
+          isLoading: false,
+          isLoadingDetailUser: false,
+          errorLoading: false,
+          successLoading: true,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+            isLoading: false,
+            isLoadingDetailUser: false,
+            errorLoading: true,
+            message: e.toString(),
+            successLoading: false),
+      );
+    }
+  }
+
+  Future<void> loginInfoConnectToWebViewFirst(apiToken, apiPassword) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        isLoadingDetailUser: false,
+        errorLoading: false,
+        successLoading: false,
+      ),
+    );
+    try {
+      final data =
+          await AuthRepository().loginInfoConnectToWebViewFirstRepository(
+        apiToken,
+        apiPassword,
+      );
 
       emit(
         state.copyWith(
@@ -145,7 +184,6 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
       print("getUid getUid getUid getUid ${state.getUid}");
-
     } catch (e) {
       print("erreur cubit getUid");
     }
