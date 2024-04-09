@@ -223,11 +223,12 @@ class _LoginPageState extends State<LoginPage> {
                                     );
                                   return ElevatedButton(
                                     onPressed: () async {
+                                      print("object");
+                                      // await PushNotifications()
+                                      //     .getTokenNotification();
                                       handleLogin();
                                       print(numeroPhoneController);
                                       print(countryCodeController);
-                                      await PushNotifications()
-                                          .getTokenNotification();
                                     },
                                     child: Text(
                                       "Connexion".tr(),

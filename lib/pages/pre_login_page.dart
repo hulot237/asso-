@@ -4,6 +4,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/presen
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -189,6 +190,8 @@ class _PreLoginPageState extends State<PreLoginPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              print(
+                            "Code notification: ${AppCubitStorage().state.tokenNotification}");
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

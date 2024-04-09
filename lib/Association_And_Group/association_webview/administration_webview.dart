@@ -36,7 +36,6 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
     required Widget child,
     required bool forAdmin,
     required bool forFirstPage,
-
   }) {
     if (Platform.isIOS) {
       return CupertinoPageScaffold(
@@ -81,14 +80,16 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
                   isLoadToGoApp = false;
                 });
               } else {
-                
                 Navigator.pop(context);
               }
             },
-            child: Icon(
-              Icons.close,
-              color: AppColors.white,
-              size: 22.sp,
+            child: Container(
+              color: AppColors.backgroundAppBAr,
+              child: Icon(
+                Icons.close,
+                color: AppColors.white,
+                size: 22.sp,
+              ),
             ),
           ),
         ),
@@ -109,7 +110,8 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () async {
-            if (context.read<AuthCubit>().state.loginInfo != null && forFirstPage == true) {
+            if (context.read<AuthCubit>().state.loginInfo != null &&
+                forFirstPage == true) {
               setState(() {
                 isLoadToGoApp = true;
               });
@@ -141,10 +143,13 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
               Navigator.pop(context);
             }
           },
-          child: Icon(
-            Icons.close,
-            color: AppColors.white,
-            size: 16.sp,
+          child: Container(
+            color: AppColors.backgroundAppBAr,
+            child: Icon(
+              Icons.close,
+              color: AppColors.white,
+              size: 16.sp,
+            ),
           ),
         ),
       ),
@@ -189,6 +194,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
+
       ..setOnConsoleMessage((message) async {
         print("Le message du logg ${message.message}");
         if (message.message.startsWith("for-mobile ")) {
@@ -196,7 +202,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
           final userDataMap = jsonDecode(userData);
           // print("====== ${userDataMap["api_token"]}");
           // print("====== ${userDataMap["api_password"]}");
-          await handleConfirmation(
+          await(
             userDataMap["api_token"],
             userDataMap["api_password"],
           );
@@ -206,6 +212,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
           });
         }
       })
+      
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -235,43 +242,43 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
       context: context,
       forAdmin: widget.forAdmin,
       forFirstPage: widget.forFirstPage!,
-      child: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) async{
-          if (context.read<AuthCubit>().state.loginInfo != null && widget.forFirstPage == true) {
-              setState(() {
-                isLoadToGoApp = true;
-              });
-              var loginInfo = await context.read<AuthCubit>().state.loginInfo;
+      child:
+       WillPopScope(
+        // canPop: false,
+        onWillPop: () async {
+          if (context.read<AuthCubit>().state.loginInfo != null &&
+              widget.forFirstPage == true) {
+            setState(() {
+              isLoadToGoApp = true;
+            });
+            var loginInfo = await context.read<AuthCubit>().state.loginInfo;
 
-              await AppCubitStorage()
-                  .updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
-              await AppCubitStorage().updateTokenUser(loginInfo.token!);
-              await AppCubitStorage()
-                  .updatemembreCode(loginInfo.user!.membre_code!);
-              await AppCubitStorage()
-                  .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
-              await AppCubitStorage().updateuserNameKey(loginInfo.username!);
-              await AppCubitStorage().updatepasswordKey(loginInfo.password!);
-              await context
-                  .read<UserGroupCubit>()
-                  .AllUserGroupOfUserCubit(loginInfo.token);
+            await AppCubitStorage().updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
+            await AppCubitStorage().updateTokenUser(loginInfo.token!);
+            await AppCubitStorage().updatemembreCode(loginInfo.user!.membre_code!);
+            await AppCubitStorage().updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
+            await AppCubitStorage().updateuserNameKey(loginInfo.username!);
+            await AppCubitStorage().updatepasswordKey(loginInfo.password!);
+            await context.read<UserGroupCubit>().AllUserGroupOfUserCubit(loginInfo.token);
 
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => HomePage(),
-                ),
-                (route) => false,
-              );
-              setState(() {
-                isLoadToGoApp = false;
-              });
-            } else {
-              Navigator.pop(context);
-            }
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (BuildContext context) => HomePage(),
+              ),
+              (route) => false,
+            );
+            setState(() {
+              isLoadToGoApp = false;
+            });
+            return true;
+          } else {
+            Navigator.pop(context);
+            return true;
+          }
+          
         },
         child: progression < 100
-            ? Center( 
+            ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

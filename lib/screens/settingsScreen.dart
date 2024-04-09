@@ -124,13 +124,13 @@ class _SettingScreenState extends State<SettingScreen> {
 
         return WillPopScope(
           onWillPop: () async {
-            // Navigator.of(context).pushAndRemoveUntil(
-            //   MaterialPageRoute(
-            //     builder: (BuildContext context) => HomePage(),
-            //   ),
-            //   (route) => false,
-            // );
-            return Platform.isIOS ? false : true;
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (BuildContext context) => HomePage(),
+              ),
+              (route) => false,
+            );
+            return true;
           },
           child: (authState.errorLoadDetailAuth == true ||
                   userGroupState.errorLoadDetailChangeAss == true)

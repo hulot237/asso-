@@ -262,13 +262,13 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
             type: MaterialType.transparency,
             child: WillPopScope(
               onWillPop: () async {
-                // Navigator.of(context).pushAndRemoveUntil(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => HomePage(),
-                //   ),
-                //   (route) => false,
-                // );
-                return Platform.isAndroid ? true : false;
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage(),
+                  ),
+                  (route) => false,
+                );
+                return true;
               },
               child: (Authstate.errorLoadDetailAuth == true ||
                       UserGroupState.errorLoadDetailChangeAss == true)

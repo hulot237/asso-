@@ -71,19 +71,22 @@ class PushNotifications {
         .show(0, title, body, notificationDetails, payload: payload);
   }
 
-  Future<void> getTokenNotification() async {
-    String? token = await FirebaseMessaging.instance.getAPNSToken();
+  // Future<void> getTokenNotification() async {
+  //   print("test Token notif");
+  //   String? token = await FirebaseMessaging.instance.getAPNSToken();
+  //   print("{toten: ${token}}");
 
-    await FirebaseMessaging.instance.getToken().then((value) async {
-      await saveToken(value!);
+  //   await FirebaseMessaging.instance.getToken().then((value) async {
+  //     await saveToken(value!);
 
-      return null;
-    });
-  }
+  //     return null;
+  //   });
+  // }
 
-  saveToken(String token) async {
-    await AppCubitStorage().updatetokenNotification(token);
-  }
+  // static saveToken(String token) async {
+  //   print("objectobjectobjectobject");
+  //   await AppCubitStorage().updatetokenNotification(token);
+  // }
 }
 
 

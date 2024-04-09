@@ -78,7 +78,7 @@ class AuthRepository {
     print(
         ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;${apiToken};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;${apiPassword};;;;;;;;;;;;;;;;;;;;;;;;;;;;");
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/get-auth-user',
+      '${Variables.LienAIP}/api/v1/get-auth-user?notification_token=${AppCubitStorage().state.tokenNotification}',
       options: Options(
         headers: {
           "username": apiToken,

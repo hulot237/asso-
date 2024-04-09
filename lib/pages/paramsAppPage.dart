@@ -553,7 +553,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                       setState(() {
                         // print(e);
                         _customIconLangue = e;
-                        print('_customIconLangue');
+                        print(
+                            "Code notification: ${AppCubitStorage().state.tokenNotification}");
                         print(
                             "Code token: ${AppCubitStorage().state.tokenUser}");
                         print(
