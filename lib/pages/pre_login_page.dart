@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -16,6 +17,13 @@ class PreLoginPage extends StatefulWidget {
 }
 
 class _PreLoginPageState extends State<PreLoginPage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    PushNotifications.init();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
