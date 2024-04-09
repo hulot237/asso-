@@ -10,7 +10,7 @@ class Variables {
 
   String codeMembre = "${AppCubitStorage().state.membreCode}";
 
-  static String version = "1.8.3";
+  static String version = "1.8.4";
 
   late String? tokenNotification; 
 }
