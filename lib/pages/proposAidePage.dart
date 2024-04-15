@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/pages/contact_us_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ProposAidePage extends StatefulWidget {
   const ProposAidePage({super.key});
@@ -24,10 +27,10 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "a_propos_et_aide".tr(),
-          style: TextStyle(fontSize: 16.sp, color : AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
-      leading: GestureDetector(
+        leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },
@@ -47,7 +50,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "a_propos_et_aide".tr(),
-        style: TextStyle(fontSize: 16.sp, color : AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -55,7 +58,11 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
+        child: Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+          size: 16.sp,
+        ),
       ),
     ),
     body: child,
@@ -65,6 +72,13 @@ Widget PageScaffold({
 class _ProposAidePageState extends State<ProposAidePage> {
   @override
   Widget build(BuildContext context) {
+    Future<void> _launchSocial(webUrl) async {
+      await launchUrlString(
+        webUrl,
+        mode: LaunchMode.platformDefault,
+      );
+    }
+
     return Material(
       type: MaterialType.transparency,
       child: PageScaffold(
@@ -76,7 +90,9 @@ class _ProposAidePageState extends State<ProposAidePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  _launchSocial("https://faroty.com/privacies");
+                },
                 title: Row(
                   children: [
                     Container(
@@ -89,7 +105,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                     Container(
                       padding: EdgeInsets.all(5.r),
                       child: Text(
-                        "utilisation_et_confidentialité".tr(),
+                        "Politique de confidentialité".tr(),
                         style: TextStyle(
                           fontSize: 15.sp,
                           color: AppColors.blackBlue,
@@ -101,7 +117,36 @@ class _ProposAidePageState extends State<ProposAidePage> {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  _launchSocial("https://faroty.com/termes");
+                },
+                title: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 12.sp,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5.r),
+                      child: Text(
+                        "Condition d'utilisation".tr(),
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: AppColors.blackBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  _launchSocial("https://faroty.com/Businesspage");
+                },
                 title: Row(
                   children: [
                     Container(
@@ -126,63 +171,67 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   ],
                 ),
               ),
-      
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  _launchSocial("https://faroty.com/helpdesk");
+                },
                 title: Row(
-                children: [
-                  Container(
-                    child: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 12.sp,
-                      color: AppColors.blackBlue,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5.r),
-                    margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                    child: Text(
-                      "centre_d'aide".tr(),
-                      style: TextStyle(
-                        fontSize: 15.sp,
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 12.sp,
                         color: AppColors.blackBlue,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              ),
-      
-      
-              ListTile(
-                onTap: () {},
-                title: Row(
-                children: [
-                  Container(
-                    child: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 12.sp,
-                      color: AppColors.blackBlue,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5.r),
-                    margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                    child: Text(
-                      "nous_contacter".tr(),
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        color: AppColors.blackBlue,
-                        fontWeight: FontWeight.w500,
+                    Container(
+                      padding: EdgeInsets.all(5.r),
+                      margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                      child: Text(
+                        "centre_d'aide".tr(),
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: AppColors.blackBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactUsPage(),
+                    ),
+                  );
+                },
+                title: Row(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 12.sp,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5.r),
+                      margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                      child: Text(
+                        "nous_contacter".tr(),
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          color: AppColors.blackBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              
-              
             ],
           ),
         ),
