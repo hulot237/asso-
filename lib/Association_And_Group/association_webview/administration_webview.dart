@@ -44,7 +44,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
           middle: Text(
             forAdmin
                 ? "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}"
-                : "${"Créer un groupe ASSO+".tr()} ${context.read<AuthCubit>().state.detailUser == null ? "" : "| ${context.read<AuthCubit>().state.detailUser!["first_phone"]}"}",
+                : "${"Créer un groupe ASSO+".tr()}",
             style: TextStyle(fontSize: 16.sp, color: AppColors.white),
           ),
           backgroundColor: AppColors.backgroundAppBAr,
@@ -103,7 +103,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
         title: Text(
           forAdmin
               ? "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}"
-              : "${"Créer un groupe ASSO+".tr()} ${context.read<AuthCubit>().state.detailUser == null ? "" : "| ${context.read<AuthCubit>().state.detailUser!["first_phone"]}"}",
+              : "${"Créer un groupe ASSO+".tr()}",
           style: TextStyle(fontSize: 16.sp, color: AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,

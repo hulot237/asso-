@@ -91,7 +91,10 @@ class _ContactUsPageState extends State<ContactUsPage> {
     }
 
     Future<void> _launchSocial(webUrl) async {
-        await launchUrlString(webUrl, mode: LaunchMode.platformDefault);
+      await launchUrlString(
+        webUrl,
+        mode: LaunchMode.platformDefault,
+      );
     }
 
     return Material(
@@ -254,7 +257,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
 
                           // SizedBox(height: 20,),
 
-                         InkWell(
+                          InkWell(
                             onTap: () {
                               _launchSocial(
                                 "https://www.linkedin.com/company/faroty/",
