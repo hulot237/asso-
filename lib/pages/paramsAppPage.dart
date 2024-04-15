@@ -277,51 +277,51 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                   ),
                 ),
 
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProposAidePage(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(17.r),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                            width: 1.r, color: Color.fromARGB(12, 0, 0, 0)),
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Text(
-                                  "a_propos_et_aide".tr(),
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(
-                          Icons.double_arrow,
-                          color: AppColors.blackBlue,
-                          size: 12.sp,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => ProposAidePage(),
+                //       ),
+                //     );
+                //   },
+                //   child: Container(
+                //     padding: EdgeInsets.all(17.r),
+                //     decoration: BoxDecoration(
+                //       border: Border(
+                //         bottom: BorderSide(
+                //             width: 1.r, color: Color.fromARGB(12, 0, 0, 0)),
+                //       ),
+                //     ),
+                //     child: Row(
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       children: [
+                //         Expanded(
+                //           child: Row(
+                //             children: [
+                //               Container(
+                //                 child: Text(
+                //                   "a_propos_et_aide".tr(),
+                //                   style: TextStyle(
+                //                     fontSize: 16.sp,
+                //                     fontWeight: FontWeight.w600,
+                //                     color: AppColors.blackBlue,
+                //                   ),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //         Icon(
+                //           Icons.double_arrow,
+                //           color: AppColors.blackBlue,
+                //           size: 12.sp,
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
 
                 Container(
                   child: ExpansionTile(
@@ -553,18 +553,18 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                       setState(() {
                         // print(e);
                         _customIconLangue = e;
-                        print(
-                            "Code notification: ${AppCubitStorage().state.tokenNotification}");
-                        print(
-                            "Code token: ${AppCubitStorage().state.tokenUser}");
-                        print(
-                            "Code ass: ${AppCubitStorage().state.codeAssDefaul}");
-                        print(
-                            "Code tournoi: ${AppCubitStorage().state.codeTournois}");
-                        print(
-                            "Code usernamekey: ${AppCubitStorage().state.userNameKey}");
-                        print(
-                            "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
+                        // print(
+                        //     "Code notification: ${AppCubitStorage().state.tokenNotification}");
+                        // print(
+                        //     "Code token: ${AppCubitStorage().state.tokenUser}");
+                        // print(
+                        //     "Code ass: ${AppCubitStorage().state.codeAssDefaul}");
+                        // print(
+                        //     "Code tournoi: ${AppCubitStorage().state.codeTournois}");
+                        // print(
+                        //     "Code usernamekey: ${AppCubitStorage().state.userNameKey}");
+                        // print(
+                        //     "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
                       });
                     },
                   ),
