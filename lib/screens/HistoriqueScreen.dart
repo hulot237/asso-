@@ -582,15 +582,15 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             ),
                                                             child:
                                                                 WidgetRencontreCard(
-                                                              typeRencontre:
-                                                                  itemSeance[
-                                                                      "type_rencontre"],
+                                                              typeRencontre: itemSeance["type_rencontre"],
                                                               maskElt: false,
                                                               codeSeance:
                                                                   itemSeance[
                                                                       "seance_code"],
-                                                              photoProfilRecepteur:
-                                                                  "",
+                                                              photoProfilRecepteur:itemSeance[
+                                                                              "membre"]
+                                                                          [
+                                                                          "photo_profil"],
                                                               dateRencontre: AppCubitStorage()
                                                                           .state
                                                                           .Language ==

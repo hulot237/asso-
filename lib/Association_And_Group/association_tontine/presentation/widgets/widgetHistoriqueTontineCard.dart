@@ -1,4 +1,5 @@
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +45,24 @@ class _widgetHistoriqueTontineCardState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Container(
-                width: 40.w,
-                height: 40.w,
-                child: Image.network(
-                  "${Variables.LienAIP}${widget.imageProfil}",
-                  fit: BoxFit.cover,
+            InkWell(
+              onTap: () {
+                Modal().showFullPicture(
+                    context,
+                    widget.imageProfil == null
+                        ? "https://services.faroty.com/images/avatar/avatar.png"
+                        : "${Variables.LienAIP}${widget.imageProfil}",
+                    "${widget.nom} ${widget.prenom}");
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  width: 40.w,
+                  height: 40.w,
+                  child: Image.network(
+                    "${Variables.LienAIP}${widget.imageProfil}",
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

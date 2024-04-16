@@ -113,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     handleTournoiDefault();
     handleRecentEvent(AppCubitStorage().state.membreCode);
     handleChangeAss(AppCubitStorage().state.codeAssDefaul);
-    handleDetailUser(AppCubitStorage().state.membreCode, AppCubitStorage().state.codeTournois);
+    handleDetailUser(AppCubitStorage().state.membreCode,
+        AppCubitStorage().state.codeTournois);
     context.read<AuthCubit>().getUid();
     context.read<PretEpargneCubit>().getEpargne();
     context.read<PretEpargneCubit>().getPret();
@@ -169,14 +170,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             type: MaterialType.transparency,
             child: Scaffold(
               backgroundColor: AppColors.pageBackground,
-              body: 
-              (Authstate.errorLoadDetailAuth == true || UserGroupstate.errorLoadDetailChangeAss == true)
+              body: (Authstate.errorLoadDetailAuth == true ||
+                      UserGroupstate.errorLoadDetailChangeAss == true)
                   ? checkInternetConnectionPage(
                       backToHome: true,
                       functionToCall: () {},
                     )
-                  : 
-                  RefreshIndicator(
+                  : RefreshIndicator(
                       onRefresh: refresh,
                       child: CustomScrollView(
                         slivers: [
@@ -1398,7 +1398,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 ),
                                                 Container(
                                                   margin: EdgeInsets.only(
-                                                      right: 10.w),
+                                                    right: 10.w,
+                                                  ),
                                                   width: 10.r,
                                                   height: 10.r,
                                                   decoration: BoxDecoration(

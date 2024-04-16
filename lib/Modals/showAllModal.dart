@@ -567,9 +567,9 @@ class Modal {
                     ),
                     child: widgetHistoriqueTontineCard(
                       date: formatDateLiteral(monObjet["updated_at"]),
-                      imageProfil: monObjet["photo_profil"] == null
+                      imageProfil: monObjet["membre"]["photo_profil"] == null
                           ? ""
-                          : monObjet["photo_profil"],
+                          : monObjet["membre"]["photo_profil"],
                       is_versement_finished: monObjet["is_payed"],
                       montantVersee: monObjet["balance"],
                       nom: monObjet["membre"]["first_name"] == null
@@ -2153,6 +2153,55 @@ class Modal {
           ),
         ),
       ),
+    );
+  }
+
+
+   void showFullPicture(context, photo, textAppbar) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible:
+          false, // should dialog be dismissed when tapped outside
+      // barrierLabel: "Modal", // label for barrier
+      transitionDuration: Duration(
+        milliseconds: 400,
+      ), // how long it takes to popup dialog after button click
+      pageBuilder: (_, __, ___) {
+        // your widget implementation
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColors.blackBlue,
+            centerTitle: true,
+            leading: IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: AppColors.white,
+                  size: 16.sp,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            title: Text( textAppbar,
+              style: TextStyle(
+                color: AppColors.white,
+                // fontFamily: 'Overpass',
+                fontSize: 16.sp,
+              ),
+            ),
+            elevation: 0.0,
+          ),
+          backgroundColor: AppColors.blackBlue,
+          body: Center(
+            child: Container(
+              // padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Image.network(
+                "$photo",
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

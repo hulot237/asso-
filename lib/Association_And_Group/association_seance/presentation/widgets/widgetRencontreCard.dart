@@ -3,6 +3,7 @@ import 'package:faroty_association_1/Association_And_Group/association_seance/bu
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/detailRencontrePage.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
@@ -144,14 +145,27 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  height: 15.w,
-                                  width: 15.w,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      "${Variables.LienAIP}${widget.photoProfilRecepteur}",
-                                      fit: BoxFit.cover,
+                                InkWell(
+                                  onTap: () {
+                                    Modal().showFullPicture(
+                                              context,
+                                              widget.photoProfilRecepteur == null
+                                                  ? "https://services.faroty.com/images/avatar/avatar.png"
+                                                  : "${Variables.LienAIP}${widget.photoProfilRecepteur}",
+                                              "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}".tr());
+                                    
+
+                                    // print("${Variables.LienAIP}${widget.photoProfilRecepteur}");
+                                  },
+                                  child: Container(
+                                    height: 15.w,
+                                    width: 15.w,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.network(
+                                        "${Variables.LienAIP}${widget.photoProfilRecepteur}",
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_state.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -64,7 +65,11 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
+        child: Icon(
+          Icons.arrow_back,
+          color: AppColors.white,
+          size: 16.sp,
+        ),
       ),
     ),
     body: child,
@@ -126,14 +131,27 @@ class _MembersAssPageState extends State<MembersAssPage> {
                                   width: 65.w,
                                   child: Stack(
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Container(
-                                          width: 50.w,
-                                          height: 50.w,
-                                          child: Image.network(
-                                            "${Variables.LienAIP}${itemMembers!.photo_profil == null ? "" : itemMembers!.photo_profil}",
-                                            fit: BoxFit.cover,
+                                      InkWell(
+                                        onTap: () {
+                                          Modal().showFullPicture(
+                                              context,
+                                              itemMembers!.photo_profil == null
+                                                  ? "https://services.faroty.com/images/avatar/avatar.png"
+                                                  : "${Variables.LienAIP}${itemMembers!.photo_profil}",
+                                              "${itemMembers.first_name} ${itemMembers.last_name == null ? '' : itemMembers.last_name}");
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: Container(
+                                            width: 50.w,
+                                            height: 50.w,
+                                            child: Image.network(
+                                              itemMembers!.photo_profil == null
+                                                  ? "https://services.faroty.com/images/avatar/avatar.png"
+                                                  : "${Variables.LienAIP}${itemMembers!.photo_profil}",
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       ),

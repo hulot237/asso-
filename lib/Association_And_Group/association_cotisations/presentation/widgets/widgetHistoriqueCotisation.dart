@@ -1,4 +1,5 @@
 import 'package:faroty_association_1/Modals/fonction.dart';
+import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
@@ -54,17 +55,27 @@ class _WidgetHistoriqueCotisationState
             Container(
               child: Row(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50.r),
-                    child: Container(
-                      height: 50.r,
-                      width: 50.r,
-                      decoration: BoxDecoration(
-                          color: Colors.lightBlue,
-                          borderRadius: BorderRadius.circular(50.r)),
-                      child: Image.network(
-                        "${Variables.LienAIP}${widget.photoProfil}",
-                        fit: BoxFit.cover,
+                  InkWell(
+                    onTap: () {
+                      Modal().showFullPicture(
+                    context,
+                    widget.photoProfil == null
+                        ? "https://services.faroty.com/images/avatar/avatar.png"
+                        : "${Variables.LienAIP}${widget.photoProfil}",
+                    "${widget.nom} ${widget.prenom}");
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50.r),
+                      child: Container(
+                        height: 50.r,
+                        width: 50.r,
+                        decoration: BoxDecoration(
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(50.r)),
+                        child: Image.network(
+                          "${Variables.LienAIP}${widget.photoProfil}",
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),

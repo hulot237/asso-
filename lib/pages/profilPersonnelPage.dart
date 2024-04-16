@@ -113,6 +113,8 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
     }
   }
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -154,19 +156,21 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                       return Column(
                         children: [
                           GestureDetector(
-                            // onTap: () {
-                            //   _pickImage();
-                            //   // _cropImage();
-                            //   // Modal().showBottomShreetEditProfilPhoto(
-                            //   //     context, "key", _pickImage());
-                            // },
+                            onTap: () {
+                              Modal().showFullPicture(context, "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}", "Photo de profil".tr());
+                              // _pickImage();
+                              // _cropImage();
+                              // Modal().showBottomShreetEditProfilPhoto(
+                              //     context, "key", _pickImage());
+                            },
                             child: Stack(
                               children: [
                                 Container(
-                                  // color: Colors.deepOrange,
                                   width: MediaQuery.of(context).size.width,
-                                  margin:
-                                      EdgeInsets.only(top: 15.h, bottom: 5.h),
+                                  margin: EdgeInsets.only(
+                                    top: 15.h,
+                                    bottom: 5.h,
+                                  ),
                                   child: Column(
                                     children: [
                                       Container(
@@ -193,27 +197,6 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                                     ],
                                   ),
                                 ),
-                                // Positioned(
-                                //   right: 115,
-                                //   top: 20,
-                                //   child: Container(
-                                //     decoration: BoxDecoration(
-                                //       color: AppColors.white,
-                                //       borderRadius: BorderRadius.circular(360),
-                                //     ),
-                                //     padding: EdgeInsets.all(2),
-                                //     child: Container(
-                                //       decoration: BoxDecoration(
-                                //         color: AppColors.bleuLight,
-                                //         borderRadius: BorderRadius.circular(360),
-                                //       ),
-                                //       width: 30,
-                                //       height: 30,
-                                //       child: Icon(Icons.mode_edit_rounded,
-                                //           color: AppColors.white, size: 14),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),
