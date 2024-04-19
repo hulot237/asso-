@@ -1,7 +1,9 @@
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class checkInternetConnectionPage extends StatefulWidget {
@@ -23,6 +25,19 @@ class _checkInternetConnectionPageState
   @override
   Widget build(BuildContext context) {
     bool isLoading = false;
+    Future<void> handleTournoiDefault(codeTournoi) async {
+      final detailTournoiCourant = await context
+          .read<DetailTournoiCourantCubit>()
+          .detailTournoiCourantCubit(codeTournoi);
+
+      if (detailTournoiCourant != null) {
+        print(
+            "objectdddddddddddddddddddddddddddddddddd  ${detailTournoiCourant}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -38,7 +53,8 @@ class _checkInternetConnectionPageState
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 25.h),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.r)),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(20.r)),
             child: Text(
               "Une erreur s'est produite lors du chargement de vos données. Veuillez vérifier votre connexion avant de réessayer.",
               textAlign: TextAlign.center,
@@ -57,6 +73,11 @@ class _checkInternetConnectionPageState
                   print("${AppCubitStorage().state.tokenUser}");
                   print("${AppCubitStorage().state.codeTournois}");
                   print("${AppCubitStorage().state.codeAssDefaul}");
+                  handleTournoiDefault(AppCubitStorage().state.codeTournois);
+                  // context
+                  //                             .read<DetailTournoiCourantCubit>()
+                  //                             .state
+                  //                             .detailtournoiCourant;
 
                   if (widget.backToHome!)
                     Navigator.of(context).pushAndRemoveUntil(

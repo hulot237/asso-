@@ -22,6 +22,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:faroty_association_1/pages/pre_login_page.dart';
+import 'package:faroty_association_1/pages/updatePage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -163,7 +164,7 @@ class MyApp extends StatelessWidget {
             "/": (context) => AppCubitStorage().state.tokenUser == null &&
                     AppCubitStorage().state.codeAssDefaul == null
                 ? PreLoginPage()
-                : HomePage(),
+                : true? UpdatePage() : HomePage(),
             "/LoginPage": (context) => LoginPage(),
             "/homepage": (context) => HomePage(),
           },

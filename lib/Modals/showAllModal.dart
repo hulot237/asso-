@@ -2193,6 +2193,7 @@ class Modal {
           backgroundColor: AppColors.blackBlue,
           body: Center(
             child: Container(
+              width: MediaQuery.of(context).size.width,
               // padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Image.network(
                 "$photo",
@@ -2237,14 +2238,24 @@ class widgetListPresenceCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: Container(
-              width: 25.w,
-              height: 25.w,
-              child: Image.network(
-                "${Variables.LienAIP}${imageProfil}",
-                fit: BoxFit.cover,
+          InkWell(
+            onTap: () {
+                      Modal().showFullPicture(
+                    context,
+                    imageProfil == null
+                        ? "https://services.faroty.com/images/avatar/avatar.png"
+                        : "${Variables.LienAIP}${imageProfil}",
+                    "${nom} ${prenom}");
+                    },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                width: 25.w,
+                height: 25.w,
+                child: Image.network(
+                  "${Variables.LienAIP}${imageProfil}",
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),

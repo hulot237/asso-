@@ -144,8 +144,8 @@ class _NotificationPageState extends State<NotificationPage> {
                 context.read<NotificationCubit>().state.notifications;
             return Container(
               margin: EdgeInsets.only(
-                // bottom: 10.h,
-              ),
+                  // bottom: 10.h,
+                  ),
               child: Container(
                 child: Column(
                   children: [
@@ -174,7 +174,9 @@ class _NotificationPageState extends State<NotificationPage> {
                                   right: 30.w,
                                   top: 15.h,
                                 ),
-                                padding: EdgeInsets.only(bottom: 7.h),
+                                padding: EdgeInsets.only(
+                                  bottom: 7.h,
+                                ),
                                 decoration: BoxDecoration(
                                     border: Border(
                                   bottom: BorderSide(
@@ -246,15 +248,15 @@ class _NotificationPageState extends State<NotificationPage> {
                                       .isAllElement ==
                                   false
                               ? Container(
-                                // color: AppColors.red,
-                                width: 20.r,
-                                height: 150.r,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.green,
+                                  // color: AppColors.red,
+                                  width: 20.r,
+                                  height: 150.r,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.green,
+                                    ),
                                   ),
-                                ),
-                              )
+                                )
                               : Container(
                                   width: 20.w,
                                   height: 200.h,

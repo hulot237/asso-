@@ -49,7 +49,7 @@ Widget PageScaffold({
 }
 
 class _VerificationPageState extends State<VerificationPage> {
-  int _secondsLeft = 30;
+  int _secondsLeft = 60;
   Timer? _timer;
 
   void startTimer() {
@@ -288,59 +288,85 @@ class _VerificationPageState extends State<VerificationPage> {
                                 },
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: 15.h,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "${"vous_n'avez_pas_reçu_le_code?".tr()} ",
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.blackBlue,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  _secondsLeft == 0
-                                      ? GestureDetector(
-                                          onTap: () {
+                            GestureDetector(
+                              onTap: () {
                                             resetTimer();
                                             handleLogin();
                                           },
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "${"renvoyer".tr()} ",
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w800,
-                                                  color: AppColors
-                                                      .greenAssociation,
-                                                ),
-                                                textAlign: TextAlign.center,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  top: 15.h,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${"vous_n'avez_pas_reçu_le_code?".tr()} ",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: _secondsLeft == 0? AppColors.blackBlue : AppColors.blackBlueAccent2,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    _secondsLeft == 0
+                                        ? Row(
+                                          children: [
+                                            Text(
+                                              "${"renvoyer".tr()} ",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w800,
+                                                color: AppColors
+                                                    .greenAssociation,
                                               ),
-                                              Icon(
-                                                Icons.double_arrow_outlined,
-                                                size: 8.sp,
-                                                color:
-                                                    AppColors.greenAssociation,
-                                              )
-                                            ],
-                                          ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Icon(
+                                              Icons.double_arrow_outlined,
+                                              size: 8.sp,
+                                              color:
+                                                  AppColors.greenAssociation,
+                                            )
+                                          ],
                                         )
-                                      : Text(
-                                          "00: $_secondsLeft",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.blackBlue,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                ],
+                                        : GestureDetector(
+                                            onTap: () {
+                                              resetTimer();
+                                              handleLogin();
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "${"renvoyer".tr()} ",
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w800,
+                                                    color: AppColors.blackBlueAccent2,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                Icon(
+                                                  Icons.double_arrow_outlined,
+                                                  size: 8.sp,
+                                                  color:
+                                                      AppColors.blackBlueAccent2,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        
+                                        // Text(
+                                        //     "00: $_secondsLeft",
+                                        //     style: TextStyle(
+                                        //       fontSize: 12.sp,
+                                        //       fontWeight: FontWeight.w400,
+                                        //       color: AppColors.blackBlue,
+                                        //     ),
+                                        //     textAlign: TextAlign.center,
+                                        //   ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

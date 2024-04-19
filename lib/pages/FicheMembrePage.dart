@@ -85,21 +85,34 @@ class _AccountPageState extends State<AccountPage> {
                           margin: EdgeInsets.only(right: 40.w),
                           child: Column(
                             children: [
-                              Container(
-                                margin: EdgeInsets.only(top: 15.h, bottom: 3.h),
-                                padding: EdgeInsets.all(2.r),
-                                decoration: BoxDecoration(
-                                  color: AppColors.white,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Container(
-                                    width: 70.r,
-                                    height: 70.r,
-                                    child: Image.network(
-                                      "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
-                                      fit: BoxFit.cover,
+                              InkWell(
+                                onTap: () {
+                                  Modal().showFullPicture(
+                                      context,
+                                      currentDetailUser!["photo_profil"] == null
+                                          ? "https://services.faroty.com/images/avatar/avatar.png"
+                                          : "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
+                                      "Photo de profil".tr());
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    top: 15.h,
+                                    bottom: 3.h,
+                                  ),
+                                  padding: EdgeInsets.all(2.r),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Container(
+                                      width: 70.r,
+                                      height: 70.r,
+                                      child: Image.network(
+                                        "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -187,12 +200,14 @@ class _AccountPageState extends State<AccountPage> {
                           onTap: () async {
                             String msg =
                                 "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
-                            String raisonComplete = "Paiement du fonds de caisse".tr();
+                            String raisonComplete =
+                                "Paiement du fonds de caisse".tr();
                             String motif = "payer_vous_même".tr();
                             String paiementProcheMsg =
                                 "partager_le_lien_de_paiement".tr();
                             String msgAppBarPaiementPage =
-                                "Effectuer le paiement de votre fond de caisse".tr();
+                                "Effectuer le paiement de votre fond de caisse"
+                                    .tr();
                             if (currentDetailUser["is_inscription_payed"] != 1)
                               Modal().showModalActionPayement(
                                 context,
@@ -236,7 +251,8 @@ class _AccountPageState extends State<AccountPage> {
                                         String paiementProcheMsg =
                                             "partager_le_lien_de_paiement".tr();
                                         String msgAppBarPaiementPage =
-                                            "Effectuer le paiement de votre fond de caisse".tr();
+                                            "Effectuer le paiement de votre fond de caisse"
+                                                .tr();
                                         if (currentDetailUser[
                                                 "is_inscription_payed"] !=
                                             1)
@@ -1739,11 +1755,11 @@ class _AccountPageState extends State<AccountPage> {
                                           ),
                                         ),
                                         margin: EdgeInsets.only(
-                                          // bottom: 10.h,
-                                          // left: 5,
-                                          // right: 5,
-                                          // top: 5,
-                                        ),
+                                            // bottom: 10.h,
+                                            // left: 5,
+                                            // right: 5,
+                                            // top: 5,
+                                            ),
                                         padding: EdgeInsets.only(
                                           bottom: 10.h,
                                           // left: 5,
