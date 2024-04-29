@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class AdministrationPageWebview extends StatefulWidget {
@@ -50,7 +51,8 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
           backgroundColor: AppColors.backgroundAppBAr,
           leading: GestureDetector(
             onTap: () async {
-              if (context.read<AuthCubit>().state.loginInfo != null && forFirstPage == true) {
+              if (context.read<AuthCubit>().state.loginInfo != null &&
+                  forFirstPage == true) {
                 setState(() {
                   isLoadToGoApp = true;
                 });
@@ -85,10 +87,10 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
             },
             child: Container(
               color: AppColors.backgroundAppBAr,
-              child: Icon(
-                Icons.close,
+              child: SvgPicture.asset(
+                "assets/images/closeIcon.svg",
+                fit: BoxFit.scaleDown,
                 color: AppColors.white,
-                size: 22.sp,
               ),
             ),
           ),
@@ -145,10 +147,10 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
           },
           child: Container(
             color: AppColors.backgroundAppBAr,
-            child: Icon(
-              Icons.close,
+            child: SvgPicture.asset(
+              "assets/images/closeIcon.svg",
+              fit: BoxFit.scaleDown,
               color: AppColors.white,
-              size: 16.sp,
             ),
           ),
         ),
@@ -194,7 +196,6 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-
       ..setOnConsoleMessage((message) async {
         print("Le message du logg ${message.message}");
         if (message.message.startsWith("for-mobile ")) {
@@ -202,7 +203,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
           final userDataMap = jsonDecode(userData);
           // print("====== ${userDataMap["api_token"]}");
           // print("====== ${userDataMap["api_password"]}");
-          await(
+          await (
             userDataMap["api_token"],
             userDataMap["api_password"],
           );
@@ -212,7 +213,6 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
           });
         }
       })
-      
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -242,8 +242,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
       context: context,
       forAdmin: widget.forAdmin,
       forFirstPage: widget.forFirstPage!,
-      child:
-       WillPopScope(
+      child: WillPopScope(
         // canPop: false,
         onWillPop: () async {
           if (context.read<AuthCubit>().state.loginInfo != null &&
@@ -253,13 +252,18 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
             });
             var loginInfo = await context.read<AuthCubit>().state.loginInfo;
 
-            await AppCubitStorage().updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
+            await AppCubitStorage()
+                .updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
             await AppCubitStorage().updateTokenUser(loginInfo.token!);
-            await AppCubitStorage().updatemembreCode(loginInfo.user!.membre_code!);
-            await AppCubitStorage().updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
+            await AppCubitStorage()
+                .updatemembreCode(loginInfo.user!.membre_code!);
+            await AppCubitStorage()
+                .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
             await AppCubitStorage().updateuserNameKey(loginInfo.username!);
             await AppCubitStorage().updatepasswordKey(loginInfo.password!);
-            await context.read<UserGroupCubit>().AllUserGroupOfUserCubit(loginInfo.token);
+            await context
+                .read<UserGroupCubit>()
+                .AllUserGroupOfUserCubit(loginInfo.token);
 
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -275,7 +279,6 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
             Navigator.pop(context);
             return true;
           }
-          
         },
         child: progression < 100
             ? Center(

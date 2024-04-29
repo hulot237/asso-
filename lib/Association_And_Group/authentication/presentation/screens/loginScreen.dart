@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/user_group/data/user_
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,14 +91,8 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 20.h),
-                  width: 40.w,
-                  transformAlignment: Alignment.centerLeft,
-                  child: Icon(
-                    Platform.isAndroid
-                        ? Icons.arrow_back_outlined
-                        : Icons.arrow_back_ios,
-                    color: AppColors.blackBlue,
-                    size: 16.sp,
+                  child: BackButtonWidget(
+                    colorIcon: AppColors.blackBlue,
                   ),
                 ),
               ),
@@ -255,46 +250,44 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-
-
               Container(
-              margin: EdgeInsets.only(bottom: 5.h),
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "By".tr(),
-                        style: TextStyle(
+                margin: EdgeInsets.only(bottom: 5.h),
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "By",
+                          style: TextStyle(
+                              fontSize: 9.sp,
+                              color: Colors.grey[600],
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w900),
+                          textAlign: TextAlign.center,
+                        ),
+                        Container(
+                          width: 40.r,
+                          child: Image.asset("assets/images/FAroty_gris.png"),
+                        ),
+                        Text(
+                          "Version ${Variables.version}",
+                          style: TextStyle(
                             fontSize: 9.sp,
                             color: Colors.grey[600],
                             fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w900),
-                        textAlign: TextAlign.center,
-                      ),
-                      Container(
-                        width: 40.r,
-                        child: Image.asset("assets/images/FAroty_gris.png"),
-                      ),
-                      Text(
-                        "Version ${Variables.version}".tr(),
-                        style: TextStyle(
-                          fontSize: 9.sp,
-                          color: Colors.grey[600],
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w900,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
             ],
           ),
         ),
@@ -302,3 +295,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+

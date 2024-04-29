@@ -31,12 +31,17 @@ import 'package:faroty_association_1/Association_And_Group/association_webview/a
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/presentation/widgets/widgetCompteCard.dart';
+import 'package:faroty_association_1/widget/add_asso_button_widget.dart';
+import 'package:faroty_association_1/widget/add_asso_element_button_widget.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:faroty_association_1/widget/widgetCallFunctionFailled.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HistoriqueScreen extends StatefulWidget {
   const HistoriqueScreen({super.key});
@@ -72,7 +77,7 @@ Widget PageScaffold({
         "historiques".tr(),
         style: TextStyle(fontSize: 16.sp, color: AppColors.white),
       ),
-      backgroundColor: AppColors.backgroundAppBAr,
+      backgroundColor: AppColors.red,
       elevation: 0,
       leading: GestureDetector(
         onTap: () {
@@ -284,61 +289,36 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                           title: Text(
                             "historiques".tr(),
                             style: TextStyle(
-                                fontSize: 16.sp, color: AppColors.white),
+                              fontSize: 16.sp,
+                              color: AppColors.white,
+                            ),
                           ),
                           actions: [
                             Row(
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AdministrationPageWebview(
-                                          forAdmin: false,
-                                          urlPage:
-                                              'https://business.faroty.com/groups',
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                      margin: EdgeInsets.only(right: 10.w),
-                                      padding: EdgeInsets.all(1.r),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1.r,
-                                            color: AppColors.blackBlue),
-                                        color: AppColors.blackBlueAccent2,
-                                        borderRadius:
-                                            BorderRadius.circular(50.r),
-                                      ),
-                                      height: 30.h,
-                                      width: 30.h,
-                                      child: Icon(
-                                        Icons.add,
-                                        size: 16.sp,
-                                      )),
+                                Container(
+                                  // color: const Color.fromARGB(255, 20, 99, 70),
+                                  height: 30.h,
+                                  width: 30.h,
+                                  margin: EdgeInsets.only(right: 10.w),
+                                  // padding: EdgeInsets.all(1.r),
+                                  child: AddAssoWidget(),
                                 ),
                                 if (!context
                                     .read<AuthCubit>()
                                     .state
                                     .detailUser!["isMember"])
                                   GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AdministrationPageWebview(
-                                              forAdmin: true,
-                                              urlPage:
-                                                  "https://groups.faroty.com/"),
-                                        ),
+                                    onTap: () async {
+                                      await launchUrlString(
+                                        "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                                        mode: LaunchMode.platformDefault,
                                       );
                                     },
                                     child: Container(
-                                      // margin: EdgeInsets.only(bottom: 5),
+                                      margin: EdgeInsets.only(
+                                        right: 10.w,
+                                      ),
                                       padding: EdgeInsets.all(1.r),
                                       decoration: BoxDecoration(
                                         border: Border.all(
@@ -369,7 +349,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                   child: Container(
                                     child: Container(
                                       margin: EdgeInsets.only(
-                                          right: 15.w, left: 10.w),
+                                        right: 15.w,
+                                      ),
                                       height: 30.h,
                                       width: 30.h,
                                       decoration: BoxDecoration(
@@ -413,10 +394,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                       (route) => false,
                                     );
                                   },
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    color: AppColors.white,
-                                    size: 16.sp,
+                                  child: BackButtonWidget(
+                                    colorIcon: AppColors.white,
                                   ),
                                 )
                               : Container(),
@@ -500,11 +479,12 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                               child: Column(
                                 children: [
                                   Container(
+                                    // color: AppColors.barrierColorModal,
                                     alignment: Alignment.center,
                                     padding: EdgeInsets.only(
                                       top: 10.h,
                                       left: 5.w,
-                                      bottom: 15.h,
+                                      bottom: 10.h,
                                     ),
                                     child: Text(
                                       "toutes_les_rencontres".tr(),
@@ -555,9 +535,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             .size
                                                             .width,
                                                     child: RefreshIndicator(
-                                                      onRefresh: refreshRencontre,
+                                                      onRefresh:
+                                                          refreshRencontre,
                                                       child: ListView.builder(
-                                                        padding: EdgeInsets.all(0),
+                                                        padding:
+                                                            EdgeInsets.all(0),
                                                         shrinkWrap: true,
                                                         itemCount:
                                                             currentDetailtournoiCourant[
@@ -582,15 +564,18 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             ),
                                                             child:
                                                                 WidgetRencontreCard(
-                                                              typeRencontre: itemSeance["type_rencontre"],
+                                                              typeRencontre:
+                                                                  itemSeance[
+                                                                      "type_rencontre"],
                                                               maskElt: false,
                                                               codeSeance:
                                                                   itemSeance[
                                                                       "seance_code"],
-                                                              photoProfilRecepteur:itemSeance[
-                                                                              "membre"]
-                                                                          [
-                                                                          "photo_profil"],
+                                                              photoProfilRecepteur:
+                                                                  itemSeance[
+                                                                          "membre"]
+                                                                      [
+                                                                      "photo_profil"],
                                                               dateRencontre: AppCubitStorage()
                                                                           .state
                                                                           .Language ==
@@ -644,6 +629,12 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                       ),
                                                     ),
                                                   ),
+                                                  AddAssoElement(
+                                                    text:
+                                                        "Ajouter une rencontre"
+                                                            .tr(),
+                                                    routeElement: "seances",
+                                                  ),
                                                   if (DetailTournoiState
                                                               .isLoading ==
                                                           true &&
@@ -665,36 +656,170 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                               ),
                                             )
                                           : Expanded(
-                                              child: RefreshIndicator(
-                                                onRefresh: refreshRencontre,
-                                                child: ListView.builder(
-                                                    itemCount: 1,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return Container(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 200.h),
-                                                        alignment:
-                                                            Alignment.topCenter,
-                                                        child: Text(
-                                                          "aucune_rencontre"
-                                                              .tr(),
-                                                          style: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    20,
-                                                                    45,
-                                                                    99,
-                                                                    0.26),
-                                                            fontWeight:
-                                                                FontWeight.w100,
-                                                            fontSize: 20.sp,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }),
+                                              child: Stack(
+                                                children: [
+                                                  RefreshIndicator(
+                                                    onRefresh: refreshRencontre,
+                                                    child: ListView.builder(
+                                                        itemCount: 1,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return Column(
+                                                            children: [
+                                                              Container(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        top: 200
+                                                                            .h),
+                                                                alignment:
+                                                                    Alignment
+                                                                        .topCenter,
+                                                                child: Text(
+                                                                  "aucune_rencontre"
+                                                                      .tr(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Color
+                                                                        .fromRGBO(
+                                                                            20,
+                                                                            45,
+                                                                            99,
+                                                                            0.26),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w100,
+                                                                    fontSize:
+                                                                        20.sp,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              if (!context
+                                                                      .read<
+                                                                          AuthCubit>()
+                                                                      .state
+                                                                      .detailUser![
+                                                                  "isMember"])
+                                                                InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    await launchUrlString(
+                                                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances&app_mode=mobile",
+                                                                      mode: LaunchMode
+                                                                          .platformDefault,
+                                                                    );
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    height: 50,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: AppColors
+                                                                          .pageBackground,
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          color: AppColors
+                                                                              .blackBlueAccent1
+                                                                              .withOpacity(0.2),
+                                                                          spreadRadius:
+                                                                              0.1,
+                                                                          blurRadius:
+                                                                              2,
+                                                                          offset:
+                                                                              Offset(
+                                                                            0,
+                                                                            2,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        width:
+                                                                            2.w,
+                                                                        color: AppColors
+                                                                            .blackBlue
+                                                                            .withOpacity(0.2),
+                                                                      ),
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        20.r,
+                                                                      ),
+                                                                    ),
+                                                                    margin:
+                                                                        EdgeInsets
+                                                                            .only(
+                                                                      top: 8.w,
+                                                                    ),
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .symmetric(
+                                                                      horizontal:
+                                                                          10.w,
+                                                                      vertical:
+                                                                          7.h,
+                                                                    ),
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
+                                                                        1.5,
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceAround,
+                                                                      children: [
+                                                                        Text(
+                                                                          "Ajouter une rencontre"
+                                                                              .tr(),
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                AppColors.blackBlue.withOpacity(0.2),
+                                                                            fontWeight:
+                                                                                FontWeight.w900,
+                                                                            fontSize:
+                                                                                18.sp,
+                                                                            letterSpacing:
+                                                                                0.2.w,
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          width:
+                                                                              25.w,
+                                                                          height:
+                                                                              25.w,
+                                                                          margin:
+                                                                              EdgeInsets.only(left: 3.w),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(360),
+                                                                            border:
+                                                                                Border.all(
+                                                                              width: 2.w,
+                                                                              color: AppColors.blackBlue.withOpacity(0.2),
+                                                                            ),
+                                                                          ),
+                                                                          child:
+                                                                              SvgPicture.asset(
+                                                                            "assets/images/addIcon.svg",
+                                                                            fit:
+                                                                                BoxFit.scaleDown,
+                                                                            color:
+                                                                                AppColors.blackBlue.withOpacity(0.2),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          );
+                                                        }),
+                                                  ),
+                                                ],
                                               ),
                                             );
                                     },
@@ -1084,6 +1209,13 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                       ),
                                                     ),
                                                   ),
+                                                  AddAssoElement(
+                                                    text:
+                                                        "Ajouter une cotisation"
+                                                            .tr(),
+                                                    routeElement:
+                                                        "cotisations?query=1",
+                                                  ),
                                                   if (CotisationState
                                                               .isLoading ==
                                                           true ||
@@ -1117,16 +1249,146 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                           top: 200.h),
                                                       alignment:
                                                           Alignment.topCenter,
-                                                      child: Text(
-                                                        "aucune_cotisation"
-                                                            .tr(),
-                                                        style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              20, 45, 99, 0.26),
-                                                          fontWeight:
-                                                              FontWeight.w100,
-                                                          fontSize: 20.sp,
-                                                        ),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            "aucune_cotisation"
+                                                                .tr(),
+                                                            style: TextStyle(
+                                                              color: AppColors
+                                                                  .blackBlue
+                                                                  .withOpacity(
+                                                                      0.2),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w100,
+                                                              fontSize: 20.sp,
+                                                            ),
+                                                          ),
+
+
+                                                          if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                                                            InkWell(
+                                                              onTap: () async {
+                                                                await launchUrlString(
+                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
+                                                                  mode: LaunchMode
+                                                                      .platformDefault,
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                height: 50,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: AppColors
+                                                                      .pageBackground,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: AppColors
+                                                                          .blackBlueAccent1
+                                                                          .withOpacity(
+                                                                              0.2),
+                                                                      spreadRadius:
+                                                                          0.1,
+                                                                      blurRadius:
+                                                                          2,
+                                                                      offset:
+                                                                          Offset(
+                                                                        0,
+                                                                        2,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                  border: Border
+                                                                      .all(
+                                                                    width: 2.w,
+                                                                    color: AppColors
+                                                                        .blackBlue
+                                                                        .withOpacity(
+                                                                            0.2),
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    20.r,
+                                                                  ),
+                                                                ),
+                                                                // alignment: Alignment
+                                                                //     .bottomLeft,
+                                                                margin:
+                                                                    EdgeInsets
+                                                                        .only(
+                                                                  top: 8.w,
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                  horizontal:
+                                                                      10.w,
+                                                                  vertical: 7.h,
+                                                                ),
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    1.5,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Ajouter une cotisation"
+                                                                          .tr(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: AppColors
+                                                                            .blackBlue
+                                                                            .withOpacity(0.2),
+                                                                        fontWeight:
+                                                                            FontWeight.w900,
+                                                                        fontSize:
+                                                                            18.sp,
+                                                                        letterSpacing:
+                                                                            0.2.w,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      width:
+                                                                          25.w,
+                                                                      height:
+                                                                          25.w,
+                                                                      margin: EdgeInsets.only(
+                                                                          left:
+                                                                              3.w),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(360),
+                                                                        border:
+                                                                            Border.all(
+                                                                          width:
+                                                                              2.w,
+                                                                          color: AppColors
+                                                                              .blackBlue
+                                                                              .withOpacity(0.2),
+                                                                        ),
+                                                                      ),
+                                                                      child: SvgPicture
+                                                                          .asset(
+                                                                        "assets/images/addIcon.svg",
+                                                                        fit: BoxFit
+                                                                            .scaleDown,
+                                                                        color: AppColors
+                                                                            .blackBlue
+                                                                            .withOpacity(0.2),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        
+                                                        ],
                                                       ),
                                                     );
                                                   },
@@ -1185,9 +1447,18 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                       onRefresh:
                                                           refreshSanction,
                                                       child: ListView.builder(
-                                                        itemCount: currentDetailUser["sanctions"].length,
-                                                        itemBuilder: (BuildContext context, int index) {
-                                                          final currentSaction = currentDetailUser!["sanctions"][index];
+                                                        itemCount:
+                                                            currentDetailUser[
+                                                                    "sanctions"]
+                                                                .length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          final currentSaction =
+                                                              currentDetailUser![
+                                                                      "sanctions"]
+                                                                  [index];
                                                           return Container(
                                                             margin:
                                                                 EdgeInsets.only(
@@ -1197,24 +1468,68 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                     bottom:
                                                                         7.h),
                                                             child:
-                                                            WidgetSanction(
-                                                              objetSanction: currentSaction["libelle"] == null ? " " : currentSaction["libelle"],
-                                                              heureSanction: AppCubitStorage().state.Language == "fr" ? formatTimeToFrench(currentSaction["start_date"]) : formatTimeToEnglish(currentSaction["start_date"]),
-                                                              dateSanction: currentSaction["start_date"],
-                                                              motifSanction: currentSaction["motif"],
-                                                              montantSanction: currentSaction["amount"].toString(),
-                                                              montantPayeeSanction: currentSaction["sanction_balance"],
-                                                              lienPaiement: currentSaction["sanction_pay_link"] == null ? " " : currentSaction["sanction_pay_link"],
-                                                              versement: currentSaction["payments"],
-                                                              isSanctionPayed: currentSaction["is_sanction_payed"],
-                                                              typeSaction: currentSaction["type"],
-                                                              resteAPayer: currentSaction["amount_remaining"],
-                                                              dejaPayer: currentSaction["sanction_balance"],
+                                                                WidgetSanction(
+                                                              objetSanction: currentSaction[
+                                                                          "libelle"] ==
+                                                                      null
+                                                                  ? " "
+                                                                  : currentSaction[
+                                                                      "libelle"],
+                                                              heureSanction: AppCubitStorage()
+                                                                          .state
+                                                                          .Language ==
+                                                                      "fr"
+                                                                  ? formatTimeToFrench(
+                                                                      currentSaction[
+                                                                          "start_date"])
+                                                                  : formatTimeToEnglish(
+                                                                      currentSaction[
+                                                                          "start_date"]),
+                                                              dateSanction:
+                                                                  currentSaction[
+                                                                      "start_date"],
+                                                              motifSanction:
+                                                                  currentSaction[
+                                                                      "motif"],
+                                                              montantSanction:
+                                                                  currentSaction[
+                                                                          "amount"]
+                                                                      .toString(),
+                                                              montantPayeeSanction:
+                                                                  currentSaction[
+                                                                      "sanction_balance"],
+                                                              lienPaiement: currentSaction[
+                                                                          "sanction_pay_link"] ==
+                                                                      null
+                                                                  ? " "
+                                                                  : currentSaction[
+                                                                      "sanction_pay_link"],
+                                                              versement:
+                                                                  currentSaction[
+                                                                      "payments"],
+                                                              isSanctionPayed:
+                                                                  currentSaction[
+                                                                      "is_sanction_payed"],
+                                                              typeSaction:
+                                                                  currentSaction[
+                                                                      "type"],
+                                                              resteAPayer:
+                                                                  currentSaction[
+                                                                      "amount_remaining"],
+                                                              dejaPayer:
+                                                                  currentSaction[
+                                                                      "sanction_balance"],
                                                             ),
                                                           );
                                                         },
                                                       ),
                                                     ),
+                                                  ),
+                                                  AddAssoElement(
+                                                    text:
+                                                        "Ajouter une sanction"
+                                                            .tr(),
+                                                    routeElement: "sanctions",
                                                   ),
                                                   if (AuthState.isLoading ==
                                                           true ||
@@ -1247,18 +1562,144 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                           top: 200.h),
                                                       alignment:
                                                           Alignment.topCenter,
-                                                      child: Text(
-                                                        "aucune_sanction".tr(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    20,
-                                                                    45,
-                                                                    99,
-                                                                    0.26),
-                                                            fontWeight:
-                                                                FontWeight.w100,
-                                                            fontSize: 20.sp),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            "aucune_sanction".tr(),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Color.fromRGBO(
+                                                                        20,
+                                                                        45,
+                                                                        99,
+                                                                        0.26),
+                                                                fontWeight:
+                                                                    FontWeight.w100,
+                                                                fontSize: 20.sp),
+                                                          ),
+
+                                                          if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                                                            InkWell(
+                                                              onTap: () async {
+                                                                await launchUrlString(
+                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanction&app_mode=mobile",
+                                                                  mode: LaunchMode
+                                                                      .platformDefault,
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                height: 50,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: AppColors
+                                                                      .pageBackground,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: AppColors
+                                                                          .blackBlueAccent1
+                                                                          .withOpacity(
+                                                                              0.2),
+                                                                      spreadRadius:
+                                                                          0.1,
+                                                                      blurRadius:
+                                                                          2,
+                                                                      offset:
+                                                                          Offset(
+                                                                        0,
+                                                                        2,
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                  border: Border
+                                                                      .all(
+                                                                    width: 2.w,
+                                                                    color: AppColors
+                                                                        .blackBlue
+                                                                        .withOpacity(
+                                                                            0.2),
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    20.r,
+                                                                  ),
+                                                                ),
+                                                                // alignment: Alignment
+                                                                //     .bottomLeft,
+                                                                margin:
+                                                                    EdgeInsets
+                                                                        .only(
+                                                                  top: 8.w,
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                  horizontal:
+                                                                      10.w,
+                                                                  vertical: 7.h,
+                                                                ),
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    1.5,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Ajouter une sanction"
+                                                                          .tr(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: AppColors
+                                                                            .blackBlue
+                                                                            .withOpacity(0.2),
+                                                                        fontWeight:
+                                                                            FontWeight.w900,
+                                                                        fontSize:
+                                                                            18.sp,
+                                                                        letterSpacing:
+                                                                            0.2.w,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      width:
+                                                                          25.w,
+                                                                      height:
+                                                                          25.w,
+                                                                      margin: EdgeInsets.only(
+                                                                          left:
+                                                                              3.w),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(360),
+                                                                        border:
+                                                                            Border.all(
+                                                                          width:
+                                                                              2.w,
+                                                                          color: AppColors
+                                                                              .blackBlue
+                                                                              .withOpacity(0.2),
+                                                                        ),
+                                                                      ),
+                                                                      child: SvgPicture
+                                                                          .asset(
+                                                                        "assets/images/addIcon.svg",
+                                                                        fit: BoxFit
+                                                                            .scaleDown,
+                                                                        color: AppColors
+                                                                            .blackBlue
+                                                                            .withOpacity(0.2),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        
+                                                        ],
                                                       ),
                                                     );
                                                   },

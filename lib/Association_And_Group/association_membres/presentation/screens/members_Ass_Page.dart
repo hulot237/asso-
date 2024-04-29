@@ -4,15 +4,19 @@ import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_state.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MembersAssPage extends StatefulWidget {
   const MembersAssPage({super.key});
@@ -37,14 +41,34 @@ Widget PageScaffold({
             color: AppColors.white,
           ),
         ),
+        trailing: Row(
+          children: [
+            if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+              InkWell(
+                onTap: () async {
+                  await launchUrlString(
+                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/new-membres&app_mode=mobile",
+                    mode: LaunchMode.platformDefault,
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10.w),
+                  color: AppColors.backgroundAppBAr,
+                  child: SvgPicture.asset(
+                    "assets/images/addMemberIcon.svg",
+                    fit: BoxFit.scaleDown,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+          ],
+        ),
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.white,
-            size: 20.sp,
+          child: BackButtonWidget(
+            colorIcon: AppColors.white,
           ),
         ),
       ),
@@ -65,12 +89,28 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(
-          Icons.arrow_back,
-          color: AppColors.white,
-          size: 16.sp,
-        ),
+        child: BackButtonWidget(colorIcon: AppColors.white),
       ),
+      actions: [
+        if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+          InkWell(
+            onTap: () async {
+              await launchUrlString(
+                "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/new-membres&app_mode=mobile",
+                mode: LaunchMode.platformDefault,
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10.w),
+              color: AppColors.backgroundAppBAr,
+              child: SvgPicture.asset(
+                "assets/images/addMemberIcon.svg",
+                fit: BoxFit.scaleDown,
+                color: AppColors.white,
+              ),
+            ),
+          ),
+      ],
     ),
     body: child,
   );

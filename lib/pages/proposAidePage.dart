@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/pages/contact_us_page.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,11 +35,7 @@ Widget PageScaffold({
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.white,
-            size: 20.sp,
-          ),
+          child: BackButtonWidget(colorIcon: AppColors.white)
         ),
       ),
       child: child,
@@ -58,11 +55,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(
-          Icons.arrow_back,
-          color: AppColors.white,
-          size: 16.sp,
-        ),
+        child: BackButtonWidget(colorIcon: AppColors.white)
       ),
     ),
     body: child,
@@ -84,8 +77,8 @@ class _ProposAidePageState extends State<ProposAidePage> {
       child: PageScaffold(
         context: context,
         child: Container(
-          margin: EdgeInsets.only(left: 20.w),
-          width: MediaQuery.of(context).size.width / 1.4,
+          padding: EdgeInsets.only(left: 20.w),
+          // width: MediaQuery.of(context).size.width / 1.4,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

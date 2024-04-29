@@ -14,6 +14,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
@@ -160,14 +161,10 @@ class _VerificationPageState extends State<VerificationPage> {
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 20.h),
-                      width: 40.w,
-                      transformAlignment: Alignment.centerLeft,
-                      child: Icon(
-                        Platform.isAndroid
-                            ? Icons.arrow_back_outlined
-                            : Icons.arrow_back_ios,
-                        color: AppColors.blackBlue,
-                        size: 16.sp,
+                      // width: 40.w,
+                      // transformAlignment: Alignment.centerLeft,
+                      child: BackButtonWidget(
+                        colorIcon: AppColors.blackBlue,
                       ),
                     ),
                   ),
@@ -385,7 +382,7 @@ class _VerificationPageState extends State<VerificationPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "By".tr(),
+                              "By",
                               style: TextStyle(
                                   fontSize: 9.sp,
                                   color: Colors.grey[600],
@@ -399,7 +396,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                   Image.asset("assets/images/FAroty_gris.png"),
                             ),
                             Text(
-                              "Version ${Variables.version}".tr(),
+                              "Version ${Variables.version}",
                               style: TextStyle(
                                 fontSize: 9.sp,
                                 color: Colors.grey[600],

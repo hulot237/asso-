@@ -17,6 +17,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/firebase_options.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
@@ -43,16 +44,23 @@ Future<void> main() async {
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
 
-
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      // systemNavigationBarColor: Color.fromARGB(189, 255, 0, 0), // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+      statusBarIconBrightness: Brightness.dark, // status bar icons' color
+      statusBarBrightness: Brightness.dark
+      // systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
 
   // if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
   //   await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   // }
 
-  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-                    
+
   PushNotifications.init();
   PushNotifications.localNotiInit();
 
@@ -88,14 +96,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        // systemNavigationBarColor: Colors.white, // navigation bar color
-        statusBarColor: Colors.transparent, // status bar color
-        statusBarIconBrightness: Brightness.dark, // status bar icons' color
-        // systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -140,7 +141,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => MembreCubit(),
         ),
-        BlocProvider(
+        BlocProvider( 
           create: (context) => NotificationCubit(),
         ),
         BlocProvider(
@@ -148,14 +149,12 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: ScreenUtilInit(
-        designSize: Size(404, 886),
+        designSize: Size(375, 812),
         child: MaterialApp(
-          
           theme: ThemeData(
             useMaterial3: false,
             fontFamily: GoogleFonts.roboto().fontFamily,
           ),
-          
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
@@ -164,7 +163,8 @@ class MyApp extends StatelessWidget {
             "/": (context) => AppCubitStorage().state.tokenUser == null &&
                     AppCubitStorage().state.codeAssDefaul == null
                 ? PreLoginPage()
-                : true? UpdatePage() : HomePage(),
+                : HomePage(),
+            // : true? UpdatePage() : HomePage(),
             "/LoginPage": (context) => LoginPage(),
             "/homepage": (context) => HomePage(),
           },

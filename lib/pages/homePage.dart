@@ -19,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -134,7 +135,7 @@ class HomePage extends StatefulWidget {
 Widget PageScaffold({
   required BuildContext context,
   required List<Widget> child,
-  required List<BottomNavigationBarItem> itemListAndroid,
+  // required List<BottomNavigationBarItem> itemListAndroid,
   required List<BottomNavigationBarItem> itemListIos,
   required dynamic childBottomNavBar,
   required int indexPage,
@@ -168,22 +169,28 @@ class _HomePageState extends State<HomePage> {
     SettingScreen(),
   ];
 
-  final itemListAndroid = [
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.home_rounded,
-      ),
-      label: 'Accueil'.tr(),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.article_rounded),
-      label: 'Historiques'.tr(),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person_2_rounded),
-      label: 'Profil'.tr(),
-    ),
-  ];
+  // final itemListAndroid = [
+  //   BottomNavigationBarItem(
+  //     icon: Container(
+  //       child: SvgPicture.asset(
+  //         _pageIndex == 0
+  //             ? "assets/images/homeSelectIcon.svg"
+  //             : "assets/images/homeUnselectIcon.svg",
+  //         fit: BoxFit.scaleDown,
+  //         color: _pageIndex == 0 ? AppColors.colorButton : AppColors.blackBlue,
+  //       ),
+  //     ),
+  //     label: 'Accueil'.tr(),
+  //   ),
+  //   BottomNavigationBarItem(
+  //     icon: Icon(Icons.article_rounded),
+  //     label: 'Historiques'.tr(),
+  //   ),
+  //   BottomNavigationBarItem(
+  //     icon: Icon(Icons.person_2_rounded),
+  //     label: 'Profil'.tr(),
+  //   ),
+  // ];
 
   final itemListIos = [
     BottomNavigationBarItem(
@@ -260,7 +267,7 @@ class _HomePageState extends State<HomePage> {
       indexPage: _pageIndex,
       child: screens,
       itemListIos: itemListIos,
-      itemListAndroid: itemListAndroid,
+      // itemListAndroid: itemListAndroid,
       childBottomNavBar: Platform.isAndroid
           ? Material(
               type: MaterialType.transparency,
@@ -270,15 +277,85 @@ class _HomePageState extends State<HomePage> {
                   topRight: Radius.circular(20.r),
                 ),
                 child: BottomNavigationBar(
-                  backgroundColor: Color.fromARGB(255, 226, 226, 226),
-                  type: BottomNavigationBarType.shifting,
+                  backgroundColor: AppColors.white,
+                  // type: BottomNavigationBarType.shifting,
                   selectedIconTheme: IconThemeData(size: 25.sp),
-                  unselectedIconTheme: IconThemeData(size: 15.sp),
-                  selectedFontSize: 12.sp,
+                  unselectedIconTheme: IconThemeData(size: 25.sp),
+                  selectedFontSize: 14.sp,
+                  unselectedFontSize: 14.sp,
                   unselectedItemColor: AppColors.blackBlue,
-                  selectedItemColor: AppColors.colorButton,
+                  selectedItemColor: Color.fromARGB(255, 96, 134, 8),
                   selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  items: itemListAndroid,
+                  unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Container(
+                        margin: EdgeInsets.all( 2.h),
+                        width: 60.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                            color: AppColors.colorButton
+                                .withOpacity(_pageIndex == 0 ? 0.1 : 0),
+                            borderRadius: BorderRadius.circular(15.r)),
+                        child: SvgPicture.asset(
+                          _pageIndex == 0
+                              ? "assets/images/homeSelectIcon.svg"
+                              : "assets/images/homeUnselectIcon.svg",
+                          fit: BoxFit.scaleDown,
+                          color: _pageIndex == 0
+                              ? AppColors.colorButton
+                              : AppColors.blackBlue,
+                        ),
+                      ),
+                      label: 'Accueil'.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                        margin: EdgeInsets.all(2.h),
+                        width: 60.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.colorButton.withOpacity(
+                            _pageIndex == 1 ? 0.1 : 0,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            15.r,
+                          ),
+                        ),
+                        child: SvgPicture.asset(
+                          _pageIndex == 1
+                              ? "assets/images/listSelectIcon.svg"
+                              : "assets/images/listUnselectIcon.svg",
+                          fit: BoxFit.scaleDown,
+                          color: _pageIndex == 1
+                              ? AppColors.colorButton
+                              : AppColors.blackBlue,
+                        ),
+                      ),
+                      label: 'Historiques'.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                       margin: EdgeInsets.all(2.h),
+                        width: 60.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                            color: AppColors.colorButton
+                                .withOpacity(_pageIndex == 2 ? 0.1 : 0),
+                            borderRadius: BorderRadius.circular(15.r)),
+                        child: SvgPicture.asset(
+                          _pageIndex == 2
+                              ? "assets/images/personSelectIcon.svg"
+                              : "assets/images/personUnselectIcon.svg",
+                          fit: BoxFit.scaleDown,
+                          color: _pageIndex == 2
+                              ? AppColors.colorButton
+                              : AppColors.blackBlue,
+                        ),
+                      ),
+                      label: 'Profil'.tr(),
+                    ),
+                  ],
                   currentIndex: _pageIndex,
                   onTap: (index) {
                     setState(
@@ -306,7 +383,8 @@ class _HomePageState extends State<HomePage> {
                   handleTournoiDefault();
                   handleRecentEvent(AppCubitStorage().state.membreCode);
                   handleChangeAss(AppCubitStorage().state.codeAssDefaul);
-                  handleDetailUser(AppCubitStorage().state.membreCode, AppCubitStorage().state.codeTournois);
+                  handleDetailUser(AppCubitStorage().state.membreCode,
+                      AppCubitStorage().state.codeTournois);
                   context.read<AuthCubit>().getUid();
                   context.read<PretEpargneCubit>().getEpargne();
                   context.read<PretEpargneCubit>().getPret();

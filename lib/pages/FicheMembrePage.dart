@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,13 +72,7 @@ class _AccountPageState extends State<AccountPage> {
                         },
                         child: Padding(
                           padding: EdgeInsets.only(top: 30.h, left: 20.w),
-                          child: Icon(
-                            Platform.isAndroid
-                                ? Icons.arrow_back
-                                : Icons.arrow_back_ios,
-                            color: AppColors.white,
-                            size: 18.sp,
-                          ),
+                          child: BackButtonWidget(colorIcon: AppColors.white)
                         ),
                       ),
                       Expanded(
@@ -1822,7 +1817,7 @@ class _AccountPageState extends State<AccountPage> {
                                                   width:
                                                       MediaQuery.sizeOf(context)
                                                               .width /
-                                                          1.16,
+                                                          1.2,
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment

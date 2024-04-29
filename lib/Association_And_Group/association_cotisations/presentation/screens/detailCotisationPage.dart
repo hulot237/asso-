@@ -16,6 +16,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,11 +69,9 @@ Widget PageScaffold({
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.white,
-            size: 20.sp,
-          ),
+          child: BackButtonWidget(
+                                    colorIcon: AppColors.white,
+                                  ),
         ),
       ),
       child: child,
@@ -95,11 +94,9 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(
-          Icons.arrow_back,
-          color: AppColors.white,
-          size: 16.sp,
-        ),
+        child: BackButtonWidget(
+                                    colorIcon: AppColors.white,
+                                  ),
       ),
     ),
     body: child,

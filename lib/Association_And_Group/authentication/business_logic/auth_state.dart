@@ -13,6 +13,7 @@ class AuthState extends Equatable {
   final bool successLoading;
   final String? message;
   final String? getUid;
+  final String? dataCookies;
   final bool errorLoadDetailAuth;
 
   AuthState({
@@ -26,6 +27,7 @@ class AuthState extends Equatable {
     this.message,
     this.getUid,
     this.errorLoadDetailAuth = false,
+    this.dataCookies,
   });
 
   @override
@@ -40,6 +42,7 @@ class AuthState extends Equatable {
         successLoading,
         getUid,
         errorLoadDetailAuth,
+        dataCookies,
       ];
 
 
@@ -53,6 +56,7 @@ class AuthState extends Equatable {
     bool? successLoading,
     String? message,
     String? getUid,
+    String? dataCookies,
     bool? errorLoadDetailAuth,
   }) {
     return AuthState(
@@ -65,6 +69,7 @@ class AuthState extends Equatable {
       successLoading: successLoading ?? this.successLoading,
       message: message ?? this.message,
       getUid: getUid ?? this.getUid,
+      dataCookies: dataCookies ?? this.dataCookies,
       errorLoadDetailAuth: errorLoadDetailAuth ?? this.errorLoadDetailAuth,
     );
   }

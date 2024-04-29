@@ -6,10 +6,13 @@ import 'package:faroty_association_1/Association_And_Group/user_group/business_l
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class widgetDetailRencontreCard extends StatefulWidget {
   widgetDetailRencontreCard({
@@ -111,25 +114,28 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           ),
                         ),
                       ),
-                      if (widget.isActiveRencontre == 0 && isPasseDate(widget.dateRencontreAPI))
+                      if (widget.isActiveRencontre == 0 &&
+                          isPasseDate(widget.dateRencontreAPI))
                         Container(
                           padding: EdgeInsets.all(7.r),
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(24, 212, 0, 0),
-                              borderRadius: BorderRadius.circular(7),),
+                            color: Color.fromARGB(24, 212, 0, 0),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
                           child: Container(
                             padding: EdgeInsets.all(1.r),
                             child: Text(
                               "Archivé".tr(),
                               style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10.sp,),
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
                             ),
                           ),
                         ),
-
-                      if ( widget.isActiveRencontre == 1 && isPasseDate(widget.dateRencontreAPI))
+                      if (widget.isActiveRencontre == 1 &&
+                          isPasseDate(widget.dateRencontreAPI))
                         Container(
                           padding: EdgeInsets.all(7.r),
                           decoration: BoxDecoration(
@@ -140,15 +146,15 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                             child: Text(
                               "terminé".tr(),
                               style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10.sp,),
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
                             ),
                           ),
                         ),
-
-                        if (!isPasseDate(widget.dateRencontreAPI))
-                         Container(
+                      if (!isPasseDate(widget.dateRencontreAPI))
+                        Container(
                           padding: EdgeInsets.all(7.r),
                           decoration: BoxDecoration(
                               color: Color.fromARGB(43, 0, 212, 7),
@@ -158,13 +164,13 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                             child: Text(
                               "en_cours".tr(),
                               style: TextStyle(
-                                  color: AppColors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10.sp,),
+                                color: AppColors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
                             ),
                           ),
                         )
-                      
                     ],
                   ),
                 ),
@@ -264,13 +270,16 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 3.h,),
+                              margin: EdgeInsets.only(
+                                top: 3.h,
+                              ),
                               child: Text(
                                 formatDateLiteral(widget.dateRencontreAPI),
                                 style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: AppColors.blackBlue,
-                                    fontWeight: FontWeight.w600,),
+                                  fontSize: 12.sp,
+                                  color: AppColors.blackBlue,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -280,10 +289,15 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10.h,),
+                  margin: EdgeInsets.only(
+                    top: 10.h,
+                  ),
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(14, 20, 45, 99),
-                      borderRadius: BorderRadius.circular(7)),
+                    color: AppColors.blackBlue.withOpacity(0.06),
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(7.w),
+                        ),
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -301,7 +315,9 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 3.h,),
+                                      margin: EdgeInsets.only(
+                                        bottom: 3.h,
+                                      ),
                                       child: Text(
                                         "Sanctions",
                                         style: TextStyle(
@@ -326,14 +342,36 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 ),
                               ),
                             );
-                          final currentDetailSeanceSanction = context.read<SeanceCubit>().state.detailSeance!["sanctions"];
+                          final currentDetailSeanceSanction = context
+                              .read<SeanceCubit>()
+                              .state
+                              .detailSeance!["sanctions"];
                           return GestureDetector(
                             onTap: () {
-                              if (checkTransparenceStatus(context.read<UserGroupCubit>().state.changeAssData!.user_group!.configs, context.read<AuthCubit>().state.detailUser!["isMember"]))
-                                Modal().showModalPersonSanctionner(context, currentDetailSeanceSanction);
+                              if (checkTransparenceStatus(
+                                  context
+                                      .read<UserGroupCubit>()
+                                      .state
+                                      .changeAssData!
+                                      .user_group!
+                                      .configs,
+                                  context
+                                      .read<AuthCubit>()
+                                      .state
+                                      .detailUser!["isMember"]))
+                                Modal().showModalPersonSanctionner(
+                                    context, currentDetailSeanceSanction);
                             },
                             child: Container(
-                              color: Colors.transparent,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                    width: 2.5.r,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                                color: Colors.transparent,
+                              ),
                               // alignment: Alignment.center,
                               padding: EdgeInsets.all(10.r),
                               child: Column(
@@ -346,7 +384,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w800,
-                                        color: Color.fromARGB(171, 20, 45, 99),
+                                        color: AppColors.blackBlueAccent1,
                                       ),
                                     ),
                                   ),
@@ -369,8 +407,17 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            if (checkTransparenceStatus( context.read<UserGroupCubit>().state.changeAssData!.user_group!.configs,
-                                context.read<AuthCubit>().state.detailUser!["isMember"]))
+                            if (checkTransparenceStatus(
+                                context
+                                    .read<UserGroupCubit>()
+                                    .state
+                                    .changeAssData!
+                                    .user_group!
+                                    .configs,
+                                context
+                                    .read<AuthCubit>()
+                                    .state
+                                    .detailUser!["isMember"]))
                               Modal().showModalPersonPresent(
                                   context,
                                   _tabController2,
@@ -387,7 +434,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                             decoration: BoxDecoration(
                               border: Border(
                                 left: BorderSide(
-                                  width: 2.r,
+                                  width: 2.5.r,
                                   color: AppColors.white,
                                 ),
                               ),
@@ -403,13 +450,15 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w800,
-                                      color: Color.fromARGB(171, 20, 45, 99),
+                                      color: AppColors.blackBlueAccent1,
                                     ),
                                   ),
                                   // margin: EdgeInsets.only(right: 5),
                                 ),
-                                BlocBuilder<SeanceCubit, SeanceState>( builder: (context, state) {
-                                  if (state.isLoading == null || state.isLoading == true)
+                                BlocBuilder<SeanceCubit, SeanceState>(
+                                    builder: (context, state) {
+                                  if (state.isLoading == null ||
+                                      state.isLoading == true)
                                     return Container(
                                       width: 16.w,
                                       height: 16.w,
@@ -420,7 +469,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                         ),
                                       ),
                                     );
-                                  String presence = ("${context.read<SeanceCubit>().state.detailSeance!["abs"].length + context.read<SeanceCubit>().state.detailSeance!["presents"].length}");
+                                  String presence =
+                                      ("${context.read<SeanceCubit>().state.detailSeance!["abs"].length + context.read<SeanceCubit>().state.detailSeance!["presents"].length}");
                                   return Container(
                                     child: Text(
                                       presence,
@@ -440,6 +490,53 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                     ],
                   ),
                 ),
+                if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                InkWell(
+                  onTap: () async {
+                    await launchUrlString(
+                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}&app_mode=mobile",
+                      mode: LaunchMode.platformDefault,
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(7.w),),
+                      color: AppColors.blackBlue.withOpacity(0.06),
+                    ),
+                    margin: EdgeInsets.only(
+                      top: 5.h,
+                    ),
+                    padding: EdgeInsets.all(5.w),
+                    // height: 12,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 15.w,
+                          height: 15.h,
+                          child: SvgPicture.asset(
+                            "assets/images/folderManageIcon.svg",
+                            fit: BoxFit.scaleDown,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Text(
+                          "Gérer la rencontre".tr(),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),

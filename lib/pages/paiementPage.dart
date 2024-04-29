@@ -7,10 +7,14 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaiementPage extends StatefulWidget {
-  PaiementPage({super.key, required this.lienDePaiement, required this.msgAppBarPaiementPage});
+  PaiementPage(
+      {super.key,
+      required this.lienDePaiement,
+      required this.msgAppBarPaiementPage});
   String lienDePaiement;
   String msgAppBarPaiementPage;
 
@@ -29,18 +33,23 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "$msgAppBarPaiementPage",
-          style: TextStyle(fontSize: 16.sp, color : AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.close,
+          child: SvgPicture.asset(
+            "assets/images/closeIcon.svg",
+            fit: BoxFit.scaleDown,
             color: AppColors.white,
-            size: 22.sp,
           ),
+          // Icon(
+          //   Icons.close,
+          //   color: AppColors.white,
+          //   size: 22.sp,
+          // ),
         ),
       ),
       child: child,
@@ -52,7 +61,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "$msgAppBarPaiementPage",
-        style: TextStyle(fontSize: 16.sp, color : AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -60,7 +69,11 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back, color: AppColors.white, size: 16.sp,),
+        child: SvgPicture.asset(
+          "assets/images/closeIcon.svg",
+          fit: BoxFit.scaleDown,
+          color: AppColors.white,
+        ),
       ),
     ),
     body: child,
@@ -88,7 +101,8 @@ class _PaiementPageState extends State<PaiementPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse("https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}"));
+      ..loadRequest(Uri.parse(
+          "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}"));
   }
 
   @override
@@ -119,10 +133,10 @@ class _PaiementPageState extends State<PaiementPage> {
                     ),
                   ),
                 ],
-              ), 
-            
-          )
-          : WebViewWidget(controller: _controller), msgAppBarPaiementPage: '${widget.msgAppBarPaiementPage}',
+              ),
+            )
+          : WebViewWidget(controller: _controller),
+      msgAppBarPaiementPage: '${widget.msgAppBarPaiementPage}',
     );
   }
 }

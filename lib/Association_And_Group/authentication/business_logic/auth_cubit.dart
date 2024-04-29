@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/data/auth_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -13,6 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
             isTrueNomber: null,
             getUid: null,
             errorLoadDetailAuth: false,
+            dataCookies: null,
           ),
         );
 
@@ -174,16 +177,41 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  String userDataFromWebView = 'null';
+
+  String dataForCookies(getUid) {
+    if (getUid == null) return '';
+
+    Map<String, dynamic> data =
+        json.decode(userDataFromWebView) ?? json.decode(getUid!);
+
+    return json.encode(
+      {
+        "user": {
+          "is_confirm": data['user']['is_confirm'],
+          "is_wallet_confirm": data['user']['is_wallet_confirm'],
+          "hash_id": data['user']['hashid'],
+        },
+        "api_token": data['api_token'],
+        "api_password": data['api_password']
+      },
+    );
+  }
+
   Future<void> getUid() async {
     try {
       final data = await AuthRepository().getUid();
+      final dataCookies = await dataForCookies(data);
 
       emit(
         state.copyWith(
           getUid: data,
+          dataCookies: dataCookies,
         ),
       );
       print("getUid getUid getUid getUid ${state.getUid}");
+      print(
+          "dataCookies dataCookies dataCookies dataCookies ${state.dataCookies}");
     } catch (e) {
       print("erreur cubit getUid");
     }

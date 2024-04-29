@@ -1,4 +1,5 @@
 // import 'dart:html';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_loader/easy_loader.dart';
@@ -32,9 +33,13 @@ import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class Modal {
+  String userDataFromWebView = 'null';
+
   void showBottomSheetListAss(BuildContext context, List? listAllAss) {
     bool isLoading = false;
 
@@ -148,57 +153,53 @@ class Modal {
                         },
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AdministrationPageWebview(
-                              forAdmin: false,
-                              urlPage: 'https://business.faroty.com/groups',
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        margin:
-                            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            width: 0.4,
-                            color: AppColors.blackBlue,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                right: 20.h,
-                              ),
-                              child: Icon(
-                                Icons.add,
-                                size: 16.sp,
-                                color: AppColors.blackBlueAccent1,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
-                              child: Text(
-                                "Ajouter un nouveau groupe".tr(),
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.blackBlueAccent1,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                     GestureDetector(
+      onTap: () async {
+        print("objectobjectobjectobjectobject");
+        await launchUrlString(
+          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://business.faroty.com/groups&app_mode=mobile",
+          mode: LaunchMode.platformDefault,
+        );
+      },
+      child: Container(
+        margin:
+            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(
+            width: 1.r,
+            color: AppColors.blackBlue,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                right: 20.h,
+              ),
+              child: SvgPicture.asset(
+                "assets/images/addIcon.svg",
+                fit: BoxFit.scaleDown,
+                color: AppColors.blackBlue,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
+              child: Text(
+                "Ajouter un nouveau groupe".tr(),
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.blackBlue,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
                   ],
                 ),
               ),
@@ -2090,15 +2091,20 @@ class Modal {
                   Navigator.pop(
                     context,
                   );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaiementPage(
-                        lienDePaiement: lienDePaiement,
-                        msgAppBarPaiementPage: msgAppBarPaiementPage,
-                      ),
-                    ),
+                  await launchUrlString(
+                    "https://${lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                    mode: LaunchMode.platformDefault,
                   );
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => PaiementPage(
+                  //       lienDePaiement: lienDePaiement,
+                  //       msgAppBarPaiementPage: msgAppBarPaiementPage,
+                  //     ),
+                  //   ),
+                  // );
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -2156,8 +2162,7 @@ class Modal {
     );
   }
 
-
-   void showFullPicture(context, photo, textAppbar) {
+  void showFullPicture(context, photo, textAppbar) {
     showGeneralDialog(
       context: context,
       barrierDismissible:
@@ -2181,7 +2186,8 @@ class Modal {
                 onPressed: () {
                   Navigator.pop(context);
                 }),
-            title: Text( textAppbar,
+            title: Text(
+              textAppbar,
               style: TextStyle(
                 color: AppColors.white,
                 // fontFamily: 'Overpass',
@@ -2206,6 +2212,8 @@ class Modal {
     );
   }
 }
+
+
 
 class widgetListPresenceCard extends StatelessWidget {
   widgetListPresenceCard({
@@ -2240,13 +2248,13 @@ class widgetListPresenceCard extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-                      Modal().showFullPicture(
-                    context,
-                    imageProfil == null
-                        ? "https://services.faroty.com/images/avatar/avatar.png"
-                        : "${Variables.LienAIP}${imageProfil}",
-                    "${nom} ${prenom}");
-                    },
+              Modal().showFullPicture(
+                  context,
+                  imageProfil == null
+                      ? "https://services.faroty.com/images/avatar/avatar.png"
+                      : "${Variables.LienAIP}${imageProfil}",
+                  "${nom} ${prenom}");
+            },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Container(

@@ -330,6 +330,9 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                             ),
                             Container(
                               child: Text(
+                                widget.type == "1"
+                                  ? "volontaire".tr():
+                                  // : "type_fixe".tr(),
                                 "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
                                 style: TextStyle(
                                   fontSize: 12.sp,

@@ -89,7 +89,7 @@ class _UpdatePageState extends State<UpdatePage> {
                       borderRadius: BorderRadius.circular(50.r),
                     ),
                     width: MediaQuery.of(context).size.width / 2,
-                    height: 50,
+                    height: 50.h,
                     child: Center(
                       child: Text(
                         "Mettre à jour".tr(),

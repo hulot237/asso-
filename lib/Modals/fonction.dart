@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 
 String formatMontantFrancais(double montant) {
@@ -241,6 +242,14 @@ checkTransparenceStatus(var ListConfigs, var UserIsMember) {
   } else if (transparenceObject.length == 0) {
     return true;
   }
+}
+
+checkAdminStatus(bool isAdmin) {
+  // Recherche de l'objet dans le tableau avec name == "has_transparence"
+
+  // if (!context.read<AuthCubit>().state.detailUser!["isMember"]) {
+    return isAdmin;
+  // }
 }
 
 isPasseDate(dateRencontreAPI) {

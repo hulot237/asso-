@@ -12,6 +12,7 @@ import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/pre_login_page.dart';
 import 'package:faroty_association_1/pages/proposAidePage.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +47,7 @@ Widget PageScaffold({
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.white,
-            size: 20.sp,
-          ),
+          child: BackButtonWidget(colorIcon: AppColors.white)
         ),
       ),
       child: child,
@@ -70,11 +67,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: Icon(
-          Icons.arrow_back,
-          color: AppColors.white,
-          size: 16.sp,
-        ),
+        child: BackButtonWidget(colorIcon: AppColors.white)
       ),
     ),
     body: child,
@@ -553,18 +546,18 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                       setState(() {
                         // print(e);
                         _customIconLangue = e;
-                        // print(
-                        //     "Code notification: ${AppCubitStorage().state.tokenNotification}");
-                        // print(
-                        //     "Code token: ${AppCubitStorage().state.tokenUser}");
-                        // print(
-                        //     "Code ass: ${AppCubitStorage().state.codeAssDefaul}");
-                        // print(
-                        //     "Code tournoi: ${AppCubitStorage().state.codeTournois}");
-                        // print(
-                        //     "Code usernamekey: ${AppCubitStorage().state.userNameKey}");
-                        // print(
-                        //     "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
+                        print(
+                            "Code notification: ${AppCubitStorage().state.tokenNotification}");
+                        print(
+                            "Code token: ${AppCubitStorage().state.tokenUser}");
+                        print(
+                            "Code ass: ${AppCubitStorage().state.codeAssDefaul}");
+                        print(
+                            "Code tournoi: ${AppCubitStorage().state.codeTournois}");
+                        print(
+                            "Code usernamekey: ${AppCubitStorage().state.userNameKey}");
+                        print(
+                            "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
                       });
                     },
                   ),
@@ -913,7 +906,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "By".tr(),
+                        "By",
                         style: TextStyle(
                             fontSize: 9.sp,
                             color: Colors.grey[600],
@@ -926,7 +919,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                         child: Image.asset("assets/images/FAroty_gris.png"),
                       ),
                       Text(
-                        "Version ${Variables.version}".tr(),
+                        "Version ${Variables.version}",
                         style: TextStyle(
                           fontSize: 9.sp,
                           color: Colors.grey[600],

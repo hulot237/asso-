@@ -47,7 +47,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 30.h),
-                      padding: EdgeInsets.all(10.r),
+                      padding: EdgeInsets.only(left:10.w, top: 20.h),
                       width: MediaQuery.sizeOf(context).width,
                       decoration: BoxDecoration(
                         color: AppColors.white,
@@ -268,7 +268,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "By".tr(),
+                        "By",
                         style: TextStyle(
                             fontSize: 9.sp,
                             color: Colors.grey[600],
@@ -281,7 +281,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                         child: Image.asset("assets/images/FAroty_gris.png"),
                       ),
                       Text(
-                        "Version ${Variables.version}".tr(),
+                        "Version ${Variables.version}",
                         style: TextStyle(
                           fontSize: 9.sp,
                           color: Colors.grey[600],

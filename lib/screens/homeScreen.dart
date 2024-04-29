@@ -29,8 +29,10 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -169,6 +171,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           return Material(
             type: MaterialType.transparency,
             child: Scaffold(
+              // appBar: AppBar(
+              //   systemOverlayStyle: SystemUiOverlayStyle(
+              //     // Status bar color
+              //     statusBarColor: Colors.red,
+
+              //     // Status bar brightness (optional)
+              //     statusBarIconBrightness:
+              //         Brightness.dark, // For Android (dark icons)
+              //     statusBarBrightness: Brightness.light, // For iOS (dark icons)
+              //   ),
+              // ),
               backgroundColor: AppColors.pageBackground,
               body: (Authstate.errorLoadDetailAuth == true ||
                       UserGroupstate.errorLoadDetailChangeAss == true)
@@ -181,6 +194,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: CustomScrollView(
                         slivers: [
                           SliverAppBar.large(
+                            systemOverlayStyle: SystemUiOverlayStyle(
+                              // Status bar color
+                              statusBarColor: Colors.transparent,
+
+                              // Status bar brightness (optional)
+                              statusBarIconBrightness:
+                                  Brightness.dark, // For Android (dark icons)
+                              statusBarBrightness:
+                                  Brightness.dark, // For iOS (dark icons)
+                            ),
                             leading: Container(),
                             elevation: 0,
                             backgroundColor: AppColors.backgroundAppBAr,
@@ -201,8 +224,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     titlePadding: EdgeInsets.only(
                                       top: 10.h,
                                       bottom: 10.h,
-                                      left: 20.w,
-                                      right: 20.w,
+                                      left: 10.w,
+                                      right: 10.w,
                                     ),
                                     centerTitle: false,
                                     title: Container(
@@ -214,6 +237,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Expanded(
                                               child: Container(
@@ -233,171 +258,241 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 ),
                                               ),
                                             ),
-                                            Row(
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
                                               children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AdministrationPageWebview(
-                                                          forAdmin: false,
-                                                          urlPage:
-                                                              'https://business.faroty.com/groups',
-                                                          // 'https://business.rush.faroty.com/group',
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                      right: 5.h,
-                                                    ),
-                                                    padding:
-                                                        EdgeInsets.all(1.r),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                        width: 1.r,
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                      ),
-                                                      color: AppColors
-                                                          .blackBlueAccent2,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50.r),
-                                                    ),
-                                                    height: 20.w,
-                                                    width: 20.w,
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      size: 16.sp,
-                                                      color: AppColors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                                if (!context
-                                                    .read<AuthCubit>()
-                                                    .state
-                                                    .detailUser!["isMember"])
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AdministrationPageWebview(
-                                                            forAdmin: true,
-                                                            urlPage:
-                                                                "https://groups.faroty.com",
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(
-                                                        right: 5.h,
-                                                      ),
-                                                      padding:
-                                                          EdgeInsets.all(1.r),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          width: 1.r,
-                                                          color: AppColors
-                                                              .blackBlue,
-                                                        ),
-                                                        color: AppColors
-                                                            .blackBlueAccent2,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50.r),
-                                                      ),
-                                                      height: 20.w,
-                                                      width: 20.w,
-                                                      child: Image.asset(
-                                                        "assets/images/Groupe_ou_Asso.png",
-                                                        scale: 4,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                Stack(
+                                                // GestureDetector(
+                                                //   onTap: () {
+                                                //     Navigator.push(
+                                                //       context,
+                                                //       MaterialPageRoute(
+                                                //         builder: (context) =>
+                                                //             AdministrationPageWebview(
+                                                //           forAdmin: false,
+                                                //           urlPage:
+                                                //               'https://business.faroty.com/groups',
+                                                //           // 'https://business.rush.faroty.com/group',
+                                                //         ),
+                                                //       ),
+                                                //     );
+                                                //   },
+                                                //   child: Container(
+                                                //     margin: EdgeInsets.only(
+                                                //       right: 5.h,
+                                                //     ),
+                                                //     padding:
+                                                //         EdgeInsets.all(1.r),
+                                                //     decoration: BoxDecoration(
+                                                //       border: Border.all(
+                                                //         width: 1.r,
+                                                //         color:
+                                                //             AppColors.blackBlue,
+                                                //       ),
+                                                //       color: AppColors
+                                                //           .blackBlueAccent2,
+                                                //       borderRadius:
+                                                //           BorderRadius.circular(
+                                                //               50.r),
+                                                //     ),
+                                                //     height: 20.w,
+                                                //     width: 20.w,
+                                                //     child: Icon(
+                                                //       Icons.add,
+                                                //       size: 16.sp,
+                                                //       color: AppColors.white,
+                                                //     ),
+                                                //   ),
+                                                // ),
+
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
                                                   children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Modal()
-                                                            .showBottomSheetListAss(
-                                                          context,
-                                                          context
-                                                              .read<
-                                                                  UserGroupCubit>()
-                                                              .state
-                                                              .userGroup,
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            color:
-                                                                Color.fromARGB(
-                                                              255,
-                                                              255,
-                                                              26,
-                                                              9,
-                                                            ),
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            50.r,
-                                                          ),
-                                                        ),
-                                                        padding:
-                                                            EdgeInsets.all(1.r),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50.r),
+                                                    Stack(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Modal()
+                                                                .showBottomSheetListAss(
+                                                              context,
+                                                              context
+                                                                  .read<
+                                                                      UserGroupCubit>()
+                                                                  .state
+                                                                  .userGroup,
+                                                            );
+                                                          },
                                                           child: Container(
                                                             decoration:
                                                                 BoxDecoration(
+                                                              border:
+                                                                  Border.all(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                  255,
+                                                                  255,
+                                                                  26,
+                                                                  9,
+                                                                ),
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                50.r,
+                                                              ),
+                                                            ),
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    1.r),
+                                                            child: ClipRRect(
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           50.r),
-                                                            ),
-                                                            height: 20.w,
-                                                            width: 20.w,
-                                                            child:
-                                                                Image.network(
-                                                              // "zz",
-                                                              "${Variables.LienAIP}${DetailAss.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
-                                                              fit: BoxFit.cover,
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50.r),
+                                                                ),
+                                                                height: 20.w,
+                                                                width: 20.w,
+                                                                child: Image
+                                                                    .network(
+                                                                  // "zz",
+                                                                  "${Variables.LienAIP}${DetailAss.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
+                                                        Positioned(
+                                                          right: 2.w,
+                                                          top: 2.h,
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      26,
+                                                                      9),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                50.r,
+                                                              ),
+                                                            ),
+                                                            width: 5.w,
+                                                            height: 5.w,
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
-                                                    Positioned(
-                                                      right: 2.w,
-                                                      top: 2.h,
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Color.fromARGB(
-                                                              255, 255, 26, 9),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            50.r,
+                                                    if (!context
+                                                            .read<AuthCubit>()
+                                                            .state
+                                                            .detailUser![
+                                                        "isMember"])
+                                                      Row(
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () async {
+                                                              await launchUrlString(
+                                                                "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                                                                mode: LaunchMode
+                                                                    .platformDefault,
+                                                              );
+                                                              // );
+                                                              //                                                       Navigator.push(
+                                                              //                                                         context,
+                                                              //                                                         MaterialPageRoute(
+                                                              //                                                           builder:
+                                                              //                                                               (context) =>
+                                                              //                                                                   AdministrationPageWebview(
+                                                              //                                                             forAdmin:
+                                                              //                                                                 true,
+                                                              //                                                             urlPage:
+                                                              //                                                                 "https://groups.faroty.com",
+                                                              //                                                           ),
+                                                              //                                                         ),
+                                                              //                                                       );
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                Container(
+                                                                  margin:
+                                                                      EdgeInsets
+                                                                          .only(
+                                                                    top: 5.h,
+                                                                  ),
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                    3.r,
+                                                                  ),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    border:
+                                                                        Border
+                                                                            .all(
+                                                                      width:
+                                                                          1.r,
+                                                                      color: AppColors
+                                                                          .blackBlue,
+                                                                    ),
+                                                                    color: AppColors
+                                                                        .whiteAccent1,
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                      50.r,
+                                                                    ),
+                                                                  ),
+                                                                  // height: 20.w,
+                                                                  // width: 20.w,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Image
+                                                                          .asset(
+                                                                        "assets/images/Groupe_ou_Asso.png",
+                                                                        width:
+                                                                            18.w,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            2.w,
+                                                                      ),
+                                                                      Text(
+                                                                        "Administrer".tr(),
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          color:
+                                                                              AppColors.blackBlue,
+                                                                          fontSize:
+                                                                              8.sp,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                        width: 5.w,
-                                                        height: 5.w,
+                                                        ],
                                                       ),
-                                                    )
                                                   ],
                                                 ),
                                               ],
@@ -442,6 +537,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               children: [
                                 Column(
                                   children: [
+                                    // Container(
+                                    //   decoration: BoxDecoration(
+                                    //     color: AppColors.white,
+                                    //     borderRadius:
+                                    //         BorderRadius.circular(30.r),
+                                    //   ),
+                                    //   padding: EdgeInsets.all(12),
+                                    //   margin: EdgeInsets.only(
+                                    //     top: 7.h,
+                                    //     left: 8.w,
+                                    //     right: 8.w,
+                                    //   ),
+                                    //   // width: MediaQuery.of(context).size.width /
+                                    //   //     1.4,
+                                    //   child: Row(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.spaceEvenly,
+                                    //     children: [
+                                    //       Container(
+                                    //         width: 40.w,
+                                    //         child: Image.asset(
+                                    //           "assets/images/Groupe_ou_Asso.png",
+                                    //           // scale: 4,
+                                    //         ),
+                                    //       ),
+                                    //       Text(
+                                    //         "Administrer le groupe",
+                                    //         style: TextStyle(
+                                    //           fontWeight: FontWeight.w600,
+                                    //           color: AppColors.blackBlue,
+                                    //           fontSize: 20.sp,
+                                    //         ),
+                                    //       )
+                                    //     ],
+                                    //   ),
+                                    // ),
                                     if (currentDetailUser!["is_saver"])
                                       BlocBuilder<PretEpargneCubit,
                                           PretEpargneState>(

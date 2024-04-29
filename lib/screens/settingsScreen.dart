@@ -2,16 +2,13 @@ import 'dart:io';
 
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/presentation/screens/notification_page.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
-import 'package:faroty_association_1/Association_And_Group/association_webview/create_new_ass.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
-import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
@@ -19,21 +16,20 @@ import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/FicheMembrePage.dart';
-import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
+import 'package:faroty_association_1/pages/detail_usergroup_page.dart';
 import 'package:faroty_association_1/pages/homePage.dart';
-import 'package:faroty_association_1/Association_And_Group/association_membres/presentation/screens/members_Ass_Page.dart';
 import 'package:faroty_association_1/pages/paramsAppPage.dart';
 import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
-import 'package:faroty_association_1/pages/proposAidePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_payements/presentation/screens/retraitPage.dart';
-import 'package:faroty_association_1/pages/testWebViewOne.dart';
+import 'package:faroty_association_1/widget/add_asso_button_widget.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -121,6 +117,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ));
         final currentDetailUser =
             authContext.read<AuthCubit>().state.detailUser;
+        final DetailAss = context.read<UserGroupCubit>().state.changeAssData;
 
         return WillPopScope(
           onWillPop: () async {
@@ -139,7 +136,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   functionToCall: () {},
                 )
               : Scaffold(
-                  backgroundColor: AppColors.pageBackground,
+                  backgroundColor: AppColors.white,
                   appBar: AppBar(
                     title: Text(
                       "Profil".tr(),
@@ -160,10 +157,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 (route) => false,
                               );
                             },
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: AppColors.white,
-                              size: 16.sp,
+                            child: BackButtonWidget(
+                              colorIcon: AppColors.white,
                             ),
                           )
                         : Container(),
@@ -172,47 +167,111 @@ class _SettingScreenState extends State<SettingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            child: GestureDetector(
-                              onTap: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (context) => createNewAss(
-                                //         // forAdmin: false,
-                                //         // urlPage: 'https://business.faroty.com/groups',
-                                //       ),
-                                //     ),
-                                //   );
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        AdministrationPageWebview(
-                                      forAdmin: false,
-                                      urlPage:
-                                          'https://business.faroty.com/groups',
+                          Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Modal().showBottomSheetListAss(
+                                    context,
+                                    context
+                                        .read<UserGroupCubit>()
+                                        .state
+                                        .userGroup,
+                                  );
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    right: 10.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color.fromARGB(
+                                        255,
+                                        255,
+                                        26,
+                                        9,
+                                      ),
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      50.r,
                                     ),
                                   ),
+                                  padding: EdgeInsets.all(1.r),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(50.r),
+                                      ),
+                                      height: 20.w,
+                                      width: 20.w,
+                                      child: Image.network(
+                                        // "zz",
+                                        "${Variables.LienAIP}${DetailAss!.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 10.w,
+                                top: 2.h,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 255, 26, 9),
+                                    borderRadius: BorderRadius.circular(
+                                      50.r,
+                                    ),
+                                  ),
+                                  width: 5.w,
+                                  height: 5.w,
+                                ),
+                              )
+                            ],
+                          ),
+                          if (!context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"])
+                            GestureDetector(
+                              onTap: () async {
+                                await launchUrlString(
+                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                                  mode: LaunchMode.platformDefault,
                                 );
                               },
                               child: Container(
-                                margin: EdgeInsets.only(right: 10.w),
-                                padding: EdgeInsets.all(1.r),
+                                margin: EdgeInsets.only(
+                                  right: 10.h,
+                                ),
+                                padding: EdgeInsets.all(
+                                  1.r,
+                                ),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      width: 1.r, color: AppColors.blackBlue),
+                                    width: 1.r,
+                                    color: AppColors.blackBlue,
+                                  ),
                                   color: AppColors.blackBlueAccent2,
-                                  borderRadius: BorderRadius.circular(50.r),
+                                  borderRadius: BorderRadius.circular(
+                                    50.r,
+                                  ),
                                 ),
-                                height: 25.h,
-                                width: 25.h,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 11.sp,
+                                height: 20.w,
+                                width: 20.w,
+                                child: Image.asset(
+                                  "assets/images/Groupe_ou_Asso.png",
+                                  scale: 4,
                                 ),
                               ),
                             ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10.w),
+                            height: 20.w,
+                            width: 20.w,
+                            child: AddAssoWidget(),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -306,7 +365,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   body: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 20.h, bottom: 5.h),
+                        margin: EdgeInsets.only(top: 30.h, bottom: 10.h),
                         child: Column(
                           children: [
                             GestureDetector(
@@ -326,8 +385,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                   child: Container(
-                                    width: 90.w,
-                                    height: 90.w,
+                                    width: 100.w,
+                                    height: 100.w,
                                     child: Image.network(
                                       "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
                                       fit: BoxFit.cover,
@@ -351,12 +410,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                     },
                                     child: Container(
                                       padding: EdgeInsets.only(
-                                          left: 5.w, right: 5.w, top: 5.h),
+                                        left: 5.w,
+                                        right: 5.w,
+                                        top: 20.h,
+                                      ),
                                       child: Text(
                                         "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 18.sp,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w300,
                                           color: AppColors.blackBlue,
                                         ),
@@ -394,7 +456,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                               padding: EdgeInsets.only(
                                                 left: 8.w,
                                                 right: 8.w,
-                                                top: 5.h,
+                                                top: 10.h,
+                                                bottom: 3.h,
                                               ),
                                               decoration: BoxDecoration(
                                                   borderRadius:
@@ -403,7 +466,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 "${"matricule".tr()}",
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                  fontSize: 12.sp,
+                                                  fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
                                                   color: AppColors
                                                       .blackBlueAccent1,
@@ -414,7 +477,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                               "${currentDetailUser["matricule"]}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                fontSize: 12.sp,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.w600,
                                                 color:
                                                     AppColors.blackBlueAccent1,
@@ -469,7 +532,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                           children: [
                                             Container(
                                               padding: EdgeInsets.only(
-                                                top: 5.h,
+                                                top: 10.h,
+                                                bottom: 3.h
                                               ),
                                               decoration: BoxDecoration(
                                                   borderRadius:
@@ -478,7 +542,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 "${"Code pour paiement".tr()}",
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                  fontSize: 12.sp,
+                                                  fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
                                                   color: AppColors
                                                       .blackBlueAccent1,
@@ -495,7 +559,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: 12.sp,
+                                                      fontSize: 14.sp,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       color: AppColors
@@ -505,7 +569,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 ),
                                                 Icon(
                                                   Icons.content_copy,
-                                                  size: 12.sp,
+                                                  size: 14.sp,
                                                   color: AppColors
                                                       .blackBlueAccent1,
                                                 ),
@@ -528,7 +592,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             children: [
                               Container(
                                 margin: EdgeInsets.only(
-                                  top: 10.h,
+                                  top: 15.h,
                                   left: 10.w,
                                   right: 10.w,
                                 ),
@@ -547,10 +611,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(
-                                          top: 15.h,
-                                          left: 10.w,
-                                          right: 10.w,
-                                          bottom: 15.h,
+                                          top: 20.h,
+                                          left: 15.w,
+                                          right: 15.w,
+                                          bottom: 20.h,
                                         ),
                                         decoration: BoxDecoration(
                                           border: Border(
@@ -573,7 +637,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                           .phone_android_outlined,
                                                       color:
                                                           AppColors.bleuLight,
-                                                      size: 15.sp,
+                                                      size: 18.sp,
                                                     ),
                                                     margin: EdgeInsets.only(
                                                       right: 10.w,
@@ -582,7 +646,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   Text(
                                                     "votre_compte".tr(),
                                                     style: TextStyle(
-                                                      fontSize: 15.sp,
+                                                      fontSize: 18.sp,
                                                       color:
                                                           AppColors.blackBlue,
                                                       fontWeight:
@@ -595,7 +659,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             Icon(
                                               Icons.arrow_right,
                                               color: AppColors.blackBlue,
-                                              size: 12.sp,
+                                              size: 18.sp,
                                             ),
                                           ],
                                         ),
@@ -621,10 +685,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                         },
                                         child: Container(
                                           padding: EdgeInsets.only(
-                                            top: 15.h,
-                                            left: 10.w,
-                                            right: 10.w,
-                                            bottom: 15.h,
+                                            top: 20.h,
+                                            left: 15.w,
+                                            right: 15.w,
+                                            bottom: 20.h,
                                           ),
                                           decoration: BoxDecoration(
                                             // color: Colors.black12,
@@ -647,6 +711,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                         Icons
                                                             .account_balance_wallet_outlined,
                                                         color: Colors.black,
+                                                        size: 18.sp,
                                                       ),
                                                       margin: EdgeInsets.only(
                                                           right: 10.w),
@@ -654,7 +719,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     Text(
                                                       "retrait_en_attente".tr(),
                                                       style: TextStyle(
-                                                        fontSize: 15.sp,
+                                                        fontSize: 18.sp,
                                                         color:
                                                             AppColors.blackBlue,
                                                         fontWeight:
@@ -667,27 +732,185 @@ class _SettingScreenState extends State<SettingScreen> {
                                               Icon(
                                                 Icons.arrow_right,
                                                 color: AppColors.blackBlue,
-                                                size: 12.sp,
+                                                size: 18.sp,
                                               ),
                                             ],
                                           ),
                                         ),
                                       ),
+
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     // context.read<ServiceCubit>().state.currentService!.id;
+                                    //     Modal().showBottomSheetListTournoi(
+                                    //       context,
+                                    //       currentInfoAllTournoiAssCourant
+                                    //           .user_group!.tournois!,
+                                    //     );
+                                    //   },
+                                    //   child: Container(
+                                    //     padding: EdgeInsets.only(
+                                    //       top: 15.h,
+                                    //       left: 10.w,
+                                    //       right: 10.w,
+                                    //       bottom: 15.h,
+                                    //     ),
+                                    //     decoration: BoxDecoration(
+                                    //       // color: Colors.black12,
+                                    //       border: Border(
+                                    //         bottom: BorderSide(
+                                    //             width: 1.r,
+                                    //             color: Color.fromARGB(
+                                    //                 12, 0, 0, 0)),
+                                    //       ),
+                                    //     ),
+                                    //     child: Row(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.center,
+                                    //       children: [
+                                    //         Expanded(
+                                    //           child: Row(
+                                    //             children: [
+                                    //               Container(
+                                    //                 child: Icon(
+                                    //                   Icons.ads_click_outlined,
+                                    //                   color: Colors.red,
+                                    //                   size: 15.sp,
+                                    //                 ),
+                                    //                 margin: EdgeInsets.only(
+                                    //                   right: 10.w,
+                                    //                 ),
+                                    //               ),
+                                    //               Text(
+                                    //                 "tournoi".tr(),
+                                    //                 style: TextStyle(
+                                    //                   fontSize: 15.sp,
+                                    //                   color:
+                                    //                       AppColors.blackBlue,
+                                    //                   fontWeight:
+                                    //                       FontWeight.w500,
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //         for (var item
+                                    //             in currentInfoAllTournoiAssCourant!
+                                    //                 .user_group!.tournois!)
+                                    //           if (item.tournois_code ==
+                                    //               AppCubitStorage()
+                                    //                   .state
+                                    //                   .codeTournois)
+                                    //             Text(
+                                    //               'Tournoi #${item.matricule}',
+                                    //               style: TextStyle(
+                                    //                 fontSize: 10.sp,
+                                    //                 color: Color.fromARGB(
+                                    //                     125, 20, 45, 99),
+                                    //                 fontWeight: FontWeight.w500,
+                                    //               ),
+                                    //             ),
+                                    //         Icon(Icons.arrow_right,
+                                    //             color: AppColors.blackBlue,
+                                    //             size: 12.sp),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
+
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     // context.read<ServiceCubit>().state.currentService!.id;
+                                    //     Modal().showBottomSheetListAss(
+                                    //       context,
+                                    //       currentInfoAllAssociation,
+                                    //     );
+                                    //   },
+                                    //   child: Container(
+                                    //     padding: EdgeInsets.only(
+                                    //       top: 15.h,
+                                    //       left: 10.w,
+                                    //       right: 10.w,
+                                    //       bottom: 15.h,
+                                    //     ),
+                                    //     decoration: BoxDecoration(
+                                    //       // color: Colors.black12,
+                                    //       border: Border(
+                                    //         bottom: BorderSide(
+                                    //             width: 1.r,
+                                    //             color: Color.fromARGB(
+                                    //                 12, 0, 0, 0)),
+                                    //       ),
+                                    //     ),
+                                    //     child: Row(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.center,
+                                    //       children: [
+                                    //         Expanded(
+                                    //           child: Row(
+                                    //             children: [
+                                    //               Container(
+                                    //                 width: 16.w,
+                                    //                 child: Image.asset(
+                                    //                   "assets/images/Groupe_ou_Asso.png",
+                                    //                   // scale: ,
+                                    //                 ),
+                                    //                 margin: EdgeInsets.only(
+                                    //                     right: 10.w),
+                                    //               ),
+                                    //               Text(
+                                    //                 "Groups & associations"
+                                    //                     .tr(),
+                                    //                 style: TextStyle(
+                                    //                   fontSize: 15.sp,
+                                    //                   color:
+                                    //                       AppColors.blackBlue,
+                                    //                   fontWeight:
+                                    //                       FontWeight.w500,
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //         Text(
+                                    //           "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
+                                    //           style: TextStyle(
+                                    //             fontSize: 10.sp,
+                                    //             color: Color.fromARGB(
+                                    //               125,
+                                    //               20,
+                                    //               45,
+                                    //               99,
+                                    //             ),
+                                    //             fontWeight: FontWeight.w500,
+                                    //           ),
+                                    //         ),
+                                    //         Icon(
+                                    //           Icons.arrow_right,
+                                    //           color: AppColors.blackBlue,
+                                    //           size: 12.sp,
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
+
                                     GestureDetector(
                                       onTap: () {
-                                        // context.read<ServiceCubit>().state.currentService!.id;
-                                        Modal().showBottomSheetListTournoi(
+                                        Navigator.push(
                                           context,
-                                          currentInfoAllTournoiAssCourant
-                                              .user_group!.tournois!,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailUsergroupPage(),
+                                          ),
                                         );
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(
-                                          top: 15.h,
+                                          top: 20.h,
                                           left: 10.w,
-                                          right: 10.w,
-                                          bottom: 15.h,
+                                          right: 15.w,
+                                          bottom: 20.h,
                                         ),
                                         decoration: BoxDecoration(
                                           // color: Colors.black12,
@@ -706,96 +929,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                               child: Row(
                                                 children: [
                                                   Container(
-                                                    child: Icon(
-                                                      Icons.ads_click_outlined,
-                                                      color: Colors.red,
-                                                      size: 15.sp,
-                                                    ),
-                                                    margin: EdgeInsets.only(
-                                                      right: 10.w,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "tournoi".tr(),
-                                                    style: TextStyle(
-                                                      fontSize: 15.sp,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            for (var item
-                                                in currentInfoAllTournoiAssCourant!
-                                                    .user_group!.tournois!)
-                                              if (item.tournois_code ==
-                                                  AppCubitStorage()
-                                                      .state
-                                                      .codeTournois)
-                                                Text(
-                                                  'Tournoi #${item.matricule}',
-                                                  style: TextStyle(
-                                                    fontSize: 10.sp,
-                                                    color: Color.fromARGB(
-                                                        125, 20, 45, 99),
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                            Icon(Icons.arrow_right,
-                                                color: AppColors.blackBlue,
-                                                size: 12.sp),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        // context.read<ServiceCubit>().state.currentService!.id;
-                                        Modal().showBottomSheetListAss(
-                                          context,
-                                          currentInfoAllAssociation,
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                          top: 15.h,
-                                          left: 10.w,
-                                          right: 10.w,
-                                          bottom: 15.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          // color: Colors.black12,
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                width: 1.r,
-                                                color: Color.fromARGB(
-                                                    12, 0, 0, 0)),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    width: 16.w,
+                                                    width: 28.w,
                                                     child: Image.asset(
-                                                      "assets/images/Groupe_ou_Asso.png",
+                                                      "assets/images/AssoplusFinal.png",
                                                       // scale: ,
                                                     ),
                                                     margin: EdgeInsets.only(
                                                         right: 10.w),
                                                   ),
                                                   Text(
-                                                    "Groups & associations"
+                                                    "${"Votre groupe".tr()} ASSO+"
                                                         .tr(),
                                                     style: TextStyle(
-                                                      fontSize: 15.sp,
+                                                      fontSize: 18.sp,
                                                       color:
                                                           AppColors.blackBlue,
                                                       fontWeight:
@@ -808,7 +954,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             Text(
                                               "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
                                               style: TextStyle(
-                                                fontSize: 10.sp,
+                                                fontSize: 11.sp,
                                                 color: Color.fromARGB(
                                                   125,
                                                   20,
@@ -821,152 +967,156 @@ class _SettingScreenState extends State<SettingScreen> {
                                             Icon(
                                               Icons.arrow_right,
                                               color: AppColors.blackBlue,
-                                              size: 12.sp,
+                                              size: 18.sp,
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        // context.read<MembreCubit>().showMembersAss(
-                                        //     AppCubitStorage().state.codeAssDefaul);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                AdministrationPageWebview(
-                                              forAdmin: false,
-                                              urlPage:
-                                                  'https://business.faroty.com/groups',
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                          top: 15.h,
-                                          left: 10.w,
-                                          right: 10.w,
-                                          bottom: 15.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          // color: Colors.black12,
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                width: 1.r,
-                                                color: Color.fromARGB(
-                                                    12, 0, 0, 0)),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    width: 20.w,
-                                                    child: Image.asset(
-                                                      "assets/images/AssoplusFinal.png",
-                                                      // scale: ,
-                                                    ),
-                                                    margin: EdgeInsets.only(
-                                                        right: 5.w),
-                                                  ),
-                                                  Text(
-                                                    "Créer un groupe ASSO+".tr(),
-                                                    style: TextStyle(
-                                                      fontSize: 15.sp,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.arrow_right,
-                                              color: AppColors.blackBlue,
-                                              size: 12.sp,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        context
-                                            .read<MembreCubit>()
-                                            .showMembersAss(AppCubitStorage()
-                                                .state
-                                                .codeAssDefaul);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                MembersAssPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                          top: 15.h,
-                                          left: 10.w,
-                                          right: 10.w,
-                                          bottom: 15.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          // color: Colors.black12,
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                width: 1.r,
-                                                color: Color.fromARGB(
-                                                    12, 0, 0, 0)),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    child: Icon(
-                                                      Icons.groups,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      size: 15.sp,
-                                                    ),
-                                                    margin: EdgeInsets.only(
-                                                        right: 10.w),
-                                                  ),
-                                                  Text(
-                                                    "Membres".tr(),
-                                                    style: TextStyle(
-                                                      fontSize: 15.sp,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.arrow_right,
-                                              color: AppColors.blackBlue,
-                                              size: 12.sp,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     // context.read<MembreCubit>().showMembersAss(
+                                    //     //     AppCubitStorage().state.codeAssDefaul);
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             AdministrationPageWebview(
+                                    //           forAdmin: false,
+                                    //           urlPage:
+                                    //               'https://business.faroty.com/groups',
+                                    //         ),
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    //   child: Container(
+                                    //     padding: EdgeInsets.only(
+                                    //       top: 15.h,
+                                    //       left: 10.w,
+                                    //       right: 10.w,
+                                    //       bottom: 15.h,
+                                    //     ),
+                                    //     decoration: BoxDecoration(
+                                    //       // color: Colors.black12,
+                                    //       border: Border(
+                                    //         bottom: BorderSide(
+                                    //             width: 1.r,
+                                    //             color: Color.fromARGB(
+                                    //                 12, 0, 0, 0)),
+                                    //       ),
+                                    //     ),
+                                    //     child: Row(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.center,
+                                    //       children: [
+                                    //         Expanded(
+                                    //           child: Row(
+                                    //             children: [
+                                    //               Container(
+                                    //                 width: 20.w,
+                                    //                 child: Image.asset(
+                                    //                   "assets/images/AssoplusFinal.png",
+                                    //                   // scale: ,
+                                    //                 ),
+                                    //                 margin: EdgeInsets.only(
+                                    //                     right: 5.w),
+                                    //               ),
+                                    //               Text(
+                                    //                 "Créer un groupe ASSO+"
+                                    //                     .tr(),
+                                    //                 style: TextStyle(
+                                    //                   fontSize: 15.sp,
+                                    //                   color:
+                                    //                       AppColors.blackBlue,
+                                    //                   fontWeight:
+                                    //                       FontWeight.w500,
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //         Icon(
+                                    //           Icons.arrow_right,
+                                    //           color: AppColors.blackBlue,
+                                    //           size: 12.sp,
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
+
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     context
+                                    //         .read<MembreCubit>()
+                                    //         .showMembersAss(AppCubitStorage()
+                                    //             .state
+                                    //             .codeAssDefaul);
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             MembersAssPage(),
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    //   child: Container(
+                                    //     padding: EdgeInsets.only(
+                                    //       top: 15.h,
+                                    //       left: 10.w,
+                                    //       right: 10.w,
+                                    //       bottom: 15.h,
+                                    //     ),
+                                    //     decoration: BoxDecoration(
+                                    //       // color: Colors.black12,
+                                    //       border: Border(
+                                    //         bottom: BorderSide(
+                                    //             width: 1.r,
+                                    //             color: Color.fromARGB(
+                                    //                 12, 0, 0, 0)),
+                                    //       ),
+                                    //     ),
+                                    //     child: Row(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.center,
+                                    //       children: [
+                                    //         Expanded(
+                                    //           child: Row(
+                                    //             children: [
+                                    //               Container(
+                                    //                 child: Icon(
+                                    //                   Icons.groups,
+                                    //                   color:
+                                    //                       AppColors.blackBlue,
+                                    //                   size: 15.sp,
+                                    //                 ),
+                                    //                 margin: EdgeInsets.only(
+                                    //                     right: 10.w),
+                                    //               ),
+                                    //               Text(
+                                    //                 "Membres".tr(),
+                                    //                 style: TextStyle(
+                                    //                   fontSize: 15.sp,
+                                    //                   color:
+                                    //                       AppColors.blackBlue,
+                                    //                   fontWeight:
+                                    //                       FontWeight.w500,
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //         Icon(
+                                    //           Icons.arrow_right,
+                                    //           color: AppColors.blackBlue,
+                                    //           size: 12.sp,
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
+
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -979,10 +1129,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(
-                                          top: 15.h,
-                                          left: 10.w,
-                                          right: 10.w,
-                                          bottom: 15.h,
+                                          top: 20.h,
+                                          left: 15.w,
+                                          right: 15.w,
+                                          bottom: 20.h,
                                         ),
                                         decoration: BoxDecoration(
                                           // color: Colors.black12,
@@ -1005,7 +1155,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     child: Icon(
                                                       Icons.settings_outlined,
                                                       color: Colors.brown,
-                                                      size: 15.sp,
+                                                      size: 18.sp,
                                                     ),
                                                     margin: EdgeInsets.only(
                                                         right: 10.w),
@@ -1013,7 +1163,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   Text(
                                                     "paramètres".tr(),
                                                     style: TextStyle(
-                                                      fontSize: 15.sp,
+                                                      fontSize: 18.sp,
                                                       color:
                                                           AppColors.blackBlue,
                                                       fontWeight:
@@ -1026,7 +1176,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             Icon(
                                               Icons.arrow_right,
                                               color: AppColors.blackBlue,
-                                              size: 12.sp,
+                                              size: 18.sp,
                                             ),
                                           ],
                                         ),
@@ -1041,10 +1191,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(
-                                          top: 15.h,
-                                          left: 10.w,
-                                          right: 10.w,
-                                          bottom: 15.h,
+                                          top: 20.h,
+                                          left: 15.w,
+                                          right: 15.w,
+                                          bottom: 20.h,
                                         ),
                                         decoration: BoxDecoration(
                                           // color: Colors.black12,
@@ -1067,16 +1217,17 @@ class _SettingScreenState extends State<SettingScreen> {
                                                       Icons.share_outlined,
                                                       color: AppColors
                                                           .greenAssociation,
-                                                      size: 15.sp,
+                                                      size: 18.sp,
                                                     ),
                                                     margin: EdgeInsets.only(
-                                                        right: 10.w),
+                                                      right: 10.w,
+                                                    ),
                                                   ),
                                                   Text(
                                                     "partager_l'application"
                                                         .tr(),
                                                     style: TextStyle(
-                                                      fontSize: 15.sp,
+                                                      fontSize: 18.sp,
                                                       color:
                                                           AppColors.blackBlue,
                                                       fontWeight:
@@ -1089,7 +1240,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             Icon(
                                               Icons.arrow_right,
                                               color: AppColors.blackBlue,
-                                              size: 12.sp,
+                                              size: 18.sp,
                                             ),
                                           ],
                                         ),
