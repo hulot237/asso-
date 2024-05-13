@@ -47,18 +47,20 @@ class _widgetDetailHistoriqueTontineCardState
     final detailCotisation = await context
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color:  AppColors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(15.r),
       ),
       alignment: Alignment.center,
-      padding: EdgeInsets. symmetric(horizontal: 10.w, vertical: 5.h,),
+      padding: EdgeInsets.symmetric(
+        horizontal: 10.w,
+        vertical: 5.h,
+      ),
       child: Row(
         children: [
           Expanded(
@@ -78,22 +80,17 @@ class _widgetDetailHistoriqueTontineCardState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                // margin: EdgeInsets.only(top: 3),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "${"Bénéficiaire".tr()} :",
-                                        style: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.534),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                child: Text(
+                                  "${"Bénéficiaire".tr()} :",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.blackBlueAccent1,
+                                  ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: 2.h,
                               ),
                               Container(
                                 child: Row(
@@ -115,58 +112,59 @@ class _widgetDetailHistoriqueTontineCardState
                           ),
                         ),
                       ),
-                      widget.isPayed == 0?
-                      GestureDetector(
-                        onTap: () async {
-                          String msg =
-                              "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                          String raisonComplete =
-                                            "Paiement de la tontine".tr();
-                                        String motif = "payer_vous_même".tr();
-                                        String paiementProcheMsg =
-                                            "partager_le_lien_de_paiement".tr();
-                                        String msgAppBarPaiementPage =
-                                            "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
-                                        Modal().showModalActionPayement(
-                                          context,
-                                          msg,
-                                          widget.lienDePaiement,
-                                          raisonComplete,
-                                          motif,
-                                          paiementProcheMsg,
-                                          msgAppBarPaiementPage,
-                                        );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                        width: 72.w,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 5.h,),
-                          decoration: BoxDecoration(
-                            color: AppColors.colorButton,
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          child: Container(
-                            child: Text(
-                              "Tontiner",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.sp,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ):Text(
-                                  "payé".tr(),
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FontStyle.italic
+                      widget.isPayed == 0
+                          ? GestureDetector(
+                              onTap: () async {
+                                String msg =
+                                    "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                String raisonComplete =
+                                    "Paiement de la tontine".tr();
+                                String motif = "payer_vous_même".tr();
+                                String paiementProcheMsg =
+                                    "partager_le_lien_de_paiement".tr();
+                                String msgAppBarPaiementPage =
+                                    "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
+                                Modal().showModalActionPayement(
+                                  context,
+                                  msg,
+                                  widget.lienDePaiement,
+                                  raisonComplete,
+                                  motif,
+                                  paiementProcheMsg,
+                                  msgAppBarPaiementPage,
+                                );
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 72.w,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 5.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.colorButton,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                ),
+                                child: Container(
+                                  child: Text(
+                                    "Tontiner",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.sp,
+                                      color: AppColors.white,
+                                    ),
                                   ),
                                 ),
-
+                              ),
+                            )
+                          : Text(
+                              "payé".tr(),
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.green,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.italic),
+                            ),
                     ],
                   ),
                 ),
@@ -180,7 +178,7 @@ class _widgetDetailHistoriqueTontineCardState
                         child: Text(
                           formatDateLiteral(widget.dateOpen),
                           style: TextStyle(
-                              fontSize: 10.sp,
+                              fontSize: 12.sp,
                               overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.w700,
                               color: Color.fromARGB(123, 20, 45, 99)),
@@ -204,8 +202,8 @@ class _widgetDetailHistoriqueTontineCardState
                                 "montant".tr(),
                                 style: TextStyle(
                                   fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(125, 20, 45, 99),
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.blackBlueAccent1,
                                 ),
                               ),
                             ),
@@ -220,7 +218,7 @@ class _widgetDetailHistoriqueTontineCardState
                                         "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 12.sp,
+                                          fontSize: 13.sp,
                                           color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -233,39 +231,45 @@ class _widgetDetailHistoriqueTontineCardState
                           ],
                         ),
                       ),
-                      if(checkTransparenceStatus(
-                      context
-                          .read<UserGroupCubit>()
-                          .state.changeAssData!.user_group!.configs,
-                      context.read<AuthCubit>().state.detailUser!["isMember"])
-                        )
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              child: Text(
-                                "montant_collecté".tr(),
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(125, 20, 45, 99),
+                      if (checkTransparenceStatus(
+                          context
+                              .read<UserGroupCubit>()
+                              .state
+                              .changeAssData!
+                              .user_group!
+                              .configs,
+                          context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"]))
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "montant_collecté".tr(),
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.blackBlueAccent1,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 3.h),
-                              child: Text(
-                                "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
-                                style: TextStyle(
-                                    fontSize: 12.sp,
+                              Container(
+                                margin: EdgeInsets.only(top: 3.h),
+                                child: Text(
+                                  "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
                                     color: AppColors.green,
-                                    fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

@@ -80,10 +80,9 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                       child: Text(
                                         "${"Tontine".tr()} :",
                                         style: TextStyle(
-                                          fontSize: 10.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.534),
+                                          color: AppColors.blackBlueAccent1,
                                         ),
                                       ),
                                     ),
@@ -97,7 +96,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                       child: Text(
                                         "${widget.nomTontine}",
                                         style: TextStyle(
-                                          fontSize: 12.sp,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
@@ -110,61 +109,61 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                           ),
                         ),
                       ),
-                      widget.isPayed == 0?
-                      GestureDetector(
-                        onTap: () async {
-                          String msg =
-                              "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
-                           String raisonComplete =
-                                            "Paiement de la tontine".tr();
-                                        String motif = "payer_vous_même".tr();
-                                        String paiementProcheMsg =
-                                            "partager_le_lien_de_paiement".tr();
-                                        String msgAppBarPaiementPage =
-                                            "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
-                                        Modal().showModalActionPayement(
-                                          context,
-                                          msg,
-                                          widget.lienDePaiement,
-                                          raisonComplete,
-                                          motif,
-                                          paiementProcheMsg,
-                                          msgAppBarPaiementPage,
-                                        );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 72.w,
-                          padding: EdgeInsets.only(
-                            left: 8.w,
-                            right: 8.w,
-                            top: 5.h,
-                            bottom: 5.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.colorButton,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Container(
-                            child: Text(
-                              "Tontiner",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.sp,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ):Text(
-                                  "payé".tr(),
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FontStyle.italic
+                      widget.isPayed == 0
+                          ? GestureDetector(
+                              onTap: () async {
+                                String msg =
+                                    "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                String raisonComplete =
+                                    "Paiement de la tontine".tr();
+                                String motif = "payer_vous_même".tr();
+                                String paiementProcheMsg =
+                                    "partager_le_lien_de_paiement".tr();
+                                String msgAppBarPaiementPage =
+                                    "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
+                                Modal().showModalActionPayement(
+                                  context,
+                                  msg,
+                                  widget.lienDePaiement,
+                                  raisonComplete,
+                                  motif,
+                                  paiementProcheMsg,
+                                  msgAppBarPaiementPage,
+                                );
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 72.w,
+                                padding: EdgeInsets.only(
+                                  left: 8.w,
+                                  right: 8.w,
+                                  top: 4.h,
+                                  bottom: 4.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.colorButton,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Container(
+                                  child: Text(
+                                    "Tontiner",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.sp,
+                                      color: AppColors.white,
+                                    ),
                                   ),
                                 ),
+                              ),
+                            )
+                          : Text(
+                              "payé".tr(),
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.green,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.italic),
+                            ),
                     ],
                   ),
                 ),
@@ -189,10 +188,9 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                       child: Text(
                                         "${"Bénéficiaire".tr()} :",
                                         style: TextStyle(
-                                          fontSize: 10.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.534),
+                                          color: AppColors.blackBlueAccent1,
                                         ),
                                       ),
                                     ),
@@ -207,7 +205,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                       child: Text(
                                         "${widget.nomBeneficiaire}",
                                         style: TextStyle(
-                                          fontSize: 12.sp,
+                                          fontSize: 13.sp,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.blackBlue,
                                         ),
@@ -232,7 +230,7 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                   child: Text(
                                     "${formatDateLiteral(widget.dateClose)}",
                                     style: TextStyle(
-                                      fontSize: 10.sp,
+                                      fontSize: 11.sp,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.blackBlueAccent1,
@@ -261,9 +259,9 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                               child: Text(
                                 "${"montant".tr()} :",
                                 style: TextStyle(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(125, 20, 45, 99),
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.blackBlueAccent1,
                                 ),
                               ),
                             ),
@@ -280,9 +278,10 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                         "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColors.blackBlue,
-                                            fontWeight: FontWeight.w600),
+                                          fontSize: 14.sp,
+                                          color: AppColors.blackBlue,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -311,10 +310,10 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 child: Text(
                                   "${"montant_collecté".tr()} :",
                                   style: TextStyle(
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color.fromARGB(125, 20, 45, 99),
-                                  ),
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
                                 ),
                               ),
                               Container(
@@ -322,9 +321,10 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 child: Text(
                                   "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
                                   style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.green,
-                                      fontWeight: FontWeight.w600),
+                                    fontSize: 14.sp,
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],

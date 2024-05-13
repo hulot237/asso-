@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/pages/contact_us_page.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
@@ -28,15 +29,18 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "a_propos_et_aide".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
         leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: BackButtonWidget(colorIcon: AppColors.white)
-        ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: BackButtonWidget(colorIcon: AppColors.white)),
       ),
       child: child,
     );
@@ -47,16 +51,19 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "a_propos_et_aide".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(
+          fontSize: 16.sp,
+          color: AppColors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
       leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: BackButtonWidget(colorIcon: AppColors.white)
-      ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: BackButtonWidget(colorIcon: AppColors.white)),
     ),
     body: child,
   );
@@ -77,152 +84,182 @@ class _ProposAidePageState extends State<ProposAidePage> {
       child: PageScaffold(
         context: context,
         child: Container(
-          padding: EdgeInsets.only(left: 20.w),
+          // padding: EdgeInsets.only(left: 20.w),
           // width: MediaQuery.of(context).size.width / 1.4,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListTile(
-                onTap: () {
-                  _launchSocial("https://faroty.com/privacies");
-                },
-                title: Row(
-                  children: [
-                    Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 12.sp,
-                        color: AppColors.blackBlue,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5.r),
-                      child: Text(
-                        "Politique de confidentialité".tr(),
-                        style: TextStyle(
-                          fontSize: 15.sp,
+              Container(
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.h, color: AppColors.colorButton.withOpacity(.2),),),),
+                child: ListTile(
+                  splashColor: AppColors.colorButton.withOpacity(.5),
+                  onTap: () {
+                    updateTrackingData(
+                        "aboutHelp.privacyPolicy", "${DateTime.now()}", {});
+                    _launchSocial("https://faroty.com/privacies");
+                  },
+                  title: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 12.sp,
                           color: AppColors.blackBlue,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: EdgeInsets.all(5.r),
+                        child: Text(
+                          "Politique de confidentialité".tr(),
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            color: AppColors.blackBlue,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              ListTile(
-                onTap: () {
-                  _launchSocial("https://faroty.com/termes");
-                },
-                title: Row(
-                  children: [
-                    Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 12.sp,
-                        color: AppColors.blackBlue,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5.r),
-                      child: Text(
-                        "Condition d'utilisation".tr(),
-                        style: TextStyle(
-                          fontSize: 15.sp,
+              Container(
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.h, color: AppColors.colorButton.withOpacity(.2),),),),
+                child: ListTile(
+                  splashColor: AppColors.colorButton.withOpacity(.5),
+                  onTap: () {
+                    updateTrackingData(
+                        "aboutHelp.conditionOfUse", "${DateTime.now()}", {});
+                    _launchSocial("https://faroty.com/termes");
+                  },
+                  title: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 12.sp,
                           color: AppColors.blackBlue,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: EdgeInsets.all(5.r),
+                        child: Text(
+                          "Condition d'utilisation".tr(),
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            color: AppColors.blackBlue,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              ListTile(
-                onTap: () {
-                  _launchSocial("https://faroty.com/Businesspage");
-                },
-                title: Row(
-                  children: [
-                    Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 12.sp,
-                        color: AppColors.blackBlue,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5.r),
-                      margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                      child: Text(
-                        "a_propos_de_l'application".tr(),
-                        style: TextStyle(
-                          fontSize: 15.sp,
+              Container(
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.h, color: AppColors.colorButton.withOpacity(.2),),),),
+                child: ListTile(
+                  splashColor: AppColors.colorButton.withOpacity(.5),
+                  onTap: () {
+                    updateTrackingData(
+                        "aboutHelp.aboutApp", "${DateTime.now()}", {});
+                    _launchSocial("https://faroty.com/Businesspage");
+                  },
+                  title: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 12.sp,
                           color: AppColors.blackBlue,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: EdgeInsets.all(5.r),
+                        margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                        child: Text(
+                          "a_propos_de_l'application".tr(),
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            color: AppColors.blackBlue,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              ListTile(
-                onTap: () {
-                  _launchSocial("https://faroty.com/helpdesk");
-                },
-                title: Row(
-                  children: [
-                    Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 12.sp,
-                        color: AppColors.blackBlue,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5.r),
-                      margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                      child: Text(
-                        "centre_d'aide".tr(),
-                        style: TextStyle(
-                          fontSize: 15.sp,
+              Container(
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.h, color: AppColors.colorButton.withOpacity(.2),),),),
+                child: ListTile(
+                  splashColor: AppColors.colorButton.withOpacity(.5),
+                  onTap: () {
+                    updateTrackingData(
+                        "aboutHelp.helpCenter", "${DateTime.now()}", {});
+                    _launchSocial("https://faroty.com/helpdesk");
+                  },
+                  title: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 12.sp,
                           color: AppColors.blackBlue,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: EdgeInsets.all(5.r),
+                        margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                        child: Text(
+                          "centre_d'aide".tr(),
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            color: AppColors.blackBlue,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContactUsPage(),
-                    ),
-                  );
-                },
-                title: Row(
-                  children: [
-                    Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 12.sp,
-                        color: AppColors.blackBlue,
+              Container(
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.h, color: AppColors.colorButton.withOpacity(.2),),),),
+                child: ListTile(
+                  splashColor: AppColors.colorButton.withOpacity(.5),
+                  onTap: () {
+                    updateTrackingData(
+                        "aboutHelp.contactUs", "${DateTime.now()}", {});
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ContactUsPage(),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5.r),
-                      margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                      child: Text(
-                        "nous_contacter".tr(),
-                        style: TextStyle(
-                          fontSize: 15.sp,
+                    );
+                  },
+                  title: Row(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 12.sp,
                           color: AppColors.blackBlue,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: EdgeInsets.all(5.r),
+                        margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                        child: Text(
+                          "nous_contacter".tr(),
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            color: AppColors.blackBlue,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

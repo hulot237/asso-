@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/pages/home_centrale_screen.dart';
+import 'package:faroty_association_1/routes/app_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,7 +76,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
 
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (BuildContext context) => HomePage(),
+                    builder: (BuildContext context) => HomeCentraleScreen(),
                   ),
                   (route) => false,
                 );
@@ -134,7 +136,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
 
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder: (BuildContext context) => HomePage(),
+                  builder: (BuildContext context) => HomeCentraleScreen(),
                 ),
                 (route) => false,
               );
@@ -267,7 +269,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
 
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (BuildContext context) => HomePage(),
+                builder: (BuildContext context) => HomeCentraleScreen(),
               ),
               (route) => false,
             );

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Theming/color.dart';
@@ -10,16 +11,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class PaiementPage extends StatefulWidget {
-  PaiementPage(
-      {super.key,
-      required this.lienDePaiement,
-      required this.msgAppBarPaiementPage});
-  String lienDePaiement;
-  String msgAppBarPaiementPage;
+//@RoutePage()
+class PaiementScreen extends StatefulWidget {
+  const PaiementScreen({
+    super.key,
+    required this.lienDePaiement,
+    required this.msgAppBarPaiementPage,
+  });
+  final String lienDePaiement;
+  final String msgAppBarPaiementPage;
 
   @override
-  State<PaiementPage> createState() => _PaiementPageState();
+  State<PaiementScreen> createState() => _PaiementScreenState();
 }
 
 Widget PageScaffold({
@@ -80,7 +83,7 @@ Widget PageScaffold({
   );
 }
 
-class _PaiementPageState extends State<PaiementPage> {
+class _PaiementScreenState extends State<PaiementScreen> {
   late final WebViewController _controller;
   int progression = 0;
 

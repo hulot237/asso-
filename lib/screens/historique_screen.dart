@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
@@ -29,8 +30,9 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/screens/detailTontinePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
-import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/pages/home_centrale_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/presentation/widgets/widgetCompteCard.dart';
+import 'package:faroty_association_1/routes/app_router.dart';
 import 'package:faroty_association_1/widget/add_asso_button_widget.dart';
 import 'package:faroty_association_1/widget/add_asso_element_button_widget.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
@@ -43,6 +45,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+//@RoutePage()
 class HistoriqueScreen extends StatefulWidget {
   const HistoriqueScreen({super.key});
 
@@ -61,7 +64,7 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "historiques".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white, fontWeight: FontWeight.bold,),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
         trailing: widgetAction,
@@ -75,7 +78,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "historiques".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
       ),
       backgroundColor: AppColors.red,
       elevation: 0,
@@ -269,7 +272,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
               onWillPop: () async {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (BuildContext context) => HomePage(),
+                    builder: (BuildContext context) => HomeCentraleScreen(),
                   ),
                   (route) => false,
                 );
@@ -291,6 +294,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: AppColors.white,
+                              fontWeight: FontWeight.bold
                             ),
                           ),
                           actions: [
@@ -302,7 +306,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                   width: 30.h,
                                   margin: EdgeInsets.only(right: 10.w),
                                   // padding: EdgeInsets.all(1.r),
-                                  child: AddAssoWidget(),
+                                  child: AddAssoWidget(
+                                    screenSource: "transactions.btnAddAsso",
+                                  ),
                                 ),
                                 if (!context
                                     .read<AuthCubit>()
@@ -310,6 +316,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                     .detailUser!["isMember"])
                                   GestureDetector(
                                     onTap: () async {
+                                      updateTrackingData(
+                                          "transactions.btnAdminister",
+                                          "${DateTime.now()}", {});
                                       await launchUrlString(
                                         "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
                                         mode: LaunchMode.platformDefault,
@@ -338,6 +347,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                   ),
                                 GestureDetector(
                                   onTap: () {
+                                    updateTrackingData("transactions.btnSwitch",
+                                        "${DateTime.now()}", {});
                                     Modal().showBottomSheetListAss(
                                       context,
                                       context
@@ -389,10 +400,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                     Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            HomePage(),
+                                            HomeCentraleScreen(),
                                       ),
                                       (route) => false,
                                     );
+                                    print("object");
                                   },
                                   child: BackButtonWidget(
                                     colorIcon: AppColors.white,
@@ -400,62 +412,70 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                 )
                               : Container(),
                           bottom: TabBar(
-                              labelPadding:
-                                  EdgeInsets.only(right: 10.w, left: 10.w),
-                              controller: _tabController,
-                              isScrollable: true,
-                              labelColor: AppColors.white,
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.sp,
+                            onTap: (value) {
+                              value == 0? updateTrackingData("transactions.meetingTabBar", "${DateTime.now()}", {})
+                              :value==1? updateTrackingData("transactions.tontineTabBar","${DateTime.now()}", {})
+                              :value==2? updateTrackingData("transactions.contributionTabBar","${DateTime.now()}", {})
+                              :value==3? updateTrackingData("transactions.sanctionTabBar","${DateTime.now()}", {})
+                              :updateTrackingData("transactions.Account","${DateTime.now()}", {});
+                            },
+                            labelPadding:
+                                EdgeInsets.only(right: 10.w, left: 10.w),
+                            controller: _tabController,
+                            isScrollable: true,
+                            labelColor: AppColors.white,
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                            ),
+                            padding: EdgeInsets.all(0),
+                            unselectedLabelStyle: TextStyle(
+                              color: AppColors.whiteAccent1,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                            ),
+                            indicator: UnderlineTabIndicator(
+                              borderSide: BorderSide(
+                                color: AppColors.white,
+                                width: 2.h,
                               ),
-                              padding: EdgeInsets.all(0),
-                              unselectedLabelStyle: TextStyle(
-                                color: AppColors.whiteAccent1,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
+                              insets: EdgeInsets.symmetric(
+                                horizontal: 20.0.w,
                               ),
-                              indicator: UnderlineTabIndicator(
-                                borderSide: BorderSide(
-                                  color: AppColors.white,
-                                  width: 2.h,
-                                ),
-                                insets: EdgeInsets.symmetric(
-                                  horizontal: 20.0.w,
-                                ),
+                            ),
+                            // indicatorWeight: 30.h,
+                            tabs: [
+                              Tab(
+                                text: "rencontres".tr(),
                               ),
-                              // indicatorWeight: 30.h,
-                              tabs: [
+                              if (UserGroupState
+                                      .changeAssData!.user_group!.is_tontine ==
+                                  true)
                                 Tab(
-                                  text: "rencontres".tr(),
+                                  text: "Tontines",
                                 ),
-                                if (UserGroupState.changeAssData!.user_group!
-                                        .is_tontine ==
-                                    true)
-                                  Tab(
-                                    text: "Tontines",
-                                  ),
+                              Tab(
+                                text: "cotisations".tr(),
+                              ),
+                              Tab(
+                                text: "Sanctions",
+                              ),
+                              if (checkTransparenceStatus(
+                                  context
+                                      .read<UserGroupCubit>()
+                                      .state
+                                      .changeAssData!
+                                      .user_group!
+                                      .configs,
+                                  context
+                                      .read<AuthCubit>()
+                                      .state
+                                      .detailUser!["isMember"]))
                                 Tab(
-                                  text: "cotisations".tr(),
+                                  text: "comptes".tr(),
                                 ),
-                                Tab(
-                                  text: "Sanctions",
-                                ),
-                                if (checkTransparenceStatus(
-                                    context
-                                        .read<UserGroupCubit>()
-                                        .state
-                                        .changeAssData!
-                                        .user_group!
-                                        .configs,
-                                    context
-                                        .read<AuthCubit>()
-                                        .state
-                                        .detailUser!["isMember"]))
-                                  Tab(
-                                    text: "comptes".tr(),
-                                  ),
-                              ]),
+                            ],
+                          ),
                         ),
                       ),
                       body: Container(
@@ -564,6 +584,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             ),
                                                             child:
                                                                 WidgetRencontreCard(
+                                                                  screenSource: "transactions.meeting",
                                                               typeRencontre:
                                                                   itemSeance[
                                                                       "type_rencontre"],
@@ -571,8 +592,13 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                               codeSeance:
                                                                   itemSeance[
                                                                       "seance_code"],
-                                                              photoProfilRecepteur:
-                                                                  itemSeance[
+                                                              photoProfilRecepteur: itemSeance[
+                                                                              "membre"]
+                                                                          [
+                                                                          "photo_profil"] ==
+                                                                      null
+                                                                  ? ''
+                                                                  : itemSeance[
                                                                           "membre"]
                                                                       [
                                                                       "photo_profil"],
@@ -630,6 +656,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     ),
                                                   ),
                                                   AddAssoElement(
+                                                    screenSource: "transactions.btnAddMeeting",
                                                     text:
                                                         "Ajouter une rencontre"
                                                             .tr(),
@@ -704,6 +731,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                 InkWell(
                                                                   onTap:
                                                                       () async {
+                                                                        updateTrackingData("transactions.btnAddMeeting","${DateTime.now()}", {});
                                                                     await launchUrlString(
                                                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances&app_mode=mobile",
                                                                       mode: LaunchMode
@@ -912,6 +940,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                   index];
                                                           return GestureDetector(
                                                             onTap: () {
+                                                              updateTrackingData("transactions.tontine","${DateTime.now()}", {});
                                                               handleDetailTontine(
                                                                   AppCubitStorage()
                                                                       .state
@@ -962,6 +991,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                           7.h),
                                                               child:
                                                                   widgetTontineHistoriqueCard(
+                                                                    
                                                                 isActive:
                                                                     itemTontine[
                                                                         "is_active"],
@@ -1142,6 +1172,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                         7.h),
                                                             child:
                                                                 WidgetCotisation(
+                                                                  screenSource: "transactions",
                                                               isPayed:
                                                                   ItemDetailCotisation[
                                                                       "is_payed"],
@@ -1210,6 +1241,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     ),
                                                   ),
                                                   AddAssoElement(
+                                                    
+                                                    screenSource: "transactions.btnAddContribution",
                                                     text:
                                                         "Ajouter une cotisation"
                                                             .tr(),
@@ -1265,11 +1298,14 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                               fontSize: 20.sp,
                                                             ),
                                                           ),
-
-
-                                                          if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                                                          if (!context
+                                                                  .read<AuthCubit>()
+                                                                  .state
+                                                                  .detailUser![
+                                                              "isMember"])
                                                             InkWell(
                                                               onTap: () async {
+                                                              updateTrackingData("transactions.btnAddContribution","${DateTime.now()}", {});
                                                                 await launchUrlString(
                                                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
                                                                   mode: LaunchMode
@@ -1387,7 +1423,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                 ),
                                                               ),
                                                             ),
-                                                        
                                                         ],
                                                       ),
                                                     );
@@ -1469,6 +1504,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                         7.h),
                                                             child:
                                                                 WidgetSanction(
+                                                                  screenSource: "transactions.sanction",
                                                               objetSanction: currentSaction[
                                                                           "libelle"] ==
                                                                       null
@@ -1526,9 +1562,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     ),
                                                   ),
                                                   AddAssoElement(
-                                                    text:
-                                                        "Ajouter une sanction"
-                                                            .tr(),
+                                                    screenSource: "transactions.btnAddSanction",
+                                                    text: "Ajouter une sanction"
+                                                        .tr(),
                                                     routeElement: "sanctions",
                                                   ),
                                                   if (AuthState.isLoading ==
@@ -1565,22 +1601,29 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                       child: Column(
                                                         children: [
                                                           Text(
-                                                            "aucune_sanction".tr(),
+                                                            "aucune_sanction"
+                                                                .tr(),
                                                             style: TextStyle(
-                                                                color:
-                                                                    Color.fromRGBO(
+                                                                color: Color
+                                                                    .fromRGBO(
                                                                         20,
                                                                         45,
                                                                         99,
                                                                         0.26),
                                                                 fontWeight:
-                                                                    FontWeight.w100,
-                                                                fontSize: 20.sp),
+                                                                    FontWeight
+                                                                        .w100,
+                                                                fontSize:
+                                                                    20.sp),
                                                           ),
-
-                                                          if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                                                          if (!context
+                                                                  .read<AuthCubit>()
+                                                                  .state
+                                                                  .detailUser![
+                                                              "isMember"])
                                                             InkWell(
                                                               onTap: () async {
+                                                                updateTrackingData("transactions.btnAddSanction","${DateTime.now()}", {});
                                                                 await launchUrlString(
                                                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanction&app_mode=mobile",
                                                                   mode: LaunchMode
@@ -1698,7 +1741,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                 ),
                                                               ),
                                                             ),
-                                                        
                                                         ],
                                                       ),
                                                     );
@@ -1786,6 +1828,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                         i++;
                                         return GestureDetector(
                                           onTap: () async {
+                                            updateTrackingData("transactions.account","${DateTime.now()}", {});
                                             context
                                                 .read<CompteCubit>()
                                                 .getTransactionCompte(

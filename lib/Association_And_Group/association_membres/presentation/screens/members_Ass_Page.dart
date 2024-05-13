@@ -39,6 +39,7 @@ Widget PageScaffold({
           style: TextStyle(
             fontSize: 16.sp,
             color: AppColors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
         trailing: Row(
@@ -81,7 +82,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Liste des membres".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,

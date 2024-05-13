@@ -56,6 +56,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
           UserGroupstate.changeAssData == null) return Container();
       return GestureDetector(
         onTap: () {
+          updateTrackingData("home.sanction", "${DateTime.now()}", {"type": 'sanction', "sanction_id": "${widget.codeCotisation}"});
           if (widget.type == "1")
             Modal().showModalTransactionByEvent(
                 context, widget.versement, widget.montantSanction.toString());
@@ -87,7 +88,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                         style: TextStyle(
                           color: AppColors.blackBlue,
                           fontWeight: FontWeight.w700,
-                          fontSize: 12.sp,
+                          fontSize: 13.sp,
                         ),
                       ),
                     ],
@@ -95,6 +96,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                   if (widget.type == "1")
                     GestureDetector(
                       onTap: () async {
+                        updateTrackingData("home.btnSanction", "${DateTime.now()}", {"type": 'sanction', "sanction_id": "${widget.codeCotisation}"});
                         String msg =
                             "Aide-moi à payer ma sanction de *${widget.motif}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* directement via le lien https://${widget.lienDePaiement}.";
                         String raisonComplete =
@@ -118,7 +120,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                         alignment: Alignment.center,
                           width: 72.w,
                           padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
+                            horizontal: 7.w,
                             vertical: 5.h,
                           ),
                           decoration: BoxDecoration(
@@ -140,7 +142,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 8.h),
+                margin: EdgeInsets.only(top: 7.h),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "${widget.motif}",
@@ -154,7 +156,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 5.h),
+                margin: EdgeInsets.only(top: 7.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -166,17 +168,18 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                             child: Text(
                               "Avance".tr(),
                               style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
                           ),
+                          SizedBox(height: 2.h,),
                           Container(
                             child: Text(
                               "${formatMontantFrancais(double.parse("${widget.montantCollecte}"))} FCFA",
                               style: TextStyle(
-                                fontSize: 12.sp,
+                                fontSize: 13.sp,
                                 color: AppColors.green,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -193,12 +196,13 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                           child: Text(
                             "a_payer".tr(),
                             style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
                               color: AppColors.blackBlueAccent1,
                             ),
                           ),
                         ),
+                        SizedBox(height: 2.h,),
                         Container(
                           child: Text(
                             widget.type == "1"
@@ -206,7 +210,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                                 : "${widget.libelleSanction}",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: 13.sp,
                               color: AppColors.blackBlue,
                               fontWeight: FontWeight.w600,
                             ),
@@ -218,12 +222,12 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 5.h),
+                margin: EdgeInsets.only(top: 7.h),
                 alignment: Alignment.bottomRight,
                 child: Text(
                   "${formatCompareDateReturnWellValueSanctionRecent(widget.dateOpen)}",
                   style: TextStyle(
-                    fontSize: 11.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackBlueAccent1,
                   ),

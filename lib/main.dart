@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
@@ -17,20 +18,20 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
-import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/firebase_options.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/network/session_activity/session_cubit.dart';
+import 'package:faroty_association_1/pages/splash_screen.dart';
+import 'package:faroty_association_1/pages/subscribe_form_screen.dart';
+import 'package:faroty_association_1/pages/home_centrale_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
-import 'package:faroty_association_1/pages/pre_login_page.dart';
-import 'package:faroty_association_1/pages/updatePage.dart';
+import 'package:faroty_association_1/pages/pre_login_screen.dart';
+import 'package:faroty_association_1/routes/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -46,12 +47,12 @@ Future<void> main() async {
 
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      // systemNavigationBarColor: Color.fromARGB(189, 255, 0, 0), // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-      statusBarIconBrightness: Brightness.dark, // status bar icons' color
-      statusBarBrightness: Brightness.dark
-      // systemNavigationBarIconBrightness: Brightness.light,
-    ),
+        // systemNavigationBarColor: Color.fromARGB(189, 255, 0, 0), // navigation bar color
+        statusBarColor: Colors.transparent, // status bar color
+        statusBarIconBrightness: Brightness.dark, // status bar icons' color
+        statusBarBrightness: Brightness.dark
+        // systemNavigationBarIconBrightness: Brightness.light,
+        ),
   );
 
   // if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
@@ -91,8 +92,10 @@ Future<void> main() async {
   );
 }
 
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
@@ -141,16 +144,21 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => MembreCubit(),
         ),
-        BlocProvider( 
+        BlocProvider(
           create: (context) => NotificationCubit(),
         ),
         BlocProvider(
           create: (context) => PretEpargneCubit(),
         ),
+        BlocProvider(
+          create: (context) => SessionCubit(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),
-        child: MaterialApp(
+        child: MaterialApp
+        // .router
+        (
           theme: ThemeData(
             useMaterial3: false,
             fontFamily: GoogleFonts.roboto().fontFamily,
@@ -159,14 +167,31 @@ class MyApp extends StatelessWidget {
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           debugShowCheckedModeBanner: false,
+
+          // routerConfig: _appRouter.config(
+          //   rebuildStackOnDeepLink: true,
+          //   deepLinkBuilder: (deepLink) {
+          //     final uri = deepLink.uri;
+          //     if (uri.path.contains('/subscribe')) {
+          //       String? urlcode = uri.queryParameters['urlcode'];
+          //       return DeepLink([SubscribeFormRoute(urlcodeAss: '$urlcode')]);
+          //       // path('${uri.path}?firstName=$firstName&lastName=$lastName&email=$email&mobile=$mobile');
+          //     }
+          //     return DeepLink.defaultPath;
+          //   },
+          // ),
+
           routes: {
-            "/": (context) => AppCubitStorage().state.tokenUser == null &&
-                    AppCubitStorage().state.codeAssDefaul == null
-                ? PreLoginPage()
-                : HomePage(),
+            "/": (context) => SplashScreen(),
+            // AppCubitStorage().state.tokenUser == null &&
+            //         AppCubitStorage().state.codeAssDefaul == null
+            //     ? PreLoginScreen()
+            //     : HomeCentraleScreen(),
+
             // : true? UpdatePage() : HomePage(),
             "/LoginPage": (context) => LoginPage(),
-            "/homepage": (context) => HomePage(),
+            "/homepage": (context) => HomeCentraleScreen(),
+            // "/": (context) => SubscribeForm(urlcodeAss: 'llle',),
           },
         ),
       ),

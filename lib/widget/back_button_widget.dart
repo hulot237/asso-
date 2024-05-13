@@ -16,14 +16,14 @@ class BackButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 30.w,
-      height: 30.h,
+      width: 25.w,
+      height: 25.h,
       color: Colors.transparent,
       child: Center(
         child: Container(
           // color: AppColors.bleuLight,
-          width: 20.w,
-          height: 20.h,
+          width: 15.w,
+          height: 15.h,
           // transformAlignment: Alignment.centerLeft,
           child: SvgPicture.asset(
             Platform.isAndroid

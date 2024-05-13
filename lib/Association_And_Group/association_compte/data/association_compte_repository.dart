@@ -12,7 +12,7 @@ class CompteRepository {
     try {
       log("response AllCotisationOfAss");
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/compte/$codeAssociation',
+        '${Variables.LienAIP}/api/v1/compte/$codeAssociation?versionApp${Variables.version}',
       );
       final List<dynamic> dataJson = response.data["data"];
       final List<CompteModel> dataCompteModel = dataJson

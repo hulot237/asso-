@@ -66,7 +66,7 @@ Widget PageScaffold({
         backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
           "detail_de_la_rencontre".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
           onTap: () {
@@ -86,7 +86,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "detail_de_la_rencontre".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -408,6 +408,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                 bottom: 7.h,
                                               ),
                                               child: WidgetCotisation(
+                                               screenSource: "meeting",
                                                 isPayed: ItemDetailCotisation[
                                                     "is_payed"],
                                                 montantCotisations:
@@ -534,6 +535,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                             bottom: 7.h,
                                           ),
                                           child: WidgetSanction(
+                                            screenSource: "meeting.sanction",
                                             objetSanction:
                                                 currentSaction["libelle"] ==
                                                         null

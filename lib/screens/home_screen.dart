@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
@@ -15,7 +16,6 @@ import 'package:faroty_association_1/Association_And_Group/association_seance/bu
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetRencontreCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -26,7 +26,7 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
+import 'package:faroty_association_1/network/session_activity/session_cubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,6 +34,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+//@RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
@@ -109,8 +110,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+  Future clearSessionIdStorage() async {
+    if (context.read<SessionCubit>().state.isValidSession == false) {
+      await AppCubitStorage().updateXSessionId(null);
+    }
+  }
+
   @override
   void initState() {
+    clearSessionIdStorage();
     handleAllUserGroup();
     handleTournoiDefault();
     handleRecentEvent(AppCubitStorage().state.membreCode);
@@ -120,6 +128,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     context.read<AuthCubit>().getUid();
     context.read<PretEpargneCubit>().getEpargne();
     context.read<PretEpargneCubit>().getPret();
+    context.read<SessionCubit>().GetSessionCubit();
     // handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
 
     super.initState();
@@ -317,6 +326,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       children: [
                                                         GestureDetector(
                                                           onTap: () {
+                                                            updateTrackingData("home.btnSwitch", "${DateTime.now()}", {});
                                                             Modal()
                                                                 .showBottomSheetListAss(
                                                               context,
@@ -408,25 +418,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         children: [
                                                           GestureDetector(
                                                             onTap: () async {
+                                                              updateTrackingData("home.btnAdminister", "${DateTime.now()}", {});
                                                               await launchUrlString(
                                                                 "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
                                                                 mode: LaunchMode
                                                                     .platformDefault,
                                                               );
-                                                              // );
-                                                              //                                                       Navigator.push(
-                                                              //                                                         context,
-                                                              //                                                         MaterialPageRoute(
-                                                              //                                                           builder:
-                                                              //                                                               (context) =>
-                                                              //                                                                   AdministrationPageWebview(
-                                                              //                                                             forAdmin:
-                                                              //                                                                 true,
-                                                              //                                                             urlPage:
-                                                              //                                                                 "https://groups.faroty.com",
-                                                              //                                                           ),
-                                                              //                                                         ),
-                                                              //                                                       );
                                                             },
                                                             child: Row(
                                                               children: [
@@ -474,7 +471,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                             2.w,
                                                                       ),
                                                                       Text(
-                                                                        "Administrer".tr(),
+                                                                        "Administrer"
+                                                                            .tr(),
                                                                         style:
                                                                             TextStyle(
                                                                           fontWeight:
@@ -636,6 +634,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       children: [
                                                         GestureDetector(
                                                           onTap: () {
+                                                            updateTrackingData("home.savingTransaction", "${DateTime.now()}", {});
                                                             Modal()
                                                                 .showModalTransactionEpargne(
                                                               context,
@@ -833,6 +832,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     ),
                                                     GestureDetector(
                                                       onTap: () async {
+                                                        updateTrackingData("home.btnSave", "${DateTime.now()}", {});
                                                         String msg =
                                                             "Aide-moi à épargner.\nMerci de suivre le lien https://${epargne["saving_pay_link"]} pour valider";
                                                         String raisonComplete =
@@ -964,6 +964,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             .pret;
                                         return GestureDetector(
                                           onTap: () {
+                                            updateTrackingData("home.loanTransaction", "${DateTime.now()}", {});
                                             Modal().showModalTransactionPret(
                                                 context);
                                             context
@@ -1041,6 +1042,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           ),
                                                           GestureDetector(
                                                             onTap: () async {
+                                                              updateTrackingData("home.btnRefund", "${DateTime.now()}", {});
                                                               String msg =
                                                                   "Aide-moi à payer ma dette.\nMerci de suivre le lien https://${pret["loan_pay_link"]} pour valider";
                                                               String
@@ -1379,6 +1381,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     ),
                                                     GestureDetector(
                                                       onTap: () async {
+                                                        updateTrackingData("home.btnRegistrationFund", "${DateTime.now()}", {});
                                                         String msg =
                                                             "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
                                                         String raisonComplete =
@@ -1605,6 +1608,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           child:
                                                               WidgetRencontreCard(
                                                             // typeRencontre: currentDetailtournoiCourant["type_rencontre"],
+                                                            screenSource: "home.meeting",
                                                             typeRencontre: currentDetailtournoiCourant[
                                                                         "tournois"]
                                                                     [

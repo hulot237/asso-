@@ -90,8 +90,8 @@
     "son": "Sound",
     "non": "No",
     "votre_profil": "Your profile",
-    "prénom": "Last Name",
-    "nom": "First Name",
+    "prénom": "Last name",
+    "nom": "First name",
     "numéro_de_téléphone": "Phone number",
     "adresse_email": "Email Address",
     "utilisation_et_confidentialité": "Terms of Use and Privacy",
@@ -217,5 +217,6 @@
     "Ajouter une rencontre": "Add a meeting",
     "Ajouter une cotisation": "Add a contribution",
     "Ajouter une sanction": "Add a sanction",
-    "Gérer la rencontre": "Manage the meeting"
+    "Gérer la rencontre": "Manage the meeting",
+    "Votre pouvez créer votre propre groupe ASSO+":"You can create your own ASSO+ group"
 }

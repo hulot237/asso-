@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class WidgetRencontreCard extends StatefulWidget {
   WidgetRencontreCard({
     super.key,
@@ -27,6 +26,7 @@ class WidgetRencontreCard extends StatefulWidget {
     required this.dateRencontreAPI,
     required this.maskElt,
     required this.typeRencontre,
+    required this.screenSource,
   });
 
   String prenomRecepteurRencontre;
@@ -42,6 +42,7 @@ class WidgetRencontreCard extends StatefulWidget {
   String dateRencontreAPI;
   bool maskElt;
   String typeRencontre;
+  String screenSource;
 
   @override
   State<WidgetRencontreCard> createState() => _WidgetRencontreCardState();
@@ -77,7 +78,8 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
     return BlocBuilder<SeanceCubit, SeanceState>(builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          print("eeeeeeeeeeeeeeeee");
+          updateTrackingData("${widget.screenSource}", "${DateTime.now()}",
+              {"type": 'meeting', "meeting_id": "${widget.codeSeance}"});
           handleDefaultSeance(widget.codeSeance);
           final detailSeance =
               context.read<SeanceCubit>().detailSeanceCubit(widget.codeSeance);
@@ -135,7 +137,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               "recepteur".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.sp,
+                                fontSize: 14.sp,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
@@ -148,14 +150,13 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 InkWell(
                                   onTap: () {
                                     Modal().showFullPicture(
-                                              context,
-                                              widget.photoProfilRecepteur == null
-                                                  ? "https://services.faroty.com/images/avatar/avatar.png"
-                                                  : "${Variables.LienAIP}${widget.photoProfilRecepteur}",
-                                              "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}".tr());
-                                    
-
-                                    // print("${Variables.LienAIP}${widget.photoProfilRecepteur}");
+                                      context,
+                                      widget.photoProfilRecepteur == null
+                                          ? "https://services.faroty.com/images/avatar/avatar.png"
+                                          : "${Variables.LienAIP}${widget.photoProfilRecepteur}",
+                                      "${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}"
+                                          .tr(),
+                                    );
                                   },
                                   child: Container(
                                     height: 15.w,
@@ -170,8 +171,6 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                   ),
                                 ),
                                 Container(
-                                  // alignment: Alignment.center,
-                                  // color: Colors.deepOrange,
                                   margin: EdgeInsets.only(left: 5.w),
                                   child: Column(
                                     crossAxisAlignment:
@@ -207,31 +206,32 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                    if(!widget.maskElt)
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  child: Text(
-                                    "rencontre".tr(),
-                                    style: TextStyle(
+                          if (!widget.maskElt)
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      "rencontre".tr(),
+                                      style: TextStyle(
                                         color: AppColors.blackBlue,
-                                        fontSize: 12.sp,),
+                                        fontSize: 14.sp,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    " ${widget.identifiantRencontre}",
-                                    style: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.bold),
+                                  Container(
+                                    child: Text(
+                                      " ${widget.identifiantRencontre}",
+                                      style: TextStyle(
+                                          color: AppColors.blackBlue,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
                           if (widget.isActiveRencontre == 0)
                             Container(
                               padding: EdgeInsets.only(top: 5.h),
@@ -244,15 +244,18 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 child: Text(
                                   "Archivé".tr(),
                                   style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.sp,),
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 12.sp,
+                                  ),
                                 ),
                               ),
                             ),
                           if (widget.isActiveRencontre == 1 && isPasseDate())
                             Container(
-                              padding: EdgeInsets.only(top: 5.h,),
+                              padding: EdgeInsets.only(
+                                top: 5.h,
+                              ),
                               // decoration: BoxDecoration(
                               //     color: Color.fromARGB(24, 212, 0, 0),
                               //     borderRadius: BorderRadius.circular(7)),
@@ -261,9 +264,10 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 child: Text(
                                   "terminé".tr(),
                                   style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.sp,),
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 12.sp,
+                                  ),
                                 ),
                               ),
                             ),
@@ -278,9 +282,10 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 child: Text(
                                   "en_cours".tr(),
                                   style: TextStyle(
-                                      color: AppColors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.sp,),
+                                    color: AppColors.green,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 12.sp,
+                                  ),
                                 ),
                               ),
                             )
@@ -339,13 +344,13 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               "lieu".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.sp,
+                                fontSize: 11.sp,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 1.h),
+                            margin: EdgeInsets.only(top: 2.h),
                             child: Row(
                               children: [
                                 Flexible(
@@ -354,9 +359,10 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                       widget.lieuRencontre,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          fontSize: 10.sp,
-                                          color: AppColors.blackBlue,
-                                          fontWeight: FontWeight.bold,),
+                                        fontSize: 11.sp,
+                                        color: AppColors.blackBlue,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -384,18 +390,22 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                               "Type".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.sp,
+                                fontSize: 11.sp,
                                 color: AppColors.blackBlueAccent1,
                               ),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 1.h),
+                            margin: EdgeInsets.only(top: 2.h),
                             child: Text(
-                              widget.typeRencontre == "0"? "Ordinaire".tr(): widget.typeRencontre == "1"? "Extraordinaire".tr(): "Comité",
+                              widget.typeRencontre == "0"
+                                  ? "Ordinaire".tr()
+                                  : widget.typeRencontre == "1"
+                                      ? "Extraordinaire".tr()
+                                      : "Comité",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: 11.sp,
                                   color: AppColors.blackBlue,
                                   fontWeight: FontWeight.bold),
                             ),

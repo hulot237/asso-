@@ -1,4 +1,5 @@
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,11 @@ class AddAssoElement extends StatelessWidget {
     super.key,
     required this.text,
     required this.routeElement,
+    required this.screenSource,
   });
   String text;
   String routeElement;
+  String screenSource;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,9 @@ class AddAssoElement extends StatelessWidget {
       right: 8.w,
       child: !context.read<AuthCubit>().state.detailUser!["isMember"]
           ? GestureDetector(
+
               onTap: () async {
+                updateTrackingData("${screenSource}","${DateTime.now()}", {});
                 await launchUrlString(
                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/${routeElement}&app_mode=mobile",
                   mode: LaunchMode.platformDefault,

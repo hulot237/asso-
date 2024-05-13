@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
@@ -9,23 +10,25 @@ import 'package:faroty_association_1/Association_And_Group/association_recent_ev
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
-import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/screens/homeScreen.dart';
+import 'package:faroty_association_1/pages/updatePage.dart';
+import 'package:faroty_association_1/screens/home_screen.dart';
 import 'package:faroty_association_1/screens/settingsScreen.dart';
-import 'package:faroty_association_1/screens/HistoriqueScreen.dart';
+import 'package:faroty_association_1/screens/historique_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+//@RoutePage()
+class HomeCentraleScreen extends StatefulWidget {
+  const HomeCentraleScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeCentraleScreen> createState() => _HomeCentraleScreenState();
 }
 
 // Widget PageScaffold({
@@ -161,7 +164,7 @@ Widget PageScaffold({
   );
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
   int _pageIndex = 0;
   final screens = [
     HomeScreen(),
@@ -290,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                   items: [
                     BottomNavigationBarItem(
                       icon: Container(
-                        margin: EdgeInsets.all( 2.h),
+                        margin: EdgeInsets.all(2.h),
                         width: 60.w,
                         height: 30.h,
                         decoration: BoxDecoration(
@@ -336,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     BottomNavigationBarItem(
                       icon: Container(
-                       margin: EdgeInsets.all(2.h),
+                        margin: EdgeInsets.all(2.h),
                         width: 60.w,
                         height: 30.h,
                         decoration: BoxDecoration(
@@ -357,10 +360,18 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                   currentIndex: _pageIndex,
-                  onTap: (index) {
+                  onTap: (index) async {
+                    index == 0
+                        ? updateTrackingData("home.index", "${DateTime.now()}", {})
+                        : index == 1
+                            ? updateTrackingData(
+                                "transactions.index", "${DateTime.now()}", {})
+                            : updateTrackingData(
+                                "profile.index", "${DateTime.now()}", {});
                     setState(
                       () {
                         _pageIndex = index;
+                        print(index);
                       },
                     );
                   },

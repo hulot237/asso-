@@ -61,6 +61,7 @@ Widget PageScaffold({
           style: TextStyle(
             fontSize: 16.sp,
             color: AppColors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
         leading: GestureDetector(
@@ -81,7 +82,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Detail de la tontine".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -180,13 +181,13 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                     children: [
                                       Container(
                                         margin: EdgeInsets.only(bottom: 3.h),
-                                        width: 70.w,
+                                        width: 95.w,
                                         child: Text(
                                           "${itemListMembre["membre"]["first_name"] == null ? "" : itemListMembre["membre"]["first_name"]} ${itemListMembre["membre"]["last_name"] == null ? "" : itemListMembre["membre"]["last_name"]}",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            fontSize: 8.sp,
+                                            fontSize: 9.sp,
                                             fontWeight: FontWeight.w800,
                                             color: AppColors.blackBlue,
                                           ),
@@ -217,9 +218,9 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                                       ? Text(
                                                           "${itemListMembre["position"]}",
                                                           style: TextStyle(
-                                                            fontSize: 8.sp,
+                                                            fontSize: 9.sp,
                                                             fontWeight:
-                                                                FontWeight.w700,
+                                                                FontWeight.w900,
                                                             color:
                                                                 Color.fromRGBO(
                                                                     20,
@@ -230,7 +231,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                                         )
                                                       : Icon(
                                                           Icons.check,
-                                                          size: 10.sp,
+                                                          size: 12.sp,
                                                           color:
                                                               AppColors.white,
                                                         )),
@@ -243,7 +244,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                                           20, 45, 99, 0.24)
                                                       : Color.fromRGBO(
                                                           15, 190, 24, 0.658),
-                                              width: 80.w,
+                                              width: 100.w,
                                               height: 2.h,
                                             ),
                                           ],

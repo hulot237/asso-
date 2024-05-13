@@ -72,6 +72,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
         );
       return GestureDetector(
         onTap: () {
+          updateTrackingData("home.contribution", "${DateTime.now()}", {"type": 'contribution', "contribution_id": "${widget.codeCotisation}"});
           if (checkTransparenceStatus(
               context
                   .read<UserGroupCubit>()
@@ -155,13 +156,14 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                             style: TextStyle(
                               color: AppColors.blackBlue,
                               fontWeight: FontWeight.w700,
-                              fontSize: 12.sp,
+                              fontSize: 13.sp,
                             ),
                           ),
                         ],
                       ),
                       GestureDetector(
                         onTap: () async {
+                          updateTrackingData("home.btnContribution", "${DateTime.now()}", {"type": 'contribution', "contribution_id": "${widget.codeCotisation}"});
                           String msg =
                               "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
 
@@ -208,7 +210,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 8.h),
+                    margin: EdgeInsets.only(top: 7.h),
                     alignment: Alignment.centerLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,12 +227,13 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                             overflow: TextOverflow.clip,
                           ),
                         ),
+                        SizedBox(height: 1.h,),
                         Text(
                           widget.source == ''
                               ? "(${(widget.nomBeneficiaire)})"
                               : "(${(widget.source)})",
                           style: TextStyle(
-                            fontSize: 10.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.blackBlueAccent1,
                             overflow: TextOverflow.ellipsis,
@@ -241,7 +244,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                   ),
                   Container(
                     margin: EdgeInsets.only(
-                      top: 5.h,
+                      top: 7.h,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,7 +268,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                             child: Text(
                               "${formatCompareDateReturnWellValue(widget.dateClose)}",
                               style: TextStyle(
-                                fontSize: 11.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.blackBlueAccent1,
                               ),
@@ -292,12 +295,13 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                                     child: Text(
                                       "montant_collecté".tr(),
                                       style: TextStyle(
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
                                         color: AppColors.blackBlueAccent1,
                                       ),
                                     ),
                                   ),
+                                  SizedBox(height: 2.h,),
                                   Container(
                                     child: Text(
                                       "${formatMontantFrancais(
@@ -305,7 +309,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                                             "${widget.montantCollecte}"),
                                       )} FCFA",
                                       style: TextStyle(
-                                        fontSize: 12.sp,
+                                        fontSize: 13.sp,
                                         color: AppColors.green,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -322,12 +326,13 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                               child: Text(
                                 "montant".tr(),
                                 style: TextStyle(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
                                   color: AppColors.blackBlueAccent1,
                                 ),
                               ),
                             ),
+                            SizedBox(height: 2.h,),
                             Container(
                               child: Text(
                                 widget.type == "1"
@@ -335,7 +340,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                                   // : "type_fixe".tr(),
                                 "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: 13.sp,
                                   color: AppColors.blackBlue,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -355,12 +360,12 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                           .configs,
                       context.read<AuthCubit>().state.detailUser!["isMember"]))
                     Container(
-                      margin: EdgeInsetsDirectional.only(top: 5.h),
+                      margin: EdgeInsetsDirectional.only(top: 7.h),
                       alignment: Alignment.bottomRight,
                       child: Text(
                         "${formatCompareDateReturnWellValue(widget.dateClose)}",
                         style: TextStyle(
-                          fontSize: 11.sp,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                           color: AppColors.blackBlueAccent1,
                         ),

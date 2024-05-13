@@ -10,7 +10,7 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> UserDetail(userCode, codeTournoi) async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi',
+      '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi?versionApp${Variables.version}',
     );
     final Map<String, dynamic> dataJson = response.data["data"];
 

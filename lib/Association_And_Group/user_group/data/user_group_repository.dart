@@ -8,6 +8,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 
 class UserGroupRepository {
   final dio = Dio();
+
   Future<List> AllGroupOfUser(token) async {
     try {
       // Récupérer le token du bloc hydraté

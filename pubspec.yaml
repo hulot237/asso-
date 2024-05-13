@@ -54,7 +54,7 @@ dependencies:
   flutter_local_notifications: ^16.1.0
   intl_phone_field: ^3.2.0
   easy_loader: ^2.0.0
-  google_fonts: ^6.1.0
+  google_fonts: 6.1.0
   flutter_launcher_icons: ^0.13.1
   flutter_html: ^3.0.0-beta.2
   collection: ^1.18.0
@@ -63,6 +63,14 @@ dependencies:
   # flutter_inappwebview: ^6.0.0
   url_launcher: ^6.2.5
   flutter_svg: ^2.0.10+1
+  qr_flutter: ^4.1.0
+  toastification: ^2.0.0
+  auto_route: ^8.1.1
+  sms_autofill: ^2.3.1
+  pinput: ^4.0.0
+  telephony: ^0.2.0
+  # auto_route
+
 
   
 
@@ -73,6 +81,7 @@ dev_dependencies:
     sdk: flutter
   json_serializable: ^6.7.1
   build_runner: ^2.3.3
+  auto_route_generator: ^8.0.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -63,15 +63,15 @@ Widget PageScaffold({
         backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
           "detail_de_la_cotisations".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },
           child: BackButtonWidget(
-                                    colorIcon: AppColors.white,
-                                  ),
+            colorIcon: AppColors.white,
+          ),
         ),
       ),
       child: child,
@@ -86,6 +86,7 @@ Widget PageScaffold({
         style: TextStyle(
           fontSize: 16.sp,
           color: AppColors.white,
+          fontWeight: FontWeight.bold
         ),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
@@ -95,8 +96,8 @@ Widget PageScaffold({
           Navigator.pop(context);
         },
         child: BackButtonWidget(
-                                    colorIcon: AppColors.white,
-                                  ),
+          colorIcon: AppColors.white,
+        ),
       ),
     ),
     body: child,
@@ -257,9 +258,13 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                   )
                                 : Column(
                                     children: [
-                                      for (var itemDetailCotisation in currentDetailCotisation["membres"])
-                                        if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
-                                          for (var item in itemDetailCotisation["payments"])
+                                      for (var itemDetailCotisation
+                                          in currentDetailCotisation["membres"])
+                                        if (itemDetailCotisation["membre"]
+                                                ["membre_code"] ==
+                                            AppCubitStorage().state.membreCode)
+                                          for (var item in itemDetailCotisation[
+                                              "payments"])
                                             Container(
                                               child:
                                                   widgetListTransactionByEventCard(
@@ -274,22 +279,28 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                                 montant: item["amount"],
                                               ),
                                             ),
-                                      for (var itemDetailCotisation in currentDetailCotisation["membres"])
-                                        if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
-                                          if (itemDetailCotisation["payments"].length==0)
-                                        Container(
-                                          padding: EdgeInsets.only(top: 200.h),
-                                          alignment: Alignment.topCenter,
-                                          child: Text(
-                                            "aucune_transaction".tr(),
-                                            style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  20, 45, 99, 0.26),
-                                              fontWeight: FontWeight.w100,
-                                              fontSize: 20.sp,
-                                            ),
-                                          ),
-                                        )
+                                      for (var itemDetailCotisation
+                                          in currentDetailCotisation["membres"])
+                                        if (itemDetailCotisation["membre"]
+                                                ["membre_code"] ==
+                                            AppCubitStorage().state.membreCode)
+                                          if (itemDetailCotisation["payments"]
+                                                  .length ==
+                                              0)
+                                            Container(
+                                              padding:
+                                                  EdgeInsets.only(top: 200.h),
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                "aucune_transaction".tr(),
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      20, 45, 99, 0.26),
+                                                  fontWeight: FontWeight.w100,
+                                                  fontSize: 20.sp,
+                                                ),
+                                              ),
+                                            )
                                     ],
                                   ),
                           ),

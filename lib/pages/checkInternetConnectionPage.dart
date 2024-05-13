@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/pages/homePage.dart';
+import 'package:faroty_association_1/pages/home_centrale_screen.dart';
+import 'package:faroty_association_1/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -82,7 +84,7 @@ class _checkInternetConnectionPageState
                   if (widget.backToHome!)
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (BuildContext context) => HomePage(),
+                        builder: (BuildContext context) => HomeCentraleScreen(),
                       ),
                       (route) => false,
                     );

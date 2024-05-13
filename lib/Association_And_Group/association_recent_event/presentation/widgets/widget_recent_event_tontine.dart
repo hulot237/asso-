@@ -59,6 +59,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
           UserGroupstate.changeAssData == null) return Container();
       return GestureDetector(
         onTap: () {
+          updateTrackingData("home.tontine", "${DateTime.now()}", {"type": 'tontine', "tontine_id": "${widget.codeCotisation}"});
           if (checkTransparenceStatus(
               context
                   .read<UserGroupCubit>()
@@ -124,6 +125,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                       ),
                       GestureDetector(
                         onTap: () async {
+                          updateTrackingData("home.btnTontine", "${DateTime.now()}", {"type": 'tontine', "tontine_id": "${widget.codeCotisation}"});
                           String msg =
                               "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
                            String raisonComplete =
@@ -169,7 +171,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 8.h),
+                    margin: EdgeInsets.only(top: 7.h),
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "${widget.nomTontine}",
@@ -196,21 +198,20 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                                     child: Text(
                                       "${"Bénéficiaire".tr()} :",
                                       style: TextStyle(
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color:
-                                            Color.fromRGBO(20, 45, 99, 0.534),
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color:AppColors.blackBlueAccent1,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
+                            ),SizedBox(height: 2.h,),
                             Container(
                               child: Text(
                                 "${widget.nomBeneficiaire}",
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.blackBlue,
                                 ),
@@ -225,8 +226,8 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                               child: Text(
                                 "montant".tr(),
                                 style: TextStyle(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
                                   color: AppColors.blackBlueAccent1,
                                 ),
                               ),
@@ -235,7 +236,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                               child: Text(
                                 "${formatMontantFrancais(double.parse("${widget.montantTontine}"))} FCFA",
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: 13.sp,
                                   color: AppColors.blackBlue,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -269,19 +270,19 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                                 child: Text(
                                   "montant_collecté".tr(),
                                   style: TextStyle(
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
                                     color: AppColors.blackBlueAccent1,
                                   ),
                                 ),
-                              ),
+                              ),SizedBox(height: 2.h,),
                               Container(
                                 child: Text(
                                   "${formatMontantFrancais(
                                     double.parse("${widget.montantCollecte}"),
                                   )} FCFA",
                                   style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: 13.sp,
                                     color: AppColors.green,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -293,7 +294,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                           child: Text(
                             "${formatCompareDateReturnWellValue(widget.dateClose)}",
                             style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
                               color: AppColors.blackBlueAccent1,
                             ),

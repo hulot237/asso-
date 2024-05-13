@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Modals/variable.dart';
+import 'package:faroty_association_1/localStorage/app_storage_model_tracking.dart';
+import 'package:faroty_association_1/network/token_interceptor.dart';
 
 String formatMontantFrancais(double montant) {
   // Utilise la fonction 'toStringAsFixed' pour formater le montant avec deux décimales
@@ -124,10 +128,6 @@ String formatCompareDateReturnWellValue(
   return formattedDate;
 }
 
-
-
-
-
 String formatCompareDateUnikReturnWellValue(
   String endDate,
 ) {
@@ -179,14 +179,6 @@ String formatCompareDateUnikReturnWellValue(
 
   return formattedDate;
 }
-
-
-
-
-
-
-
-
 
 String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
   final dateTime = DateTime.parse(endDate);
@@ -248,7 +240,7 @@ checkAdminStatus(bool isAdmin) {
   // Recherche de l'objet dans le tableau avec name == "has_transparence"
 
   // if (!context.read<AuthCubit>().state.detailUser!["isMember"]) {
-    return isAdmin;
+  return isAdmin;
   // }
 }
 
@@ -271,7 +263,6 @@ isPasseDate(dateRencontreAPI) {
   }
 }
 
-
 String formatDateTimeintegral(String lang, String dateTimeStr) {
   // Conversion de la chaîne de date en objet DateTime
   DateTime dateTime = DateTime.parse(dateTimeStr);
@@ -290,14 +281,46 @@ String formatDateTimeintegral(String lang, String dateTimeStr) {
   }
 
   // Formattage de la date dans le format demandé
-  String formattedDate =
-      '$dayOfWeek ${dateTime.day} $month ${dateTime.year}';
+  String formattedDate = '$dayOfWeek ${dateTime.day} $month ${dateTime.year}';
 
   return formattedDate;
 }
 
-
 String removeBBalise(String htmlString) {
   RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
   return htmlString.replaceAll(exp, '');
+}
+
+trakingActivity(String code, String data, String date) {}
+
+updateTrackingData(String code, String date, Map<String, dynamic> data) async {
+  List<UserAction> updatedTrackingData = []; // Initialisation de la liste
+  print("$date");
+  UserAction oneAction = UserAction(code: code, date: date, data: data);
+  updatedTrackingData.add(oneAction);
+  print("$updatedTrackingData");
+  // Envoi de la liste à l'API en utilisant Dio
+  try {
+    // Créer une instance de Dio
+    Dio dio = Dio()
+      ..interceptors.addAll([
+        TokenInterceptor(),
+      ]);
+
+
+    // Envoi des données à l'API
+    Response response = await dio.post(
+      '${Variables.LienAIP}/api/v1/save-user-actions',
+      data: {"events": updatedTrackingData},
+    );
+
+    // Vérifier si la requête a réussi
+    if (response.statusCode == 200) {
+      print('Données de suivi mises à jour avec succès.');
+    } else {
+      print('Échec de la mise à jour des données de suivi.');
+    }
+  } catch (e) {
+    print('Erreur lors de la mise à jour des données de suivi: $e');
+  }
 }

@@ -195,6 +195,7 @@ class _NotificationPageState extends State<NotificationPage> {
                               itemBuilder: (c, element) {
                                 return GestureDetector(
                                   onTap: () async {
+                                    updateTrackingData("notification.openNotification","${DateTime.now()}", {});
                                     _showSimpleModalDialog(
                                         context, element.description);
 

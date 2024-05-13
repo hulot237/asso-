@@ -31,6 +31,7 @@ class WidgetCotisation extends StatefulWidget {
     required this.nomBeneficiaire,
     required this.rubrique,
     required this.isPayed,
+    required this.screenSource,
   });
   int montantCotisations;
   String motifCotisations;
@@ -46,6 +47,7 @@ class WidgetCotisation extends StatefulWidget {
   String nomBeneficiaire;
   String rubrique;
   int isPayed;
+  String screenSource;
 
   @override
   State<WidgetCotisation> createState() => _WidgetCotisationState();
@@ -67,6 +69,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
         builder: (CotisationContext, CotisationState) {
       return GestureDetector(
         onTap: () {
+          updateTrackingData(
+              "${widget.screenSource}.contribution", "${DateTime.now()}", {});
           handleDetailCotisation(widget.codeCotisation);
           print("${widget.codeCotisation}");
 
@@ -126,7 +130,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                 children: [
                                   if (widget.rubrique != "")
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 3.h),
+                                      margin: EdgeInsets.only(bottom: 5.h),
                                       child: Text(
                                         '${widget.rubrique}'.toUpperCase(),
                                         style: TextStyle(
@@ -141,7 +145,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(bottom: 2.h),
+                                        margin: EdgeInsets.only(bottom: 4.h),
                                         child: Text(
                                           widget.motifCotisations,
                                           style: TextStyle(
@@ -158,7 +162,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                               ? "${(widget.nomBeneficiaire)}"
                                               : "${(widget.source)}",
                                           style: TextStyle(
-                                            fontSize: 10.sp,
+                                            fontSize: 11.sp,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.blackBlueAccent1,
                                           ),
@@ -175,6 +179,9 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
+                                        updateTrackingData(
+                                            "${widget.screenSource}.btnContribution",
+                                            "${DateTime.now()}", {});
                                         String msg =
                                             "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
                                         String raisonComplete =
@@ -196,11 +203,12 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       },
                                       child: Container(
                                         alignment: Alignment.center,
-                                        width: 75.w,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 5.w,
-                            vertical: 5.h,
-                          ),
+                                        width: 72.w,
+                                        margin: EdgeInsets.only(bottom: 2.h),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 5.w,
+                                          vertical: 4.h,
+                                        ),
                                         decoration: BoxDecoration(
                                           color: AppColors.colorButton,
                                           borderRadius:
@@ -211,7 +219,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                             "cotiser".tr(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 11.sp,
+                                              fontSize: 12.sp,
                                               color: AppColors.white,
                                             ),
                                           ),
@@ -229,8 +237,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                           child: Text(
                                             "expiré".tr(),
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 8.sp,
+                                              // fontWeight: FontWeight.bold,
+                                              fontSize: 10.sp,
                                               color: AppColors.red,
                                             ),
                                           ),
@@ -241,14 +249,17 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               : Text(
                                   "payé".tr(),
                                   style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppColors.green,
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.italic),
+                                    fontSize: 14.sp,
+                                    color: AppColors.green,
+                                    fontWeight: FontWeight.w600,
+                                    fontStyle: FontStyle.italic,
+                                  ),
                                 ),
                         ],
                       ),
                     ),
+
+
                     Container(
                       margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
                       width: MediaQuery.of(context).size.width / 1.1,
@@ -265,7 +276,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   : "type_fixe".tr(),
                               style: TextStyle(
                                 color: AppColors.blackBlue,
-                                fontSize: 12.sp,
+                                fontSize: 13.sp,
                               ),
                             ),
                           ),
@@ -277,18 +288,19 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   child: Text(
                                     "montant".tr(),
                                     style: TextStyle(
-                                      fontSize: 10.sp,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.blackBlue,
                                     ),
                                   ),
                                 ),
+                                SizedBox(height: 2.h,),
                                 Container(
                                   child: Text(
                                     "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
                                     style: TextStyle(
                                       color: AppColors.blackBlue,
-                                      fontSize: 12.sp,
+                                      fontSize: 13.sp,
                                     ),
                                   ),
                                 ),
@@ -322,7 +334,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                     child: Icon(
                                       Icons.wallet_rounded,
                                       color: AppColors.blackBlue,
-                                      size: 16.sp,
+                                      size: 18.sp,
                                     ),
                                     margin: EdgeInsets.only(right: 5.w),
                                   ),
@@ -330,7 +342,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       child: Text(
                                     "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
                                     style: TextStyle(
-                                        fontSize: 12.sp,
+                                        fontSize: 13.sp,
                                         fontWeight: FontWeight.w800,
                                         color: AppColors.green),
                                   ))
@@ -342,7 +354,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                 formatDateLiteral(widget.dateCotisation),
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: 12.sp,
                                   color: AppColors.blackBlueAccent1,
                                   fontWeight: FontWeight.w600,
                                 ),

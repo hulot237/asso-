@@ -62,7 +62,7 @@ class _widgetDetailCotisationCardState
           borderRadius: BorderRadius.circular(15.r),
         ),
         alignment: Alignment.center,
-        padding: EdgeInsets.all(12.r),
+        padding: EdgeInsets.all(15.r),
         child: Row(
           children: [
             Expanded(
@@ -140,6 +140,9 @@ class _widgetDetailCotisationCardState
                                       )),
                                   if (widget.isPassed == 1)
                                     Container(
+                                      margin: EdgeInsets.only(
+                                        top: 2.h,
+                                      ),
                                       child: Text(
                                         "expiré".tr(),
                                         style: TextStyle(
@@ -168,7 +171,9 @@ class _widgetDetailCotisationCardState
                       children: [
                         Container(
                           padding: EdgeInsets.all(7.r),
-                          margin: EdgeInsets.only(bottom: 1.h),
+                          margin: EdgeInsets.only(
+                            bottom: 1.h,
+                          ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.r),
                             color: Color.fromARGB(20, 9, 185, 255),
@@ -180,12 +185,16 @@ class _widgetDetailCotisationCardState
                                   : "type_fixe".tr(),
                               style: TextStyle(
                                 color: AppColors.blackBlue,
-                                fontSize: 12.sp,
+                                fontSize: 13.sp,
                               ),
                             ),
                           ),
                         ),
                         Container(
+                          margin: EdgeInsets.only(
+                            top: 5.h,
+                            bottom: 8.h,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -194,19 +203,21 @@ class _widgetDetailCotisationCardState
                                   "ouverture".tr(),
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color: Color.fromARGB(160, 20, 45, 99),
-                                      fontWeight: FontWeight.w600),
+                                    fontSize: 12.sp,
+                                    color: AppColors.blackBlueAccent1,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                               Container(
                                 child: Text(
-                                  formatDateLiteral(widget.dateCotisation),
+                                  " ${formatDateLiteral(widget.dateCotisation)}",
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.w600),
+                                    fontSize: 12.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],
@@ -224,7 +235,8 @@ class _widgetDetailCotisationCardState
                             CotisationDetailState>(
                           builder:
                               (CotisationDetailContext, CotisationDetailState) {
-                            if (CotisationDetailState.isLoading == true || CotisationDetailState.detailCotisation == null)
+                            if (CotisationDetailState.isLoading == true ||
+                                CotisationDetailState.detailCotisation == null)
                               return GestureDetector(
                                 child: Container(
                                   child: Column(
@@ -235,7 +247,7 @@ class _widgetDetailCotisationCardState
                                         child: Text(
                                           "vous_avez_cotisé".tr(),
                                           style: TextStyle(
-                                            fontSize: 11.sp,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.blackBlue,
                                           ),
@@ -258,63 +270,86 @@ class _widgetDetailCotisationCardState
                                 ),
                               );
 
-                            final currentDetailCotisation = CotisationDetailContext.read<CotisationDetailCubit>().state.detailCotisation;
-                            print("currentDetailCotisationcurrentDetailCotisationcurrentDetailCotisation ${currentDetailCotisation}");
+                            final currentDetailCotisation =
+                                CotisationDetailContext.read<
+                                        CotisationDetailCubit>()
+                                    .state
+                                    .detailCotisation;
+                            print(
+                                "currentDetailCotisationcurrentDetailCotisationcurrentDetailCotisation ${currentDetailCotisation}");
                             return currentDetailCotisation != null
                                 ? Column(
                                     children: [
                                       GestureDetector(
                                         onTap: () {
                                           // if (currentDetailCotisation!["versements"].length > 0)
-                                            for (var itemDetailCotisation in currentDetailCotisation["membres"])
-                                              if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
-                                                Modal().showModalTransactionByEvent(
-                                                  context,
-                                                  itemDetailCotisation["payments"],
-                                                  '${widget.montantCotisations}',
-                                                  resteAPayer: itemDetailCotisation["amount_remaining"],
-                                                  dejaPayer: itemDetailCotisation["balance"],
-                                                );
-
+                                          for (var itemDetailCotisation
+                                              in currentDetailCotisation[
+                                                  "membres"])
+                                            if (itemDetailCotisation["membre"]
+                                                    ["membre_code"] ==
+                                                AppCubitStorage()
+                                                    .state
+                                                    .membreCode)
+                                              Modal()
+                                                  .showModalTransactionByEvent(
+                                                context,
+                                                itemDetailCotisation[
+                                                    "payments"],
+                                                '${widget.montantCotisations}',
+                                                resteAPayer:
+                                                    itemDetailCotisation[
+                                                        "amount_remaining"],
+                                                dejaPayer: itemDetailCotisation[
+                                                    "balance"],
+                                              );
                                         },
                                         child: Container(
                                           child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 child: Text(
                                                   "vous_avez_cotisé".tr(),
                                                   style: TextStyle(
-                                                    fontSize: 11.sp,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Color.fromARGB(
-                                                        255, 20, 45, 99),
+                                                    color: AppColors.blackBlue,
                                                   ),
                                                 ),
                                                 margin:
                                                     EdgeInsets.only(right: 5.w),
                                               ),
-                                              for (var itemDetailCotisation in currentDetailCotisation["membres"])
-                                                if (itemDetailCotisation["membre"]["membre_code"] == AppCubitStorage().state.membreCode)
-                                                      Container(
-                                                        child: Text(
-                                                          "${formatMontantFrancais(double.parse( "${itemDetailCotisation["balance"]}"))} FCFA",
-                                                          // "${itemDetailCotisation["membre"]["versement"].length}",
-                                                          style: TextStyle(
-                                                            fontSize: 12.sp,
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                            color:
-                                                                Color.fromARGB(
-                                                              255,
-                                                              20,
-                                                              45,
-                                                              99,
-                                                            ),
-                                                          ),
+                                              SizedBox(
+                                                height: 2.h,
+                                              ),
+                                              for (var itemDetailCotisation
+                                                  in currentDetailCotisation[
+                                                      "membres"])
+                                                if (itemDetailCotisation[
+                                                            "membre"]
+                                                        ["membre_code"] ==
+                                                    AppCubitStorage()
+                                                        .state
+                                                        .membreCode)
+                                                  Container(
+                                                    child: Text(
+                                                      "${formatMontantFrancais(double.parse("${itemDetailCotisation["balance"]}"))} FCFA",
+                                                      // "${itemDetailCotisation["membre"]["versement"].length}",
+                                                      style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: Color.fromARGB(
+                                                          255,
+                                                          20,
+                                                          45,
+                                                          99,
                                                         ),
                                                       ),
+                                                    ),
+                                                  ),
                                             ],
                                           ),
                                         ),
@@ -349,17 +384,20 @@ class _widgetDetailCotisationCardState
                                         child: Text(
                                           "solde".tr(),
                                           style: TextStyle(
-                                            fontSize: 11.sp,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.blackBlue,
                                           ),
                                         ),
                                       ),
+                                      SizedBox(
+                                        height: 2.h,
+                                      ),
                                       Container(
                                         child: Text(
                                           "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
                                           style: TextStyle(
-                                            fontSize: 12.sp,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w800,
                                             color: AppColors.green,
                                           ),
@@ -387,9 +425,9 @@ class _widgetDetailCotisationCardState
                                                 "montant".tr(),
                                                 overflow: TextOverflow.clip,
                                                 style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: Color.fromARGB(
-                                                        160, 20, 45, 99),
+                                                    fontSize: 12.sp,
+                                                    color: AppColors
+                                                        .blackBlueAccent1,
                                                     fontWeight:
                                                         FontWeight.w600),
                                               ),
@@ -403,7 +441,7 @@ class _widgetDetailCotisationCardState
                                                           overflow:
                                                               TextOverflow.clip,
                                                           style: TextStyle(
-                                                              fontSize: 11.sp,
+                                                              fontSize: 12.sp,
                                                               color: Color
                                                                   .fromARGB(
                                                                       255,
@@ -421,17 +459,12 @@ class _widgetDetailCotisationCardState
                                                           overflow:
                                                               TextOverflow.clip,
                                                           style: TextStyle(
-                                                              fontSize: 11.sp,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                255,
-                                                                20,
-                                                                45,
-                                                                99,
-                                                              ),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
+                                                            fontSize: 12.sp,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
                                                         ),
                                                       ),
                                               ],
@@ -463,7 +496,7 @@ class _widgetDetailCotisationCardState
                             //   Modal().showModalPersonSanctionner(context, [], "");
                             // },
                             child: Container(
-                              margin: EdgeInsets.only(bottom: 3.h),
+                              // margin: EdgeInsets.only(bottom: 3.h),
                               child: Row(
                                 children: [
                                   Container(
@@ -471,8 +504,8 @@ class _widgetDetailCotisationCardState
                                       "montant".tr(),
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
-                                        fontSize: 11.sp,
-                                        color: Color.fromARGB(160, 20, 45, 99),
+                                        fontSize: 12.sp,
+                                        color: AppColors.blackBlueAccent1,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -485,9 +518,8 @@ class _widgetDetailCotisationCardState
                                                 " : Volontaire",
                                                 overflow: TextOverflow.clip,
                                                 style: TextStyle(
-                                                  fontSize: 11.sp,
-                                                  color: Color.fromARGB(
-                                                      255, 20, 45, 99),
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.blackBlue,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
@@ -497,11 +529,10 @@ class _widgetDetailCotisationCardState
                                                 " : ${formatMontantFrancais(double.parse("${widget.montantCotisations}"))} FCFA",
                                                 overflow: TextOverflow.clip,
                                                 style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: Color.fromARGB(
-                                                        255, 20, 45, 99),
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                               ),
                                             ),
                                     ],

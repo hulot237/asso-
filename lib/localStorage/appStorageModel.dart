@@ -2,7 +2,7 @@
 class AppStorageModel {
   String? Language;
   String? codeTournois;
-  String? ValTest;
+  String? xSessionId;
   String? codeAssDefaul;
   String? membreCode;
   String? tokenNotification;
@@ -10,11 +10,13 @@ class AppStorageModel {
   String? tokenUser;
   String? userNameKey;
   final bool isLoading;
+  List<UserAction>? trakingData;
+
 
   AppStorageModel({
     this.Language,
     this.codeTournois,
-    this.ValTest,
+    this.xSessionId,
     this.codeAssDefaul,
     this.membreCode,
     this.tokenUser,
@@ -22,24 +24,26 @@ class AppStorageModel {
     this.passwordKey,
     this.isLoading = false,
     this.userNameKey,
+    this.trakingData,
   });
 
   AppStorageModel copyWith({
     String? Language,
     String? codeTournois,
-    String? ValTest,
+    String? xSessionId,
     String? codeAssDefaul,
     String? membreCode,
     String? tokenNotification,
     String? passwordKey,
     String? tokenUser,
     String? userNameKey,
-    bool? isLoading, required bool isloading,
+    bool? isLoading,
+    List<UserAction>? trakingData,
   }) {
     return AppStorageModel(
       Language: Language ?? this.Language,
       codeTournois: codeTournois ?? this.codeTournois,
-      ValTest: ValTest ?? this.ValTest,
+      xSessionId: xSessionId ?? this.xSessionId,
       codeAssDefaul: codeAssDefaul ?? this.codeAssDefaul,
       membreCode: membreCode ?? this.membreCode,
       tokenNotification: tokenNotification ?? this.tokenNotification,
@@ -47,6 +51,25 @@ class AppStorageModel {
       tokenUser: tokenUser ?? this.tokenUser,
       userNameKey: userNameKey ?? this.userNameKey,
       isLoading: isLoading ?? this.isLoading,
+      trakingData: trakingData ?? this.trakingData,
     );
+  }
+}
+
+
+
+class UserAction {
+  final String code;
+  final String date;
+  final Map<String, dynamic> data;
+
+  UserAction({required this.code, required this.date, required this.data});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'date': date,
+      'data': data,
+    };
   }
 }

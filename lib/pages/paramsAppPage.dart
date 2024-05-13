@@ -6,11 +6,12 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/pages/pre_login_page.dart';
+import 'package:faroty_association_1/pages/pre_login_screen.dart';
 import 'package:faroty_association_1/pages/proposAidePage.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,7 @@ Widget PageScaffold({
           style: TextStyle(
             fontSize: 16.sp,
             color: AppColors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
@@ -59,7 +61,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "paramètres".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -144,6 +146,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
+                                updateTrackingData("parameter.language","${DateTime.now()}", {});
                                 // Navigator.pop(context);
                                 // Navigator.push(
                                 //   context,
@@ -201,6 +204,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
+                                
                                 // Navigator.pop(context);
                                 // Navigator.push(
                                 //   context,
@@ -272,6 +276,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
 
                 GestureDetector(
                   onTap: () {
+                    updateTrackingData("parameter.aboutHelp","${DateTime.now()}", {});
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -398,6 +403,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
+                                updateTrackingData("parameter.logOut","${DateTime.now()}", {});
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -469,7 +475,7 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                                                       MaterialPageRoute(
                                                         builder: (BuildContext
                                                                 context) =>
-                                                            PreLoginPage(),
+                                                            PreLoginScreen(),
                                                       ),
                                                       (route) => false,
                                                     );
@@ -558,6 +564,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             "Code usernamekey: ${AppCubitStorage().state.userNameKey}");
                         print(
                             "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
+                            print(
+                            "Code id session: ${AppCubitStorage().state.xSessionId}");
                       });
                     },
                   ),

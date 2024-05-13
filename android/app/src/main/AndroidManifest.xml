@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <!-- Provide required visibility configuration for API level 30 and above -->
     <queries>
@@ -38,6 +39,30 @@
 
 
             </intent-filter>
+
+                        <!-- Deep Linking -->
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="group.rush.faroty.com" android:scheme="http" />
+                <data android:host="groups.faroty.com" />
+                <data android:scheme="https" />
+            </intent-filter>
+
+            <!-- <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="group.rush.faroty.com" android:pathPrefix="/subscribe" />
+                <data android:scheme="https" android:host="group.faroty.com" android:pathPrefix="/subscribe" />
+            </intent-filter> -->
         </activity>
 
         <meta-data
@@ -49,5 +74,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            <receiver android:name="com.shounakmulay.telephony.sms.IncomingSmsReceiver"
+		    android:permission="android.permission.BROADCAST_SMS" android:exported="true">
+		    <intent-filter>
+			<action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+		    </intent-filter>
+		</receiver>
     </application>
 </manifest>

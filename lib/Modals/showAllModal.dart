@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
@@ -26,15 +27,20 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/pages/homePage.dart';
-import 'package:faroty_association_1/pages/paiementPage.dart';
+import 'package:faroty_association_1/pages/home_centrale_screen.dart';
+import 'package:faroty_association_1/pages/paiement_screen.dart';
+import 'package:faroty_association_1/routes/app_router.dart';
+import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:faroty_association_1/widget/widgetListAssCard.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Modal {
@@ -69,7 +75,7 @@ class Modal {
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (BuildContext context) => HomePage(),
+          builder: (BuildContext context) => HomeCentraleScreen(),
         ),
         (route) => false,
       );
@@ -153,53 +159,53 @@ class Modal {
                         },
                       ),
                     ),
-                     GestureDetector(
-      onTap: () async {
-        print("objectobjectobjectobjectobject");
-        await launchUrlString(
-          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://business.faroty.com/groups&app_mode=mobile",
-          mode: LaunchMode.platformDefault,
-        );
-      },
-      child: Container(
-        margin:
-            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            width: 1.r,
-            color: AppColors.blackBlue,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                right: 20.h,
-              ),
-              child: SvgPicture.asset(
-                "assets/images/addIcon.svg",
-                fit: BoxFit.scaleDown,
-                color: AppColors.blackBlue,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
-              child: Text(
-                "Ajouter un nouveau groupe".tr(),
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.blackBlue,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
+                    GestureDetector(
+                      onTap: () async {
+                        print("objectobjectobjectobjectobject");
+                        await launchUrlString(
+                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://business.faroty.com/groups&app_mode=mobile",
+                          mode: LaunchMode.platformDefault,
+                        );
+                      },
+                      child: Container(
+                        margin:
+                            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          border: Border.all(
+                            width: 1.r,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                right: 20.h,
+                              ),
+                              child: SvgPicture.asset(
+                                "assets/images/addIcon.svg",
+                                fit: BoxFit.scaleDown,
+                                color: AppColors.blackBlue,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 7.h, bottom: 7.h),
+                              child: Text(
+                                "Ajouter un nouveau groupe".tr(),
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.blackBlue,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -273,7 +279,7 @@ class Modal {
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (BuildContext context) => HomePage(),
+          builder: (BuildContext context) => HomeCentraleScreen(),
         ),
         (route) => false,
       );
@@ -2173,38 +2179,273 @@ class Modal {
       ), // how long it takes to popup dialog after button click
       pageBuilder: (_, __, ___) {
         // your widget implementation
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.blackBlue,
-            centerTitle: true,
-            leading: IconButton(
-                icon: Icon(
-                  Icons.close,
+        return Material(
+          color: Colors.transparent,
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: AppColors.blackBlue,
+              centerTitle: true,
+              leading: IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: AppColors.white,
+                    size: 16.sp,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              title: Text(
+                textAppbar,
+                style: TextStyle(
                   color: AppColors.white,
-                  size: 16.sp,
+                  // fontFamily: 'Overpass',
+                  fontSize: 16.sp,
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            title: Text(
-              textAppbar,
-              style: TextStyle(
-                color: AppColors.white,
-                // fontFamily: 'Overpass',
-                fontSize: 16.sp,
+              ),
+              elevation: 0.0,
+            ),
+            backgroundColor: AppColors.blackBlue,
+            body: Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                // padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Image.network(
+                  "$photo",
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            elevation: 0.0,
           ),
-          backgroundColor: AppColors.blackBlue,
-          body: Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              // padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Image.network(
-                "$photo",
-                fit: BoxFit.cover,
+        );
+      },
+    );
+  }
+
+  void showShareLinkPage(context) {
+    showGeneralDialog(
+      context: context,
+
+      barrierDismissible:
+          false, // should dialog be dismissed when tapped outside
+      // barrierLabel: "Modal", // label for barrier
+      transitionDuration: Duration(
+        milliseconds: 400,
+      ), // how long it takes to popup dialog after button click
+      pageBuilder: (_, __, ___) {
+        // your widget implementation
+        return Material(
+          color: Colors.transparent,
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: AppColors.white,
+              // centerTitle: true,
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: BackButtonWidget(
+                  colorIcon: AppColors.blackBlue,
+                ),
               ),
+              title: Text(
+                "Lien d'invitation",
+                style: TextStyle(
+                  color: AppColors.blackBlue,
+                  // fontFamily: 'Overpass',
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              elevation: 0.5,
+            ),
+            backgroundColor: AppColors.white,
+            body: Column(
+              children: [
+                InkWell(
+                  onTap: () {
+                    updateTrackingData(
+                        "inviteLink.copyLink", "${DateTime.now()}", {});
+                    Clipboard.setData(ClipboardData(
+                            text:
+                                "${Variables.LienInvit}/subscribe?urlcode=${AppCubitStorage().state.codeAssDefaul}"))
+                        .then(
+                      (value) {
+                        return toastification.show(
+                          context: context,
+                          title: Text(
+                            "Copié".tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                color: AppColors.blackBlue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          autoCloseDuration: Duration(seconds: 2),
+                          type: ToastificationType.success,
+                          style: ToastificationStyle.minimal,
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      top: 50.h,
+                      bottom: 50.h,
+                      left: 20.w,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 55.w,
+                          height: 55.w,
+                          decoration: BoxDecoration(
+                            color: AppColors.colorButton,
+                            borderRadius: BorderRadius.circular(360),
+                          ),
+                          child: SvgPicture.asset(
+                            "assets/images/linkIcon.svg",
+                            fit: BoxFit.scaleDown,
+                            color: AppColors.white,
+                          ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 15.w, 0),
+                          // child: Image.network(
+                          //   "$photo",
+                          //   fit: BoxFit.cover,
+                          // ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            // width: MediaQuery.of(context).size.width / 1.5,
+                            // color: AppColors.blackBlueAccent1,
+                            child: Text(
+                              "${Variables.LienInvit}/subscribe?urlcode=${AppCubitStorage().state.codeAssDefaul}",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                color: AppColors.blackBlue,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    updateTrackingData(
+                        "inviteLink.copyLink", "${DateTime.now()}", {});
+                    Clipboard.setData(ClipboardData(
+                            text:
+                                "${Variables.LienInvit}/subscribe?urlcode=${AppCubitStorage().state.codeAssDefaul}"))
+                        .then(
+                      (value) {
+                        return toastification.show(
+                          context: context,
+                          title: Text(
+                            "Copié".tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                color: AppColors.blackBlue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          autoCloseDuration: Duration(seconds: 2),
+                          type: ToastificationType.success,
+                          style: ToastificationStyle.minimal,
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(20.w, 20.h, 15.w, 20.h),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 25.w,
+                          height: 25.w,
+                          child: SvgPicture.asset(
+                            "assets/images/copyIcon.svg",
+                            fit: BoxFit.cover,
+                            color: AppColors.blackBlueAccent1,
+                          ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 20.w, 0),
+                        ),
+                        Text(
+                          "Copier le lien",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    updateTrackingData(
+                        "inviteLink.shareLink", "${DateTime.now()}", {});
+                    Share.share(
+                        "${Variables.LienInvit}/subscribe?urlcode=${AppCubitStorage().state.codeAssDefaul}");
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(20.w, 20.h, 15.w, 20.h),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 25.w,
+                          height: 25.w,
+                          child: SvgPicture.asset(
+                            "assets/images/shareSimpleIcon.svg",
+                            fit: BoxFit.cover,
+                            color: AppColors.blackBlueAccent1,
+                          ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 20.w, 0),
+                        ),
+                        Text(
+                          "Partager le lien",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    updateTrackingData(
+                        "inviteLink.qrCode", "${DateTime.now()}", {});
+                    _showQrCode(context);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(20.w, 20.h, 15.w, 20.h),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30.w,
+                          height: 30.w,
+                          child: SvgPicture.asset(
+                            "assets/images/qrCodeIcon.svg",
+                            fit: BoxFit.cover,
+                            color: AppColors.blackBlueAccent1,
+                          ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 20.w, 0),
+                        ),
+                        Text(
+                          "QR code",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         );
@@ -2213,7 +2454,143 @@ class Modal {
   }
 }
 
+_showQrCode(context) {
+  showDialog(
+      context: context,
+      barrierColor: AppColors.barrierColorModal,
+      builder: (BuildContext context) {
+        final DetailAss = context.read<UserGroupCubit>().state.changeAssData;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(20.0),
+          // ),
+          child: Container(
+            height: 450.h,
+            color: Colors.transparent,
+            child: Stack(
+              children: [
+                Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Container(
+                      height: 400.h,
+                      // color: Color.fromARGB(167, 164, 14, 14),
+                      child: Center(
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(0, 50.h, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 2.h),
+                                    child: Text(
+                                      "${DetailAss!.user_group!.name}",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          color: AppColors.blackBlue,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 25.h),
+                                    child: Text(
+                                      "Groupe ASSO+",
+                                      style: TextStyle(
+                                        fontSize: 10.sp,
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                // padding: EdgeInsets.all(15.w),
+                                decoration: BoxDecoration(
+                                  color: AppColors.blackBlue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(15.r),
+                                ),
+                                height: 200.w,
+                                width: 200.w,
+                                child: QrImageView(
+                                  data:
+                                      "${Variables.LienInvit}/subscribe?urlcode=${AppCubitStorage().state.codeAssDefaul}",
+                                  padding: EdgeInsets.all(15.h),
+                                  embeddedImage: AssetImage(
+                                    "assets/images/AssoLogoForQR.png",
+                                  ),
+                                  eyeStyle: const QrEyeStyle(
+                                    eyeShape: QrEyeShape.square,
+                                    color: AppColors.blackBlue,
+                                  ),
+                                  dataModuleStyle: const QrDataModuleStyle(
+                                    dataModuleShape: QrDataModuleShape.square,
+                                    color: AppColors.blackBlue,
+                                  ),
+                                  embeddedImageStyle: QrEmbeddedImageStyle(
+                                    // color: Color(0xFFe7eaef),
+                                    size: Size.square(50.r),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 60.w,
+                      height: 60.w,
+                      padding: EdgeInsets.all(5.r),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(360.r),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50.r),
+                        child: Container(
+                          color: AppColors.blackBlue.withOpacity(0.1),
+                          width: 50.w,
+                          height: 50.w,
+                          child: Image.network(
+                            "${DetailAss!.user_group!.profile_photo} " == null
+                                ? "https://services.faroty.com/images/avatar/avatar.png"
+                                : "${Variables.LienAIP}${DetailAss!.user_group!.profile_photo}",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
 
+                      // Container(
+                      //   color: AppColors.white,
+                      //   child: Image.network(
+                      //     "${Variables.LienAIP}${DetailAss!.user_group!.profile_photo}",
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      });
+}
 
 class widgetListPresenceCard extends StatelessWidget {
   widgetListPresenceCard({

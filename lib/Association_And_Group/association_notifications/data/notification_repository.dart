@@ -37,7 +37,7 @@ class NotificationRepository {
 
   Future<int> countNotification() async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/membre/${AppCubitStorage().state.codeAssDefaul}/notifications/count',
+      '${Variables.LienAIP}/api/v1/membre/${AppCubitStorage().state.codeAssDefaul}/notifications/count?versionApp${Variables.version}',
       options: Options(
         headers: {
           "token": AppCubitStorage().state.tokenUser,

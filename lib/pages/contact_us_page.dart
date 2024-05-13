@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,7 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "Contactez nous".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
         leading: GestureDetector(
@@ -46,7 +47,7 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Contactez nous".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white),
+        style: TextStyle(fontSize: 16.sp, color: AppColors.white, fontWeight: FontWeight.bold,),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -54,7 +55,7 @@ Widget PageScaffold({
         onTap: () {
           Navigator.pop(context);
         },
-        child: BackButtonWidget(colorIcon: AppColors.white)
+        child: BackButtonWidget(colorIcon: AppColors.white,)
       ),
     ),
     body: child,
@@ -126,6 +127,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                         ),
                       ),
                       child: InkWell(
+                        splashColor: AppColors.colorButton.withOpacity(.5),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -153,6 +155,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           ],
                         ),
                         onTap: () {
+                          updateTrackingData("contactUs.call","${DateTime.now()}", {});
                           // _launch(gmailUrl);
                           dialNumber(
                               phoneNumber: "+237 679 910 021",
@@ -176,6 +179,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                         ),
                       ),
                       child: InkWell(
+                        splashColor: AppColors.colorButton.withOpacity(.5),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -203,6 +207,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           ],
                         ),
                         onTap: () {
+                          updateTrackingData("contactUs.email","${DateTime.now()}", {});
                           _launch(gmailUrl);
                           // _launchInstagram();
                           // launchUrl(
@@ -251,7 +256,9 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           // SizedBox(height: 20,),
 
                           InkWell(
+                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
+                              updateTrackingData("contactUs.linkedin","${DateTime.now()}", {});
                               _launchSocial(
                                 "https://www.linkedin.com/company/faroty/",
                               );
@@ -296,7 +303,9 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           ),
 
                           InkWell(
+                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
+                              updateTrackingData("contactUs.x","${DateTime.now()}", {});
                               _launchSocial(
                                 "https://x.com/farotyMe/",
                               );
@@ -341,7 +350,9 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           ),
 
                           InkWell(
+                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
+                              updateTrackingData("contactUs.instagram","${DateTime.now()}", {});
                               _launchSocial(
                                 "https://www.instagram.com/farotyme/",
                               );
@@ -386,7 +397,9 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           ),
 
                           InkWell(
+                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
+                              updateTrackingData("contactUs.facebook","${DateTime.now()}", {});
                               _launchSocial(
                                 "https://www.facebook.com/farotyMe/",
                               );

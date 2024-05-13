@@ -68,9 +68,9 @@ class _widgetTontineHistoriqueCardState
                                       child: Text(
                                         "${"ouverture".tr()} ",
                                         style: TextStyle(
-                                          fontSize: 10.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold,
-                                          color: AppColors.blackBlue,
+                                          color: AppColors.blackBlueAccent1,
                                         ),
                                       ),
                                     ),
@@ -85,10 +85,9 @@ class _widgetTontineHistoriqueCardState
                                       child: Text(
                                         formatDateLiteral(widget.dateCreaTontine),
                                         style: TextStyle(
-                                          fontSize: 10.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromRGBO(20, 45, 99, 0.534),
+                                          color: AppColors.blackBlue,
                                         ),
                                       ),
                                     ),
@@ -101,25 +100,25 @@ class _widgetTontineHistoriqueCardState
                       ),
                       widget.isActive ==1?
                       Container(
-                        padding: EdgeInsets.all(3.r),
+                        padding: EdgeInsets.all(5.r),
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(48, 76, 175, 79),
+                          color: AppColors.green.withOpacity(.2),
                           borderRadius: BorderRadius.circular(5.r),
                         ),
                         child: Text(
                           "en_cours".tr(),
                           style: TextStyle(
                             color: AppColors.green,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.sp,
                           ),
                         ),
                       ):Text(
                           "terminé".tr(),
                           style: TextStyle(
                             color: Colors.red,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.sp,
                           ),
                         ),
                     ],
@@ -196,9 +195,9 @@ class _widgetTontineHistoriqueCardState
                         child: Text(
                           "${"Participant".tr()} (${widget.nbrMembreTontine})",
                           style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color.fromARGB(125, 20, 45, 99),
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.blackBlueAccent1,
                           ),
                         ),
                       ),

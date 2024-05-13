@@ -20,6 +20,7 @@ class WidgetSanction extends StatefulWidget {
     required this.objetSanction,
     required this.resteAPayer,
     required this.dejaPayer,
+    required this.screenSource,
   });
   String heureSanction;
   String dateSanction;
@@ -33,6 +34,7 @@ class WidgetSanction extends StatefulWidget {
   String objetSanction;
   String dejaPayer;
   String resteAPayer;
+  String screenSource;
 
   @override
   State<WidgetSanction> createState() => _WidgetSanctionState();
@@ -97,7 +99,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                           : formatCompareDateReturnWellValueSanctionRecent(
                                               widget.dateSanction),
                                       style: TextStyle(
-                                        fontSize: 10.sp,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.blackBlueAccent1,
                                       ),
@@ -108,7 +110,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                       "${widget.motifSanction}",
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
-                                          fontSize: 12.sp,
+                                          fontSize: 14.sp,
                                           color: AppColors.blackBlue,
                                           fontWeight: FontWeight.w600),
                                     ),
@@ -124,11 +126,11 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.only(bottom: 2.h),
+                                    padding: EdgeInsets.only(bottom: 7.h),
                                     child: Text(
                                       "a_payer".tr(),
                                       style: TextStyle(
-                                        fontSize: 10.sp,
+                                        fontSize: 12.sp,
                                         color: AppColors.blackBlueAccent1,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -138,7 +140,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                     child: Text(
                                       "${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA",
                                       style: TextStyle(
-                                        fontSize: 11.sp,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.w900,
                                         color: AppColors.red,
                                       ),
@@ -151,7 +153,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                       ),
                     ),
                     Container(
-                      height: 1,
+                      height: 2.h,
                       margin: EdgeInsets.only(top: 8.h, bottom: 8.h),
                       width: MediaQuery.of(context).size.width / 1.1,
                       color: widget.isSanctionPayed == 0
@@ -194,7 +196,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                             "voulez_vous_payer?".tr(),
                                             style: TextStyle(
                                               color: AppColors.blackBlue,
-                                              fontSize: 11.sp,
+                                              fontSize: 12.sp,
                                               fontWeight: FontWeight.w900,
                                             ),
                                           ),
@@ -219,7 +221,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                             style: TextStyle(
                                                 color: AppColors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 12.sp),
+                                                fontSize: 13.sp),
                                           ),
                                         ),
                                       ],
@@ -235,7 +237,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                         child: Text(
                                           "déjà_payé".tr(),
                                           style: TextStyle(
-                                              fontSize: 10.sp,
+                                              fontSize: 12.sp,
                                               color: AppColors.blackBlueAccent1,
                                               fontWeight: FontWeight.w700),
                                         ),
@@ -244,7 +246,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                         child: Text(
                                           "${formatMontantFrancais(double.parse(widget.montantPayeeSanction))} FCFA",
                                           style: TextStyle(
-                                              fontSize: 11.sp,
+                                              fontSize: 12.sp,
                                               fontWeight: FontWeight.w900,
                                               color: AppColors.green),
                                         ),
@@ -275,7 +277,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                             child: Text(
                                               "a_payer".tr(),
                                               style: TextStyle(
-                                                fontSize: 10.sp,
+                                                fontSize: 12.sp,
                                                 color:
                                                     AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.w700,
@@ -306,7 +308,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                             child: Text(
                                               "déjà_payé".tr(),
                                               style: TextStyle(
-                                                fontSize: 10.sp,
+                                                fontSize: 12.sp,
                                                 color:
                                                     AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.w700,

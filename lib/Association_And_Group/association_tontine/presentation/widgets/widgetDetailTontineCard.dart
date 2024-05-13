@@ -36,9 +36,10 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
         color: AppColors.white,
         boxShadow: [
           BoxShadow(
-              color: Color.fromARGB(69, 0, 0, 0),
-              spreadRadius: 0.5,
-              blurRadius: 2,),
+            color: Color.fromARGB(69, 0, 0, 0),
+            spreadRadius: 0.5,
+            blurRadius: 2,
+          ),
         ],
         borderRadius: BorderRadius.circular(15.r),
       ),
@@ -86,58 +87,54 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                           ? Container(
                               padding: EdgeInsets.all(5.r),
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(61, 76, 175, 79),
+                                color: AppColors.green.withOpacity(.2),
                                 borderRadius: BorderRadius.circular(5.r),
                               ),
                               child: Text(
                                 "en_cours".tr(),
                                 style: TextStyle(
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13.sp,),
+                                  color: AppColors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13.sp,
+                                ),
                               ),
                             )
                           : Text(
                               "terminé".tr(),
                               style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13.sp,),
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13.sp,
+                              ),
                             ),
                     ],
                   ),
                 ),
                 Container(
-                  child: Column(
+                  margin: EdgeInsets.symmetric(vertical: 5.h),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        // margin: EdgeInsets.only(bottom: 3, top: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Text(
-                                "ouverture".tr(),
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: Color.fromARGB(160, 20, 45, 99),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                formatDateLiteral(widget.dateCreaTontine),
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          "ouverture".tr(),
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: AppColors.blackBlueAccent1,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          " ${formatDateLiteral(widget.dateCreaTontine)}",
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: AppColors.blackBlue,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
@@ -156,9 +153,9 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                               child: Text(
                                 "${"bénéficiaires".tr()} (${widget.positionBeneficiaire}/${widget.nbrMembreTontine})",
                                 style: TextStyle(
-                                  fontSize: 14.sp,
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(146, 20, 45, 99),
+                                  color: AppColors.blackBlueAccent1,
                                 ),
                               ),
                               margin: EdgeInsets.only(right: 5.w),
@@ -177,9 +174,12 @@ class _WidgetDetailTontineCardState extends State<WidgetDetailTontineCard> {
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(120, 20, 45, 99),
+                                  color: AppColors.blackBlueAccent1,
                                 ),
                               ),
+                            ),
+                            SizedBox(
+                              height: 2.h,
                             ),
                             Container(
                               child: Text(
