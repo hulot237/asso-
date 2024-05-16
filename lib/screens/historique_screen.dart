@@ -32,6 +32,7 @@ import 'package:faroty_association_1/Association_And_Group/association_webview/a
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:faroty_association_1/pages/home_centrale_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/presentation/widgets/widgetCompteCard.dart';
+import 'package:faroty_association_1/pages/updatePage.dart';
 import 'package:faroty_association_1/routes/app_router.dart';
 import 'package:faroty_association_1/widget/add_asso_button_widget.dart';
 import 'package:faroty_association_1/widget/add_asso_element_button_widget.dart';
@@ -283,7 +284,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                   ? checkInternetConnectionPage(
                       backToHome: true,
                       functionToCall: () {},
-                    )
+                    ): !context.read<AuthCubit>().state.detailUser!["is_app_updated"]? UpdatePage()
                   : Scaffold(
                       backgroundColor: AppColors.pageBackground,
                       appBar: PreferredSize(
@@ -588,6 +589,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                               typeRencontre:
                                                                   itemSeance[
                                                                       "type_rencontre"],
+                                                                      rapportUrl:
+                                                                  itemSeance[
+                                                                      "rapport"],
                                                               maskElt: false,
                                                               codeSeance:
                                                                   itemSeance[
@@ -745,22 +749,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                         BoxDecoration(
                                                                       color: AppColors
                                                                           .pageBackground,
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: AppColors
-                                                                              .blackBlueAccent1
-                                                                              .withOpacity(0.2),
-                                                                          spreadRadius:
-                                                                              0.1,
-                                                                          blurRadius:
-                                                                              2,
-                                                                          offset:
-                                                                              Offset(
-                                                                            0,
-                                                                            2,
-                                                                          ),
-                                                                        )
-                                                                      ],
+                                                                      
                                                                       border:
                                                                           Border
                                                                               .all(
@@ -768,7 +757,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                             2.w,
                                                                         color: AppColors
                                                                             .blackBlue
-                                                                            .withOpacity(0.2),
+                                                                            .withOpacity(1),
                                                                       ),
                                                                       borderRadius:
                                                                           BorderRadius
@@ -804,7 +793,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                           style:
                                                                               TextStyle(
                                                                             color:
-                                                                                AppColors.blackBlue.withOpacity(0.2),
+                                                                                AppColors.blackBlue.withOpacity(1),
                                                                             fontWeight:
                                                                                 FontWeight.w900,
                                                                             fontSize:
@@ -827,7 +816,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                             border:
                                                                                 Border.all(
                                                                               width: 2.w,
-                                                                              color: AppColors.blackBlue.withOpacity(0.2),
+                                                                              color: AppColors.blackBlue.withOpacity(1),
                                                                             ),
                                                                           ),
                                                                           child:
@@ -836,7 +825,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                             fit:
                                                                                 BoxFit.scaleDown,
                                                                             color:
-                                                                                AppColors.blackBlue.withOpacity(0.2),
+                                                                                AppColors.blackBlue.withOpacity(1),
                                                                           ),
                                                                         ),
                                                                       ],
@@ -1291,7 +1280,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                               color: AppColors
                                                                   .blackBlue
                                                                   .withOpacity(
-                                                                      0.2),
+                                                                      1),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w100,
@@ -1318,30 +1307,14 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                     BoxDecoration(
                                                                   color: AppColors
                                                                       .pageBackground,
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                      color: AppColors
-                                                                          .blackBlueAccent1
-                                                                          .withOpacity(
-                                                                              0.2),
-                                                                      spreadRadius:
-                                                                          0.1,
-                                                                      blurRadius:
-                                                                          2,
-                                                                      offset:
-                                                                          Offset(
-                                                                        0,
-                                                                        2,
-                                                                      ),
-                                                                    )
-                                                                  ],
+                                                                  
                                                                   border: Border
                                                                       .all(
                                                                     width: 2.w,
                                                                     color: AppColors
                                                                         .blackBlue
                                                                         .withOpacity(
-                                                                            0.2),
+                                                                            1),
                                                                   ),
                                                                   borderRadius:
                                                                       BorderRadius
@@ -1379,7 +1352,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                           TextStyle(
                                                                         color: AppColors
                                                                             .blackBlue
-                                                                            .withOpacity(0.2),
+                                                                            .withOpacity(1),
                                                                         fontWeight:
                                                                             FontWeight.w900,
                                                                         fontSize:
@@ -1406,7 +1379,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                               2.w,
                                                                           color: AppColors
                                                                               .blackBlue
-                                                                              .withOpacity(0.2),
+                                                                              .withOpacity(1),
                                                                         ),
                                                                       ),
                                                                       child: SvgPicture
@@ -1416,7 +1389,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                             .scaleDown,
                                                                         color: AppColors
                                                                             .blackBlue
-                                                                            .withOpacity(0.2),
+                                                                            .withOpacity(1),
                                                                       ),
                                                                     ),
                                                                   ],
@@ -1636,30 +1609,13 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                     BoxDecoration(
                                                                   color: AppColors
                                                                       .pageBackground,
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                      color: AppColors
-                                                                          .blackBlueAccent1
-                                                                          .withOpacity(
-                                                                              0.2),
-                                                                      spreadRadius:
-                                                                          0.1,
-                                                                      blurRadius:
-                                                                          2,
-                                                                      offset:
-                                                                          Offset(
-                                                                        0,
-                                                                        2,
-                                                                      ),
-                                                                    )
-                                                                  ],
                                                                   border: Border
                                                                       .all(
                                                                     width: 2.w,
                                                                     color: AppColors
                                                                         .blackBlue
                                                                         .withOpacity(
-                                                                            0.2),
+                                                                            1),
                                                                   ),
                                                                   borderRadius:
                                                                       BorderRadius
@@ -1697,7 +1653,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                           TextStyle(
                                                                         color: AppColors
                                                                             .blackBlue
-                                                                            .withOpacity(0.2),
+                                                                            .withOpacity(1),
                                                                         fontWeight:
                                                                             FontWeight.w900,
                                                                         fontSize:
@@ -1724,7 +1680,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                               2.w,
                                                                           color: AppColors
                                                                               .blackBlue
-                                                                              .withOpacity(0.2),
+                                                                              .withOpacity(1),
                                                                         ),
                                                                       ),
                                                                       child: SvgPicture
@@ -1734,7 +1690,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                             .scaleDown,
                                                                         color: AppColors
                                                                             .blackBlue
-                                                                            .withOpacity(0.2),
+                                                                            .withOpacity(1),
                                                                       ),
                                                                     ),
                                                                   ],

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/data/association_compte_model.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -12,7 +13,7 @@ class CompteRepository {
     try {
       log("response AllCotisationOfAss");
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/compte/$codeAssociation?versionApp${Variables.version}',
+        '${Variables.LienAIP}/api/v1/compte/$codeAssociation',
       );
       final List<dynamic> dataJson = response.data["data"];
       final List<CompteModel> dataCompteModel = dataJson

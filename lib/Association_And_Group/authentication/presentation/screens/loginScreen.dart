@@ -64,18 +64,14 @@ class _LoginPageState extends State<LoginPage> {
         .read<AuthCubit>()
         .loginFirstCubit(numeroPhoneController, countryCodeController);
 
-    if (allCotisationAss != null) {
-      if (context.read<AuthCubit>().state.isTrueNomber == false) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => VerificationPage(
-                  numeroPhone: numeroPhoneController,
-                  countryCode: countryCodeController)),
-        );
-      }
-    } else {
-      print("handleLogin");
+    if (context.read<AuthCubit>().state.isTrueNomber == false) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VerificationPage(
+                numeroPhone: numeroPhoneController,
+                countryCode: countryCodeController)),
+      );
     }
   }
 
@@ -162,16 +158,16 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                   SizedBox(height: 10.h),
-                                  Text(
-                                    "Connexion".tr(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 27.sp,
-                                      color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                  SizedBox(height: 50.h),
+                                  // Text(
+                                  // "Connexion".tr(),
+                                  //   textAlign: TextAlign.center,
+                                  //   style: TextStyle(
+                                  //     fontSize: 27.sp,
+                                  //     color: AppColors.blackBlue,
+                                  //     fontWeight: FontWeight.w900,
+                                  //   ),
+                                  // ),
+                                  SizedBox(height: 90.h),
                                   Text(
                                     "Entrer votre numéro pour obtenir le code d'authentification"
                                         .tr(),
@@ -182,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: 20.h),
+                                  SizedBox(height: 50.h),
                                   SizedBox(
                                     height: 82.h,
                                     child: IntlPhoneField(
@@ -217,11 +213,12 @@ class _LoginPageState extends State<LoginPage> {
                                               BorderRadius.circular(7.r),
                                         ),
                                         contentPadding: EdgeInsets.all(8.r),
-                                        hintText: "677777777",
+                                        hintText: "677654321",
                                         hintStyle: TextStyle(
-                                          letterSpacing: 1.w,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                            letterSpacing: 1.w,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.blackBlue
+                                                .withOpacity(.3)),
                                         labelStyle: TextStyle(
                                           color: AppColors.blackBlueAccent1,
                                         ),
@@ -231,7 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                                           borderSide: BorderSide(width: 3.w),
                                         ),
                                         counterStyle: TextStyle(
-                                            color: AppColors.blackBlue),
+                                          color: AppColors.blackBlue,
+                                        ),
                                       ),
                                       controller: countrycode,
                                       initialCountryCode: 'CM',
@@ -255,136 +253,253 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   BlocBuilder<AuthCubit, AuthState>(
                                     builder: (context, Authstate) {
-                                      if (Authstate.isTrueNomber == true) {
-                                        // Déclencher la fonction toastification.show()
-                                        Future.delayed(Duration.zero, () {
-                                          // Déclencher la fonction toastification.show() après le rendu initial
-                                          toastification.show(
-                                            context: context,
-                                            title: Text(
-                                              "Votre numéro est incorrect ou n'est pas lié à un groupe ou une association"
-                                                  .tr(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color: const Color.fromARGB(
-                                                      255, 0, 0, 0),
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            autoCloseDuration:
-                                                Duration(seconds: 15),
-                                            type: ToastificationType.error,
-                                            style:
-                                                ToastificationStyle.flatColored,
-                                          );
-                                        });
+                                      if (Authstate.isTrueNomber == true &&
+                                          Authstate.alreadyShow == 1) {
+                                        // _showSimpleModalDialog(context);
 
-                                        return SizedBox(
-                                          width: double.infinity,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.white,
-                                              // border: Border.all(
-                                              //   width: 1.w,
-                                              //   color: AppColors.red,
-                                              // ),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                20.r,
+                                        Future.delayed(
+                                          Duration.zero,
+                                          () {
+                                            toastification.show(
+                                              context: context,
+                                              autoCloseDuration:
+                                                  Duration(seconds: 15),
+                                              type: ToastificationType.error,
+                                              style: ToastificationStyle
+                                                  .flatColored,
+                                              title: Text(
+                                                "Votre numéro est incorrect ou n'est pas lié à un groupe ou une association"
+                                                    .tr(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: const Color.fromARGB(
+                                                        255, 0, 0, 0),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                            ),
-                                            padding: EdgeInsets.only(
-                                              top: 20.h,
-                                              bottom: 20.h,
-                                              // left: 10.w,
-                                              // right: 10.w,
-                                            ),
-                                            margin: EdgeInsets.only(
-                                              top: 10.h,
-                                              bottom: 30.h,
-                                              // left: 10.w,
-                                              // right: 10.w,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  "Votre pouvez créer votre propre groupe ASSO+"
-                                                      .tr(),
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: AppColors.blackBlue,
+                                              description: SizedBox(
+                                                width: double.infinity,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      10.r,
+                                                    ),
+                                                  ),
+                                                  padding: EdgeInsets.only(
+                                                    top: 10.h,
+                                                    bottom: 10.h,
+                                                  ),
+                                                  margin: EdgeInsets.only(
+                                                    top: 10.h,
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Votre pouvez créer votre propre groupe ASSO+"
+                                                            .tr(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
+                                                      SizedBox(
+                                                          width: 200.w,
+                                                          height: 30.h,
+                                                          child: ElevatedButton(
+                                                            onPressed: () async {
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          AdministrationPageWebview(
+                                                                    forAdmin:
+                                                                        false,
+                                                                    urlPage:
+                                                                        'https://business.faroty.com/groups',
+                                                                    forFirstPage:
+                                                                        true,
+                                                                  ),
+                                                                ),
+                                                              );
+
+                                                              // print("object");
+                                                              // handleLogin();
+                                                              // print(
+                                                              //     numeroPhoneController);
+                                                              // print(
+                                                              //     countryCodeController);
+                                                            },
+                                                            child: Text(
+                                                              "Créer un groupe ASSO+"
+                                                                  .tr()
+                                                                  .toUpperCase(),
+                                                              style: TextStyle(
+                                                                fontSize: 14.sp,
+                                                                color: AppColors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(0),
+                                                              backgroundColor:
+                                                                  AppColors
+                                                                      .greenAssociation,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  20.r,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )),
+                                                    ],
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  height: 20.h,
-                                                ),
-                                                SizedBox(
-                                                    width: 250.w,
-                                                    height: 30.h,
-                                                    child: ElevatedButton(
-                                                      onPressed: () async {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                AdministrationPageWebview(
-                                                              forAdmin: false,
-                                                              urlPage:
-                                                                  'https://business.faroty.com/groups',
-                                                              // urlPage: 'https://business.rush.faroty.com/',
-                                                              forFirstPage:
-                                                                  true,
-                                                            ),
-                                                          ),
-                                                        );
+                                              ),
+                                            );
+                                            context
+                                                .read<AuthCubit>()
+                                                .updateAlreadyShow(0);
+                                          },
+                                        );
+                                      }
+                                      if (Authstate.isTrueNomber == true) {
+                                        return
 
-                                                        print("object");
-                                                        // await PushNotifications()
-                                                        //     .getTokenNotification();
-                                                        handleLogin();
-                                                        print(
-                                                            numeroPhoneController);
-                                                        print(
-                                                            countryCodeController);
-                                                      },
-                                                      child: Text(
-                                                        "Créer un groupe ASSO+"
-                                                            .tr(),
-                                                        style: TextStyle(
-                                                          fontSize: 18.sp,
-                                                          color:
-                                                              AppColors.white,
-                                                        ),
-                                                      ),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor: AppColors
-                                                            .greenAssociation,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            20.r,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ],
-                                            ),
+                                            // SizedBox(
+                                            //   width: double.infinity,
+                                            //   child: Container(
+                                            //     decoration: BoxDecoration(
+                                            //       color: AppColors.white,
+                                            //       // border: Border.all(
+                                            //       //   width: 1.w,
+                                            //       //   color: AppColors.red,
+                                            //       // ),
+                                            //       borderRadius:
+                                            //           BorderRadius.circular(
+                                            //         20.r,
+                                            //       ),
+                                            //     ),
+                                            //     padding: EdgeInsets.only(
+                                            //       top: 20.h,
+                                            //       bottom: 20.h,
+                                            //       // left: 10.w,
+                                            //       // right: 10.w,
+                                            //     ),
+                                            //     margin: EdgeInsets.only(
+                                            //       top: 10.h,
+                                            //       bottom: 30.h,
+                                            //       // left: 10.w,
+                                            //       // right: 10.w,
+                                            //     ),
+                                            //     child: Column(
+                                            //       children: [
+                                            //         Text(
+                                            //           "Votre pouvez créer votre propre groupe ASSO+"
+                                            //               .tr(),
+                                            //           textAlign: TextAlign.center,
+                                            //           style: TextStyle(
+                                            //             fontSize: 14.sp,
+                                            //             fontWeight: FontWeight.w600,
+                                            //             color: AppColors.blackBlue,
+                                            //           ),
+                                            //         ),
+                                            //         SizedBox(
+                                            //           height: 20.h,
+                                            //         ),
+                                            //         SizedBox(
+                                            //             width: 250.w,
+                                            //             height: 30.h,
+                                            //             child: ElevatedButton(
+                                            //               onPressed: () async {
+                                            //                 Navigator.push(
+                                            //                   context,
+                                            //                   MaterialPageRoute(
+                                            //                     builder: (context) =>
+                                            //                         AdministrationPageWebview(
+                                            //                       forAdmin: false,
+                                            //                       urlPage:
+                                            //                           'https://business.faroty.com/groups',
+                                            //                       // urlPage: 'https://business.rush.faroty.com/',
+                                            //                       forFirstPage:
+                                            //                           true,
+                                            //                     ),
+                                            //                   ),
+                                            //                 );
+
+                                            //                 print("object");
+                                            //                 // await PushNotifications()
+                                            //                 //     .getTokenNotification();
+                                            //                 handleLogin();
+                                            //                 print(
+                                            //                     numeroPhoneController);
+                                            //                 print(
+                                            //                     countryCodeController);
+                                            //               },
+                                            //               child: Text(
+                                            //                 "Créer un groupe ASSO+"
+                                            //                     .tr()
+                                            //                     .toUpperCase(),
+                                            //                 style: TextStyle(
+                                            //                   fontSize: 16.sp,
+                                            //                   color:
+                                            //                       AppColors.white,
+                                            //                 ),
+                                            //               ),
+                                            //               style: ElevatedButton
+                                            //                   .styleFrom(
+                                            //                 backgroundColor: AppColors
+                                            //                     .greenAssociation,
+                                            //                 shape:
+                                            //                     RoundedRectangleBorder(
+                                            //                   borderRadius:
+                                            //                       BorderRadius
+                                            //                           .circular(
+                                            //                     20.r,
+                                            //                   ),
+                                            //                 ),
+                                            //               ),
+                                            //             )),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            // );
+
+                                            Container(
+                                          margin: EdgeInsets.only(
+                                            top: 10.h,
+                                            bottom: 10.h,
                                           ),
                                         );
                                       }
                                       // Si Authstate.isTrueNomber n'est pas true, retourner un Container vide
                                       return Container(
-                                        // height: 100.h,
                                         margin: EdgeInsets.only(
-                                            top: 10.h, bottom: 10.h),
+                                          top: 10.h,
+                                          bottom: 10.h,
+                                        ),
                                       );
                                     },
                                   ),
+
                                   SizedBox(
                                     width: double.infinity,
                                     height: 50.h,
@@ -480,4 +595,37 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+_showSimpleModalDialog(context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 350),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text:
+                            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.black,
+                            wordSpacing: 1)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
 }

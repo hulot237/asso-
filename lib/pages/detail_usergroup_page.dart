@@ -1,33 +1,21 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 import 'dart:io';
 
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/business_logic/membres_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_membres/presentation/screens/members_Ass_Page.dart';
-import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
-import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_notifications/presentation/screens/notification_page.dart';
-import 'package:faroty_association_1/Association_And_Group/association_payements/presentation/screens/retraitPage.dart';
-import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
-import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
-import 'package:faroty_association_1/pages/FicheMembrePage.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
-import 'package:faroty_association_1/pages/home_centrale_screen.dart';
-import 'package:faroty_association_1/pages/paramsAppPage.dart';
-import 'package:faroty_association_1/pages/profilPersonnelPage.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -585,6 +573,7 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                             updateTrackingData("detailGroup.inviteMember","${DateTime.now()}", {});
                                             Modal().showShareLinkPage(
                                                 context,
+                                                context.read<UserGroupCubit>().state.changeAssData!.user_group!.name
                                                 // "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
                                                 // "Photo de profil".tr(),
                                                 );
@@ -631,7 +620,7 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                                             left: 5.w),
                                                       ),
                                                       Text(
-                                                        "Inviter un membre".tr(),
+                                                       "Lien d'invitation".tr(),
                                                         style: TextStyle(
                                                           fontSize: 18.sp,
                                                           color:
@@ -674,7 +663,7 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: AppColors.white,
-                                  // borderRadius: BorderRadius.circular(30.r),
+                                  borderRadius: BorderRadius.circular(360.r),
                                   border: Border.all(
                                     width: 1.w,
                                     color: AppColors.colorButton,

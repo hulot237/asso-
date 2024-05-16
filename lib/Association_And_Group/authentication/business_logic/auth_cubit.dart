@@ -16,6 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
             getUid: null,
             errorLoadDetailAuth: false,
             dataCookies: null,
+            alreadyShow: 0,
           ),
         );
 
@@ -25,8 +26,10 @@ class AuthCubit extends Cubit<AuthState> {
       isLoading: true,
       detailUser: state.detailUser,
       isTrueNomber: state.isTrueNomber,
+      alreadyShow: state.alreadyShow,
       loginInfo: state.loginInfo,
       errorLoadDetailAuth: state.errorLoadDetailAuth,
+      // alreadyShow: state.alreadyShow
     ));
     try {
       final data = await AuthRepository().UserDetail(userCode, codeTournoi);
@@ -37,8 +40,10 @@ class AuthCubit extends Cubit<AuthState> {
           loginInfo: state.loginInfo,
           isLoading: false,
           isTrueNomber: state.isTrueNomber,
+          alreadyShow: state.alreadyShow,
           isLoadingDetailUser: false,
           errorLoadDetailAuth: false,
+          // alreadyShow: 2
         ),
       );
     } catch (e) {
@@ -48,6 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
           loginInfo: state.loginInfo,
           isLoading: false,
           isTrueNomber: state.isTrueNomber,
+          alreadyShow: state.alreadyShow,
           isLoadingDetailUser: false,
           errorLoadDetailAuth: true,
         ),
@@ -126,43 +132,28 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<bool> loginFirstCubit(phoneNumber, countryCode) async {
+  Future<void> loginFirstCubit(phoneNumber, countryCode) async {
     emit(state.copyWith(
       isLoading: true,
       isLoadingDetailUser: false,
       detailUser: state.detailUser,
       isTrueNomber: state.isTrueNomber,
       loginInfo: state.loginInfo,
+      alreadyShow: state.alreadyShow,
     ));
     try {
-      final data =
-          await AuthRepository().LoginRepository(phoneNumber, countryCode);
+      final data = await AuthRepository().LoginRepository(phoneNumber, countryCode);
 
-      if (data != null) {
-        emit(
-          state.copyWith(
-            isTrueNomber: data,
-            loginInfo: state.loginInfo,
-            detailUser: state.detailUser,
-            isLoading: false,
-            isLoadingDetailUser: false,
-          ),
-        );
-
-        print("detailAuthCubittttttttttttttttttt Cubit ok");
-        return true;
-      } else {
-        emit(
-          state.copyWith(
-            //loginInfo: {},
-            detailUser: state.detailUser,
-            isTrueNomber: true,
-            isLoading: false,
-            isLoadingDetailUser: false,
-          ),
-        );
-        return false;
-      }
+      emit(
+        state.copyWith(
+          isTrueNomber: data,
+          loginInfo: state.loginInfo,
+          detailUser: state.detailUser,
+          isLoading: false,
+          isLoadingDetailUser: false,
+          alreadyShow: state.alreadyShow!+1,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -171,11 +162,15 @@ class AuthCubit extends Cubit<AuthState> {
           isTrueNomber: true,
           isLoading: false,
           isLoadingDetailUser: false,
+          alreadyShow: state.alreadyShow!+1,
         ),
       );
-      return false;
     }
   }
+  void updateAlreadyShow(int value) {
+    emit(state.copyWith(alreadyShow: value));
+  }
+
 
   String userDataFromWebView = 'null';
 

@@ -189,43 +189,43 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                         ),
                                       ),
                                     ),
-                                    // GestureDetector(
-                                    //   onTap: () {
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             AdministrationPageWebview(
-                                    //           forAdmin: false,
-                                    //           urlPage:
-                                    //               'https://business.faroty.com/groups',
-                                    //           // urlPage: 'https://business.rush.faroty.com/',
-                                    //           forFirstPage: true,
-                                    //         ),
-                                    //       ),
-                                    //     );
-                                    //   },
-                                    //   child: Container(
-                                    //     alignment: Alignment.center,
-                                    //     // decoration: BoxDecoration(
-                                    //     //   color: AppColors.white,
-                                    //     //   borderRadius: BorderRadius.circular(20.r),
-                                    //     // ),
-                                    //     width:
-                                    //         MediaQuery.of(context).size.width,
-                                    //     // margin: EdgeInsets.only( bottom: 10.h),
-                                    //     padding: EdgeInsets.all(15.r),
-                                    //     child: Text(
-                                    //       "CRÉER UN GROUPE/UNE ASSOCIATION"
-                                    //           .tr(),
-                                    //       style: TextStyle(
-                                    //         fontWeight: FontWeight.w900,
-                                    //         fontSize: 16.sp,
-                                    //         color: AppColors.backgroundAppBAr,
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // )
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                AdministrationPageWebview(
+                                              forAdmin: false,
+                                              urlPage:
+                                                  'https://business.faroty.com/groups',
+                                              // urlPage: 'https://business.rush.faroty.com/',
+                                              forFirstPage: true,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        // decoration: BoxDecoration(
+                                        //   color: AppColors.white,
+                                        //   borderRadius: BorderRadius.circular(20.r),
+                                        // ),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        // margin: EdgeInsets.only( bottom: 10.h),
+                                        padding: EdgeInsets.all(15.r),
+                                        child: Text(
+                                          "Créer un groupe ASSO+"
+                                              .tr().toUpperCase(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 16.sp,
+                                            color: AppColors.backgroundAppBAr,
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),

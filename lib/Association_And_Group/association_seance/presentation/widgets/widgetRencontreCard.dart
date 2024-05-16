@@ -27,6 +27,7 @@ class WidgetRencontreCard extends StatefulWidget {
     required this.maskElt,
     required this.typeRencontre,
     required this.screenSource,
+    required this.rapportUrl,
   });
 
   String prenomRecepteurRencontre;
@@ -43,6 +44,7 @@ class WidgetRencontreCard extends StatefulWidget {
   bool maskElt;
   String typeRencontre;
   String screenSource;
+  String? rapportUrl;
 
   @override
   State<WidgetRencontreCard> createState() => _WidgetRencontreCardState();
@@ -99,6 +101,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                 prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
                 photoProfilRecepteur: widget.photoProfilRecepteur,
                 dateRencontreAPI: widget.dateRencontreAPI,
+                rapportUrl:widget.rapportUrl,
               ),
             ),
           );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/data/notification_model.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -37,7 +39,7 @@ class NotificationRepository {
 
   Future<int> countNotification() async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/membre/${AppCubitStorage().state.codeAssDefaul}/notifications/count?versionApp${Variables.version}',
+      '${Variables.LienAIP}/api/v1/membre/${AppCubitStorage().state.codeAssDefaul}/notifications/count',
       options: Options(
         headers: {
           "token": AppCubitStorage().state.tokenUser,

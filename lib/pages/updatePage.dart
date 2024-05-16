@@ -18,7 +18,7 @@ class _UpdatePageState extends State<UpdatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: AppColors.pageBackground,
+        color: AppColors.white,
         child: Stack(
           children: [
             Container(

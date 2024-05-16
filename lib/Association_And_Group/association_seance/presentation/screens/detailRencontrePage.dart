@@ -18,11 +18,13 @@ import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
+import 'package:faroty_association_1/pages/rapport_view_screen.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class detailRencontrePage extends StatefulWidget {
   detailRencontrePage({
@@ -38,6 +40,7 @@ class detailRencontrePage extends StatefulWidget {
     required this.photoProfilRecepteur,
     required this.codeSeance,
     required this.dateRencontreAPI,
+    required this.rapportUrl,
   });
 
   String nomRecepteurRencontre;
@@ -51,6 +54,7 @@ class detailRencontrePage extends StatefulWidget {
   String photoProfilRecepteur;
   String codeSeance;
   String dateRencontreAPI;
+  String? rapportUrl;
   @override
   State<detailRencontrePage> createState() => _detailRencontrePageState();
 }
@@ -66,7 +70,10 @@ Widget PageScaffold({
         backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
           "detail_de_la_rencontre".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 16.sp,
+              color: AppColors.white,
+              fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
           onTap: () {
@@ -86,7 +93,10 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "detail_de_la_rencontre".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold),
+        style: TextStyle(
+            fontSize: 16.sp,
+            color: AppColors.white,
+            fontWeight: FontWeight.bold),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -160,6 +170,50 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                     dateRencontreAPI: widget.dateRencontreAPI,
                   ),
                 ),
+                if (widget.rapportUrl != null)
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RapportViewScreen(
+                            src: widget.rapportUrl,
+                            nomElement:
+                                "${"rencontre".tr()} ${widget.identifiantRencontre}",
+                          ),
+                        ),
+                      );
+                      // SfPdfViewer.network('${currentDetailSeance["rapport"]}');
+                      print("object");
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        top: 15.h,
+                      ),
+                      padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.blackBlue.withOpacity(.3),
+                            spreadRadius: 0.5,
+                            blurRadius: 1,
+                          ),
+                        ],
+                        color: AppColors.colorButton,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Text(
+                        "Le rapport est disponible".tr(),
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 Container(
                   margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
                   padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
@@ -408,7 +462,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                 bottom: 7.h,
                                               ),
                                               child: WidgetCotisation(
-                                               screenSource: "meeting",
+                                                screenSource: "meeting",
                                                 isPayed: ItemDetailCotisation[
                                                     "is_payed"],
                                                 montantCotisations:

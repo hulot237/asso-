@@ -2221,17 +2221,19 @@ class Modal {
     );
   }
 
-  void showShareLinkPage(context) {
+  void showShareLinkPage(context, nomGroupe) {
     showGeneralDialog(
       context: context,
 
       barrierDismissible:
           false, // should dialog be dismissed when tapped outside
       // barrierLabel: "Modal", // label for barrier
+      
       transitionDuration: Duration(
         milliseconds: 400,
       ), // how long it takes to popup dialog after button click
       pageBuilder: (_, __, ___) {
+        
         // your widget implementation
         return Material(
           color: Colors.transparent,
@@ -2248,7 +2250,7 @@ class Modal {
                 ),
               ),
               title: Text(
-                "Lien d'invitation",
+                "Lien d'invitation".tr(),
                 style: TextStyle(
                   color: AppColors.blackBlue,
                   // fontFamily: 'Overpass',
@@ -2372,7 +2374,7 @@ class Modal {
                           margin: EdgeInsets.fromLTRB(0, 0, 20.w, 0),
                         ),
                         Text(
-                          "Copier le lien",
+                          "Copier le lien".tr(),
                           style: TextStyle(
                             fontSize: 18.sp,
                             color: AppColors.blackBlue,
@@ -2387,7 +2389,7 @@ class Modal {
                     updateTrackingData(
                         "inviteLink.shareLink", "${DateTime.now()}", {});
                     Share.share(
-                        "${Variables.LienInvit}/subscribe?urlcode=${AppCubitStorage().state.codeAssDefaul}");
+                        "${"Je vous invite à rejoindre *${nomGroupe}* dans l'application ASSO+ pour nos cotisations et tontines.".tr()}\n${Variables.LienInvit}/subscribe?urlcode=${AppCubitStorage().state.codeAssDefaul}");
                   },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(20.w, 20.h, 15.w, 20.h),
@@ -2404,7 +2406,7 @@ class Modal {
                           margin: EdgeInsets.fromLTRB(0, 0, 20.w, 0),
                         ),
                         Text(
-                          "Partager le lien",
+                          "Partager le lien".tr(),
                           style: TextStyle(
                             fontSize: 18.sp,
                             color: AppColors.blackBlue,
@@ -2416,8 +2418,7 @@ class Modal {
                 ),
                 InkWell(
                   onTap: () {
-                    updateTrackingData(
-                        "inviteLink.qrCode", "${DateTime.now()}", {});
+                    updateTrackingData("inviteLink.qrCode", "${DateTime.now()}", {});
                     _showQrCode(context);
                   },
                   child: Container(
@@ -2461,12 +2462,13 @@ _showQrCode(context) {
       builder: (BuildContext context) {
         final DetailAss = context.read<UserGroupCubit>().state.changeAssData;
         return Dialog(
+          elevation: 0,
           backgroundColor: Colors.transparent,
           // shape: RoundedRectangleBorder(
           //   borderRadius: BorderRadius.circular(20.0),
           // ),
           child: Container(
-            height: 450.h,
+            height: 400.h,
             color: Colors.transparent,
             child: Stack(
               children: [
@@ -2478,7 +2480,7 @@ _showQrCode(context) {
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Container(
-                      height: 400.h,
+                      height: 350.h,
                       // color: Color.fromARGB(167, 164, 14, 14),
                       child: Center(
                         child: Container(
@@ -2501,7 +2503,7 @@ _showQrCode(context) {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(bottom: 25.h),
+                                    margin: EdgeInsets.only(bottom: 20.h),
                                     child: Text(
                                       "Groupe ASSO+",
                                       style: TextStyle(
@@ -2530,18 +2532,20 @@ _showQrCode(context) {
                                   ),
                                   eyeStyle: const QrEyeStyle(
                                     eyeShape: QrEyeShape.square,
-                                    color: AppColors.blackBlue,
+                                    color: Color.fromARGB(255, 0, 0, 0),
                                   ),
                                   dataModuleStyle: const QrDataModuleStyle(
                                     dataModuleShape: QrDataModuleShape.square,
-                                    color: AppColors.blackBlue,
+                                    color: Color.fromARGB(255, 0, 0, 0),
                                   ),
                                   embeddedImageStyle: QrEmbeddedImageStyle(
                                     // color: Color(0xFFe7eaef),
                                     size: Size.square(50.r),
                                   ),
                                 ),
-                              )
+                              ),
+                              SizedBox(height: 15.h,),
+                              Text("Scanner pour integrer le groupe".tr(), style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.blackBlue),)
                             ],
                           ),
                         ),

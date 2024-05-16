@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/data/auth_model.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -10,7 +11,7 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> UserDetail(userCode, codeTournoi) async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi?versionApp${Variables.version}',
+      '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi&version_app=${Variables.version}&app_mode=${Platform.isAndroid?"android":"ios"}',
     );
     final Map<String, dynamic> dataJson = response.data["data"];
 

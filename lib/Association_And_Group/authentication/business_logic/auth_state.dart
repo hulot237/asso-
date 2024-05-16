@@ -8,6 +8,7 @@ class AuthState extends Equatable {
   final AuthModel? loginInfo;
   final bool isLoading;
   final bool? isTrueNomber;
+  final int? alreadyShow;
   final bool? isLoadingDetailUser;
   final bool errorLoading;
   final bool successLoading;
@@ -21,6 +22,7 @@ class AuthState extends Equatable {
     this.loginInfo,
     this.isLoading = false,
     this.isTrueNomber,
+    this.alreadyShow,
     this.isLoadingDetailUser,
     this.errorLoading = false,
     this.successLoading = false,
@@ -36,6 +38,7 @@ class AuthState extends Equatable {
         loginInfo,
         isLoading,
         isTrueNomber,
+        alreadyShow,
         isLoadingDetailUser,
         errorLoading,
         message,
@@ -45,12 +48,12 @@ class AuthState extends Equatable {
         dataCookies,
       ];
 
-
   AuthState copyWith({
     Map<String, dynamic>? detailUser,
     AuthModel? loginInfo,
     bool? isLoading,
     bool? isTrueNomber,
+    int? alreadyShow,
     bool? isLoadingDetailUser,
     bool? errorLoading,
     bool? successLoading,
@@ -64,6 +67,7 @@ class AuthState extends Equatable {
       loginInfo: loginInfo ?? this.loginInfo,
       isLoading: isLoading ?? this.isLoading,
       isTrueNomber: isTrueNomber ?? this.isTrueNomber,
+      alreadyShow: alreadyShow ?? this.alreadyShow,
       isLoadingDetailUser: isLoadingDetailUser ?? this.isLoadingDetailUser,
       errorLoading: errorLoading ?? this.errorLoading,
       successLoading: successLoading ?? this.successLoading,

@@ -143,10 +143,6 @@ class _VerificationPageState extends State<VerificationPage> {
         .read<AuthCubit>()
         .loginFirstCubit(numeroPhone, countryCode);
 
-    if (allCotisationAss != null) {
-    } else {
-      print("handleLogin");
-    }
   }
 
   // TextEditingController countrycode = TextEditingController();
