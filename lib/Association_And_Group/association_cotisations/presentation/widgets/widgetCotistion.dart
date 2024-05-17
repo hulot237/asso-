@@ -32,6 +32,7 @@ class WidgetCotisation extends StatefulWidget {
     required this.rubrique,
     required this.isPayed,
     required this.screenSource,
+    required this.rapportUrl,
   });
   int montantCotisations;
   String motifCotisations;
@@ -48,6 +49,7 @@ class WidgetCotisation extends StatefulWidget {
   String rubrique;
   int isPayed;
   String screenSource;
+  String? rapportUrl;
 
   @override
   State<WidgetCotisation> createState() => _WidgetCotisationState();
@@ -88,6 +90,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                 type: widget.type,
                 isPassed: widget.is_passed,
                 isPayed: widget.isPayed,
+                rapportUrl: widget.rapportUrl,
               ),
             ),
           );

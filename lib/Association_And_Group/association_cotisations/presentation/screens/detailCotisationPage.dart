@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetHistoriqueCotisation.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/detailRencontrePage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -17,6 +18,7 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
+import 'package:faroty_association_1/widget/button_rapport_widget.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +38,7 @@ class DetailCotisationPage extends StatefulWidget {
     required this.lienDePaiement,
     required this.codeCotisation,
     required this.isPayed,
+    required this.rapportUrl,
   });
   int montantCotisations;
   String motifCotisations;
@@ -47,6 +50,7 @@ class DetailCotisationPage extends StatefulWidget {
   int isPassed;
   String codeCotisation;
   int isPayed;
+  String? rapportUrl;
 
   @override
   State<DetailCotisationPage> createState() => _DetailCotisationPageState();
@@ -164,6 +168,12 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                     isPayed: widget.isPayed,
                   ),
                 ),
+                if (widget.rapportUrl != null)
+                  ButtonRapport(
+                    nomElement:
+                        "${"Cotisation".tr()} ${widget.motifCotisations}",
+                    rapportUrl: "${widget.rapportUrl}",
+                  ),
                 Container(
                   // color: Colors.deepOrange,
                   width: MediaQuery.of(context).size.width,

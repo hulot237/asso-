@@ -54,6 +54,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
   Future<void> handleDefaultSeance(codeSeance) async {
     final detailSeance =
         await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
+        
   }
 
   isPasseDate() {
@@ -83,8 +84,8 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
           updateTrackingData("${widget.screenSource}", "${DateTime.now()}",
               {"type": 'meeting', "meeting_id": "${widget.codeSeance}"});
           handleDefaultSeance(widget.codeSeance);
-          final detailSeance =
-              context.read<SeanceCubit>().detailSeanceCubit(widget.codeSeance);
+          // final detailSeance =
+          //     context.read<SeanceCubit>().detailSeanceCubit(widget.codeSeance);
 
           Navigator.push(
             context,

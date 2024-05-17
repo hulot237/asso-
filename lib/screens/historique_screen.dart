@@ -65,7 +65,11 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "historiques".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white, fontWeight: FontWeight.bold,),
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
         trailing: widgetAction,
@@ -79,7 +83,11 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "historiques".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
+        style: TextStyle(
+          fontSize: 16.sp,
+          color: AppColors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       backgroundColor: AppColors.red,
       elevation: 0,
@@ -100,7 +108,9 @@ Widget PageScaffold({
 }
 
 class _HistoriqueScreenState extends State<HistoriqueScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
+
+
   late TabController _tabController;
   bool _dataLoaded = false;
 
@@ -206,12 +216,14 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     handleTournoiDefault(AppCubitStorage().state.codeTournois);
     // handleAllUserGroup();
     handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois,
@@ -219,6 +231,18 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
 
     _tabController = TabController(length: 0, vsync: this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      handleTournoiDefault(AppCubitStorage().state.codeTournois);
+      // handleAllUserGroup();
+      handleAllCotisationAssTournoi(AppCubitStorage().state.codeTournois,
+          AppCubitStorage().state.membreCode);
+      handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+      print("RETOUR");
+    }
   }
 
   @override
@@ -279,427 +303,778 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                 );
                 return true;
               },
-              child: (Authstate.errorLoadDetailAuth == true ||
-                      UserGroupState.errorLoadDetailChangeAss == true)
-                  ? checkInternetConnectionPage(
-                      backToHome: true,
-                      functionToCall: () {},
-                    ): !context.read<AuthCubit>().state.detailUser!["is_app_updated"]? UpdatePage()
-                  : Scaffold(
-                      backgroundColor: AppColors.pageBackground,
-                      appBar: PreferredSize(
-                        preferredSize: Size.fromHeight(120.h),
-                        child: AppBar(
-                          title: Text(
-                            "historiques".tr(),
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: AppColors.white,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          actions: [
-                            Row(
-                              children: [
-                                Container(
-                                  // color: const Color.fromARGB(255, 20, 99, 70),
-                                  height: 30.h,
-                                  width: 30.h,
-                                  margin: EdgeInsets.only(right: 10.w),
-                                  // padding: EdgeInsets.all(1.r),
-                                  child: AddAssoWidget(
-                                    screenSource: "transactions.btnAddAsso",
+              child:
+                  (Authstate.errorLoadDetailAuth == true ||
+                          UserGroupState.errorLoadDetailChangeAss == true)
+                      ? checkInternetConnectionPage(
+                          backToHome: true,
+                          functionToCall: () {},
+                        )
+                      : !context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["is_app_updated"]
+                          ? UpdatePage()
+                          : Scaffold(
+                              backgroundColor: AppColors.pageBackground,
+                              appBar: PreferredSize(
+                                preferredSize: Size.fromHeight(120.h),
+                                child: AppBar(
+                                  title: Text(
+                                    "historiques".tr(),
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                if (!context
-                                    .read<AuthCubit>()
-                                    .state
-                                    .detailUser!["isMember"])
-                                  GestureDetector(
-                                    onTap: () async {
-                                      updateTrackingData(
-                                          "transactions.btnAdminister",
-                                          "${DateTime.now()}", {});
-                                      await launchUrlString(
-                                        "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                        mode: LaunchMode.platformDefault,
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(
-                                        right: 10.w,
-                                      ),
-                                      padding: EdgeInsets.all(1.r),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1.r,
-                                            color: AppColors.blackBlue),
-                                        color: AppColors.blackBlueAccent2,
-                                        borderRadius:
-                                            BorderRadius.circular(50.r),
-                                      ),
-                                      height: 30.h,
-                                      width: 30.h,
-                                      child: Image.asset(
-                                        "assets/images/Groupe_ou_Asso.png",
-                                        scale: 4,
-                                      ),
-                                    ),
-                                  ),
-                                GestureDetector(
-                                  onTap: () {
-                                    updateTrackingData("transactions.btnSwitch",
-                                        "${DateTime.now()}", {});
-                                    Modal().showBottomSheetListAss(
-                                      context,
-                                      context
-                                          .read<UserGroupCubit>()
-                                          .state
-                                          .userGroup,
-                                    );
-                                  },
-                                  child: Container(
-                                    child: Container(
-                                      margin: EdgeInsets.only(
-                                        right: 15.w,
-                                      ),
-                                      height: 30.h,
-                                      width: 30.h,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: AppColors.red,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(360.r),
-                                      ),
-                                      padding: EdgeInsets.all(1.r),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(360.r),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(360.r),
-                                          ),
-                                          child: Image.network(
-                                            "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
-                                            fit: BoxFit.cover,
+                                  actions: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          // color: const Color.fromARGB(255, 20, 99, 70),
+                                          height: 30.h,
+                                          width: 30.h,
+                                          margin: EdgeInsets.only(right: 10.w),
+                                          // padding: EdgeInsets.all(1.r),
+                                          child: AddAssoWidget(
+                                            screenSource:
+                                                "transactions.btnAddAsso",
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                          elevation: 0,
-                          backgroundColor: AppColors.backgroundAppBAr,
-                          leading: Platform.isAndroid
-                              ? GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            HomeCentraleScreen(),
-                                      ),
-                                      (route) => false,
-                                    );
-                                    print("object");
-                                  },
-                                  child: BackButtonWidget(
-                                    colorIcon: AppColors.white,
-                                  ),
-                                )
-                              : Container(),
-                          bottom: TabBar(
-                            onTap: (value) {
-                              value == 0? updateTrackingData("transactions.meetingTabBar", "${DateTime.now()}", {})
-                              :value==1? updateTrackingData("transactions.tontineTabBar","${DateTime.now()}", {})
-                              :value==2? updateTrackingData("transactions.contributionTabBar","${DateTime.now()}", {})
-                              :value==3? updateTrackingData("transactions.sanctionTabBar","${DateTime.now()}", {})
-                              :updateTrackingData("transactions.Account","${DateTime.now()}", {});
-                            },
-                            labelPadding:
-                                EdgeInsets.only(right: 10.w, left: 10.w),
-                            controller: _tabController,
-                            isScrollable: true,
-                            labelColor: AppColors.white,
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.sp,
-                            ),
-                            padding: EdgeInsets.all(0),
-                            unselectedLabelStyle: TextStyle(
-                              color: AppColors.whiteAccent1,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp,
-                            ),
-                            indicator: UnderlineTabIndicator(
-                              borderSide: BorderSide(
-                                color: AppColors.white,
-                                width: 2.h,
-                              ),
-                              insets: EdgeInsets.symmetric(
-                                horizontal: 20.0.w,
-                              ),
-                            ),
-                            // indicatorWeight: 30.h,
-                            tabs: [
-                              Tab(
-                                text: "rencontres".tr(),
-                              ),
-                              if (UserGroupState
-                                      .changeAssData!.user_group!.is_tontine ==
-                                  true)
-                                Tab(
-                                  text: "Tontines",
-                                ),
-                              Tab(
-                                text: "cotisations".tr(),
-                              ),
-                              Tab(
-                                text: "Sanctions",
-                              ),
-                              if (checkTransparenceStatus(
-                                  context
-                                      .read<UserGroupCubit>()
-                                      .state
-                                      .changeAssData!
-                                      .user_group!
-                                      .configs,
-                                  context
-                                      .read<AuthCubit>()
-                                      .state
-                                      .detailUser!["isMember"]))
-                                Tab(
-                                  text: "comptes".tr(),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      body: Container(
-                        // decoration: BoxDecoration(
-                        //   image: DecorationImage(
-                        //     image: AssetImage("assets/images/BG.png"),
-                        //     fit: BoxFit.cover,
-                        //     opacity: 0.2
-                        //   ),
-                        // ),
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                top: 1.5.h,
-                                left: 1.5.w,
-                                right: 1.5.w,
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    // color: AppColors.barrierColorModal,
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                      top: 10.h,
-                                      left: 5.w,
-                                      bottom: 10.h,
-                                    ),
-                                    child: Text(
-                                      "toutes_les_rencontres".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.sp,
-                                        letterSpacing: 0.2.w,
-                                      ),
-                                    ),
-                                  ),
-                                  BlocBuilder<DetailTournoiCourantCubit,
-                                      DetailTournoiCourantState>(
-                                    builder: (DetailTournoiContext,
-                                        DetailTournoiState) {
-                                      if (DetailTournoiState.isLoading ==
-                                              true &&
-                                          DetailTournoiState
-                                                  .detailtournoiCourant ==
-                                              null)
-                                        return Container(
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              color: AppColors.bleuLight,
+                                        if (!context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .detailUser!["isMember"])
+                                          GestureDetector(
+                                            onTap: () async {
+                                              updateTrackingData(
+                                                  "transactions.btnAdminister",
+                                                  "${DateTime.now()}", {});
+                                              await launchUrlString(
+                                                "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                                                mode:
+                                                    LaunchMode.platformDefault,
+                                              );
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                right: 10.w,
+                                              ),
+                                              padding: EdgeInsets.all(1.r),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 1.r,
+                                                    color: AppColors.blackBlue),
+                                                color:
+                                                    AppColors.blackBlueAccent2,
+                                                borderRadius:
+                                                    BorderRadius.circular(50.r),
+                                              ),
+                                              height: 30.h,
+                                              width: 30.h,
+                                              child: Image.asset(
+                                                "assets/images/Groupe_ou_Asso.png",
+                                                scale: 4,
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      final currentDetailtournoiCourant =
+                                        GestureDetector(
+                                          onTap: () {
+                                            updateTrackingData(
+                                                "transactions.btnSwitch",
+                                                "${DateTime.now()}", {});
+                                            Modal().showBottomSheetListAss(
+                                              context,
+                                              context
+                                                  .read<UserGroupCubit>()
+                                                  .state
+                                                  .userGroup,
+                                            );
+                                          },
+                                          child: Container(
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                right: 15.w,
+                                              ),
+                                              height: 30.h,
+                                              width: 30.h,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: AppColors.red,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        360.r),
+                                              ),
+                                              padding: EdgeInsets.all(1.r),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        360.r),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            360.r),
+                                                  ),
+                                                  child: Image.network(
+                                                    "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                  elevation: 0,
+                                  backgroundColor: AppColors.backgroundAppBAr,
+                                  leading: Platform.isAndroid
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        HomeCentraleScreen(),
+                                              ),
+                                              (route) => false,
+                                            );
+                                            print("object");
+                                          },
+                                          child: BackButtonWidget(
+                                            colorIcon: AppColors.white,
+                                          ),
+                                        )
+                                      : Container(),
+                                  bottom: TabBar(
+                                    onTap: (value) {
+                                      value == 0
+                                          ? updateTrackingData(
+                                              "transactions.meetingTabBar",
+                                              "${DateTime.now()}", {})
+                                          : value == 1
+                                              ? updateTrackingData(
+                                                  "transactions.tontineTabBar",
+                                                  "${DateTime.now()}", {})
+                                              : value == 2
+                                                  ? updateTrackingData(
+                                                      "transactions.contributionTabBar",
+                                                      "${DateTime.now()}", {})
+                                                  : value == 3
+                                                      ? updateTrackingData(
+                                                          "transactions.sanctionTabBar",
+                                                          "${DateTime.now()}",
+                                                          {})
+                                                      : updateTrackingData(
+                                                          "transactions.Account",
+                                                          "${DateTime.now()}",
+                                                          {});
+                                    },
+                                    labelPadding: EdgeInsets.only(
+                                        right: 10.w, left: 10.w),
+                                    controller: _tabController,
+                                    isScrollable: true,
+                                    labelColor: AppColors.white,
+                                    labelStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                    ),
+                                    padding: EdgeInsets.all(0),
+                                    unselectedLabelStyle: TextStyle(
+                                      color: AppColors.whiteAccent1,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                    ),
+                                    indicator: UnderlineTabIndicator(
+                                      borderSide: BorderSide(
+                                        color: AppColors.white,
+                                        width: 2.h,
+                                      ),
+                                      insets: EdgeInsets.symmetric(
+                                        horizontal: 20.0.w,
+                                      ),
+                                    ),
+                                    // indicatorWeight: 30.h,
+                                    tabs: [
+                                      Tab(
+                                        text: "rencontres".tr(),
+                                      ),
+                                      if (UserGroupState.changeAssData!
+                                              .user_group!.is_tontine ==
+                                          true)
+                                        Tab(
+                                          text: "Tontines",
+                                        ),
+                                      Tab(
+                                        text: "cotisations".tr(),
+                                      ),
+                                      Tab(
+                                        text: "Sanctions",
+                                      ),
+                                      if (checkTransparenceStatus(
                                           context
-                                              .read<DetailTournoiCourantCubit>()
+                                              .read<UserGroupCubit>()
                                               .state
-                                              .detailtournoiCourant;
-                                      return currentDetailtournoiCourant![
-                                                      "tournois"]["seance"]!
-                                                  .length >
-                                              0
-                                          ? Expanded(
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      bottom: Platform.isIOS
-                                                          ? 70.h
-                                                          : 0.h,
+                                              .changeAssData!
+                                              .user_group!
+                                              .configs,
+                                          context
+                                              .read<AuthCubit>()
+                                              .state
+                                              .detailUser!["isMember"]))
+                                        Tab(
+                                          text: "comptes".tr(),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              body: Container(
+                                // decoration: BoxDecoration(
+                                //   image: DecorationImage(
+                                //     image: AssetImage("assets/images/BG.png"),
+                                //     fit: BoxFit.cover,
+                                //     opacity: 0.2
+                                //   ),
+                                // ),
+                                child: TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        top: 1.5.h,
+                                        left: 1.5.w,
+                                        right: 1.5.w,
+                                      ),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            // color: AppColors.barrierColorModal,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(
+                                              top: 10.h,
+                                              left: 5.w,
+                                              bottom: 10.h,
+                                            ),
+                                            child: Text(
+                                              "toutes_les_rencontres".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.sp,
+                                                letterSpacing: 0.2.w,
+                                              ),
+                                            ),
+                                          ),
+                                          BlocBuilder<DetailTournoiCourantCubit,
+                                              DetailTournoiCourantState>(
+                                            builder: (DetailTournoiContext,
+                                                DetailTournoiState) {
+                                              if (DetailTournoiState
+                                                          .isLoading ==
+                                                      true &&
+                                                  DetailTournoiState
+                                                          .detailtournoiCourant ==
+                                                      null)
+                                                return Container(
+                                                  child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color:
+                                                          AppColors.bleuLight,
                                                     ),
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    child: RefreshIndicator(
-                                                      onRefresh:
-                                                          refreshRencontre,
-                                                      child: ListView.builder(
-                                                        padding:
-                                                            EdgeInsets.all(0),
-                                                        shrinkWrap: true,
-                                                        itemCount:
-                                                            currentDetailtournoiCourant[
-                                                                        "tournois"]
-                                                                    ["seance"]
-                                                                .length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          final itemSeance =
-                                                              currentDetailtournoiCourant[
-                                                                      "tournois"]
-                                                                  [
-                                                                  "seance"][index];
-
-                                                          return Container(
+                                                  ),
+                                                );
+                                              final currentDetailtournoiCourant =
+                                                  context
+                                                      .read<
+                                                          DetailTournoiCourantCubit>()
+                                                      .state
+                                                      .detailtournoiCourant;
+                                              return currentDetailtournoiCourant![
+                                                                  "tournois"]
+                                                              ["seance"]!
+                                                          .length >
+                                                      0
+                                                  ? Expanded(
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
                                                             margin:
                                                                 EdgeInsets.only(
-                                                              left: 7.w,
-                                                              right: 7.w,
-                                                              top: 3.h,
-                                                              bottom: 7.h,
+                                                              bottom:
+                                                                  Platform.isIOS
+                                                                      ? 70.h
+                                                                      : 0.h,
                                                             ),
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
                                                             child:
-                                                                WidgetRencontreCard(
-                                                                  screenSource: "transactions.meeting",
-                                                              typeRencontre:
-                                                                  itemSeance[
-                                                                      "type_rencontre"],
+                                                                RefreshIndicator(
+                                                              onRefresh:
+                                                                  refreshRencontre,
+                                                              child: ListView
+                                                                  .builder(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(0),
+                                                                shrinkWrap:
+                                                                    true,
+                                                                itemCount: currentDetailtournoiCourant[
+                                                                            "tournois"]
+                                                                        [
+                                                                        "seance"]
+                                                                    .length,
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  final itemSeance =
+                                                                      currentDetailtournoiCourant["tournois"]
+                                                                              [
+                                                                              "seance"]
+                                                                          [
+                                                                          index];
+
+                                                                  return Container(
+                                                                    margin:
+                                                                        EdgeInsets
+                                                                            .only(
+                                                                      left: 7.w,
+                                                                      right:
+                                                                          7.w,
+                                                                      top: 3.h,
+                                                                      bottom:
+                                                                          7.h,
+                                                                    ),
+                                                                    child:
+                                                                        WidgetRencontreCard(
+                                                                      screenSource:
+                                                                          "transactions.meeting",
+                                                                      typeRencontre:
+                                                                          itemSeance[
+                                                                              "type_rencontre"],
                                                                       rapportUrl:
-                                                                  itemSeance[
-                                                                      "rapport"],
-                                                              maskElt: false,
-                                                              codeSeance:
-                                                                  itemSeance[
-                                                                      "seance_code"],
-                                                              photoProfilRecepteur: itemSeance[
-                                                                              "membre"]
-                                                                          [
-                                                                          "photo_profil"] ==
-                                                                      null
-                                                                  ? ''
-                                                                  : itemSeance[
-                                                                          "membre"]
-                                                                      [
-                                                                      "photo_profil"],
-                                                              dateRencontre: AppCubitStorage()
-                                                                          .state
-                                                                          .Language ==
-                                                                      "fr"
-                                                                  ? formatDateToFrench(
-                                                                      itemSeance[
-                                                                          "date_seance"])
-                                                                  : formatDateToEnglish(
-                                                                      itemSeance[
-                                                                          "date_seance"]),
-                                                              descriptionRencontre:
-                                                                  '${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", itemSeance["date_seance"]).toUpperCase()} ${"à".tr()} ${itemSeance["heure_debut"]}',
-                                                              heureRencontre:
-                                                                  itemSeance[
-                                                                      "heure_debut"],
-                                                              identifiantRencontre:
-                                                                  itemSeance[
-                                                                      "matricule"],
-                                                              lieuRencontre:
-                                                                  itemSeance[
-                                                                      "localisation"],
-                                                              nomRecepteurRencontre: itemSeance[
-                                                                              "membre"]
-                                                                          [
-                                                                          "first_name"] ==
-                                                                      null
-                                                                  ? ""
-                                                                  : itemSeance[
-                                                                          "membre"]
-                                                                      [
-                                                                      "first_name"],
-                                                              isActiveRencontre:
-                                                                  itemSeance[
-                                                                      "status"],
-                                                              prenomRecepteurRencontre: itemSeance[
-                                                                              "membre"]
-                                                                          [
-                                                                          "last_name"] ==
-                                                                      null
-                                                                  ? ""
-                                                                  : itemSeance[
-                                                                          "membre"]
-                                                                      [
-                                                                      "last_name"],
-                                                              dateRencontreAPI:
-                                                                  itemSeance[
-                                                                      "date_seance"],
+                                                                          itemSeance[
+                                                                              "rapport"],
+                                                                      maskElt:
+                                                                          false,
+                                                                      codeSeance:
+                                                                          itemSeance[
+                                                                              "seance_code"],
+                                                                      photoProfilRecepteur: itemSeance["membre"]["photo_profil"] ==
+                                                                              null
+                                                                          ? ''
+                                                                          : itemSeance["membre"]
+                                                                              [
+                                                                              "photo_profil"],
+                                                                      dateRencontre: AppCubitStorage().state.Language ==
+                                                                              "fr"
+                                                                          ? formatDateToFrench(itemSeance[
+                                                                              "date_seance"])
+                                                                          : formatDateToEnglish(
+                                                                              itemSeance["date_seance"]),
+                                                                      descriptionRencontre:
+                                                                          '${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", itemSeance["date_seance"]).toUpperCase()} ${"à".tr()} ${itemSeance["heure_debut"]}',
+                                                                      heureRencontre:
+                                                                          itemSeance[
+                                                                              "heure_debut"],
+                                                                      identifiantRencontre:
+                                                                          itemSeance[
+                                                                              "matricule"],
+                                                                      lieuRencontre:
+                                                                          itemSeance[
+                                                                              "localisation"],
+                                                                      nomRecepteurRencontre: itemSeance["membre"]["first_name"] ==
+                                                                              null
+                                                                          ? ""
+                                                                          : itemSeance["membre"]
+                                                                              [
+                                                                              "first_name"],
+                                                                      isActiveRencontre:
+                                                                          itemSeance[
+                                                                              "status"],
+                                                                      prenomRecepteurRencontre: itemSeance["membre"]["last_name"] ==
+                                                                              null
+                                                                          ? ""
+                                                                          : itemSeance["membre"]
+                                                                              [
+                                                                              "last_name"],
+                                                                      dateRencontreAPI:
+                                                                          itemSeance[
+                                                                              "date_seance"],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
                                                             ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  AddAssoElement(
-                                                    screenSource: "transactions.btnAddMeeting",
-                                                    text:
-                                                        "Ajouter une rencontre"
-                                                            .tr(),
-                                                    routeElement: "seances?query=1",
-                                                  ),
-                                                  if (DetailTournoiState
-                                                              .isLoading ==
-                                                          true &&
-                                                      DetailTournoiState
-                                                              .detailtournoiCourant !=
-                                                          null)
-                                                    EasyLoader(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              0, 255, 255, 255),
-                                                      iconSize: 50.r,
-                                                      iconColor: AppColors
-                                                          .blackBlueAccent1,
-                                                      image: AssetImage(
-                                                        "assets/images/AssoplusFinal.png",
+                                                          ),
+                                                          AddAssoElement(
+                                                            screenSource:
+                                                                "transactions.btnAddMeeting",
+                                                            text:
+                                                                "Ajouter une rencontre"
+                                                                    .tr(),
+                                                            routeElement:
+                                                                "seances?query=1",
+                                                          ),
+                                                          if (DetailTournoiState
+                                                                      .isLoading ==
+                                                                  true &&
+                                                              DetailTournoiState
+                                                                      .detailtournoiCourant !=
+                                                                  null)
+                                                            EasyLoader(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                              iconSize: 50.r,
+                                                              iconColor: AppColors
+                                                                  .blackBlueAccent1,
+                                                              image: AssetImage(
+                                                                "assets/images/AssoplusFinal.png",
+                                                              ),
+                                                            )
+                                                        ],
                                                       ),
                                                     )
-                                                ],
+                                                  : Expanded(
+                                                      child: Stack(
+                                                        children: [
+                                                          RefreshIndicator(
+                                                            onRefresh:
+                                                                refreshRencontre,
+                                                            child: ListView
+                                                                .builder(
+                                                                    itemCount:
+                                                                        1,
+                                                                    itemBuilder:
+                                                                        (BuildContext
+                                                                                context,
+                                                                            int index) {
+                                                                      return Column(
+                                                                        children: [
+                                                                          Container(
+                                                                            padding:
+                                                                                EdgeInsets.only(top: 200.h),
+                                                                            alignment:
+                                                                                Alignment.topCenter,
+                                                                            child:
+                                                                                Text(
+                                                                              "aucune_rencontre".tr(),
+                                                                              style: TextStyle(
+                                                                                color: AppColors.blackBlueAccent1,
+                                                                                fontWeight: FontWeight.w100,
+                                                                                fontSize: 20.sp,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          if (!context
+                                                                              .read<AuthCubit>()
+                                                                              .state
+                                                                              .detailUser!["isMember"])
+                                                                            InkWell(
+                                                                              onTap: () async {
+                                                                                updateTrackingData("transactions.btnAddMeeting", "${DateTime.now()}", {});
+                                                                                await launchUrlString(
+                                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
+                                                                                  mode: LaunchMode.platformDefault,
+                                                                                );
+                                                                              },
+                                                                              child: Container(
+                                                                                height: 50,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: AppColors.pageBackground,
+                                                                                  border: Border.all(
+                                                                                    width: 2.w,
+                                                                                    color: AppColors.blackBlue.withOpacity(1),
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    20.r,
+                                                                                  ),
+                                                                                ),
+                                                                                margin: EdgeInsets.only(
+                                                                                  top: 8.w,
+                                                                                ),
+                                                                                padding: EdgeInsets.symmetric(
+                                                                                  horizontal: 10.w,
+                                                                                  vertical: 7.h,
+                                                                                ),
+                                                                                width: MediaQuery.of(context).size.width / 1.5,
+                                                                                child: Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      "Ajouter une rencontre".tr(),
+                                                                                      style: TextStyle(
+                                                                                        color: AppColors.blackBlue.withOpacity(1),
+                                                                                        fontWeight: FontWeight.w900,
+                                                                                        fontSize: 18.sp,
+                                                                                        letterSpacing: 0.2.w,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Container(
+                                                                                      width: 25.w,
+                                                                                      height: 25.w,
+                                                                                      margin: EdgeInsets.only(left: 3.w),
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(360),
+                                                                                        border: Border.all(
+                                                                                          width: 2.w,
+                                                                                          color: AppColors.blackBlue.withOpacity(1),
+                                                                                        ),
+                                                                                      ),
+                                                                                      child: SvgPicture.asset(
+                                                                                        "assets/images/addIcon.svg",
+                                                                                        fit: BoxFit.scaleDown,
+                                                                                        color: AppColors.blackBlue.withOpacity(1),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                        ],
+                                                                      );
+                                                                    }),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (UserGroupState.changeAssData!
+                                            .user_group!.is_tontine ==
+                                        true)
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          top: 1.5.h,
+                                          left: 1.5.w,
+                                          right: 1.5.w,
+                                        ),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.only(
+                                                  top: 10.h,
+                                                  left: 5.w,
+                                                  bottom: 15.h),
+                                              child: Text(
+                                                "Toutes vos tontines".tr(),
+                                                style: TextStyle(
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20.sp,
+                                                  letterSpacing: 0.2.w,
+                                                ),
                                               ),
-                                            )
-                                          : Expanded(
-                                              child: Stack(
-                                                children: [
-                                                  RefreshIndicator(
-                                                    onRefresh: refreshRencontre,
-                                                    child: ListView.builder(
-                                                        itemCount: 1,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          return Column(
-                                                            children: [
-                                                              Container(
+                                            ),
+                                            BlocBuilder<
+                                                    DetailTournoiCourantCubit,
+                                                    DetailTournoiCourantState>(
+                                                builder: (DetailTournoiContext,
+                                                    DetailTournoiState) {
+                                              final currentDetailtournoiCourant =
+                                                  context
+                                                      .read<
+                                                          DetailTournoiCourantCubit>()
+                                                      .state
+                                                      .detailtournoiCourant;
+
+                                              List<dynamic> listeTontines =
+                                                  currentDetailtournoiCourant![
+                                                      "tontines"];
+
+                                              List<dynamic>
+                                                  tontinesMembreConnect = [];
+
+                                              for (var tontine
+                                                  in listeTontines) {
+                                                for (var item
+                                                    in tontine["membres"]) {
+                                                  if (item["membre"]
+                                                          ["membre_code"] ==
+                                                      AppCubitStorage()
+                                                          .state
+                                                          .membreCode) {
+                                                    tontinesMembreConnect
+                                                        .add(tontine);
+                                                    break;
+                                                  }
+                                                }
+                                              }
+                                              return tontinesMembreConnect
+                                                          .length >
+                                                      0
+                                                  ? Expanded(
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                              bottom:
+                                                                  Platform.isIOS
+                                                                      ? 70.h
+                                                                      : 10.h,
+                                                            ),
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            child:
+                                                                RefreshIndicator(
+                                                              onRefresh:
+                                                                  refreshTontine,
+                                                              child: ListView
+                                                                  .builder(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(0),
+                                                                shrinkWrap:
+                                                                    true,
+                                                                itemCount:
+                                                                    tontinesMembreConnect
+                                                                        .length,
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        index) {
+                                                                  print(
+                                                                      tontinesMembreConnect);
+                                                                  final itemTontine =
+                                                                      tontinesMembreConnect[
+                                                                          index];
+                                                                  return GestureDetector(
+                                                                    onTap: () {
+                                                                      updateTrackingData(
+                                                                          "transactions.tontine",
+                                                                          "${DateTime.now()}",
+                                                                          {});
+                                                                      handleDetailTontine(
+                                                                          AppCubitStorage()
+                                                                              .state
+                                                                              .codeTournois,
+                                                                          itemTontine[
+                                                                              "tontine_code"]);
+
+                                                                      print(
+                                                                          "${itemTontine["tontine_code"]}");
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              DetailTontinePage(
+                                                                            codeTontine:
+                                                                                itemTontine["tontine_code"],
+                                                                            isActive:
+                                                                                itemTontine["is_active"],
+                                                                            dateCreaTontine:
+                                                                                itemTontine["created_at"],
+                                                                            nomTontine:
+                                                                                "${itemTontine["libele"]}",
+                                                                            montantTontine:
+                                                                                "${itemTontine["amount"]}",
+                                                                            positionBeneficiaire:
+                                                                                "${itemTontine["membres"].where((objet) => objet["is_passed"] == 1).length}",
+                                                                            nbrMembreTontine:
+                                                                                "${itemTontine["membres"].length}",
+                                                                            listMembre:
+                                                                                itemTontine["membres"],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    child:
+                                                                        Container(
+                                                                      margin: EdgeInsets.only(
+                                                                          left: 7
+                                                                              .w,
+                                                                          right: 7
+                                                                              .w,
+                                                                          top: 3
+                                                                              .h,
+                                                                          bottom:
+                                                                              7.h),
+                                                                      child:
+                                                                          widgetTontineHistoriqueCard(
+                                                                        isActive:
+                                                                            itemTontine["is_active"],
+                                                                        dateCreaTontine:
+                                                                            itemTontine["created_at"],
+                                                                        nomTontine:
+                                                                            "${itemTontine["libele"]}",
+                                                                        montantTontine:
+                                                                            "${itemTontine["amount"]}",
+                                                                        positionBeneficiaire:
+                                                                            "0",
+                                                                        nbrMembreTontine:
+                                                                            "${itemTontine["membres"].length}",
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          if (DetailTournoiState
+                                                                      .isLoading ==
+                                                                  true ||
+                                                              DetailTournoiState
+                                                                      .detailtournoiCourant ==
+                                                                  null)
+                                                            EasyLoader(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                              iconSize: 50.r,
+                                                              iconColor: AppColors
+                                                                  .blackBlueAccent1,
+                                                              image: AssetImage(
+                                                                "assets/images/AssoplusFinal.png",
+                                                              ),
+                                                            )
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Expanded(
+                                                      child: Container(
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        child: RefreshIndicator(
+                                                          onRefresh:
+                                                              refreshTontine,
+                                                          child:
+                                                              ListView.builder(
+                                                            itemCount: 1,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return Container(
                                                                 padding: EdgeInsets
                                                                     .only(
                                                                         top: 200
@@ -708,11 +1083,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                     Alignment
                                                                         .topCenter,
                                                                 child: Text(
-                                                                  "aucune_rencontre"
-                                                                      .tr(),
+                                                                  "Aucune tontine",
                                                                   style:
                                                                       TextStyle(
-                                                                    color: AppColors.blackBlueAccent1,
+                                                                    color: AppColors
+                                                                        .blackBlueAccent1,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w100,
@@ -720,1113 +1095,813 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                         20.sp,
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              if (!context
-                                                                      .read<
-                                                                          AuthCubit>()
-                                                                      .state
-                                                                      .detailUser![
-                                                                  "isMember"])
-                                                                InkWell(
-                                                                  onTap:
-                                                                      () async {
-                                                                        updateTrackingData("transactions.btnAddMeeting","${DateTime.now()}", {});
-                                                                    await launchUrlString(
-                                                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                                                                      mode: LaunchMode
-                                                                          .platformDefault,
-                                                                    );
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    height: 50,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: AppColors
-                                                                          .pageBackground,
-                                                                      
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        width:
-                                                                            2.w,
-                                                                        color: AppColors
-                                                                            .blackBlue
-                                                                            .withOpacity(1),
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                        20.r,
-                                                                      ),
-                                                                    ),
-                                                                    margin:
-                                                                        EdgeInsets
-                                                                            .only(
-                                                                      top: 8.w,
-                                                                    ),
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .symmetric(
-                                                                      horizontal:
-                                                                          10.w,
-                                                                      vertical:
-                                                                          7.h,
-                                                                    ),
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
-                                                                        1.5,
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceAround,
-                                                                      children: [
-                                                                        Text(
-                                                                          "Ajouter une rencontre"
-                                                                              .tr(),
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                AppColors.blackBlue.withOpacity(1),
-                                                                            fontWeight:
-                                                                                FontWeight.w900,
-                                                                            fontSize:
-                                                                                18.sp,
-                                                                            letterSpacing:
-                                                                                0.2.w,
-                                                                          ),
-                                                                        ),
-                                                                        Container(
-                                                                          width:
-                                                                              25.w,
-                                                                          height:
-                                                                              25.w,
-                                                                          margin:
-                                                                              EdgeInsets.only(left: 3.w),
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(360),
-                                                                            border:
-                                                                                Border.all(
-                                                                              width: 2.w,
-                                                                              color: AppColors.blackBlue.withOpacity(1),
-                                                                            ),
-                                                                          ),
-                                                                          child:
-                                                                              SvgPicture.asset(
-                                                                            "assets/images/addIcon.svg",
-                                                                            fit:
-                                                                                BoxFit.scaleDown,
-                                                                            color:
-                                                                                AppColors.blackBlue.withOpacity(1),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                            ],
-                                                          );
-                                                        }),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (UserGroupState
-                                    .changeAssData!.user_group!.is_tontine ==
-                                true)
-                              Container(
-                                padding: EdgeInsets.only(
-                                  top: 1.5.h,
-                                  left: 1.5.w,
-                                  right: 1.5.w,
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      padding: EdgeInsets.only(
-                                          top: 10.h, left: 5.w, bottom: 15.h),
-                                      child: Text(
-                                        "Toutes vos tontines".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlue,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.sp,
-                                          letterSpacing: 0.2.w,
-                                        ),
-                                      ),
-                                    ),
-                                    BlocBuilder<DetailTournoiCourantCubit,
-                                            DetailTournoiCourantState>(
-                                        builder: (DetailTournoiContext,
-                                            DetailTournoiState) {
-                                      final currentDetailtournoiCourant =
-                                          context
-                                              .read<DetailTournoiCourantCubit>()
-                                              .state
-                                              .detailtournoiCourant;
-
-                                      List<dynamic> listeTontines =
-                                          currentDetailtournoiCourant![
-                                              "tontines"];
-
-                                      List<dynamic> tontinesMembreConnect = [];
-
-                                      for (var tontine in listeTontines) {
-                                        for (var item in tontine["membres"]) {
-                                          if (item["membre"]["membre_code"] ==
-                                              AppCubitStorage()
-                                                  .state
-                                                  .membreCode) {
-                                            tontinesMembreConnect.add(tontine);
-                                            break;
-                                          }
-                                        }
-                                      }
-                                      return tontinesMembreConnect.length > 0
-                                          ? Expanded(
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      bottom: Platform.isIOS
-                                                          ? 70.h
-                                                          : 10.h,
-                                                    ),
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    child: RefreshIndicator(
-                                                      onRefresh: refreshTontine,
-                                                      child: ListView.builder(
-                                                        padding:
-                                                            EdgeInsets.all(0),
-                                                        shrinkWrap: true,
-                                                        itemCount:
-                                                            tontinesMembreConnect
-                                                                .length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          print(
-                                                              tontinesMembreConnect);
-                                                          final itemTontine =
-                                                              tontinesMembreConnect[
-                                                                  index];
-                                                          return GestureDetector(
-                                                            onTap: () {
-                                                              updateTrackingData("transactions.tontine","${DateTime.now()}", {});
-                                                              handleDetailTontine(
-                                                                  AppCubitStorage()
-                                                                      .state
-                                                                      .codeTournois,
-                                                                  itemTontine[
-                                                                      "tontine_code"]);
-
-                                                              print(
-                                                                  "${itemTontine["tontine_code"]}");
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          DetailTontinePage(
-                                                                    codeTontine:
-                                                                        itemTontine[
-                                                                            "tontine_code"],
-                                                                    isActive:
-                                                                        itemTontine[
-                                                                            "is_active"],
-                                                                    dateCreaTontine:
-                                                                        itemTontine[
-                                                                            "created_at"],
-                                                                    nomTontine:
-                                                                        "${itemTontine["libele"]}",
-                                                                    montantTontine:
-                                                                        "${itemTontine["amount"]}",
-                                                                    positionBeneficiaire:
-                                                                        "${itemTontine["membres"].where((objet) => objet["is_passed"] == 1).length}",
-                                                                    nbrMembreTontine:
-                                                                        "${itemTontine["membres"].length}",
-                                                                    listMembre:
-                                                                        itemTontine[
-                                                                            "membres"],
-                                                                  ),
-                                                                ),
                                                               );
                                                             },
-                                                            child: Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      left: 7.w,
-                                                                      right:
-                                                                          7.w,
-                                                                      top: 3.h,
-                                                                      bottom:
-                                                                          7.h),
-                                                              child:
-                                                                  widgetTontineHistoriqueCard(
-                                                                    
-                                                                isActive:
-                                                                    itemTontine[
-                                                                        "is_active"],
-                                                                dateCreaTontine:
-                                                                    itemTontine[
-                                                                        "created_at"],
-                                                                nomTontine:
-                                                                    "${itemTontine["libele"]}",
-                                                                montantTontine:
-                                                                    "${itemTontine["amount"]}",
-                                                                positionBeneficiaire:
-                                                                    "0",
-                                                                nbrMembreTontine:
-                                                                    "${itemTontine["membres"].length}",
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  if (DetailTournoiState
-                                                              .isLoading ==
-                                                          true ||
-                                                      DetailTournoiState
-                                                              .detailtournoiCourant ==
-                                                          null)
-                                                    EasyLoader(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              0, 255, 255, 255),
-                                                      iconSize: 50.r,
-                                                      iconColor: AppColors
-                                                          .blackBlueAccent1,
-                                                      image: AssetImage(
-                                                        "assets/images/AssoplusFinal.png",
-                                                      ),
-                                                    )
-                                                ],
-                                              ),
-                                            )
-                                          : Expanded(
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                child: RefreshIndicator(
-                                                  onRefresh: refreshTontine,
-                                                  child: ListView.builder(
-                                                    itemCount: 1,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return Container(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 200.h),
-                                                        alignment:
-                                                            Alignment.topCenter,
-                                                        child: Text(
-                                                          "Aucune tontine",
-                                                          style: TextStyle(
-                                                            color: AppColors.blackBlueAccent1,
-                                                            fontWeight:
-                                                                FontWeight.w100,
-                                                            fontSize: 20.sp,
                                                           ),
                                                         ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                    }),
-                                  ],
-                                ),
-                              ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                top: 1.5.h,
-                                left: 1.5.w,
-                                right: 1.5.w,
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                        top: 10.h, left: 5.w, bottom: 15.h),
-                                    child: Text(
-                                      "toutes_vos_cotisations".tr(),
-                                      style: TextStyle(
-                                          color: AppColors.blackBlue,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.sp,
-                                          letterSpacing: 0.2.w),
-                                    ),
-                                  ),
-                                  // if (currentAllCotisationAssTournoi != null)
-                                  BlocBuilder<CotisationCubit, CotisationState>(
-                                    builder:
-                                        (CotisationContext, CotisationState) {
-                                      if (CotisationState.isLoading == true &&
-                                          CotisationState.allCotisationAss ==
-                                              null)
-                                        return Container(
-                                          child: Expanded(
-                                            child: EasyLoader(
-                                              backgroundColor: Color.fromARGB(
-                                                  0, 255, 255, 255),
-                                              iconSize: 50.r,
-                                              iconColor:
-                                                  AppColors.blackBlueAccent1,
-                                              image: AssetImage(
-                                                "assets/images/AssoplusFinal.png",
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      final currentAllCotisationAssTournoi =
-                                          context
-                                              .read<CotisationCubit>()
-                                              .state
-                                              .allCotisationAss;
-
-                                      List<dynamic> objetCotisationUniquement =
-                                          currentAllCotisationAssTournoi!
-                                              .where((objet) =>
-                                                  objet["is_tontine"] == 0)
-                                              .toList();
-
-                                      return objetCotisationUniquement.length >
-                                              0
-                                          ? Expanded(
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      bottom: Platform.isIOS
-                                                          ? 70.h
-                                                          : 10.h,
-                                                    ),
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    child: RefreshIndicator(
-                                                      onRefresh:
-                                                          refreshCotisation,
-                                                      child: ListView.builder(
-                                                        itemCount:
-                                                            objetCotisationUniquement
-                                                                .length,
-                                                        // physics: NeverScrollableScrollPhysics(),
-                                                        padding:
-                                                            EdgeInsets.all(0),
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          final ItemDetailCotisation =
-                                                              objetCotisationUniquement[
-                                                                  index];
-                                                          return Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 7.w,
-                                                                    right: 7.w,
-                                                                    top: 3.h,
-                                                                    bottom:
-                                                                        7.h),
-                                                            child:
-                                                                WidgetCotisation(
-                                                                  screenSource: "transactions",
-                                                              isPayed:
-                                                                  ItemDetailCotisation[
-                                                                      "is_payed"],
-                                                              rubrique: ItemDetailCotisation[
-                                                                          "ass_rubrique"] ==
-                                                                      null
-                                                                  ? ""
-                                                                  : ItemDetailCotisation[
-                                                                          "ass_rubrique"]
-                                                                      ["name"],
-                                                              montantCotisations:
-                                                                  ItemDetailCotisation[
-                                                                      "amount"],
-                                                              motifCotisations:
-                                                                  ItemDetailCotisation[
-                                                                      "name"],
-                                                              dateCotisation:
-                                                                  ItemDetailCotisation[
-                                                                      "start_date"],
-                                                              heureCotisation: AppCubitStorage()
-                                                                          .state
-                                                                          .Language ==
-                                                                      "fr"
-                                                                  ? formatTimeToFrench(
-                                                                      ItemDetailCotisation[
-                                                                          "start_date"])
-                                                                  : formatTimeToEnglish(
-                                                                      ItemDetailCotisation[
-                                                                          "start_date"]),
-                                                              soldeCotisation:
-                                                                  ItemDetailCotisation[
-                                                                      "total_cotise"],
-                                                              codeCotisation:
-                                                                  ItemDetailCotisation[
-                                                                      "cotisation_code"],
-                                                              type:
-                                                                  ItemDetailCotisation[
-                                                                      "type"],
-                                                              lienDePaiement: ItemDetailCotisation[
-                                                                          "cotisation_pay_link"] ==
-                                                                      null
-                                                                  ? "le lien n'a pas été généré"
-                                                                  : ItemDetailCotisation[
-                                                                      "cotisation_pay_link"],
-                                                              is_passed:
-                                                                  ItemDetailCotisation[
-                                                                      "is_passed"],
-                                                              is_tontine:
-                                                                  ItemDetailCotisation[
-                                                                      "is_tontine"],
-                                                              source: ItemDetailCotisation[
-                                                                          "seance"] ==
-                                                                      null
-                                                                  ? ''
-                                                                  : '(${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]})',
-                                                              nomBeneficiaire:
-                                                                  ItemDetailCotisation[
-                                                                              "membre"] ==
-                                                                          null
-                                                                      ? ''
-                                                                      : '(${ItemDetailCotisation["membre"]["last_name"] == null ? "${ItemDetailCotisation["membre"]["first_name"]}" : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}"})',
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  AddAssoElement(
-                                                    
-                                                    screenSource: "transactions.btnAddContribution",
-                                                    text:
-                                                        "Ajouter une cotisation"
-                                                            .tr(),
-                                                    routeElement:
-                                                        "cotisations?query=1",
-                                                  ),
-                                                  if (CotisationState
-                                                              .isLoading ==
-                                                          true ||
-                                                      CotisationState
-                                                              .allCotisationAss ==
-                                                          null)
-                                                    EasyLoader(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              0, 255, 255, 255),
-                                                      iconSize: 50.r,
-                                                      iconColor: AppColors
-                                                          .blackBlueAccent1,
-                                                      image: AssetImage(
-                                                        "assets/images/AssoplusFinal.png",
-                                                      ),
-                                                    )
-                                                ],
-                                              ),
-                                            )
-                                          : Expanded(
-                                              child: RefreshIndicator(
-                                                onRefresh: refreshCotisation,
-                                                child: ListView.builder(
-                                                  itemCount: 1,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return Container(
-                                                      padding: EdgeInsets.only(
-                                                          top: 200.h),
-                                                      alignment:
-                                                          Alignment.topCenter,
-                                                      child: Column(
-                                                        children: [
-                                                          Text(
-                                                            "aucune_cotisation"
-                                                                .tr(),
-                                                            style: TextStyle(
-                                                              color: AppColors.blackBlueAccent1,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w100,
-                                                              fontSize: 20.sp,
-                                                            ),
-                                                          ),
-                                                          if (!context
-                                                                  .read<AuthCubit>()
-                                                                  .state
-                                                                  .detailUser![
-                                                              "isMember"])
-                                                            InkWell(
-                                                              onTap: () async {
-                                                              updateTrackingData("transactions.btnAddContribution","${DateTime.now()}", {});
-                                                                await launchUrlString(
-                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
-                                                                  mode: LaunchMode
-                                                                      .platformDefault,
-                                                                );
-                                                              },
-                                                              child: Container(
-                                                                height: 50,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: AppColors
-                                                                      .pageBackground,
-                                                                  
-                                                                  border: Border
-                                                                      .all(
-                                                                    width: 2.w,
-                                                                    color: AppColors
-                                                                        .blackBlue
-                                                                        .withOpacity(
-                                                                            1),
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                    20.r,
-                                                                  ),
-                                                                ),
-                                                                // alignment: Alignment
-                                                                //     .bottomLeft,
-                                                                margin:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  top: 8.w,
-                                                                ),
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                  horizontal:
-                                                                      10.w,
-                                                                  vertical: 7.h,
-                                                                ),
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width /
-                                                                    1.5,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceAround,
-                                                                  children: [
-                                                                    Text(
-                                                                      "Ajouter une cotisation"
-                                                                          .tr(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: AppColors
-                                                                            .blackBlue
-                                                                            .withOpacity(1),
-                                                                        fontWeight:
-                                                                            FontWeight.w900,
-                                                                        fontSize:
-                                                                            18.sp,
-                                                                        letterSpacing:
-                                                                            0.2.w,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      width:
-                                                                          25.w,
-                                                                      height:
-                                                                          25.w,
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              3.w),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(360),
-                                                                        border:
-                                                                            Border.all(
-                                                                          width:
-                                                                              2.w,
-                                                                          color: AppColors
-                                                                              .blackBlue
-                                                                              .withOpacity(1),
-                                                                        ),
-                                                                      ),
-                                                                      child: SvgPicture
-                                                                          .asset(
-                                                                        "assets/images/addIcon.svg",
-                                                                        fit: BoxFit
-                                                                            .scaleDown,
-                                                                        color: AppColors
-                                                                            .blackBlue
-                                                                            .withOpacity(1),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                        ],
                                                       ),
                                                     );
-                                                  },
-                                                ),
-                                              ),
-                                            );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: 1.5.h, left: 1.5.w, right: 1.5.w),
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                        top: 10.h, left: 5.w, bottom: 15.h),
-                                    child: Text(
-                                      "toutes_vos_sanctions".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.sp,
-                                        letterSpacing: 0.2.w,
-                                      ),
-                                    ),
-                                  ),
-                                  BlocBuilder<AuthCubit, AuthState>(
-                                    builder: (AuthContext, AuthState) {
-                                      final currentDetailUser = context
-                                          .read<AuthCubit>()
-                                          .state
-                                          .detailUser;
-
-                                      return currentDetailUser!["sanctions"]
-                                                  .length >
-                                              0
-                                          ? Expanded(
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      bottom: Platform.isIOS
-                                                          ? 70.h
-                                                          : 10.h,
-                                                    ),
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    child: RefreshIndicator(
-                                                      onRefresh:
-                                                          refreshSanction,
-                                                      child: ListView.builder(
-                                                        itemCount:
-                                                            currentDetailUser[
-                                                                    "sanctions"]
-                                                                .length,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          final currentSaction =
-                                                              currentDetailUser![
-                                                                      "sanctions"]
-                                                                  [index];
-                                                          return Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 7.w,
-                                                                    right: 7.w,
-                                                                    top: 3.h,
-                                                                    bottom:
-                                                                        7.h),
-                                                            child:
-                                                                WidgetSanction(
-                                                                  screenSource: "transactions.sanction",
-                                                              objetSanction: currentSaction[
-                                                                          "libelle"] ==
-                                                                      null
-                                                                  ? " "
-                                                                  : currentSaction[
-                                                                      "libelle"],
-                                                              heureSanction: AppCubitStorage()
-                                                                          .state
-                                                                          .Language ==
-                                                                      "fr"
-                                                                  ? formatTimeToFrench(
-                                                                      currentSaction[
-                                                                          "start_date"])
-                                                                  : formatTimeToEnglish(
-                                                                      currentSaction[
-                                                                          "start_date"]),
-                                                              dateSanction:
-                                                                  currentSaction[
-                                                                      "start_date"],
-                                                              motifSanction:
-                                                                  currentSaction[
-                                                                      "motif"],
-                                                              montantSanction:
-                                                                  currentSaction[
-                                                                          "amount"]
-                                                                      .toString(),
-                                                              montantPayeeSanction:
-                                                                  currentSaction[
-                                                                      "sanction_balance"],
-                                                              lienPaiement: currentSaction[
-                                                                          "sanction_pay_link"] ==
-                                                                      null
-                                                                  ? " "
-                                                                  : currentSaction[
-                                                                      "sanction_pay_link"],
-                                                              versement:
-                                                                  currentSaction[
-                                                                      "payments"],
-                                                              isSanctionPayed:
-                                                                  currentSaction[
-                                                                      "is_sanction_payed"],
-                                                              typeSaction:
-                                                                  currentSaction[
-                                                                      "type"],
-                                                              resteAPayer:
-                                                                  currentSaction[
-                                                                      "amount_remaining"],
-                                                              dejaPayer:
-                                                                  currentSaction[
-                                                                      "sanction_balance"],
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  AddAssoElement(
-                                                    screenSource: "transactions.btnAddSanction",
-                                                    text: "Ajouter une sanction"
-                                                        .tr(),
-                                                    routeElement: "sanctions?query=1",
-                                                  ),
-                                                  if (AuthState.isLoading ==
-                                                          true ||
-                                                      AuthState.detailUser ==
-                                                          null)
-                                                    EasyLoader(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              0, 255, 255, 255),
-                                                      iconSize: 50.r,
-                                                      iconColor: AppColors
-                                                          .blackBlueAccent1,
-                                                      image: AssetImage(
-                                                        "assets/images/AssoplusFinal.png",
-                                                      ),
-                                                    )
-                                                ],
-                                              ),
-                                            )
-                                          : Expanded(
-                                              child: RefreshIndicator(
-                                                onRefresh: refreshSanction,
-                                                child: ListView.builder(
-                                                  itemCount: 1,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return Container(
-                                                      padding: EdgeInsets.only(
-                                                          top: 200.h),
-                                                      alignment:
-                                                          Alignment.topCenter,
-                                                      child: Column(
-                                                        children: [
-                                                          Text(
-                                                            "aucune_sanction"
-                                                                .tr(),
-                                                            style: TextStyle(
-                                                                color: AppColors.blackBlueAccent1,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w100,
-                                                                fontSize:
-                                                                    20.sp),
-                                                          ),
-                                                          if (!context
-                                                                  .read<AuthCubit>()
-                                                                  .state
-                                                                  .detailUser![
-                                                              "isMember"])
-                                                            InkWell(
-                                                              onTap: () async {
-                                                                updateTrackingData("transactions.btnAddSanction","${DateTime.now()}", {});
-                                                                await launchUrlString(
-                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanction?query=1&app_mode=mobile",
-                                                                  mode: LaunchMode
-                                                                      .platformDefault,
-                                                                );
-                                                              },
-                                                              child: Container(
-                                                                height: 50,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: AppColors
-                                                                      .pageBackground,
-                                                                  border: Border
-                                                                      .all(
-                                                                    width: 2.w,
-                                                                    color: AppColors
-                                                                        .blackBlue
-                                                                        .withOpacity(
-                                                                            1),
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                    20.r,
-                                                                  ),
-                                                                ),
-                                                                // alignment: Alignment
-                                                                //     .bottomLeft,
-                                                                margin:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  top: 8.w,
-                                                                ),
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                  horizontal:
-                                                                      10.w,
-                                                                  vertical: 7.h,
-                                                                ),
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width /
-                                                                    1.5,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceAround,
-                                                                  children: [
-                                                                    Text(
-                                                                      "Ajouter une sanction"
-                                                                          .tr(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: AppColors
-                                                                            .blackBlue
-                                                                            .withOpacity(1),
-                                                                        fontWeight:
-                                                                            FontWeight.w900,
-                                                                        fontSize:
-                                                                            18.sp,
-                                                                        letterSpacing:
-                                                                            0.2.w,
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      width:
-                                                                          25.w,
-                                                                      height:
-                                                                          25.w,
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              3.w),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(360),
-                                                                        border:
-                                                                            Border.all(
-                                                                          width:
-                                                                              2.w,
-                                                                          color: AppColors
-                                                                              .blackBlue
-                                                                              .withOpacity(1),
-                                                                        ),
-                                                                      ),
-                                                                      child: SvgPicture
-                                                                          .asset(
-                                                                        "assets/images/addIcon.svg",
-                                                                        fit: BoxFit
-                                                                            .scaleDown,
-                                                                        color: AppColors
-                                                                            .blackBlue
-                                                                            .withOpacity(1),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (checkTransparenceStatus(
-                                context
-                                    .read<UserGroupCubit>()
-                                    .state
-                                    .changeAssData!
-                                    .user_group!
-                                    .configs,
-                                context
-                                    .read<AuthCubit>()
-                                    .state
-                                    .detailUser!["isMember"]))
-                              Container(
-                                padding: EdgeInsets.only(
-                                  top: 1.5.h,
-                                  left: 1.5.w,
-                                  right: 1.5.w,
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      padding: EdgeInsets.only(
-                                        top: 10.h,
-                                        left: 5.w,
-                                        bottom: 15.h,
-                                      ),
-                                      child: Text(
-                                        "les_comptes_de_l'association".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlue,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.sp,
-                                          letterSpacing: 0.2.w,
-                                        ),
-                                      ),
-                                    ),
-                                    BlocBuilder<CompteCubit, CompteState>(
-                                        builder: (CompteContext, compteState) {
-                                      if (compteState.isLoading == true &&
-                                          compteState.allCompteAss == null)
-                                        return Container(
-                                          child: Expanded(
-                                            child: EasyLoader(
-                                              backgroundColor: Color.fromARGB(
-                                                  0, 255, 255, 255),
-                                              iconSize: 50.r,
-                                              iconColor:
-                                                  AppColors.blackBlueAccent1,
-                                              image: AssetImage(
-                                                "assets/images/AssoplusFinal.png",
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      final currentCompteAss = context
-                                          .read<CompteCubit>()
-                                          .state
-                                          .allCompteAss;
-
-                                      List<String> listeDeCouleurs = [
-                                        "#F44336", // Rouge
-                                        "#F44336", // Rouge
-                                        "#2196F3", // Bleu
-                                        "#96BF35", // Vert
-                                        "#795548", // Jaune
-                                        "#9C27B0", // Violet
-                                      ];
-                                      int i = 0;
-
-                                      List<Widget> listWidgetCompte =
-                                          currentCompteAss!.map((item) {
-                                        i++;
-                                        return GestureDetector(
-                                          onTap: () async {
-                                            updateTrackingData("transactions.account","${DateTime.now()}", {});
-                                            context
-                                                .read<CompteCubit>()
-                                                .getTransactionCompte(
-                                                    item.public_ref);
-
-                                            showModalBottomTransactionCompte(
-                                                context);
-                                          },
-                                          child: WidgetCompteCard(
-                                            montantCompte:
-                                                "${int.parse(item.balance!) + int.parse(item.faroti_balance!)}",
-                                            nomCompte: item.name!,
-                                            numeroCompte: item.public_ref!,
-                                            couleur: listeDeCouleurs[i],
-                                          ),
-                                        );
-                                      }).toList();
-
-                                      return Expanded(
-                                        child: Stack(
-                                          children: [
-                                            RefreshIndicator(
-                                              onRefresh: refreshCompte,
-                                              child: SingleChildScrollView(
-                                                child: Container(
-                                                  margin: EdgeInsets.only(
-                                                    bottom: Platform.isIOS
-                                                        ? 70.h
-                                                        : 10.h,
-                                                  ),
-                                                  child: Wrap(
-                                                    alignment: WrapAlignment
-                                                        .spaceBetween,
-                                                    children: listWidgetCompte,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            if (compteState.isLoading == true)
-                                              EasyLoader(
-                                                backgroundColor: Color.fromARGB(
-                                                    0, 255, 255, 255),
-                                                iconSize: 50.r,
-                                                iconColor:
-                                                    AppColors.blackBlueAccent1,
-                                                image: AssetImage(
-                                                  "assets/images/AssoplusFinal.png",
-                                                ),
-                                              )
+                                            }),
                                           ],
                                         ),
-                                      );
-                                    }),
+                                      ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        top: 1.5.h,
+                                        left: 1.5.w,
+                                        right: 1.5.w,
+                                      ),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(
+                                                top: 10.h,
+                                                left: 5.w,
+                                                bottom: 15.h),
+                                            child: Text(
+                                              "toutes_vos_cotisations".tr(),
+                                              style: TextStyle(
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20.sp,
+                                                  letterSpacing: 0.2.w),
+                                            ),
+                                          ),
+                                          // if (currentAllCotisationAssTournoi != null)
+                                          BlocBuilder<CotisationCubit,
+                                              CotisationState>(
+                                            builder: (CotisationContext,
+                                                CotisationState) {
+                                              if (CotisationState.isLoading ==
+                                                      true &&
+                                                  CotisationState
+                                                          .allCotisationAss ==
+                                                      null)
+                                                return Container(
+                                                  child: Expanded(
+                                                    child: EasyLoader(
+                                                      backgroundColor:
+                                                          Color.fromARGB(
+                                                              0, 255, 255, 255),
+                                                      iconSize: 50.r,
+                                                      iconColor: AppColors
+                                                          .blackBlueAccent1,
+                                                      image: AssetImage(
+                                                        "assets/images/AssoplusFinal.png",
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              final currentAllCotisationAssTournoi =
+                                                  context
+                                                      .read<CotisationCubit>()
+                                                      .state
+                                                      .allCotisationAss;
+
+                                              List<dynamic>
+                                                  objetCotisationUniquement =
+                                                  currentAllCotisationAssTournoi!
+                                                      .where((objet) =>
+                                                          objet["is_tontine"] ==
+                                                          0)
+                                                      .toList();
+
+                                              return objetCotisationUniquement
+                                                          .length >
+                                                      0
+                                                  ? Expanded(
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                              bottom:
+                                                                  Platform.isIOS
+                                                                      ? 70.h
+                                                                      : 10.h,
+                                                            ),
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            child:
+                                                                RefreshIndicator(
+                                                              onRefresh:
+                                                                  refreshCotisation,
+                                                              child: ListView
+                                                                  .builder(
+                                                                itemCount:
+                                                                    objetCotisationUniquement
+                                                                        .length,
+                                                                // physics: NeverScrollableScrollPhysics(),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(0),
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        int index) {
+                                                                  final ItemDetailCotisation =
+                                                                      objetCotisationUniquement[
+                                                                          index];
+                                                                  return Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        left:
+                                                                            7.w,
+                                                                        right:
+                                                                            7.w,
+                                                                        top:
+                                                                            3.h,
+                                                                        bottom:
+                                                                            7.h),
+                                                                    child:
+                                                                        WidgetCotisation(
+                                                                          rapportUrl: ItemDetailCotisation["rapport"],
+                                                                      screenSource:
+                                                                          "transactions",
+                                                                      isPayed:
+                                                                          ItemDetailCotisation[
+                                                                              "is_payed"],
+                                                                      rubrique: ItemDetailCotisation["ass_rubrique"] ==
+                                                                              null
+                                                                          ? ""
+                                                                          : ItemDetailCotisation["ass_rubrique"]
+                                                                              [
+                                                                              "name"],
+                                                                      montantCotisations:
+                                                                          ItemDetailCotisation[
+                                                                              "amount"],
+                                                                      motifCotisations:
+                                                                          ItemDetailCotisation[
+                                                                              "name"],
+                                                                      dateCotisation:
+                                                                          ItemDetailCotisation[
+                                                                              "start_date"],
+                                                                      heureCotisation: AppCubitStorage().state.Language ==
+                                                                              "fr"
+                                                                          ? formatTimeToFrench(ItemDetailCotisation[
+                                                                              "start_date"])
+                                                                          : formatTimeToEnglish(
+                                                                              ItemDetailCotisation["start_date"]),
+                                                                      soldeCotisation:
+                                                                          ItemDetailCotisation[
+                                                                              "total_cotise"],
+                                                                      codeCotisation:
+                                                                          ItemDetailCotisation[
+                                                                              "cotisation_code"],
+                                                                      type: ItemDetailCotisation[
+                                                                          "type"],
+                                                                      lienDePaiement: ItemDetailCotisation["cotisation_pay_link"] ==
+                                                                              null
+                                                                          ? "le lien n'a pas été généré"
+                                                                          : ItemDetailCotisation[
+                                                                              "cotisation_pay_link"],
+                                                                      is_passed:
+                                                                          ItemDetailCotisation[
+                                                                              "is_passed"],
+                                                                      is_tontine:
+                                                                          ItemDetailCotisation[
+                                                                              "is_tontine"],
+                                                                      source: ItemDetailCotisation["seance"] ==
+                                                                              null
+                                                                          ? ''
+                                                                          : '(${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]})',
+                                                                      nomBeneficiaire: ItemDetailCotisation["membre"] ==
+                                                                              null
+                                                                          ? ''
+                                                                          : '(${ItemDetailCotisation["membre"]["last_name"] == null ? "${ItemDetailCotisation["membre"]["first_name"]}" : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}"})',
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          AddAssoElement(
+                                                            screenSource:
+                                                                "transactions.btnAddContribution",
+                                                            text:
+                                                                "Ajouter une cotisation"
+                                                                    .tr(),
+                                                            routeElement:
+                                                                "cotisations?query=1",
+                                                          ),
+                                                          if (CotisationState
+                                                                      .isLoading ==
+                                                                  true ||
+                                                              CotisationState
+                                                                      .allCotisationAss ==
+                                                                  null)
+                                                            EasyLoader(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                              iconSize: 50.r,
+                                                              iconColor: AppColors
+                                                                  .blackBlueAccent1,
+                                                              image: AssetImage(
+                                                                "assets/images/AssoplusFinal.png",
+                                                              ),
+                                                            )
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Expanded(
+                                                      child: RefreshIndicator(
+                                                        onRefresh:
+                                                            refreshCotisation,
+                                                        child: ListView.builder(
+                                                          itemCount: 1,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 200
+                                                                          .h),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topCenter,
+                                                              child: Column(
+                                                                children: [
+                                                                  Text(
+                                                                    "aucune_cotisation"
+                                                                        .tr(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: AppColors
+                                                                          .blackBlueAccent1,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w100,
+                                                                      fontSize:
+                                                                          20.sp,
+                                                                    ),
+                                                                  ),
+                                                                  if (!context
+                                                                          .read<
+                                                                              AuthCubit>()
+                                                                          .state
+                                                                          .detailUser![
+                                                                      "isMember"])
+                                                                    InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        updateTrackingData(
+                                                                            "transactions.btnAddContribution",
+                                                                            "${DateTime.now()}",
+                                                                            {});
+                                                                        await launchUrlString(
+                                                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
+                                                                          mode:
+                                                                              LaunchMode.platformDefault,
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            50,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              AppColors.pageBackground,
+                                                                          border:
+                                                                              Border.all(
+                                                                            width:
+                                                                                2.w,
+                                                                            color:
+                                                                                AppColors.blackBlue.withOpacity(1),
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(
+                                                                            20.r,
+                                                                          ),
+                                                                        ),
+                                                                        // alignment: Alignment
+                                                                        //     .bottomLeft,
+                                                                        margin:
+                                                                            EdgeInsets.only(
+                                                                          top: 8
+                                                                              .w,
+                                                                        ),
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              10.w,
+                                                                          vertical:
+                                                                              7.h,
+                                                                        ),
+                                                                        width: MediaQuery.of(context).size.width /
+                                                                            1.5,
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Ajouter une cotisation".tr(),
+                                                                              style: TextStyle(
+                                                                                color: AppColors.blackBlue.withOpacity(1),
+                                                                                fontWeight: FontWeight.w900,
+                                                                                fontSize: 18.sp,
+                                                                                letterSpacing: 0.2.w,
+                                                                              ),
+                                                                            ),
+                                                                            Container(
+                                                                              width: 25.w,
+                                                                              height: 25.w,
+                                                                              margin: EdgeInsets.only(left: 3.w),
+                                                                              decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(360),
+                                                                                border: Border.all(
+                                                                                  width: 2.w,
+                                                                                  color: AppColors.blackBlue.withOpacity(1),
+                                                                                ),
+                                                                              ),
+                                                                              child: SvgPicture.asset(
+                                                                                "assets/images/addIcon.svg",
+                                                                                fit: BoxFit.scaleDown,
+                                                                                color: AppColors.blackBlue.withOpacity(1),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          top: 1.5.h,
+                                          left: 1.5.w,
+                                          right: 1.5.w),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(
+                                                top: 10.h,
+                                                left: 5.w,
+                                                bottom: 15.h),
+                                            child: Text(
+                                              "toutes_vos_sanctions".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.sp,
+                                                letterSpacing: 0.2.w,
+                                              ),
+                                            ),
+                                          ),
+                                          BlocBuilder<AuthCubit, AuthState>(
+                                            builder: (AuthContext, AuthState) {
+                                              final currentDetailUser = context
+                                                  .read<AuthCubit>()
+                                                  .state
+                                                  .detailUser;
+
+                                              return currentDetailUser![
+                                                              "sanctions"]
+                                                          .length >
+                                                      0
+                                                  ? Expanded(
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                              bottom:
+                                                                  Platform.isIOS
+                                                                      ? 70.h
+                                                                      : 10.h,
+                                                            ),
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            child:
+                                                                RefreshIndicator(
+                                                              onRefresh:
+                                                                  refreshSanction,
+                                                              child: ListView
+                                                                  .builder(
+                                                                itemCount:
+                                                                    currentDetailUser[
+                                                                            "sanctions"]
+                                                                        .length,
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        int index) {
+                                                                  final currentSaction =
+                                                                      currentDetailUser![
+                                                                              "sanctions"]
+                                                                          [
+                                                                          index];
+                                                                  return Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        left:
+                                                                            7.w,
+                                                                        right:
+                                                                            7.w,
+                                                                        top:
+                                                                            3.h,
+                                                                        bottom:
+                                                                            7.h),
+                                                                    child:
+                                                                        WidgetSanction(
+                                                                      screenSource:
+                                                                          "transactions.sanction",
+                                                                      objetSanction: currentSaction["libelle"] ==
+                                                                              null
+                                                                          ? " "
+                                                                          : currentSaction[
+                                                                              "libelle"],
+                                                                      heureSanction: AppCubitStorage().state.Language ==
+                                                                              "fr"
+                                                                          ? formatTimeToFrench(currentSaction[
+                                                                              "start_date"])
+                                                                          : formatTimeToEnglish(
+                                                                              currentSaction["start_date"]),
+                                                                      dateSanction:
+                                                                          currentSaction[
+                                                                              "start_date"],
+                                                                      motifSanction:
+                                                                          currentSaction[
+                                                                              "motif"],
+                                                                      montantSanction:
+                                                                          currentSaction["amount"]
+                                                                              .toString(),
+                                                                      montantPayeeSanction:
+                                                                          currentSaction[
+                                                                              "sanction_balance"],
+                                                                      lienPaiement: currentSaction["sanction_pay_link"] ==
+                                                                              null
+                                                                          ? " "
+                                                                          : currentSaction[
+                                                                              "sanction_pay_link"],
+                                                                      versement:
+                                                                          currentSaction[
+                                                                              "payments"],
+                                                                      isSanctionPayed:
+                                                                          currentSaction[
+                                                                              "is_sanction_payed"],
+                                                                      typeSaction:
+                                                                          currentSaction[
+                                                                              "type"],
+                                                                      resteAPayer:
+                                                                          currentSaction[
+                                                                              "amount_remaining"],
+                                                                      dejaPayer:
+                                                                          currentSaction[
+                                                                              "sanction_balance"],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          AddAssoElement(
+                                                            screenSource:
+                                                                "transactions.btnAddSanction",
+                                                            text:
+                                                                "Ajouter une sanction"
+                                                                    .tr(),
+                                                            routeElement:
+                                                                "sanctions?query=1",
+                                                          ),
+                                                          if (AuthState
+                                                                      .isLoading ==
+                                                                  true ||
+                                                              AuthState
+                                                                      .detailUser ==
+                                                                  null)
+                                                            EasyLoader(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                              iconSize: 50.r,
+                                                              iconColor: AppColors
+                                                                  .blackBlueAccent1,
+                                                              image: AssetImage(
+                                                                "assets/images/AssoplusFinal.png",
+                                                              ),
+                                                            )
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Expanded(
+                                                      child: RefreshIndicator(
+                                                        onRefresh:
+                                                            refreshSanction,
+                                                        child: ListView.builder(
+                                                          itemCount: 1,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 200
+                                                                          .h),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topCenter,
+                                                              child: Column(
+                                                                children: [
+                                                                  Text(
+                                                                    "aucune_sanction"
+                                                                        .tr(),
+                                                                    style: TextStyle(
+                                                                        color: AppColors
+                                                                            .blackBlueAccent1,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w100,
+                                                                        fontSize:
+                                                                            20.sp),
+                                                                  ),
+                                                                  if (!context
+                                                                          .read<
+                                                                              AuthCubit>()
+                                                                          .state
+                                                                          .detailUser![
+                                                                      "isMember"])
+                                                                    InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        updateTrackingData(
+                                                                            "transactions.btnAddSanction",
+                                                                            "${DateTime.now()}",
+                                                                            {});
+                                                                        await launchUrlString(
+                                                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanction?query=1&app_mode=mobile",
+                                                                          mode:
+                                                                              LaunchMode.platformDefault,
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            50,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              AppColors.pageBackground,
+                                                                          border:
+                                                                              Border.all(
+                                                                            width:
+                                                                                2.w,
+                                                                            color:
+                                                                                AppColors.blackBlue.withOpacity(1),
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(
+                                                                            20.r,
+                                                                          ),
+                                                                        ),
+                                                                        // alignment: Alignment
+                                                                        //     .bottomLeft,
+                                                                        margin:
+                                                                            EdgeInsets.only(
+                                                                          top: 8
+                                                                              .w,
+                                                                        ),
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              10.w,
+                                                                          vertical:
+                                                                              7.h,
+                                                                        ),
+                                                                        width: MediaQuery.of(context).size.width /
+                                                                            1.5,
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Ajouter une sanction".tr(),
+                                                                              style: TextStyle(
+                                                                                color: AppColors.blackBlue.withOpacity(1),
+                                                                                fontWeight: FontWeight.w900,
+                                                                                fontSize: 18.sp,
+                                                                                letterSpacing: 0.2.w,
+                                                                              ),
+                                                                            ),
+                                                                            Container(
+                                                                              width: 25.w,
+                                                                              height: 25.w,
+                                                                              margin: EdgeInsets.only(left: 3.w),
+                                                                              decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(360),
+                                                                                border: Border.all(
+                                                                                  width: 2.w,
+                                                                                  color: AppColors.blackBlue.withOpacity(1),
+                                                                                ),
+                                                                              ),
+                                                                              child: SvgPicture.asset(
+                                                                                "assets/images/addIcon.svg",
+                                                                                fit: BoxFit.scaleDown,
+                                                                                color: AppColors.blackBlue.withOpacity(1),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (checkTransparenceStatus(
+                                        context
+                                            .read<UserGroupCubit>()
+                                            .state
+                                            .changeAssData!
+                                            .user_group!
+                                            .configs,
+                                        context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .detailUser!["isMember"]))
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          top: 1.5.h,
+                                          left: 1.5.w,
+                                          right: 1.5.w,
+                                        ),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.only(
+                                                top: 10.h,
+                                                left: 5.w,
+                                                bottom: 15.h,
+                                              ),
+                                              child: Text(
+                                                "les_comptes_de_l'association"
+                                                    .tr(),
+                                                style: TextStyle(
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20.sp,
+                                                  letterSpacing: 0.2.w,
+                                                ),
+                                              ),
+                                            ),
+                                            BlocBuilder<CompteCubit,
+                                                    CompteState>(
+                                                builder: (CompteContext,
+                                                    compteState) {
+                                              if (compteState.isLoading ==
+                                                      true &&
+                                                  compteState.allCompteAss ==
+                                                      null)
+                                                return Container(
+                                                  child: Expanded(
+                                                    child: EasyLoader(
+                                                      backgroundColor:
+                                                          Color.fromARGB(
+                                                              0, 255, 255, 255),
+                                                      iconSize: 50.r,
+                                                      iconColor: AppColors
+                                                          .blackBlueAccent1,
+                                                      image: AssetImage(
+                                                        "assets/images/AssoplusFinal.png",
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              final currentCompteAss = context
+                                                  .read<CompteCubit>()
+                                                  .state
+                                                  .allCompteAss;
+
+                                              List<String> listeDeCouleurs = [
+                                                "#F44336", // Rouge
+                                                "#F44336", // Rouge
+                                                "#2196F3", // Bleu
+                                                "#96BF35", // Vert
+                                                "#795548", // Jaune
+                                                "#9C27B0", // Violet
+                                              ];
+                                              int i = 0;
+
+                                              List<Widget> listWidgetCompte =
+                                                  currentCompteAss!.map((item) {
+                                                i++;
+                                                return GestureDetector(
+                                                  onTap: () async {
+                                                    updateTrackingData(
+                                                        "transactions.account",
+                                                        "${DateTime.now()}",
+                                                        {});
+                                                    context
+                                                        .read<CompteCubit>()
+                                                        .getTransactionCompte(
+                                                            item.public_ref);
+
+                                                    showModalBottomTransactionCompte(
+                                                        context);
+                                                  },
+                                                  child: WidgetCompteCard(
+                                                    montantCompte:
+                                                        "${int.parse(item.balance!) + int.parse(item.faroti_balance!)}",
+                                                    nomCompte: item.name!,
+                                                    numeroCompte:
+                                                        item.public_ref!,
+                                                    couleur: listeDeCouleurs[i],
+                                                  ),
+                                                );
+                                              }).toList();
+
+                                              return Expanded(
+                                                child: Stack(
+                                                  children: [
+                                                    RefreshIndicator(
+                                                      onRefresh: refreshCompte,
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            bottom:
+                                                                Platform.isIOS
+                                                                    ? 70.h
+                                                                    : 10.h,
+                                                          ),
+                                                          child: Wrap(
+                                                            alignment:
+                                                                WrapAlignment
+                                                                    .spaceBetween,
+                                                            children:
+                                                                listWidgetCompte,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    if (compteState.isLoading ==
+                                                        true)
+                                                      EasyLoader(
+                                                        backgroundColor:
+                                                            Color.fromARGB(0,
+                                                                255, 255, 255),
+                                                        iconSize: 50.r,
+                                                        iconColor: AppColors
+                                                            .blackBlueAccent1,
+                                                        image: AssetImage(
+                                                          "assets/images/AssoplusFinal.png",
+                                                        ),
+                                                      )
+                                                  ],
+                                                ),
+                                              );
+                                            }),
+                                          ],
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
-                          ],
-                        ),
-                      ),
-                    ),
+                            ),
             ),
           );
         },

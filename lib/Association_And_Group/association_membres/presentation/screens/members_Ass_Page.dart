@@ -82,7 +82,11 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Liste des membres".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
+        style: TextStyle(
+          fontSize: 16.sp,
+          color: AppColors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -117,7 +121,32 @@ Widget PageScaffold({
   );
 }
 
-class _MembersAssPageState extends State<MembersAssPage> {
+class _MembersAssPageState extends State<MembersAssPage>
+    with WidgetsBindingObserver {
+  // with WidgetsBindingObserver
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context
+          .read<MembreCubit>()
+          .showMembersAss(AppCubitStorage().state.codeAssDefaul);
+      print("RETOUR");
+    }
+  }
+
   int _pageIndex = 0;
   var Tab = [true, false, false, true, false, true];
 

@@ -503,7 +503,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
                           Radius.circular(7.w),),
-                      color: AppColors.blackBlue.withOpacity(0.06),
+                      color: AppColors.colorButton,
                     ),
                     margin: EdgeInsets.only(
                       top: 5.h,
@@ -519,7 +519,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           child: SvgPicture.asset(
                             "assets/images/folderManageIcon.svg",
                             fit: BoxFit.scaleDown,
-                            color: AppColors.blackBlue,
+                            color: AppColors.white,
                           ),
                         ),
                         SizedBox(
@@ -530,7 +530,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.blackBlue,
+                            color: AppColors.white,
                           ),
                         ),
                       ],

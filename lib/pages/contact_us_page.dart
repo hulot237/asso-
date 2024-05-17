@@ -28,15 +28,18 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           "Contactez nous".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
         leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: BackButtonWidget(colorIcon: AppColors.white)
-        ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: BackButtonWidget(colorIcon: AppColors.white)),
       ),
       child: child,
     );
@@ -47,22 +50,48 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Contactez nous".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white, fontWeight: FontWeight.bold,),
+        style: TextStyle(
+          fontSize: 16.sp,
+          color: AppColors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
       leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: BackButtonWidget(colorIcon: AppColors.white,)
-      ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: BackButtonWidget(
+            colorIcon: AppColors.white,
+          )),
     ),
     body: child,
   );
 }
 
-class _ContactUsPageState extends State<ContactUsPage> {
+class _ContactUsPageState extends State<ContactUsPage>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      print("RETOUR");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Uri gmailUrl = Uri.parse('mailto:support@faroty.com');
@@ -155,7 +184,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           ],
                         ),
                         onTap: () {
-                          updateTrackingData("contactUs.call","${DateTime.now()}", {});
+                          updateTrackingData(
+                              "contactUs.call", "${DateTime.now()}", {});
                           // _launch(gmailUrl);
                           dialNumber(
                               phoneNumber: "+237 679 910 021",
@@ -207,7 +237,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           ],
                         ),
                         onTap: () {
-                          updateTrackingData("contactUs.email","${DateTime.now()}", {});
+                          updateTrackingData(
+                              "contactUs.email", "${DateTime.now()}", {});
                           _launch(gmailUrl);
                           // _launchInstagram();
                           // launchUrl(
@@ -258,7 +289,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           InkWell(
                             splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
-                              updateTrackingData("contactUs.linkedin","${DateTime.now()}", {});
+                              updateTrackingData("contactUs.linkedin",
+                                  "${DateTime.now()}", {});
                               _launchSocial(
                                 "https://www.linkedin.com/company/faroty/",
                               );
@@ -305,7 +337,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           InkWell(
                             splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
-                              updateTrackingData("contactUs.x","${DateTime.now()}", {});
+                              updateTrackingData(
+                                  "contactUs.x", "${DateTime.now()}", {});
                               _launchSocial(
                                 "https://x.com/farotyMe/",
                               );
@@ -352,7 +385,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           InkWell(
                             splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
-                              updateTrackingData("contactUs.instagram","${DateTime.now()}", {});
+                              updateTrackingData("contactUs.instagram",
+                                  "${DateTime.now()}", {});
                               _launchSocial(
                                 "https://www.instagram.com/farotyme/",
                               );
@@ -399,7 +433,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           InkWell(
                             splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
-                              updateTrackingData("contactUs.facebook","${DateTime.now()}", {});
+                              updateTrackingData("contactUs.facebook",
+                                  "${DateTime.now()}", {});
                               _launchSocial(
                                 "https://www.facebook.com/farotyMe/",
                               );

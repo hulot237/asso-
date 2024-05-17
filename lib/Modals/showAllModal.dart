@@ -624,6 +624,7 @@ class Modal {
       soldeCotisation,
       type,
       is_passed,
+      rapportUrl,
       isPayed) {
     Future<void> handleDetailCotisation(codeCotisation) async {
       final detailCotisation = await context
@@ -768,6 +769,7 @@ class Modal {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailCotisationPage(
+                                      rapportUrl: rapportUrl,
                                       codeCotisation: codeCotisation,
                                       lienDePaiement: lienDePaiement,
                                       dateCotisation: dateCotisation,
@@ -2072,7 +2074,9 @@ class Modal {
         contentPadding: EdgeInsets.only(top: 0),
         content: Container(
           padding: EdgeInsets.only(left: 20.w, right: 20.w),
-          height: 150.h,
+          height: !context.read<AuthCubit>().state.detailUser!["isMember"]
+              ? 250.h
+              : 150.h,
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(10),
@@ -2141,7 +2145,6 @@ class Modal {
                 },
                 child: Container(
                   alignment: Alignment.center,
-
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(7.r),
                   decoration: BoxDecoration(
@@ -2160,7 +2163,38 @@ class Modal {
                     ),
                   ),
                 ),
-              )
+              ),
+              if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(
+                      context,
+                    );
+                    Share.share("${msg}");
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+
+                  margin: EdgeInsets.only(top: 11.h),
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(7.r),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: AppColors.colorButton,
+                        )),
+                    // height: 20,
+                    child: Text(
+                      '$paiementProcheMsg',
+                      // "partager_le_lien_de_paiement".tr(),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.colorButton,
+                      ),
+                    ),
+                  ),
+                )
             ],
           ),
         ),
@@ -2228,12 +2262,11 @@ class Modal {
       barrierDismissible:
           false, // should dialog be dismissed when tapped outside
       // barrierLabel: "Modal", // label for barrier
-      
+
       transitionDuration: Duration(
         milliseconds: 400,
       ), // how long it takes to popup dialog after button click
       pageBuilder: (_, __, ___) {
-        
         // your widget implementation
         return Material(
           color: Colors.transparent,
@@ -2418,7 +2451,8 @@ class Modal {
                 ),
                 InkWell(
                   onTap: () {
-                    updateTrackingData("inviteLink.qrCode", "${DateTime.now()}", {});
+                    updateTrackingData(
+                        "inviteLink.qrCode", "${DateTime.now()}", {});
                     _showQrCode(context);
                   },
                   child: Container(
@@ -2544,8 +2578,16 @@ _showQrCode(context) {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 15.h,),
-                              Text("Scanner pour integrer le groupe".tr(), style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.blackBlue),)
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              Text(
+                                "Scanner pour integrer le groupe".tr(),
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.blackBlue),
+                              )
                             ],
                           ),
                         ),

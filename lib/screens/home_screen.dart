@@ -44,7 +44,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, WidgetsBindingObserver {
   Future<void> handleAllUserGroup() async {
     final AllUserGroup = await context
         .read<UserGroupCubit>()
@@ -131,9 +131,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     context.read<PretEpargneCubit>().getPret();
     context.read<SessionCubit>().GetSessionCubit();
     // handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+    WidgetsBinding.instance.addObserver(this);
 
     super.initState();
   }
+
+    @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+    @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+          clearSessionIdStorage();
+    handleAllUserGroup();
+    handleTournoiDefault();
+    handleRecentEvent(AppCubitStorage().state.membreCode);
+    handleChangeAss(AppCubitStorage().state.codeAssDefaul);
+    handleDetailUser(AppCubitStorage().state.membreCode,
+        AppCubitStorage().state.codeTournois);
+    context.read<AuthCubit>().getUid();
+    context.read<PretEpargneCubit>().getEpargne();
+    context.read<PretEpargneCubit>().getPret();
+    context.read<SessionCubit>().GetSessionCubit();
+      print("RETOUR");
+    }
+  }
+
+
+
 
   Future refresh() async {
     handleRecentEvent(AppCubitStorage().state.membreCode);
@@ -1719,6 +1747,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                   ),
                                                                   child:
                                                                       WidgetRencontreCard(
+
                                                                     rapportUrl: currentDetailtournoiCourant["tournois"]
                                                                             [
                                                                             "seance"][0]
@@ -1927,7 +1956,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                                       List<Widget> listWidgetCotisation =
                                           listeCotisation.map((monObjet) {
+                                            print("$monObjet");
                                         return widgetRecentEventCotisation(
+                                          rapportUrl: monObjet["rapport"],
                                           rublique: monObjet["ass_rubrique"] ==
                                                   null
                                               ? ""

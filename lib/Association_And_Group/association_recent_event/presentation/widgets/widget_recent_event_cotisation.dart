@@ -30,6 +30,7 @@ class widgetRecentEventCotisation extends StatefulWidget {
     required this.source,
     required this.nomBeneficiaire,
     required this.rublique,
+    required this.rapportUrl,
   });
   String dateClose;
   String dateOpen;
@@ -43,6 +44,7 @@ class widgetRecentEventCotisation extends StatefulWidget {
   String source;
   String nomBeneficiaire;
   String rublique;
+  String? rapportUrl;
 
   @override
   State<widgetRecentEventCotisation> createState() =>
@@ -94,6 +96,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                 widget.montantCollecte,
                 widget.type,
                 widget.isPassed,
+                widget.rapportUrl,
                 0);
           } else {
             handleDetailCotisation(widget.codeCotisation);
@@ -112,6 +115,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                   type: widget.type,
                   isPassed: widget.isPassed,
                   isPayed: 0,
+                  rapportUrl: widget.rapportUrl,
                 ),
               ),
             );

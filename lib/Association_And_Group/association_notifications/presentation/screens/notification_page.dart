@@ -94,12 +94,12 @@ class _NotificationPageState extends State<NotificationPage> {
         AppCubitStorage().state.codeAssDefaul);
   }
 
-  @override
-  void initState() {
-    getNotification();
-    // TODO: implement initState
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   getNotification();
+  //   // TODO: implement initState
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

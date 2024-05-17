@@ -45,7 +45,8 @@ class SettingScreen extends StatefulWidget {
   State<SettingScreen> createState() => _SettingScreenState();
 }
 
-class _SettingScreenState extends State<SettingScreen> {
+class _SettingScreenState extends State<SettingScreen>
+    with WidgetsBindingObserver {
   // bool _customIconHelp = false;
 
   List<dynamic>? get currentInfoAllAssociation {
@@ -87,10 +88,25 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     // TODO: implement initState
     countNotifications();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      countNotifications();
+      print("RETOUR");
+    }
   }
 
   @override
@@ -295,6 +311,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   updateTrackingData("profile.btnNotification",
                                       "${DateTime.now()}", {});
+                                  context
+                                      .read<NotificationCubit>()
+                                      .getNotification(
+                                          AppCubitStorage().state.tokenUser,
+                                          AppCubitStorage()
+                                              .state
+                                              .codeAssDefaul);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

@@ -20,6 +20,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:faroty_association_1/pages/rapport_view_screen.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
+import 'package:faroty_association_1/widget/button_rapport_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -114,7 +115,29 @@ Widget PageScaffold({
 }
 
 class _detailRencontrePageState extends State<detailRencontrePage>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
+  // with WidgetsBindingObserver
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context.read<SeanceCubit>().detailSeanceCubit(widget.codeSeance);
+      print("RETOUR");
+    }
+  }
+
   int _pageIndex = 0;
   var Tab = [true, false, false, true, "end", "end"];
 
@@ -171,48 +194,10 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                   ),
                 ),
                 if (widget.rapportUrl != null)
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RapportViewScreen(
-                            src: widget.rapportUrl,
-                            nomElement:
-                                "${"rencontre".tr()} ${widget.identifiantRencontre}",
-                          ),
-                        ),
-                      );
-                      // SfPdfViewer.network('${currentDetailSeance["rapport"]}');
-                      print("object");
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        top: 15.h,
-                      ),
-                      padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.blackBlue.withOpacity(.3),
-                            spreadRadius: 0.5,
-                            blurRadius: 1,
-                          ),
-                        ],
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      child: Text(
-                        "Le rapport est disponible".tr(),
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                  ButtonRapport(
+                    nomElement:
+                        "${"rencontre".tr()} ${widget.identifiantRencontre}",
+                    rapportUrl: "${widget.rapportUrl}",
                   ),
                 Container(
                   margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
@@ -462,6 +447,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                 bottom: 7.h,
                                               ),
                                               child: WidgetCotisation(
+                                                rapportUrl: ItemDetailCotisation[
+                                                    "rapport"],
                                                 screenSource: "meeting",
                                                 isPayed: ItemDetailCotisation[
                                                     "is_payed"],
@@ -685,3 +672,4 @@ class _detailRencontrePageState extends State<detailRencontrePage>
     );
   }
 }
+

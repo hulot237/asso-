@@ -54,6 +54,7 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> getNotification(tokenUser, codeAssociation) async {
+    print("ee");
     emit(
       state.copyWith(
         isLoading: true,
