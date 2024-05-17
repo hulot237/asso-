@@ -183,7 +183,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                             "${widget.screenSource}.btnContribution",
                                             "${DateTime.now()}", {});
                                         String msg =
-                                            "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                            "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
                                         String raisonComplete =
                                             "Paiement de la cotisation".tr();
                                         String motif = "payer_vous_même".tr();

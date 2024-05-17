@@ -341,7 +341,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                   dateClose: itemTontine['end_date'],
                                   dateOpen: itemTontine['start_date'],
                                   montantCollecte:
-                                      itemTontine['tontine_balance'],
+                                      itemTontine['total_cotise'],
                                   montantTontine: itemTontine['amount'],
                                   nomBeneficiaire: itemTontine["membre"]
                                       ["first_name"],

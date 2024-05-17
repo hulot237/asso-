@@ -664,7 +664,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     text:
                                                         "Ajouter une rencontre"
                                                             .tr(),
-                                                    routeElement: "seances",
+                                                    routeElement: "seances?query=1",
                                                   ),
                                                   if (DetailTournoiState
                                                               .isLoading ==
@@ -712,12 +712,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                       .tr(),
                                                                   style:
                                                                       TextStyle(
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            20,
-                                                                            45,
-                                                                            99,
-                                                                            0.26),
+                                                                    color: AppColors.blackBlueAccent1,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w100,
@@ -737,7 +732,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                       () async {
                                                                         updateTrackingData("transactions.btnAddMeeting","${DateTime.now()}", {});
                                                                     await launchUrlString(
-                                                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances&app_mode=mobile",
+                                                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
                                                                       mode: LaunchMode
                                                                           .platformDefault,
                                                                     );
@@ -1043,12 +1038,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                         child: Text(
                                                           "Aucune tontine",
                                                           style: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    20,
-                                                                    45,
-                                                                    99,
-                                                                    0.26),
+                                                            color: AppColors.blackBlueAccent1,
                                                             fontWeight:
                                                                 FontWeight.w100,
                                                             fontSize: 20.sp,
@@ -1193,7 +1183,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                           "start_date"]),
                                                               soldeCotisation:
                                                                   ItemDetailCotisation[
-                                                                      "cotisation_balance"],
+                                                                      "total_cotise"],
                                                               codeCotisation:
                                                                   ItemDetailCotisation[
                                                                       "cotisation_code"],
@@ -1277,10 +1267,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             "aucune_cotisation"
                                                                 .tr(),
                                                             style: TextStyle(
-                                                              color: AppColors
-                                                                  .blackBlue
-                                                                  .withOpacity(
-                                                                      1),
+                                                              color: AppColors.blackBlueAccent1,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w100,
@@ -1538,7 +1525,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     screenSource: "transactions.btnAddSanction",
                                                     text: "Ajouter une sanction"
                                                         .tr(),
-                                                    routeElement: "sanctions",
+                                                    routeElement: "sanctions?query=1",
                                                   ),
                                                   if (AuthState.isLoading ==
                                                           true ||
@@ -1577,12 +1564,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             "aucune_sanction"
                                                                 .tr(),
                                                             style: TextStyle(
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        20,
-                                                                        45,
-                                                                        99,
-                                                                        0.26),
+                                                                color: AppColors.blackBlueAccent1,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w100,
@@ -1598,7 +1580,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                               onTap: () async {
                                                                 updateTrackingData("transactions.btnAddSanction","${DateTime.now()}", {});
                                                                 await launchUrlString(
-                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanction&app_mode=mobile",
+                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanction?query=1&app_mode=mobile",
                                                                   mode: LaunchMode
                                                                       .platformDefault,
                                                                 );

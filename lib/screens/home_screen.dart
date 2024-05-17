@@ -847,7 +847,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                     "${DateTime.now()}",
                                                                     {});
                                                                 String msg =
-                                                                    "Aide-moi à épargner.\nMerci de suivre le lien https://${epargne["saving_pay_link"]} pour valider";
+                                                                    "Aide-moi à épargner.\nMerci de suivre le lien https://${epargne["saving_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
                                                                 String
                                                                     raisonComplete =
                                                                     "Effectuer une épargne"
@@ -1100,7 +1100,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                           {});
                                                                       String
                                                                           msg =
-                                                                          "Aide-moi à payer ma dette.\nMerci de suivre le lien https://${pret["loan_pay_link"]} pour valider";
+                                                                          "Aide-moi à payer ma dette.\nMerci de suivre le lien https://${pret["loan_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
                                                                       String
                                                                           raisonComplete =
                                                                           "Remboursement"
@@ -1469,7 +1469,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                     "${DateTime.now()}",
                                                                     {});
                                                                 String msg =
-                                                                    "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
+                                                                    "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
                                                                 String
                                                                     raisonComplete =
                                                                     "Paiement du fonds de caisse"
@@ -1917,7 +1917,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           dateClose: monObjet["end_date"],
                                           montantTontine: monObjet["amount"],
                                           montantCollecte:
-                                              monObjet["tontine_balance"],
+                                              monObjet["total_cotise"],
                                           codeCotisation: monObjet["code"],
                                           lienDePaiement:
                                               monObjet["tontine_pay_link"],
@@ -1936,7 +1936,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           dateClose: monObjet["end_date"],
                                           montantCotisation: monObjet["amount"],
                                           montantCollecte:
-                                              monObjet["cotisation_balance"],
+                                              monObjet["total_cotise"],
                                           codeCotisation:
                                               monObjet["cotisation_code"],
                                           lienDePaiement:

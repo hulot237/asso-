@@ -98,7 +98,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                       onTap: () async {
                         updateTrackingData("home.btnSanction", "${DateTime.now()}", {"type": 'sanction', "sanction_id": "${widget.codeCotisation}"});
                         String msg =
-                            "Aide-moi à payer ma sanction de *${widget.motif}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* directement via le lien https://${widget.lienDePaiement}.";
+                            "Aide-moi à payer ma sanction de *${widget.motif}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* directement via le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}.";
                         String raisonComplete =
                                             "Paiement de la sanction".tr();
                                         String motif = "payer_vous_même".tr();

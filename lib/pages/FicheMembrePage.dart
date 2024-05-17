@@ -194,7 +194,7 @@ class _AccountPageState extends State<AccountPage> {
                         GestureDetector(
                           onTap: () async {
                             String msg =
-                                "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
+                                "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
                             String raisonComplete =
                                 "Paiement du fonds de caisse".tr();
                             String motif = "payer_vous_même".tr();
@@ -239,7 +239,7 @@ class _AccountPageState extends State<AccountPage> {
                                   : GestureDetector(
                                       onTap: () async {
                                         String msg =
-                                            "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]} pour valider";
+                                            "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
                                         String raisonComplete =
                                             "Paiement du fonds de caisse".tr();
                                         String motif = "payer_vous_même".tr();

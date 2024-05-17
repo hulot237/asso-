@@ -116,7 +116,7 @@ class _widgetDetailHistoriqueTontineCardState
                           ? GestureDetector(
                               onTap: () async {
                                 String msg =
-                                    "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                                    "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
                                 String raisonComplete =
                                     "Paiement de la tontine".tr();
                                 String motif = "payer_vous_même".tr();

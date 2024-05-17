@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -170,7 +171,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                 GestureDetector(
                                   onTap: () {
                                     String msg =
-                                        "Aide-moi à payer ma sanction de *${widget.motifSanction}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA* directement via le lien https://${widget.lienPaiement}.";
+                                        "Aide-moi à payer ma sanction de *${widget.motifSanction}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA* directement via le lien https://${widget.lienPaiement}?code=${AppCubitStorage().state.membreCode}.";
                                     String raisonComplete =
                                         "Paiement de la sanction".tr();
                                     String motif = "payer_vous_même".tr();

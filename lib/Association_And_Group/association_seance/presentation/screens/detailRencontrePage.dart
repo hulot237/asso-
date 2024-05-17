@@ -381,7 +381,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                           "amount"],
                                                   montantCollecte:
                                                       ItemDetailCotisation[
-                                                          "tontine_balance"],
+                                                          "total_cotise"],
                                                   codeCotisation:
                                                       ItemDetailCotisation[
                                                           "code"],
@@ -486,7 +486,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                             "start_date"]),
                                                 soldeCotisation:
                                                     ItemDetailCotisation[
-                                                        "cotisation_balance"],
+                                                        "total_cotise"],
                                                 codeCotisation:
                                                     ItemDetailCotisation[
                                                         "cotisation_code"],

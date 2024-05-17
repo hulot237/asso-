@@ -165,7 +165,7 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                         onTap: () async {
                           updateTrackingData("home.btnContribution", "${DateTime.now()}", {"type": 'contribution', "contribution_id": "${widget.codeCotisation}"});
                           String msg =
-                              "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement} pour valider";
+                              "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
 
                           String raisonComplete =
                               'Paiement de la cotisation'.tr();
