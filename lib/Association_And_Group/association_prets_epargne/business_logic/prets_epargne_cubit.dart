@@ -68,6 +68,30 @@ class PretEpargneCubit extends Cubit<PretEpargneState> {
     }
   }
 
+  Future<void> getAllAssEpargnes(codeTournois) async {
+    emit(state.copyWith(isLoadingAllAssEpargne: true, allAssEpargne: state.allAssEpargne));
+    try {
+      final data = await PretEpargneRepository().getAllAssEpargnes(codeTournois);
+
+      emit(
+        state.copyWith(
+          allAssEpargne: data,
+          isLoadingAllAssEpargne: false,
+        ),
+      );
+      print("ee ${state.allAssEpargne}");
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoadingAllAssEpargne: false,
+          messageError: e.toString(),
+        ),
+      );
+      print("${state.allAssEpargne}");
+
+    }
+  }
+
   Future<void> getDetailEpargne(codeEpargne) async {
     emit(state.copyWith(
         isLoadingDetailEpargne: true, detailEpargne: state.detailEpargne));

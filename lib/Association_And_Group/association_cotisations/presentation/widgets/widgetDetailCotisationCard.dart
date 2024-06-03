@@ -26,6 +26,7 @@ class widgetDetailCotisationCard extends StatefulWidget {
     required this.type,
     required this.lienDePaiement,
     required this.isPayed,
+    required this.codeCotisation,
   });
   int montantCotisations;
   String motifCotisations;
@@ -37,6 +38,7 @@ class widgetDetailCotisationCard extends StatefulWidget {
   int isPayed;
   // String montantSanctionCollectee;
   int isPassed;
+  String codeCotisation;
 
   @override
   State<widgetDetailCotisationCard> createState() =>
@@ -108,6 +110,7 @@ class _widgetDetailCotisationCardState
                                             "partager_le_lien_de_paiement".tr();
                                         String msgAppBarPaiementPage =
                                             "${'Paiement de la cotisation'.tr()} ${widget.motifCotisations}";
+                                            String elementUrl = "https://groups.faroty.com/cotisations-details/${widget.codeCotisation}";
                                         Modal().showModalActionPayement(
                                           context,
                                           msg,
@@ -116,6 +119,7 @@ class _widgetDetailCotisationCardState
                                           motif,
                                           paiementProcheMsg,
                                           msgAppBarPaiementPage,
+                                          elementUrl
                                         );
                                       },
                                       child: Container(
@@ -260,7 +264,7 @@ class _widgetDetailCotisationCardState
                                         color: AppColors.white,
                                         child: Center(
                                           child: CircularProgressIndicator(
-                                            color: AppColors.bleuLight,
+                                           color: AppColors.green,
                                             strokeWidth: 0.5,
                                           ),
                                         ),
@@ -359,6 +363,9 @@ class _widgetDetailCotisationCardState
                                 : Container();
                           },
                         ),
+                        
+                        
+                        
                         checkTransparenceStatus(
                                 context
                                     .read<UserGroupCubit>()

@@ -7,6 +7,8 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotistion.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetCotistionDetailPage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetHistoriqueCotisation.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/detailRencontrePage.dart';
@@ -26,20 +28,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailCotisationPage extends StatefulWidget {
-  DetailCotisationPage({
-    super.key,
-    required this.montantCotisations,
-    required this.motifCotisations,
-    required this.dateCotisation,
-    required this.heureCotisation,
-    required this.soldeCotisation,
-    required this.isPassed,
-    required this.type,
-    required this.lienDePaiement,
-    required this.codeCotisation,
-    required this.isPayed,
-    required this.rapportUrl,
-  });
+  var is_tontine;
+
+  var source;
+
+  var nomBeneficiaire;
+
+  var rubrique;
+
+  DetailCotisationPage(
+      {super.key,
+      required this.montantCotisations,
+      required this.motifCotisations,
+      required this.dateCotisation,
+      required this.heureCotisation,
+      required this.soldeCotisation,
+      required this.isPassed,
+      required this.type,
+      required this.lienDePaiement,
+      required this.codeCotisation,
+      required this.isPayed,
+      required this.rapportUrl,
+      required this.is_passed,
+      required this.is_tontine,
+      required this.source,
+      required this.nomBeneficiaire,
+      required this.rubrique});
   int montantCotisations;
   String motifCotisations;
   String dateCotisation;
@@ -51,6 +65,7 @@ class DetailCotisationPage extends StatefulWidget {
   String codeCotisation;
   int isPayed;
   String? rapportUrl;
+  var is_passed;
 
   @override
   State<DetailCotisationPage> createState() => _DetailCotisationPageState();
@@ -67,7 +82,10 @@ Widget PageScaffold({
         backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
           "detail_de_la_cotisations".tr(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 16.sp,
+              color: AppColors.white,
+              fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
           onTap: () {
@@ -88,10 +106,9 @@ Widget PageScaffold({
       title: Text(
         "detail_de_la_cotisations".tr(),
         style: TextStyle(
-          fontSize: 16.sp,
-          color: AppColors.white,
-          fontWeight: FontWeight.bold
-        ),
+            fontSize: 16.sp,
+            color: AppColors.white,
+            fontWeight: FontWeight.bold),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -156,24 +173,44 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 10.h),
-                  child: widgetDetailCotisationCard(
-                    type: widget.type,
-                    dateCotisation: widget.dateCotisation,
-                    heureCotisation: widget.heureCotisation,
+                  child: WidgetCotistionDetailPage(
+                    rapportUrl: widget.rapportUrl,
+                    screenSource: "meeting",
+                    isPayed: widget.isPayed,
                     montantCotisations: widget.montantCotisations,
                     motifCotisations: widget.motifCotisations,
+                    dateCotisation: widget.dateCotisation,
+                    heureCotisation: widget.heureCotisation,
                     soldeCotisation: widget.soldeCotisation,
+                    codeCotisation: widget.codeCotisation,
+                    type: widget.type,
                     lienDePaiement: widget.lienDePaiement,
-                    isPassed: widget.isPassed,
-                    isPayed: widget.isPayed,
+                    // ItemDetailCotisation["cotisation_pay_link"] == null ? "le lien n'a pas été généré" : ItemDetailCotisation["cotisation_pay_link"],
+                    is_passed: widget.isPassed,
+                    is_tontine: widget.is_tontine,
+                    source: widget.source,
+                    nomBeneficiaire: widget.nomBeneficiaire,
+                    rubrique: widget.rubrique,
                   ),
+                  // widgetDetailCotisationCard(
+                  //   type: widget.type,
+                  //   dateCotisation: widget.dateCotisation,
+                  //   heureCotisation: widget.heureCotisation,
+                  //   montantCotisations: widget.montantCotisations,
+                  //   motifCotisations: widget.motifCotisations,
+                  //   soldeCotisation: widget.soldeCotisation,
+                  //   lienDePaiement: widget.lienDePaiement,
+                  //   isPassed: widget.isPassed,
+                  //   isPayed: widget.isPayed,
+                  //   codeCotisation: widget.codeCotisation,
+                  // ),
                 ),
-                if (widget.rapportUrl != null)
-                  ButtonRapport(
-                    nomElement:
-                        "${"Cotisation".tr()} ${widget.motifCotisations}",
-                    rapportUrl: "${widget.rapportUrl}",
-                  ),
+                // if (widget.rapportUrl != null)
+                //   ButtonRapport(
+                //     nomElement:
+                //         "${"Cotisation".tr()} ${widget.motifCotisations}",
+                //     rapportUrl: "${widget.rapportUrl}",
+                //   ),
                 Container(
                   // color: Colors.deepOrange,
                   width: MediaQuery.of(context).size.width,
@@ -227,21 +264,29 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                     List<Widget> listWidgetCotis = listeOkayCotisation.map(
                       (monObjet) {
                         return Card(
-                          child: WidgetHistoriqueCotisation(
-                            versement_status: monObjet["statut"],
-                            matricule: monObjet["membre"]["matricule"],
-                            montantTotalAVerser: monObjet["amount_to_pay"],
-                            montantVersee: monObjet["balance"],
-                            nom: monObjet["membre"]["first_name"] == null
-                                ? ""
-                                : monObjet["membre"]["first_name"],
-                            photoProfil:
-                                monObjet["membre"]["photo_profil"] == null
-                                    ? ""
-                                    : monObjet["membre"]["photo_profil"],
-                            prenom: monObjet["membre"]["last_name"] == null
-                                ? ""
-                                : monObjet["membre"]["last_name"],
+                          child: InkWell(
+                            onTap: () {
+                              print("${monObjet["membre"]["membre_code"]}");
+                            },
+                            child: WidgetHistoriqueCotisation(
+                              codeMembre: monObjet["membre"]["membre_code"],
+                              versement_status: monObjet["statut"],
+                              matricule: monObjet["membre"]["matricule"],
+                              montantTotalAVerser: monObjet["amount_to_pay"],
+                              montantVersee: monObjet["balance"],
+                              resteAPayer: monObjet["amount_remaining"],
+                              codeCotisation: widget.codeCotisation,
+                              nom: monObjet["membre"]["first_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["first_name"],
+                              photoProfil:
+                                  monObjet["membre"]["photo_profil"] == null
+                                      ? ""
+                                      : monObjet["membre"]["photo_profil"],
+                              prenom: monObjet["membre"]["last_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["last_name"],
+                            ),
                           ),
                         );
                       },

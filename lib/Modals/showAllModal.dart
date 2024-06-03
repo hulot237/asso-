@@ -5,12 +5,14 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetListTransactionCotisationAllCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/paiement_sanction_widget.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
@@ -66,6 +68,13 @@ class Modal {
       );
 
       await AppCubitStorage().updateCodeTournoisDefault(context
+          .read<UserGroupCubit>()
+          .state
+          .changeAssData!
+          .user_group!
+          .tournois![0]
+          .tournois_code!);
+      await AppCubitStorage().updateCodeTournoisHist(context
           .read<UserGroupCubit>()
           .state
           .changeAssData!
@@ -244,14 +253,24 @@ class Modal {
     );
   }
 
-  void showBottomSheetListTournoi(
-      BuildContext context, List<TournoiModel>? currentInfoAssociationCourant) {
+  void showBottomSheetListTournoi(BuildContext context,
+      List<TournoiModel>? currentInfoAssociationCourant, bool isHistorique) {
     // .state.userGroupDefault
     Color? colorSelect(tournois_code) {
       if (tournois_code == AppCubitStorage().state.codeTournois) {
         return AppColors.colorButton;
       } else {
         return Color.fromARGB(23, 20, 45, 99);
+      }
+      // Aucune correspondance trouvée, retourne null.
+      // return null;
+    }
+
+    Color? colorSelectInac(tournois_code) {
+      if (tournois_code == AppCubitStorage().state.codeTournois) {
+        return AppColors.white;
+      } else {
+        return AppColors.colorButton.withOpacity(0.6);
       }
       // Aucune correspondance trouvée, retourne null.
       // return null;
@@ -267,22 +286,46 @@ class Modal {
       // return null;
     }
 
+    Color? colorSelectTextInac(tournois_code) {
+      if (tournois_code == AppCubitStorage().state.codeTournois) {
+        return AppColors.blackBlue;
+      } else {
+        return AppColors.white;
+      }
+      // Aucune correspondance trouvée, retourne null.
+      // return null;
+    }
+
     bool isLoading = false;
 
-    Future handleChangeTournoi(codeTournoi) async {
+    Future handleChangeTournoi(codeTournoi, isHistorique) async {
       final allCotisationAss = await context
           .read<DetailTournoiCourantCubit>()
           .changeTournoiCubit(
               codeTournoi, AppCubitStorage().state.codeAssDefaul);
 
       await AppCubitStorage().updateCodeTournoisDefault(codeTournoi);
+      await AppCubitStorage().updateCodeTournoisHist(codeTournoi);
 
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (BuildContext context) => HomeCentraleScreen(),
-        ),
-        (route) => false,
-      );
+      if (!isHistorique) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => HomeCentraleScreen(),
+          ),
+          (route) => false,
+        );
+      } else {
+        // await context.read<UserGroupCubit>().ChangeAssCubit(AppCubitStorage().state.codeAssDefaul);
+        await context
+            .read<DetailTournoiCourantCubit>()
+            .detailTournoiCourantCubit(codeTournoi);
+        await context.read<CotisationCubit>().AllCotisationAssTournoiCubit(
+            codeTournoi, AppCubitStorage().state.membreCode);
+        // await context
+        // .read<CotisationCubit>()
+        // .AllCotisationAssTournoiCubit(codeTournoi, codeMembre)
+        Navigator.pop(context);
+      }
 
       if (allCotisationAss != null) {
       } else {
@@ -340,7 +383,7 @@ class Modal {
                           final currentItemAssociationList =
                               currentInfoAssociationCourant[index];
                           print(
-                              "aaaaaaaaaaaaaaaaaaaaaaaa ${currentInfoAssociationCourant[index]}");
+                              "aaaaaaaaaaaaaaaaaaaaaaaa ${currentItemAssociationList.is_default}");
 
                           return GestureDetector(
                             onTap: () async {
@@ -348,36 +391,95 @@ class Modal {
                                 isLoading = true;
                               });
                               await handleChangeTournoi(
-                                  currentItemAssociationList.tournois_code);
+                                  currentItemAssociationList.tournois_code,
+                                  isHistorique);
                               setState(() {
                                 isLoading = false;
                               });
                             },
                             child: Container(
-                              // margin: EdgeInsets.only(bottom: 10, right: 5, left: 5),
-                              // padding: EdgeInsets.all(10),
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                  top: 15.h,
-                                  bottom: 15.h,
-                                  left: 15.w,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: colorSelect(
-                                      currentItemAssociationList.tournois_code),
-                                  borderRadius: BorderRadius.circular(7),
-                                ),
-                                margin: EdgeInsets.all(5.r),
-                                child: Text(
-                                  '${"tournoi".tr()} #${currentItemAssociationList.matricule}',
-                                  style: TextStyle(
-                                      color: colorSelectText(
-                                        currentItemAssociationList
-                                            .tournois_code,
+                              padding: EdgeInsets.only(
+                                top: 15.h,
+                                bottom: 15.h,
+                                left: 15.w,
+                              ),
+                              decoration: BoxDecoration(
+                                color: colorSelect(
+                                    currentItemAssociationList.tournois_code),
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              margin: EdgeInsets.all(5.r),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${"tournoi".tr()} #${currentItemAssociationList.matricule}',
+                                    style: TextStyle(
+                                        color: colorSelectText(
+                                          currentItemAssociationList
+                                              .tournois_code,
+                                        ),
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 14.sp),
+                                  ),
+                                  if (currentItemAssociationList.is_default ==
+                                      1)
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        // top: 15.h,
+                                        // bottom: 15.h,
+                                        left: 10.w,
+                                        right: 10.w,
+                                        top: 3.h,
+                                        bottom: 3.h,
                                       ),
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 14.sp),
-                                ),
+                                      decoration: BoxDecoration(
+                                        color: colorSelectInac(
+                                            currentItemAssociationList
+                                                .tournois_code),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      margin: EdgeInsets.all(5.r),
+                                      child: Text(
+                                        "Actif",
+                                        style: TextStyle(
+                                            color: colorSelectTextInac(
+                                              currentItemAssociationList
+                                                  .tournois_code,
+                                            ),
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  if (currentItemAssociationList.is_default ==
+                                      0)
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        // top: 15.h,
+                                        // bottom: 15.h,
+                                        left: 10.w,
+                                        right: 10.w,
+                                        top: 3.h,
+                                        bottom: 3.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: colorSelectInac(
+                                            currentItemAssociationList
+                                                .tournois_code),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      margin: EdgeInsets.all(5.r),
+                                      child: Text(
+                                        "Inactif",
+                                        style: TextStyle(
+                                          color: colorSelectTextInac(
+                                            currentItemAssociationList
+                                                .tournois_code,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           );
@@ -423,7 +525,8 @@ class Modal {
     );
   }
 
-  void showBottomSheetHistTontine(BuildContext context) {
+  void showBottomSheetHistTontine(BuildContext context, codeContribution,
+      {var codeTontine}) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       barrierColor: AppColors.barrierColorModal,
@@ -440,173 +543,9 @@ class Modal {
             ),
             color: Color.fromARGB(255, 255, 255, 255),
           ),
-          child: Column(
-            children: [
-              Container(
-                height: 5.h,
-                width: 55.w,
-                decoration: BoxDecoration(
-                    color: AppColors.blackBlue,
-                    borderRadius: BorderRadius.circular(50)),
-              ),
-              Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                    child: Text(
-                      "Historique de la tontine",
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.blackBlueAccent1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Container(
-                    color: AppColors.blackBlueAccent2,
-                    alignment: Alignment.center,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.h),
-                          child: Text(
-                            "Contributions ",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.blackBlue,
-                            ),
-                          ),
-                        ),
-                        BlocBuilder<DetailContributionCubit, ContributionState>(
-                          builder: (DetailContributionContext,
-                              DetailContributionState) {
-                            if (DetailContributionState
-                                        .isLoadingContibutionTontine ==
-                                    null ||
-                                DetailContributionState
-                                        .isLoadingContibutionTontine ==
-                                    true)
-                              return Container(
-                                width: 10.w,
-                                height: 10.w,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.bleuLight,
-                                    strokeWidth: 0.3,
-                                  ),
-                                ),
-                              );
-
-                            final okayTontine = DetailContributionContext.read<
-                                    DetailContributionCubit>()
-                                .state
-                                .detailContributionTontine!["membres"]
-                                .where((personne) => personne["is_payed"] == 1)
-                                .length;
-                            final nonTontine = DetailContributionContext.read<
-                                    DetailContributionCubit>()
-                                .state
-                                .detailContributionTontine!["membres"]
-                                .where((personne) => personne["is_payed"] == 0)
-                                .length;
-
-                            print(
-                                "objectobjectobjectobjectobjectobject ${nonTontine}");
-                            return Container(
-                              child: Text(
-                                "(${okayTontine}/${nonTontine + okayTontine})",
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: AppColors.blackBlue,
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              BlocBuilder<DetailContributionCubit, ContributionState>(builder:
-                  (DetailContributionContext, DetailContributionState) {
-                if (DetailContributionState.isLoadingContibutionTontine ==
-                        null ||
-                    DetailContributionState.isLoadingContibutionTontine == true)
-                  return Expanded(
-                    child: Center(
-                      child: Container(
-                        child: EasyLoader(
-                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50.r,
-                          iconColor: AppColors.blackBlueAccent1,
-                          image: AssetImage(
-                            "assets/images/AssoplusFinal.png",
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-
-                final okayTontine =
-                    DetailContributionContext.read<DetailContributionCubit>()
-                        .state
-                        .detailContributionTontine!["membres"];
-                print("${okayTontine}");
-
-                List listeOkayTontine = okayTontine;
-
-                List<Widget> listWidgetOkayTontine =
-                    listeOkayTontine.map((monObjet) {
-                  return Card(
-                    margin: EdgeInsets.only(
-                      left: 10.w,
-                      right: 10.w,
-                      top: 5.h,
-                      bottom: 5.h,
-                    ),
-                    child: widgetHistoriqueTontineCard(
-                      date: formatDateLiteral(monObjet["updated_at"]),
-                      imageProfil: monObjet["membre"]["photo_profil"] == null
-                          ? ""
-                          : monObjet["membre"]["photo_profil"],
-                      is_versement_finished: monObjet["is_payed"],
-                      montantVersee: monObjet["balance"],
-                      nom: monObjet["membre"]["first_name"] == null
-                          ? ""
-                          : monObjet["membre"]["first_name"],
-                      prenom: monObjet["membre"]["last_name"] == null
-                          ? ""
-                          : monObjet["membre"]["last_name"],
-                    ),
-                  );
-                }).toList();
-
-                final listeFinale = [
-                  ...listWidgetOkayTontine,
-                  Container(
-                    margin: EdgeInsets.only(
-                      bottom: 10.h,
-                    ),
-                  )
-                ];
-
-                return Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: listeFinale,
-                    ),
-                  ),
-                );
-              })
-            ],
+          child: TontineHistoriqueWidget(
+            codeContribution: codeContribution,
+            codeTontine: codeTontine,
           ),
         );
       },
@@ -614,18 +553,23 @@ class Modal {
   }
 
   void showBottomSheetHistCotisation(
-      BuildContext context,
-      codeCotisation,
-      lienDePaiement,
-      dateCotisation,
-      heureCotisation,
-      montantCotisations,
-      motifCotisations,
-      soldeCotisation,
-      type,
-      is_passed,
-      rapportUrl,
-      isPayed) {
+    BuildContext context,
+    codeCotisation,
+    lienDePaiement,
+    dateCotisation,
+    heureCotisation,
+    montantCotisations,
+    motifCotisations,
+    soldeCotisation,
+    type,
+    is_passed,
+    rapportUrl,
+    isPayed,
+    source,
+    nomBeneficiaire,
+    rubrique,
+    is_tontine,
+  ) {
     Future<void> handleDetailCotisation(codeCotisation) async {
       final detailCotisation = await context
           .read<CotisationDetailCubit>()
@@ -648,229 +592,22 @@ class Modal {
             ),
             color: Color.fromARGB(255, 255, 255, 255),
           ),
-          child: Column(
-            children: [
-              Container(
-                height: 5.h,
-                width: 55.w,
-                decoration: BoxDecoration(
-                    color: AppColors.blackBlue,
-                    borderRadius: BorderRadius.circular(50)),
-              ),
-              Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                    child: Text(
-                      "Historique de la cotisation".tr(),
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.blackBlueAccent1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Container(
-                    color: AppColors.blackBlueAccent2,
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 10.h),
-                              child: Text(
-                                "Contributions ",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w800,
-                                  color: AppColors.blackBlue,
-                                ),
-                              ),
-                            ),
-                            BlocBuilder<CotisationDetailCubit,
-                                CotisationDetailState>(
-                              builder: (detailCotisationContext,
-                                  detailCotisationState) {
-                                if (detailCotisationState.detailCotisation ==
-                                        null ||
-                                    detailCotisationState.isLoading == true)
-                                  return Container(
-                                    width: 10.w,
-                                    height: 10.w,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.bleuLight,
-                                        strokeWidth: 0.3,
-                                      ),
-                                    ),
-                                  );
-
-                                final okayTontine = detailCotisationContext
-                                    .read<CotisationDetailCubit>()
-                                    .state
-                                    .detailCotisation!["membres"]
-                                    .where(
-                                        (personne) => personne["is_payed"] == 1)
-                                    .length;
-                                ;
-                                final nonTontine = detailCotisationContext
-                                    .read<CotisationDetailCubit>()
-                                    .state
-                                    .detailCotisation!["membres"]
-                                    .where(
-                                        (personne) => personne["is_payed"] == 0)
-                                    .length;
-
-                                return Container(
-                                  child: Text(
-                                    "(${okayTontine}/${nonTontine + okayTontine})",
-                                    style: TextStyle(
-                                        fontSize: 10.sp,
-                                        color: AppColors.blackBlue),
-                                  ),
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                        BlocBuilder<CotisationDetailCubit,
-                                CotisationDetailState>(
-                            builder: (detailCotisationContext,
-                                detailCotisationState) {
-                          if (detailCotisationState.detailCotisation == null ||
-                              detailCotisationState.isLoading == true)
-                            return Container(
-                              padding: EdgeInsets.all(10.r),
-                              width: 10.w,
-                              height: 10.w,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColors.bleuLight,
-                                  strokeWidth: 0.3,
-                                ),
-                              ),
-                            );
-                          return GestureDetector(
-                              onTap: () {
-                                handleDetailCotisation(codeCotisation);
-
-                                Navigator.pop(context);
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailCotisationPage(
-                                      rapportUrl: rapportUrl,
-                                      codeCotisation: codeCotisation,
-                                      lienDePaiement: lienDePaiement,
-                                      dateCotisation: dateCotisation,
-                                      heureCotisation: heureCotisation,
-                                      montantCotisations: montantCotisations,
-                                      motifCotisations: motifCotisations,
-                                      soldeCotisation: soldeCotisation,
-                                      type: type,
-                                      isPassed: is_passed,
-                                      isPayed: isPayed,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10.r),
-                                child: Icon(
-                                  Icons.info_outline,
-                                  color: AppColors.blackBlue,
-                                  size: 18.sp,
-                                ),
-                              ));
-                        }),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                builder: (CotisationDetailcontext, CotisationDetailstate) {
-                  if (CotisationDetailstate.isLoading == null ||
-                      CotisationDetailstate.isLoading == true ||
-                      CotisationDetailstate.detailCotisation == null)
-                    return Expanded(
-                      child: Center(
-                        child: EasyLoader(
-                          backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                          iconSize: 50.r,
-                          iconColor: AppColors.blackBlueAccent1,
-                          image: AssetImage(
-                            "assets/images/AssoplusFinal.png",
-                          ),
-                        ),
-                      ),
-                    );
-
-                  final currentDetailCotisation =
-                      CotisationDetailcontext.read<CotisationDetailCubit>()
-                          .state
-                          .detailCotisation;
-
-                  List listeOkayCotisation =
-                      currentDetailCotisation!["membres"];
-
-                  List<Widget> listWidgetOkayCotis =
-                      listeOkayCotisation.map((monObjet) {
-                    return Card(
-                      margin: EdgeInsets.only(
-                        left: 10.w,
-                        right: 10.w,
-                        top: 5.h,
-                        bottom: 5.h,
-                      ),
-                      child: widgetHistoriqueTontineCard(
-                        date: formatDateLiteral(monObjet["updated_at"]),
-                        imageProfil: monObjet["membre"]["photo_profil"] == null
-                            ? ""
-                            : monObjet["membre"]["photo_profil"],
-                        is_versement_finished: monObjet["is_payed"],
-                        montantVersee: monObjet["balance"],
-                        nom: monObjet["membre"]["first_name"] == null
-                            ? ""
-                            : monObjet["membre"]["first_name"],
-                        prenom: monObjet["membre"]["last_name"] == null
-                            ? ""
-                            : monObjet["membre"]["last_name"],
-                      ),
-                    );
-                  }).toList();
-
-                  final listeFinale = [
-                    ...listWidgetOkayCotis,
-                    Container(
-                      margin: EdgeInsets.only(
-                          // bottom: Platform.isIOS ? 70.h : 10.h,
-                          ),
-                    )
-                  ];
-
-                  return Expanded(
-                    child: Container(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: listeFinale,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
+          child: CotisationHistoriqueWidget(
+            rapportUrl: rapportUrl,
+            codeCotisation: codeCotisation,
+            lienDePaiement: lienDePaiement,
+            dateCotisation: dateCotisation,
+            heureCotisation: heureCotisation,
+            montantCotisations: montantCotisations,
+            motifCotisations: motifCotisations,
+            soldeCotisation: soldeCotisation,
+            type: type,
+            is_passed: is_passed,
+            isPayed: isPayed,
+            is_tontine: is_tontine,
+            source: source,
+            nomBeneficiaire: nomBeneficiaire,
+            rubrique: rubrique,
           ),
         );
       },
@@ -2065,8 +1802,15 @@ class Modal {
     );
   }
 
-  void showModalActionPayement(BuildContext context, msg, lienDePaiement,
-      raisonComplete, motif, paiementProcheMsg, msgAppBarPaiementPage) {
+  void showModalActionPayement(
+      BuildContext context,
+      msg,
+      lienDePaiement,
+      raisonComplete,
+      motif,
+      paiementProcheMsg,
+      msgAppBarPaiementPage,
+      elementUrl) {
     showDialog<String>(
       context: context,
       barrierColor: AppColors.barrierColorModal,
@@ -2075,7 +1819,7 @@ class Modal {
         content: Container(
           padding: EdgeInsets.only(left: 20.w, right: 20.w),
           height: !context.read<AuthCubit>().state.detailUser!["isMember"]
-              ? 250.h
+              ? 185.h
               : 150.h,
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -2145,6 +1889,7 @@ class Modal {
                 },
                 child: Container(
                   alignment: Alignment.center,
+
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(7.r),
                   decoration: BoxDecoration(
@@ -2155,7 +1900,6 @@ class Modal {
                   // height: 20,
                   child: Text(
                     '$paiementProcheMsg',
-                    // "partager_le_lien_de_paiement".tr(),
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
@@ -2166,17 +1910,19 @@ class Modal {
               ),
               if (!context.read<AuthCubit>().state.detailUser!["isMember"])
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pop(
                       context,
                     );
-                    Share.share("${msg}");
+                    await launchUrlString(
+                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=${elementUrl}&app_mode=mobile",
+                      mode: LaunchMode.platformDefault,
+                    );
                   },
                   child: Container(
                     alignment: Alignment.center,
-
-                  margin: EdgeInsets.only(top: 11.h),
                     width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(top: 11.h),
                     padding: EdgeInsets.all(7.r),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
@@ -2185,7 +1931,8 @@ class Modal {
                         )),
                     // height: 20,
                     child: Text(
-                      '$paiementProcheMsg',
+                      'Payer à partir du tableau de bord'.tr(),
+
                       // "partager_le_lien_de_paiement".tr(),
                       style: TextStyle(
                         fontSize: 14.sp,
@@ -2194,7 +1941,7 @@ class Modal {
                       ),
                     ),
                   ),
-                )
+                ),
             ],
           ),
         ),
@@ -2253,6 +2000,41 @@ class Modal {
         );
       },
     );
+  }
+
+  void showModalPaySanction(context, nom, resteAPayer, codeSanction, codeMembre,
+      typeSaction, objectSanction, codeTournoi) {
+    showDialog(
+        context: context,
+        barrierColor: AppColors.barrierColorModal,
+        builder: (BuildContext context) {
+          Future<void> handleDetailCotisation(codeSanction) async {
+            // final detailTournoiCourant = await context
+            //     .read<DetailTournoiCourantCubit>()
+            //     .detailTournoiCourantCubit();
+            final detailCotisation = await context
+                .read<CotisationDetailCubit>()
+                .detailCotisationCubit(codeSanction);
+          }
+
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r)),
+            child: Container(
+              constraints:
+                  BoxConstraints(maxHeight: typeSaction == "1" ? 250.h : 200.h),
+              child: PaiementSanctionWidget(
+                codeTournoi: codeTournoi,
+                nom: nom,
+                codeSanction: codeSanction,
+                codeMembre: codeMembre,
+                resteAPayer: resteAPayer,
+                typeSanction: typeSaction,
+                objectSanction: objectSanction,
+              ),
+            ),
+          );
+        });
   }
 
   void showShareLinkPage(context, nomGroupe) {
@@ -2485,6 +2267,495 @@ class Modal {
           ),
         );
       },
+    );
+  }
+}
+
+class CotisationHistoriqueWidget extends StatefulWidget {
+  CotisationHistoriqueWidget({
+    super.key,
+    required this.rapportUrl,
+    required this.codeCotisation,
+    required this.lienDePaiement,
+    required this.dateCotisation,
+    required this.heureCotisation,
+    required this.montantCotisations,
+    required this.motifCotisations,
+    required this.soldeCotisation,
+    required this.type,
+    required this.is_passed,
+    required this.isPayed,
+    required this.is_tontine,
+    required this.source,
+    required this.nomBeneficiaire,
+    required this.rubrique,
+  });
+  var rapportUrl;
+  var codeCotisation;
+  var lienDePaiement;
+  var dateCotisation;
+  var heureCotisation;
+  var montantCotisations;
+  var motifCotisations;
+  var soldeCotisation;
+  var type;
+  var is_passed;
+  var isPayed;
+  var is_tontine;
+  var source;
+  var nomBeneficiaire;
+  var rubrique;
+
+  @override
+  State<CotisationHistoriqueWidget> createState() =>
+      _CotisationHistoriqueWidgetState();
+}
+
+class _CotisationHistoriqueWidgetState
+    extends State<CotisationHistoriqueWidget> {
+  Future<void> handleDetailCotisation(codeSanction) async {
+    // final detailTournoiCourant = await context
+    //     .read<DetailTournoiCourantCubit>()
+    //     .detailTournoiCourantCubit();
+    final detailCotisation = await context
+        .read<CotisationDetailCubit>()
+        .detailCotisationCubit(codeSanction);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: 5.h,
+          width: 55.w,
+          decoration: BoxDecoration(
+              color: AppColors.blackBlue,
+              borderRadius: BorderRadius.circular(50)),
+        ),
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+              child: Text(
+                "Historique de la cotisation".tr(),
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.blackBlueAccent1,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Container(
+              color: AppColors.blackBlueAccent2,
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Text(
+                          "Contributions ",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                      ),
+                      BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                        builder:
+                            (detailCotisationContext, detailCotisationState) {
+                          if (detailCotisationState.detailCotisation == null ||
+                              detailCotisationState.isLoading == true)
+                            return Container(
+                              width: 10.w,
+                              height: 10.w,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.green,
+                                  strokeWidth: 0.3,
+                                ),
+                              ),
+                            );
+
+                          final okayTontine = detailCotisationContext
+                              .read<CotisationDetailCubit>()
+                              .state
+                              .detailCotisation!["membres"]
+                              .where((personne) => personne["is_payed"] == 1)
+                              .length;
+                          ;
+                          final nonTontine = detailCotisationContext
+                              .read<CotisationDetailCubit>()
+                              .state
+                              .detailCotisation!["membres"]
+                              .where((personne) => personne["is_payed"] == 0)
+                              .length;
+
+                          return Container(
+                            child: Text(
+                              "(${okayTontine}/${nonTontine + okayTontine})",
+                              style: TextStyle(
+                                  fontSize: 10.sp, color: AppColors.blackBlue),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                  BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                      builder:
+                          (detailCotisationContext, detailCotisationState) {
+                    if (detailCotisationState.detailCotisation == null ||
+                        detailCotisationState.isLoading == true)
+                      return Container(
+                        padding: EdgeInsets.all(10.r),
+                        width: 10.w,
+                        height: 10.w,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.green,
+                            strokeWidth: 0.3,
+                          ),
+                        ),
+                      );
+                    return GestureDetector(
+                        onTap: () {
+                          handleDetailCotisation(widget.codeCotisation);
+
+                          Navigator.pop(context);
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailCotisationPage(
+                                rapportUrl: widget.rapportUrl,
+                                codeCotisation: widget.codeCotisation,
+                                lienDePaiement: widget.lienDePaiement,
+                                dateCotisation: widget.dateCotisation,
+                                heureCotisation: widget.heureCotisation,
+                                montantCotisations: widget.montantCotisations,
+                                motifCotisations: widget.motifCotisations,
+                                soldeCotisation: widget.soldeCotisation,
+                                type: widget.type,
+                                isPassed: widget.is_passed,
+                                isPayed: widget.isPayed,
+                                is_passed: widget.is_passed,
+                                is_tontine: widget.is_tontine,
+                                source: widget.source,
+                                nomBeneficiaire: widget.nomBeneficiaire,
+                                rubrique: widget.rubrique,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10.r),
+                          child: Icon(
+                            Icons.info_outline,
+                            color: AppColors.blackBlue,
+                            size: 18.sp,
+                          ),
+                        ));
+                  }),
+                ],
+              ),
+            ),
+          ],
+        ),
+        BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+          builder: (CotisationDetailcontext, CotisationDetailstate) {
+            if (CotisationDetailstate.isLoading == null ||
+                CotisationDetailstate.isLoading == true ||
+                CotisationDetailstate.detailCotisation == null)
+              return Expanded(
+                child: Center(
+                  child: EasyLoader(
+                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                    iconSize: 50.r,
+                    iconColor: AppColors.blackBlueAccent1,
+                    image: AssetImage(
+                      "assets/images/AssoplusFinal.png",
+                    ),
+                  ),
+                ),
+              );
+              if (
+                CotisationDetailstate.isLoading == true &&
+                CotisationDetailstate.detailCotisation != null)
+                return Expanded(
+                child: Center(
+                  child: EasyLoader(
+                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                    iconSize: 50.r,
+                    iconColor: AppColors.blackBlueAccent1,
+                    image: AssetImage(
+                      "assets/images/AssoplusFinal.png",
+                    ),
+                  ),
+                ),
+              );
+
+            final currentDetailCotisation =
+                CotisationDetailcontext.read<CotisationDetailCubit>()
+                    .state
+                    .detailCotisation;
+
+            List listeOkayCotisation = currentDetailCotisation!["membres"];
+
+            List<Widget> listWidgetOkayCotis =
+                listeOkayCotisation.map((monObjet) {
+              return Card(
+                margin: EdgeInsets.only(
+                  left: 10.w,
+                  right: 10.w,
+                  top: 5.h,
+                  bottom: 5.h,
+                ),
+                child: widgetHistoriqueTontineCard(
+                  date: formatDateLiteral(monObjet["updated_at"]),
+                  imageProfil: monObjet["membre"]["photo_profil"] == null
+                      ? ""
+                      : monObjet["membre"]["photo_profil"],
+                  is_versement_finished: monObjet["is_payed"],
+                  montantVersee: monObjet["balance"],
+                  nom: monObjet["membre"]["first_name"] == null
+                      ? ""
+                      : monObjet["membre"]["first_name"],
+                  prenom: monObjet["membre"]["last_name"] == null
+                      ? ""
+                      : monObjet["membre"]["last_name"],
+                  amount_remaining: monObjet["amount_remaining"],
+                  memberCode: monObjet["membre"]["membre_code"],
+                  codeContribution: widget.codeCotisation,
+                  codeUserContribution: "",
+                ),
+              );
+            }).toList();
+
+            final listeFinale = [
+              ...listWidgetOkayCotis,
+              // Container(
+              //   color: AppColors.blackBlue,
+              //   height: 50,
+              //   width: 20,
+              //   margin: EdgeInsets.only(
+              //       // bottom: Platform.isIOS ? 70.h : 10.h,
+              //       ),
+              // )
+            ];
+
+            return Expanded(
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: listeFinale,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class TontineHistoriqueWidget extends StatefulWidget {
+  TontineHistoriqueWidget({
+    required this.codeContribution,
+    super.key,
+    this.codeTontine,
+  });
+  String codeContribution;
+  String? codeTontine;
+
+  @override
+  State<TontineHistoriqueWidget> createState() =>
+      _TontineHistoriqueWidgetState();
+}
+
+class _TontineHistoriqueWidgetState extends State<TontineHistoriqueWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: 5.h,
+          width: 55.w,
+          decoration: BoxDecoration(
+              color: AppColors.blackBlue,
+              borderRadius: BorderRadius.circular(50)),
+        ),
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+              child: Text(
+                "Historique de la tontine",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.blackBlueAccent1,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Container(
+              color: AppColors.blackBlueAccent2,
+              alignment: Alignment.center,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10.h),
+                    child: Text(
+                      "Contributions ",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                  ),
+                  BlocBuilder<DetailContributionCubit, ContributionState>(
+                    builder:
+                        (DetailContributionContext, DetailContributionState) {
+                      if (DetailContributionState.isLoadingContibutionTontine ==
+                              null ||
+                          DetailContributionState.isLoadingContibutionTontine ==
+                              true)
+                        return Container(
+                          width: 10.w,
+                          height: 10.w,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.green,
+                              strokeWidth: 0.3,
+                            ),
+                          ),
+                        );
+
+                      final okayTontine = DetailContributionContext.read<
+                              DetailContributionCubit>()
+                          .state
+                          .detailContributionTontine!["membres"]
+                          .where((personne) => personne["is_payed"] == 1)
+                          .length;
+                      final nonTontine = DetailContributionContext.read<
+                              DetailContributionCubit>()
+                          .state
+                          .detailContributionTontine!["membres"]
+                          .where((personne) => personne["is_payed"] == 0)
+                          .length;
+
+                      print(
+                          "objectobjectobjectobjectobjectobject ${nonTontine}");
+                      return Container(
+                        child: Text(
+                          "(${okayTontine}/${nonTontine + okayTontine})",
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: AppColors.blackBlue,
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        BlocBuilder<DetailContributionCubit, ContributionState>(
+            builder: (DetailContributionContext, DetailContributionState) {
+          if (DetailContributionState.isLoadingContibutionTontine == null ||
+              DetailContributionState.isLoadingContibutionTontine == true)
+            return Expanded(
+              child: Center(
+                child: Container(
+                  child: EasyLoader(
+                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                    iconSize: 50.r,
+                    iconColor: AppColors.blackBlueAccent1,
+                    image: AssetImage(
+                      "assets/images/AssoplusFinal.png",
+                    ),
+                  ),
+                ),
+              ),
+            );
+
+          final okayTontine =
+              DetailContributionContext.read<DetailContributionCubit>()
+                  .state
+                  .detailContributionTontine!["membres"];
+          print("${okayTontine}");
+
+          List listeOkayTontine = okayTontine;
+
+          List<Widget> listWidgetOkayTontine = listeOkayTontine.map((monObjet) {
+            return Card(
+              margin: EdgeInsets.only(
+                left: 10.w,
+                right: 10.w,
+                top: 5.h,
+                bottom: 5.h,
+              ),
+              child: widgetHistoriqueTontineCard(
+                date: formatDateLiteral(monObjet["updated_at"]),
+                imageProfil: monObjet["membre"]["photo_profil"] == null
+                    ? ""
+                    : monObjet["membre"]["photo_profil"],
+                is_versement_finished: monObjet["is_payed"],
+                montantVersee: monObjet["balance"],
+                nom: monObjet["membre"]["first_name"] == null
+                    ? ""
+                    : monObjet["membre"]["first_name"],
+                prenom: monObjet["membre"]["last_name"] == null
+                    ? ""
+                    : monObjet["membre"]["last_name"],
+                amount_remaining: monObjet["amount_remaining"],
+                memberCode: monObjet["membre"]["membre_code"],
+                codeContribution: widget.codeContribution,
+                codeUserContribution: monObjet["code"],
+                codeTontine: widget.codeTontine,
+              ),
+            );
+          }).toList();
+
+          final listeFinale = [
+            ...listWidgetOkayTontine,
+            Container(
+              margin: EdgeInsets.only(
+                bottom: 10.h,
+              ),
+            )
+          ];
+
+          return Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: listeFinale,
+              ),
+            ),
+          );
+        })
+      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,8 +19,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class WidgetCotisation extends StatefulWidget {
-  WidgetCotisation({
+class WidgetCotistionDetailPage extends StatefulWidget {
+  WidgetCotistionDetailPage({
     super.key,
     required this.montantCotisations,
     required this.motifCotisations,
@@ -55,10 +57,11 @@ class WidgetCotisation extends StatefulWidget {
   String? rapportUrl;
 
   @override
-  State<WidgetCotisation> createState() => _WidgetCotisationState();
+  State<WidgetCotistionDetailPage> createState() =>
+      _WidgetCotistionDetailPageState();
 }
 
-class _WidgetCotisationState extends State<WidgetCotisation> {
+class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
   Future<void> handleDetailCotisation(codeCotisation) async {
     // final detailTournoiCourant = await context
     //     .read<DetailTournoiCourantCubit>()
@@ -74,51 +77,52 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
         builder: (CotisationContext, CotisationState) {
       return GestureDetector(
         onTap: () {
-          updateTrackingData(
-              "${widget.screenSource}.contribution", "${DateTime.now()}", {});
-          handleDetailCotisation(widget.codeCotisation);
-          print("${widget.codeCotisation}");
+          // updateTrackingData(
+          //     "${widget.screenSource}.contribution", "${DateTime.now()}", {});
+          // handleDetailCotisation(widget.codeCotisation);
+          // print("${widget.codeCotisation}");
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailCotisationPage(
-                codeCotisation: widget.codeCotisation,
-                lienDePaiement: widget.lienDePaiement,
-                dateCotisation: widget.dateCotisation,
-                heureCotisation: widget.heureCotisation,
-                montantCotisations: widget.montantCotisations,
-                motifCotisations: widget.motifCotisations,
-                soldeCotisation: widget.soldeCotisation,
-                type: widget.type,
-                isPassed: widget.is_passed,
-                isPayed: widget.isPayed,
-                rapportUrl: widget.rapportUrl,
-                is_passed: widget.is_passed,
-                source: widget.source,
-                rubrique: widget.rubrique,
-                nomBeneficiaire: widget.nomBeneficiaire,
-                is_tontine: widget.is_tontine,
-              ),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => DetailCotisationPage(
+          //       codeCotisation: widget.codeCotisation,
+          //       lienDePaiement: widget.lienDePaiement,
+          //       dateCotisation: widget.dateCotisation,
+          //       heureCotisation: widget.heureCotisation,
+          //       montantCotisations: widget.montantCotisations,
+          //       motifCotisations: widget.motifCotisations,
+          //       soldeCotisation: widget.soldeCotisation,
+          //       type: widget.type,
+          //       isPassed: widget.is_passed,
+          //       isPayed: widget.isPayed,
+          //       rapportUrl: widget.rapportUrl,
+          //       is_passed: widget.is_passed,
+          //       source: widget.source,
+          //       rubrique: widget.rubrique,
+          //       nomBeneficiaire: widget.nomBeneficiaire,
+          //       is_tontine: widget.is_tontine,
+          //     ),
+          //   ),
+          // );
         },
         child: Container(
-          decoration: widget.is_passed == 0
-              ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  color: AppColors.white,
-                )
-              : BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  color: AppColors.whiteAccent,
-                  border: Border.all(
-                    width: 1.r,
-                    color: AppColors.white,
-                  ),
-                ),
+          decoration:
+              //widget.is_passed == 0 ?
+              BoxDecoration(
+            borderRadius: BorderRadius.circular(15.r),
+            color: AppColors.white,
+          ),
+          // : BoxDecoration(
+          //     borderRadius: BorderRadius.circular(15.r),
+          //     color: AppColors.whiteAccent,
+          //     border: Border.all(
+          //       width: 1.r,
+          //       color: AppColors.white,
+          //     ),
+          //   ),
           padding:
-              EdgeInsets.only(left: 10.w, top: 5.h, bottom: 4.h, right: 10.w),
+              EdgeInsets.only(left: 10.w, top: 5.h, bottom: 3.h, right: 10.w),
           width: MediaQuery.of(context).size.width,
           child: Row(
             children: [
@@ -194,9 +198,30 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                           "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
                                           mode: LaunchMode.platformDefault,
                                         );
-                                        updateTrackingData(
-                                            "${widget.screenSource}.btnContribution",
-                                            "${DateTime.now()}", {});
+                                        // updateTrackingData(
+                                        //     "${widget.screenSource}.btnContribution",
+                                        //     "${DateTime.now()}", {});
+                                        // String msg =
+                                        //     "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                        // String raisonComplete =
+                                        //     "Paiement de la cotisation".tr();
+                                        // String motif = "payer_vous_même".tr();
+                                        // String paiementProcheMsg =
+                                        //     "partager_le_lien_de_paiement".tr();
+                                        // String msgAppBarPaiementPage =
+                                        //     "${'Paiement de la cotisation'.tr()} ${widget.motifCotisations}";
+                                        // String elementUrl =
+                                        //     "https://groups.faroty.com/cotisations-details/${widget.codeCotisation}";
+                                        // Modal().showModalActionPayement(
+                                        //   context,
+                                        //   msg,
+                                        //   widget.lienDePaiement,
+                                        //   raisonComplete,
+                                        //   motif,
+                                        //   paiementProcheMsg,
+                                        //   msgAppBarPaiementPage,
+                                        //   elementUrl,
+                                        // );
                                       },
                                       child: Container(
                                         alignment: Alignment.center,
@@ -360,6 +385,131 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                           ],
                         ),
                       ),
+                    BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                      builder:
+                          (CotisationDetailContext, CotisationDetailState) {
+                        if (CotisationDetailState.isLoading == true ||
+                            CotisationDetailState.detailCotisation == null)
+                          return GestureDetector(
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                top: 7.h,
+                              ),
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      "vous_avez_cotisé".tr(),
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.blackBlue,
+                                      ),
+                                    ),
+                                    margin: EdgeInsets.only(right: 5.w),
+                                  ),
+                                  Container(
+                                    width: 12.w,
+                                    height: 12.h,
+                                    color: AppColors.white,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.green,
+                                        strokeWidth: 0.5,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+
+                        final currentDetailCotisation = CotisationDetailContext
+                                .read<CotisationDetailCubit>()
+                            .state
+                            .detailCotisation;
+                        print(
+                            "currentDetailCotisationcurrentDetailCotisationcurrentDetailCotisation ${currentDetailCotisation}");
+                        return currentDetailCotisation != null
+                            ? Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      // if (currentDetailCotisation!["versements"].length > 0)
+                                      for (var itemDetailCotisation
+                                          in currentDetailCotisation["membres"])
+                                        if (itemDetailCotisation["membre"]
+                                                ["membre_code"] ==
+                                            AppCubitStorage().state.membreCode)
+                                          Modal().showModalTransactionByEvent(
+                                            context,
+                                            itemDetailCotisation["payments"],
+                                            '${widget.montantCotisations}',
+                                            resteAPayer: itemDetailCotisation[
+                                                "amount_remaining"],
+                                            dejaPayer:
+                                                itemDetailCotisation["balance"],
+                                          );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        top: 7.h,
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              "vous_avez_cotisé".tr(),
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColors.blackBlue,
+                                              ),
+                                            ),
+                                            margin: EdgeInsets.only(right: 5.w),
+                                          ),
+                                          SizedBox(
+                                            height: 2.h,
+                                          ),
+                                          for (var itemDetailCotisation
+                                              in currentDetailCotisation[
+                                                  "membres"])
+                                            if (itemDetailCotisation["membre"]
+                                                    ["membre_code"] ==
+                                                AppCubitStorage()
+                                                    .state
+                                                    .membreCode)
+                                              Container(
+                                                child: Text(
+                                                  "${formatMontantFrancais(double.parse("${itemDetailCotisation["balance"]}"))} FCFA",
+                                                  // "${itemDetailCotisation["membre"]["versement"].length}",
+                                                  style: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    // fontWeight:
+                                                    //     FontWeight.w800,
+                                                    color: Color.fromARGB(
+                                                      255,
+                                                      20,
+                                                      45,
+                                                      99,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container();
+                      },
+                    ),
                     Container(
                       margin: EdgeInsets.only(
                         top: 8.h,
@@ -386,7 +536,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             if (widget.nomBeneficiaire != "")
                               Expanded(
                                 child: InkWell(
-                                  onTap: () async {
+                                  onTap: () async{
                                     updateTrackingData(
                                         "${widget.screenSource}.btnwithdrawnFundsContribution",
                                         "${DateTime.now()}", {});
@@ -394,12 +544,11 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
                                       mode: LaunchMode.platformDefault,
                                     );
-                                    print("object1");
                                   },
                                   child: Column(
                                     children: [
                                       Container(
-                                        height: 17.h,
+                                        height: 20.h,
                                         child: SvgPicture.asset(
                                           "assets/images/withdrawIcon.svg",
                                           fit: BoxFit.scaleDown,
@@ -433,8 +582,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             Expanded(
                               child: InkWell(
                                 onTap: () async {
-                                  updateTrackingData(
-                                      "${widget.screenSource}.btnAdministerContribution",
+                                  updateTrackingData("home.btnAdminister",
                                       "${DateTime.now()}", {});
                                   await launchUrlString(
                                     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
@@ -444,24 +592,26 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                 child: Column(
                                   children: [
                                     Container(
-                                      height: 17.h,
+                                      // color: const Color.fromARGB(255, 0, 0, 0),
+                                      height: 20.h,
+                                      // width: 230,
                                       child: SvgPicture.asset(
                                         "assets/images/folderManageSimpleIcon.svg",
                                         fit: BoxFit.scaleDown,
                                         color: AppColors.blackBlueAccent1,
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Text(
-                                      "Gerer".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlueAccent1,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11.sp,
+                                     SizedBox(
+                                        height: 3.h,
                                       ),
-                                    ),
+                                      Text(
+                                        "Gerer".tr(),
+                                        style: TextStyle(
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -471,10 +621,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               splashColor: AppColors.blackBlue,
                               onTap: () {
                                 print("object3");
-                                updateTrackingData(
-                                    "${widget.screenSource}.btnShareContribution",
-                                    "${DateTime.now()}", {});
-
                                 Share.share(context
                                         .read<AuthCubit>()
                                         .state
@@ -485,24 +631,24 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               child: Column(
                                 children: [
                                   Container(
-                                    height: 17.h,
+                                    height: 20.h,
                                     child: SvgPicture.asset(
                                       "assets/images/shareSimpleIcon.svg",
                                       fit: BoxFit.scaleDown,
                                       color: AppColors.blackBlueAccent1,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Text(
-                                    "Partager".tr(),
-                                    style: TextStyle(
-                                      color: AppColors.blackBlueAccent1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11.sp,
-                                    ),
-                                  ),
+                                   SizedBox(
+                                        height: 3.h,
+                                      ),
+                                      Text(
+                                        "Partager".tr(),
+                                        style: TextStyle(
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                        ),
+                                      ),
                                 ],
                               ),
                             ),
@@ -510,8 +656,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                         ],
                       ),
                     )
-                  
-                  
                   ],
                 ),
               ),

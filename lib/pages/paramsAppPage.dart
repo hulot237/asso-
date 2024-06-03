@@ -566,6 +566,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
                             print(
                             "Code id session: ${AppCubitStorage().state.xSessionId}");
+                            print(
+                            "Code tournoiHist: ${AppCubitStorage().state.codeTournoisHist}");
                       });
                     },
                   ),

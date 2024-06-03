@@ -206,6 +206,7 @@ class _VerificationPageState extends State<VerificationPage> {
                       .updatemembreCode(loginInfo.user!.membre_code!);
                   await AppCubitStorage().updateCodeTournoisDefault(
                       loginInfo.tournoi!.tournois_code!);
+                      await AppCubitStorage().updateCodeTournoisHist(loginInfo.tournoi!.tournois_code!);
                   await AppCubitStorage()
                       .updateuserNameKey(loginInfo.username!);
                   await AppCubitStorage()
@@ -373,7 +374,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                         return Container(
                                           child: Center(
                                             child: CircularProgressIndicator(
-                                              color: AppColors.greenAssociation,
+                                              color: AppColors.green,
                                             ),
                                           ),
                                         );
@@ -381,8 +382,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                       return isLoading
                                           ? Center(
                                               child: CircularProgressIndicator(
-                                                color:
-                                                    AppColors.greenAssociation,
+                                               color: AppColors.green,
                                               ),
                                             )
                                           : ElevatedButton(

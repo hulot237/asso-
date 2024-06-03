@@ -7,18 +7,14 @@ class SeanceRepository {
   final dio = Dio();
 
   Future<Map<String, dynamic>> DetailSeance(codeSeance) async {
-
-      final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/seance/$codeSeance/show?membre_code=${AppCubitStorage().state.membreCode}',
-      );
-      final Map<String, dynamic> dataJson = response.data["data"];
-      // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
-      log('Okay DetailSeance rep');
-      return dataJson;
-
+    final response = await dio.get(
+      '${Variables.LienAIP}/api/v1/seance/$codeSeance/show?membre_code=${AppCubitStorage().state.membreCode}',
+    );
+    final Map<String, dynamic> dataJson = response.data["data"];
+    // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");
+    log('Okay DetailSeance rep');
+    return dataJson;
   }
-
-
 
   Future<List<dynamic>> AllSeanceAss(codeAss) async {
     try {
@@ -36,37 +32,22 @@ class SeanceRepository {
     }
   }
 
-  // https://api.group.rush.faroty.com/api/v1/seance/467226
+  Future<void> CloseSeance(codeSeance) async {
+    final response = await dio.put(
+      '${Variables.LienAIP}/api/v1/seance/$codeSeance/close',
+    );
+  }
 
-  // patch("/prositions/reject/:propositionId/active
-
-  // Future<List<DeliveryModel>?> AllLivraisonOfUserEndend() async {
-  //   try {
-  //     // Récupérer le token du bloc hydraté
-  //     final token = AuthCubit().state.token;
-  //     // /livraison/OfUse/allEnded/show
-  //     var headers = {'Authorization': 'Bearer $token'};
-  //     final response = await http.get(
-  //       Uri.parse('http://192.168.43.163:3333/livraison/OfUse/allEnded/show'),
-  //       headers: headers,
-  //     );
-
-  //     final List<dynamic> dataJson = json.decode(response.body);
-  //     print(dataJson);
-  //     final List<DeliveryModel> data = dataJson
-  //         .map<DeliveryModel>((json) => DeliveryModel.fromJson(json))
-  //         .toList();
-
-  //     log(data.toString());
-  //     print("Le token" + token.toString());
-  //     print("ended delivery reposit ok");
-  //     return data;
-  //   } catch (e) {
-  //     print('ended erreur proposition rep');
-  //     print(e);
-  //     return null;
-  //   }
-  // }
-
-  // /livraison/note/:livraisonId/active
+  Future<void> genereRapport(codeSeance) async {
+    print("$codeSeance");
+    print("${AppCubitStorage().state.tokenUser}");
+    final response = await dio.post(
+      '${Variables.LienAIP}/api/v1/seance/$codeSeance/invoice/send',
+      options: Options(
+          headers: {
+            "token": AppCubitStorage().state.tokenUser,
+          },
+        ),
+    );
+  }
 }

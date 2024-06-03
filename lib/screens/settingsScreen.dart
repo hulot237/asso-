@@ -358,7 +358,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                 child:
                                                     CircularProgressIndicator(
                                                   strokeWidth: 0.1,
-                                                  color: AppColors.blackBlue,
+                                                  color: AppColors.green,
                                                 ),
                                               ),
                                             );
@@ -408,451 +408,980 @@ class _SettingScreenState extends State<SettingScreen>
                         ],
                         // leading: Icon(Icons.arrow_back),
                       ),
-                      body: Container(
-                        // decoration: BoxDecoration(
-                        //   image: DecorationImage(
-                        //         opacity: .2,
-                        //         image: AssetImage("assets/images/BG2.png", ),
-                        //         fit: BoxFit.cover,
-                        //       ),
-                        // ),
-                        child: Column(
-                          children: [
-                            // color: AppColors.white,
-                            //     borderRadius: BorderRadius.circular(
-                            //       10.r,
-                            //     ),
-                            Container(
-                              decoration: BoxDecoration(
-                                // image: DecorationImage(
-                                //   opacity: .2,
-                                //   image: AssetImage("assets/images/BG2.png", ),
-                                //   fit: BoxFit.cover,
-                                // ),
-                                color: AppColors.white,
-                                borderRadius: BorderRadius.circular(
-                                  10.r,
+                      body: SingleChildScrollView(
+                        child: Container(
+                          // decoration: BoxDecoration(
+                          //   image: DecorationImage(
+                          //         opacity: .2,
+                          //         image: AssetImage("assets/images/BG2.png", ),
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          // ),
+                          child: Column(
+                            children: [
+                              // color: AppColors.white,
+                              //     borderRadius: BorderRadius.circular(
+                              //       10.r,
+                              //     ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  // image: DecorationImage(
+                                  //   opacity: .2,
+                                  //   image: AssetImage("assets/images/BG2.png", ),
+                                  //   fit: BoxFit.cover,
+                                  // ),
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    10.r,
+                                  ),
                                 ),
-                              ),
-                              padding: EdgeInsets.only(
-                                top: 20.h,
-                              ),
-                              margin: EdgeInsets.only(
-                                top: 10.h,
-                                bottom: 10.h,
-                                left: 10.w,
-                                right: 10.w,
-                              ),
-                              child: Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      updateTrackingData(
-                                          "profile.profilePerson",
-                                          "${DateTime.now()}", {});
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProfilPersonnelPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(3.r),
-                                      decoration: BoxDecoration(
-                                          color: AppColors.colorButton,
+                                padding: EdgeInsets.only(
+                                  top: 20.h,
+                                ),
+                                margin: EdgeInsets.only(
+                                  top: 10.h,
+                                  bottom: 10.h,
+                                  left: 10.w,
+                                  right: 10.w,
+                                ),
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        updateTrackingData(
+                                            "profile.profilePerson",
+                                            "${DateTime.now()}", {});
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfilPersonnelPage(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(3.r),
+                                        decoration: BoxDecoration(
+                                            color: AppColors.colorButton,
+                                            borderRadius:
+                                                BorderRadius.circular(100)),
+                                        child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(100)),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        child: Container(
-                                          width: 100.w,
-                                          height: 100.w,
-                                          child: Image.network(
-                                            "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
-                                            fit: BoxFit.cover,
+                                              BorderRadius.circular(100),
+                                          child: Container(
+                                            width: 100.w,
+                                            height: 100.w,
+                                            child: Image.network(
+                                              "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    child: Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            updateTrackingData(
-                                                "profile.profilePerson",
-                                                "${DateTime.now()}", {});
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfilPersonnelPage(),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.only(
-                                                left: 5.w,
-                                                right: 5.w,
-                                                top: 10.h,
-                                                bottom: 15.h),
-                                            child: Text(
-                                              "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.blackBlue,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                // Navigator.push(
-                                                // context,
-                                                // MaterialPageRoute(
-                                                //   builder: (context) =>
-                                                //       WebViewExample(
-                                                //     // lienDePaiement:
-                                                //     //     'https://groups.faroty.com/',
-                                                //   ),
-                                                // ),
-
-                                                // MaterialPageRoute(
-                                                //   builder: (context) =>
-                                                //       AdministrationPage(
-                                                //     lienDePaiement:
-                                                //         'https://api.group.rush.faroty.com/',
-                                                //   ),
-                                                // ),
-                                                // );
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.all(15.r),
-                                                decoration: BoxDecoration(
-                                                  border: Border.symmetric(
-                                                    horizontal: BorderSide(
-                                                      width: 1.w,
-                                                      color: AppColors
-                                                          .pageBackground,
-                                                    ),
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      // padding: EdgeInsets.only(
-                                                      //   left: 8.w,
-                                                      //   right: 8.w,
-                                                      //   top: 10.h,
-                                                      //   bottom: 3.h,
-                                                      // ),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                      ),
-                                                      child: Text(
-                                                        "${"matricule".tr()}",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          fontSize: 16.sp,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: AppColors
-                                                              .blackBlue,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "${currentDetailUser["matricule"]}",
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: AppColors
-                                                            .blackBlueAccent1,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                updateTrackingData(
-                                                    "profile.copyMemberCode",
-                                                    "${DateTime.now()}", {});
-                                                Clipboard.setData(ClipboardData(
-                                                        text:
-                                                            "${currentDetailUser["membre_code"]}"))
-                                                    .then(
-                                                  (value) {
-                                                    return toastification.show(
-                                                      context: context,
-                                                      title: Text(
-                                                        "Copié".tr(),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            fontSize: 16.sp,
-                                                            color: AppColors
-                                                                .blackBlue,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      autoCloseDuration:
-                                                          Duration(seconds: 2),
-                                                      type: ToastificationType
-                                                          .success,
-                                                      // borderSide: BorderSide(
-                                                      //   width: 2.w,
-                                                      //   color: AppColors.colorButton,
-                                                      // ),
-                                                      style: ToastificationStyle
-                                                          .minimal,
-                                                    );
-
-                                                    // ScaffoldMessenger.of(
-                                                    //         context)
-                                                    //     .showSnackBar(
-                                                    //   SnackBar(
-                                                    //     content: Center(
-                                                    //       child: Text(
-                                                    //         '${currentDetailUser["membre_code"]}',
-                                                    //         style: TextStyle(
-                                                    //             fontSize: 12.sp,
-                                                    //             fontWeight:
-                                                    //                 FontWeight
-                                                    //                     .w500),
-                                                    //       ),
-                                                    //     ),
-                                                    //     padding: EdgeInsets.only(
-                                                    //       left: 2.w,
-                                                    //       right: 2.w,
-                                                    //       top: 7.h,
-                                                    //       bottom: 7.h,
-                                                    //     ),
-                                                    //     backgroundColor:
-                                                    //         AppColors.colorButton,
-                                                    //     behavior: SnackBarBehavior
-                                                    //         .floating,
-                                                    //     width: 140.w,
-                                                    //     shape: StadiumBorder(),
-                                                    //     duration: Duration(
-                                                    //         milliseconds: 1000),
-                                                    //     elevation: 0,
-                                                    //   ),
-                                                    // );
-                                                  },
-                                                );
-                                              },
-                                              child: Container(
-                                                color: Colors.transparent,
-                                                padding: EdgeInsets.all(15.r),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          5,
-                                                        ),
-                                                      ),
-                                                      child: Text(
-                                                        "${"Code pour paiement".tr()}",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          fontSize: 16.sp,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: AppColors
-                                                              .blackBlue,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  right: 5.w),
-                                                          child: Text(
-                                                            "${currentDetailUser["membre_code"]}",
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: AppColors
-                                                                  .blackBlueAccent1,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Icon(
-                                                          Icons.content_copy,
-                                                          size: 14.sp,
-                                                          color: AppColors
-                                                              .blackBlueAccent1,
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.white,
-                                borderRadius: BorderRadius.circular(
-                                  10.r,
-                                ),
-                              ),
-                              padding: EdgeInsets.only(
-                                  // top: 20.h,
-                                  ),
-                              margin: EdgeInsets.only(
-                                top: 10.h,
-                                bottom: 10.h,
-                                left: 10.w,
-                                right: 10.w,
-                              ),
-                              // child: Expanded(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
                                     Container(
-                                      margin: EdgeInsets.only(
-                                          // top: 15.h,
-                                          // left: 10.w,
-                                          // right: 10.w,
-                                          ),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
                                         children: [
                                           GestureDetector(
                                             onTap: () {
                                               updateTrackingData(
-                                                  "profile.memberCard",
+                                                  "profile.profilePerson",
                                                   "${DateTime.now()}", {});
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AccountPage(),
+                                                      ProfilPersonnelPage(),
                                                 ),
                                               );
                                             },
                                             child: Container(
                                               padding: EdgeInsets.only(
-                                                top: 20.h,
-                                                left: 15.w,
-                                                right: 15.w,
-                                                bottom: 20.h,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                      width: 1.r,
-                                                      color: Color.fromARGB(
-                                                          12, 0, 0, 0)),
+                                                  left: 5.w,
+                                                  right: 5.w,
+                                                  top: 10.h,
+                                                  bottom: 15.h),
+                                              child: Text(
+                                                "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.blackBlue,
                                                 ),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          child: Icon(
-                                                            Icons
-                                                                .phone_android_outlined,
-                                                            color: AppColors
-                                                                .bleuLight,
-                                                            size: 18.sp,
-                                                          ),
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                            right: 10.w,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          "votre_compte".tr(),
-                                                          style: TextStyle(
-                                                            fontSize: 18.sp,
-                                                            color: AppColors
-                                                                .blackBlue,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons.arrow_right,
-                                                    color: AppColors.blackBlue,
-                                                    size: 18.sp,
-                                                  ),
-                                                ],
                                               ),
                                             ),
                                           ),
-                                          if (currentDetailUser[
-                                                  "is_withdrawal_approvers"] ==
-                                              1)
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // Navigator.push(
+                                                  // context,
+                                                  // MaterialPageRoute(
+                                                  //   builder: (context) =>
+                                                  //       WebViewExample(
+                                                  //     // lienDePaiement:
+                                                  //     //     'https://groups.faroty.com/',
+                                                  //   ),
+                                                  // ),
+                        
+                                                  // MaterialPageRoute(
+                                                  //   builder: (context) =>
+                                                  //       AdministrationPage(
+                                                  //     lienDePaiement:
+                                                  //         'https://api.group.rush.faroty.com/',
+                                                  //   ),
+                                                  // ),
+                                                  // );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(15.r),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.symmetric(
+                                                      horizontal: BorderSide(
+                                                        width: 1.w,
+                                                        color: AppColors
+                                                            .pageBackground,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        // padding: EdgeInsets.only(
+                                                        //   left: 8.w,
+                                                        //   right: 8.w,
+                                                        //   top: 10.h,
+                                                        //   bottom: 3.h,
+                                                        // ),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        child: Text(
+                                                          "${"matricule".tr()}",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 16.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${currentDetailUser["matricule"]}",
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
+                                                        style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: AppColors
+                                                              .blackBlueAccent1,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  updateTrackingData(
+                                                      "profile.copyMemberCode",
+                                                      "${DateTime.now()}", {});
+                                                  Clipboard.setData(
+                                                    ClipboardData(
+                                                      text:
+                                                          "${currentDetailUser["membre_code"]}",
+                                                          // "${AppCubitStorage().state.tokenUser}",
+                                                    ),
+                                                  ).then(
+                                                    (value) {
+                                                      return toastification.show(
+                                                        context: context,
+                                                        title: Text(
+                                                          "Copié".tr(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        autoCloseDuration:
+                                                            Duration(seconds: 2),
+                                                        type: ToastificationType
+                                                            .success,
+                                                        // borderSide: BorderSide(
+                                                        //   width: 2.w,
+                                                        //   color: AppColors.colorButton,
+                                                        // ),
+                                                        style: ToastificationStyle
+                                                            .minimal,
+                                                      );
+                        
+                                                      // ScaffoldMessenger.of(
+                                                      //         context)
+                                                      //     .showSnackBar(
+                                                      //   SnackBar(
+                                                      //     content: Center(
+                                                      //       child: Text(
+                                                      //         '${currentDetailUser["membre_code"]}',
+                                                      //         style: TextStyle(
+                                                      //             fontSize: 12.sp,
+                                                      //             fontWeight:
+                                                      //                 FontWeight
+                                                      //                     .w500),
+                                                      //       ),
+                                                      //     ),
+                                                      //     padding: EdgeInsets.only(
+                                                      //       left: 2.w,
+                                                      //       right: 2.w,
+                                                      //       top: 7.h,
+                                                      //       bottom: 7.h,
+                                                      //     ),
+                                                      //     backgroundColor:
+                                                      //         AppColors.colorButton,
+                                                      //     behavior: SnackBarBehavior
+                                                      //         .floating,
+                                                      //     width: 140.w,
+                                                      //     shape: StadiumBorder(),
+                                                      //     duration: Duration(
+                                                      //         milliseconds: 1000),
+                                                      //     elevation: 0,
+                                                      //   ),
+                                                      // );
+                                                    },
+                                                  );
+                                                },
+                                                child: Container(
+                                                  color: Colors.transparent,
+                                                  padding: EdgeInsets.all(15.r),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            5,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          "${"Code pour paiement".tr()}",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 16.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    right: 5.w),
+                                                            child: Text(
+                                                              "${currentDetailUser["membre_code"]}",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                fontSize: 14.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppColors
+                                                                    .blackBlueAccent1,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            Icons.content_copy,
+                                                            size: 14.sp,
+                                                            color: AppColors
+                                                                .blackBlueAccent1,
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    10.r,
+                                  ),
+                                ),
+                                padding: EdgeInsets.only(
+                                    // top: 20.h,
+                                    ),
+                                margin: EdgeInsets.only(
+                                  top: 10.h,
+                                  bottom: 10.h,
+                                  left: 10.w,
+                                  right: 10.w,
+                                ),
+                                // child: Expanded(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            // top: 15.h,
+                                            // left: 10.w,
+                                            // right: 10.w,
+                                            ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
                                             GestureDetector(
                                               onTap: () {
                                                 updateTrackingData(
-                                                    "profile.withdrawal",
+                                                    "profile.memberCard",
                                                     "${DateTime.now()}", {});
-                                                handleDetailUser(
-                                                    AppCubitStorage()
-                                                        .state
-                                                        .membreCode,
-                                                    AppCubitStorage()
-                                                        .state
-                                                        .codeTournois);
                                                 Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            RetraitPage()));
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AccountPage(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                  top: 20.h,
+                                                  left: 15.w,
+                                                  right: 15.w,
+                                                  bottom: 20.h,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                        width: 1.r,
+                                                        color: Color.fromARGB(
+                                                            12, 0, 0, 0)),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .phone_android_outlined,
+                                                              color: AppColors
+                                                                  .bleuLight,
+                                                              size: 18.sp,
+                                                            ),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                              right: 10.w,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "votre_compte".tr(),
+                                                            style: TextStyle(
+                                                              fontSize: 18.sp,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Icon(
+                                                      Icons.arrow_right,
+                                                      color: AppColors.blackBlue,
+                                                      size: 18.sp,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            if (currentDetailUser[
+                                                    "is_withdrawal_approvers"] ==
+                                                1)
+                                              GestureDetector(
+                                                onTap: () {
+                                                  updateTrackingData(
+                                                      "profile.withdrawal",
+                                                      "${DateTime.now()}", {});
+                                                  handleDetailUser(
+                                                      AppCubitStorage()
+                                                          .state
+                                                          .membreCode,
+                                                      AppCubitStorage()
+                                                          .state
+                                                          .codeTournois);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              RetraitPage()));
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                    top: 20.h,
+                                                    left: 15.w,
+                                                    right: 15.w,
+                                                    bottom: 20.h,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    // color: Colors.black12,
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                          width: 1.r,
+                                                          color: Color.fromARGB(
+                                                              12, 0, 0, 0)),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              child: Icon(
+                                                                Icons
+                                                                    .account_balance_wallet_outlined,
+                                                                color:
+                                                                    Colors.black,
+                                                                size: 18.sp,
+                                                              ),
+                                                              margin:
+                                                                  EdgeInsets.only(
+                                                                      right:
+                                                                          10.w),
+                                                            ),
+                                                            Text(
+                                                              "retrait_en_attente"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                fontSize: 18.sp,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.arrow_right,
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                        size: 18.sp,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                        
+                                            // GestureDetector(
+                                            //   onTap: () {
+                                            //     // context.read<ServiceCubit>().state.currentService!.id;
+                                            //     Modal().showBottomSheetListTournoi(
+                                            //       context,
+                                            //       currentInfoAllTournoiAssCourant
+                                            //           .user_group!.tournois!,
+                                            //     );
+                                            //   },
+                                            //   child: Container(
+                                            //     padding: EdgeInsets.only(
+                                            //       top: 15.h,
+                                            //       left: 10.w,
+                                            //       right: 10.w,
+                                            //       bottom: 15.h,
+                                            //     ),
+                                            //     decoration: BoxDecoration(
+                                            //       // color: Colors.black12,
+                                            //       border: Border(
+                                            //         bottom: BorderSide(
+                                            //             width: 1.r,
+                                            //             color: Color.fromARGB(
+                                            //                 12, 0, 0, 0)),
+                                            //       ),
+                                            //     ),
+                                            //     child: Row(
+                                            //       crossAxisAlignment:
+                                            //           CrossAxisAlignment.center,
+                                            //       children: [
+                                            //         Expanded(
+                                            //           child: Row(
+                                            //             children: [
+                                            //               Container(
+                                            //                 child: Icon(
+                                            //                   Icons.ads_click_outlined,
+                                            //                   color: Colors.red,
+                                            //                   size: 15.sp,
+                                            //                 ),
+                                            //                 margin: EdgeInsets.only(
+                                            //                   right: 10.w,
+                                            //                 ),
+                                            //               ),
+                                            //               Text(
+                                            //                 "tournoi".tr(),
+                                            //                 style: TextStyle(
+                                            //                   fontSize: 15.sp,
+                                            //                   color:
+                                            //                       AppColors.blackBlue,
+                                            //                   fontWeight:
+                                            //                       FontWeight.w500,
+                                            //                 ),
+                                            //               ),
+                                            //             ],
+                                            //           ),
+                                            //         ),
+                                            //         for (var item
+                                            //             in currentInfoAllTournoiAssCourant!
+                                            //                 .user_group!.tournois!)
+                                            //           if (item.tournois_code ==
+                                            //               AppCubitStorage()
+                                            //                   .state
+                                            //                   .codeTournois)
+                                            //             Text(
+                                            //               'Tournoi #${item.matricule}',
+                                            //               style: TextStyle(
+                                            //                 fontSize: 10.sp,
+                                            //                 color: Color.fromARGB(
+                                            //                     125, 20, 45, 99),
+                                            //                 fontWeight: FontWeight.w500,
+                                            //               ),
+                                            //             ),
+                                            //         Icon(Icons.arrow_right,
+                                            //             color: AppColors.blackBlue,
+                                            //             size: 12.sp),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            // ),
+                        
+                                            // GestureDetector(
+                                            //   onTap: () {
+                                            //     // context.read<ServiceCubit>().state.currentService!.id;
+                                            //     Modal().showBottomSheetListAss(
+                                            //       context,
+                                            //       currentInfoAllAssociation,
+                                            //     );
+                                            //   },
+                                            //   child: Container(
+                                            //     padding: EdgeInsets.only(
+                                            //       top: 15.h,
+                                            //       left: 10.w,
+                                            //       right: 10.w,
+                                            //       bottom: 15.h,
+                                            //     ),
+                                            //     decoration: BoxDecoration(
+                                            //       // color: Colors.black12,
+                                            //       border: Border(
+                                            //         bottom: BorderSide(
+                                            //             width: 1.r,
+                                            //             color: Color.fromARGB(
+                                            //                 12, 0, 0, 0)),
+                                            //       ),
+                                            //     ),
+                                            //     child: Row(
+                                            //       crossAxisAlignment:
+                                            //           CrossAxisAlignment.center,
+                                            //       children: [
+                                            //         Expanded(
+                                            //           child: Row(
+                                            //             children: [
+                                            //               Container(
+                                            //                 width: 16.w,
+                                            //                 child: Image.asset(
+                                            //                   "assets/images/Groupe_ou_Asso.png",
+                                            //                   // scale: ,
+                                            //                 ),
+                                            //                 margin: EdgeInsets.only(
+                                            //                     right: 10.w),
+                                            //               ),
+                                            //               Text(
+                                            //                 "Groups & associations"
+                                            //                     .tr(),
+                                            //                 style: TextStyle(
+                                            //                   fontSize: 15.sp,
+                                            //                   color:
+                                            //                       AppColors.blackBlue,
+                                            //                   fontWeight:
+                                            //                       FontWeight.w500,
+                                            //                 ),
+                                            //               ),
+                                            //             ],
+                                            //           ),
+                                            //         ),
+                                            //         Text(
+                                            //           "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
+                                            //           style: TextStyle(
+                                            //             fontSize: 10.sp,
+                                            //             color: Color.fromARGB(
+                                            //               125,
+                                            //               20,
+                                            //               45,
+                                            //               99,
+                                            //             ),
+                                            //             fontWeight: FontWeight.w500,
+                                            //           ),
+                                            //         ),
+                                            //         Icon(
+                                            //           Icons.arrow_right,
+                                            //           color: AppColors.blackBlue,
+                                            //           size: 12.sp,
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            // ),
+                        
+                                            GestureDetector(
+                                              onTap: () {
+                                                updateTrackingData(
+                                                    "profile.detailGroup",
+                                                    "${DateTime.now()}", {});
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DetailUsergroupPage(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                  top: 20.h,
+                                                  left: 10.w,
+                                                  right: 15.w,
+                                                  bottom: 20.h,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  // color: Colors.black12,
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                        width: 1.r,
+                                                        color: Color.fromARGB(
+                                                            12, 0, 0, 0)),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            width: 28.w,
+                                                            child: Image.asset(
+                                                              "assets/images/AssoplusFinal.png",
+                                                              // scale: ,
+                                                            ),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    right: 10.w),
+                                                          ),
+                                                          Text(
+                                                            "${"Votre groupe".tr()} ASSO+"
+                                                                .tr(),
+                                                            style: TextStyle(
+                                                              fontSize: 18.sp,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
+                                                      style: TextStyle(
+                                                        fontSize: 11.sp,
+                                                        color: Color.fromARGB(
+                                                          125,
+                                                          20,
+                                                          45,
+                                                          99,
+                                                        ),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                    Icon(
+                                                      Icons.arrow_right,
+                                                      color: AppColors.blackBlue,
+                                                      size: 18.sp,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                        
+                                            // GestureDetector(
+                                            //   onTap: () {
+                                            //     // context.read<MembreCubit>().showMembersAss(
+                                            //     //     AppCubitStorage().state.codeAssDefaul);
+                                            //     Navigator.push(
+                                            //       context,
+                                            //       MaterialPageRoute(
+                                            //         builder: (context) =>
+                                            //             AdministrationPageWebview(
+                                            //           forAdmin: false,
+                                            //           urlPage:
+                                            //               'https://business.faroty.com/groups',
+                                            //         ),
+                                            //       ),
+                                            //     );
+                                            //   },
+                                            //   child: Container(
+                                            //     padding: EdgeInsets.only(
+                                            //       top: 15.h,
+                                            //       left: 10.w,
+                                            //       right: 10.w,
+                                            //       bottom: 15.h,
+                                            //     ),
+                                            //     decoration: BoxDecoration(
+                                            //       // color: Colors.black12,
+                                            //       border: Border(
+                                            //         bottom: BorderSide(
+                                            //             width: 1.r,
+                                            //             color: Color.fromARGB(
+                                            //                 12, 0, 0, 0)),
+                                            //       ),
+                                            //     ),
+                                            //     child: Row(
+                                            //       crossAxisAlignment:
+                                            //           CrossAxisAlignment.center,
+                                            //       children: [
+                                            //         Expanded(
+                                            //           child: Row(
+                                            //             children: [
+                                            //               Container(
+                                            //                 width: 20.w,
+                                            //                 child: Image.asset(
+                                            //                   "assets/images/AssoplusFinal.png",
+                                            //                   // scale: ,
+                                            //                 ),
+                                            //                 margin: EdgeInsets.only(
+                                            //                     right: 5.w),
+                                            //               ),
+                                            //               Text(
+                                            //                 "Créer un groupe ASSO+"
+                                            //                     .tr(),
+                                            //                 style: TextStyle(
+                                            //                   fontSize: 15.sp,
+                                            //                   color:
+                                            //                       AppColors.blackBlue,
+                                            //                   fontWeight:
+                                            //                       FontWeight.w500,
+                                            //                 ),
+                                            //               ),
+                                            //             ],
+                                            //           ),
+                                            //         ),
+                                            //         Icon(
+                                            //           Icons.arrow_right,
+                                            //           color: AppColors.blackBlue,
+                                            //           size: 12.sp,
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            // ),
+                        
+                                            // GestureDetector(
+                                            //   onTap: () {
+                                            //     context
+                                            //         .read<MembreCubit>()
+                                            //         .showMembersAss(AppCubitStorage()
+                                            //             .state
+                                            //             .codeAssDefaul);
+                                            //     Navigator.push(
+                                            //       context,
+                                            //       MaterialPageRoute(
+                                            //         builder: (context) =>
+                                            //             MembersAssPage(),
+                                            //       ),
+                                            //     );
+                                            //   },
+                                            //   child: Container(
+                                            //     padding: EdgeInsets.only(
+                                            //       top: 15.h,
+                                            //       left: 10.w,
+                                            //       right: 10.w,
+                                            //       bottom: 15.h,
+                                            //     ),
+                                            //     decoration: BoxDecoration(
+                                            //       // color: Colors.black12,
+                                            //       border: Border(
+                                            //         bottom: BorderSide(
+                                            //             width: 1.r,
+                                            //             color: Color.fromARGB(
+                                            //                 12, 0, 0, 0)),
+                                            //       ),
+                                            //     ),
+                                            //     child: Row(
+                                            //       crossAxisAlignment:
+                                            //           CrossAxisAlignment.center,
+                                            //       children: [
+                                            //         Expanded(
+                                            //           child: Row(
+                                            //             children: [
+                                            //               Container(
+                                            //                 child: Icon(
+                                            //                   Icons.groups,
+                                            //                   color:
+                                            //                       AppColors.blackBlue,
+                                            //                   size: 15.sp,
+                                            //                 ),
+                                            //                 margin: EdgeInsets.only(
+                                            //                     right: 10.w),
+                                            //               ),
+                                            //               Text(
+                                            //                 "Membres".tr(),
+                                            //                 style: TextStyle(
+                                            //                   fontSize: 15.sp,
+                                            //                   color:
+                                            //                       AppColors.blackBlue,
+                                            //                   fontWeight:
+                                            //                       FontWeight.w500,
+                                            //                 ),
+                                            //               ),
+                                            //             ],
+                                            //           ),
+                                            //         ),
+                                            //         Icon(
+                                            //           Icons.arrow_right,
+                                            //           color: AppColors.blackBlue,
+                                            //           size: 12.sp,
+                                            //         ),
+                                            //       ],
+                                            //     ),
+                                            //   ),
+                                            // ),
+                        
+                                            GestureDetector(
+                                              onTap: () {
+                                                updateTrackingData(
+                                                    "profile.parameter",
+                                                    "${DateTime.now()}", {});
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ParamsAppPage(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                  top: 20.h,
+                                                  left: 15.w,
+                                                  right: 15.w,
+                                                  bottom: 20.h,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  // color: Colors.black12,
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      width: 1.r,
+                                                      color: Color.fromARGB(
+                                                          12, 0, 0, 0),
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .settings_outlined,
+                                                              color: Colors.brown,
+                                                              size: 18.sp,
+                                                            ),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    right: 10.w),
+                                                          ),
+                                                          Text(
+                                                            "paramètres".tr(),
+                                                            style: TextStyle(
+                                                              fontSize: 18.sp,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Icon(
+                                                      Icons.arrow_right,
+                                                      color: AppColors.blackBlue,
+                                                      size: 18.sp,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                updateTrackingData(
+                                                    "profile.shareApp",
+                                                    "${DateTime.now()}", {});
+                                                Share.share(
+                                                  """${'Gérez vos associations et groupes avec *Groups & Assocations* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} :  \nPlay Store https://play.google.com/store/apps/details?id=com.faroty.groups \nApp Store https://apps.apple.com/cm/app/asso/id6483809142?l=en-GB" \n${'et sur'.tr()}" groups.faroty.com"""
+                                                      .tr(),
+                                                );
                                               },
                                               child: Container(
                                                 padding: EdgeInsets.only(
@@ -880,26 +1409,25 @@ class _SettingScreenState extends State<SettingScreen>
                                                           Container(
                                                             child: Icon(
                                                               Icons
-                                                                  .account_balance_wallet_outlined,
-                                                              color:
-                                                                  Colors.black,
+                                                                  .share_outlined,
+                                                              color: AppColors
+                                                                  .greenAssociation,
                                                               size: 18.sp,
                                                             ),
                                                             margin:
                                                                 EdgeInsets.only(
-                                                                    right:
-                                                                        10.w),
+                                                              right: 10.w,
+                                                            ),
                                                           ),
                                                           Text(
-                                                            "retrait_en_attente"
+                                                            "partager_l'application"
                                                                 .tr(),
                                                             style: TextStyle(
                                                               fontSize: 18.sp,
                                                               color: AppColors
                                                                   .blackBlue,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                                  FontWeight.w500,
                                                             ),
                                                           ),
                                                         ],
@@ -907,546 +1435,23 @@ class _SettingScreenState extends State<SettingScreen>
                                                     ),
                                                     Icon(
                                                       Icons.arrow_right,
-                                                      color:
-                                                          AppColors.blackBlue,
+                                                      color: AppColors.blackBlue,
                                                       size: 18.sp,
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                             ),
-
-                                          // GestureDetector(
-                                          //   onTap: () {
-                                          //     // context.read<ServiceCubit>().state.currentService!.id;
-                                          //     Modal().showBottomSheetListTournoi(
-                                          //       context,
-                                          //       currentInfoAllTournoiAssCourant
-                                          //           .user_group!.tournois!,
-                                          //     );
-                                          //   },
-                                          //   child: Container(
-                                          //     padding: EdgeInsets.only(
-                                          //       top: 15.h,
-                                          //       left: 10.w,
-                                          //       right: 10.w,
-                                          //       bottom: 15.h,
-                                          //     ),
-                                          //     decoration: BoxDecoration(
-                                          //       // color: Colors.black12,
-                                          //       border: Border(
-                                          //         bottom: BorderSide(
-                                          //             width: 1.r,
-                                          //             color: Color.fromARGB(
-                                          //                 12, 0, 0, 0)),
-                                          //       ),
-                                          //     ),
-                                          //     child: Row(
-                                          //       crossAxisAlignment:
-                                          //           CrossAxisAlignment.center,
-                                          //       children: [
-                                          //         Expanded(
-                                          //           child: Row(
-                                          //             children: [
-                                          //               Container(
-                                          //                 child: Icon(
-                                          //                   Icons.ads_click_outlined,
-                                          //                   color: Colors.red,
-                                          //                   size: 15.sp,
-                                          //                 ),
-                                          //                 margin: EdgeInsets.only(
-                                          //                   right: 10.w,
-                                          //                 ),
-                                          //               ),
-                                          //               Text(
-                                          //                 "tournoi".tr(),
-                                          //                 style: TextStyle(
-                                          //                   fontSize: 15.sp,
-                                          //                   color:
-                                          //                       AppColors.blackBlue,
-                                          //                   fontWeight:
-                                          //                       FontWeight.w500,
-                                          //                 ),
-                                          //               ),
-                                          //             ],
-                                          //           ),
-                                          //         ),
-                                          //         for (var item
-                                          //             in currentInfoAllTournoiAssCourant!
-                                          //                 .user_group!.tournois!)
-                                          //           if (item.tournois_code ==
-                                          //               AppCubitStorage()
-                                          //                   .state
-                                          //                   .codeTournois)
-                                          //             Text(
-                                          //               'Tournoi #${item.matricule}',
-                                          //               style: TextStyle(
-                                          //                 fontSize: 10.sp,
-                                          //                 color: Color.fromARGB(
-                                          //                     125, 20, 45, 99),
-                                          //                 fontWeight: FontWeight.w500,
-                                          //               ),
-                                          //             ),
-                                          //         Icon(Icons.arrow_right,
-                                          //             color: AppColors.blackBlue,
-                                          //             size: 12.sp),
-                                          //       ],
-                                          //     ),
-                                          //   ),
-                                          // ),
-
-                                          // GestureDetector(
-                                          //   onTap: () {
-                                          //     // context.read<ServiceCubit>().state.currentService!.id;
-                                          //     Modal().showBottomSheetListAss(
-                                          //       context,
-                                          //       currentInfoAllAssociation,
-                                          //     );
-                                          //   },
-                                          //   child: Container(
-                                          //     padding: EdgeInsets.only(
-                                          //       top: 15.h,
-                                          //       left: 10.w,
-                                          //       right: 10.w,
-                                          //       bottom: 15.h,
-                                          //     ),
-                                          //     decoration: BoxDecoration(
-                                          //       // color: Colors.black12,
-                                          //       border: Border(
-                                          //         bottom: BorderSide(
-                                          //             width: 1.r,
-                                          //             color: Color.fromARGB(
-                                          //                 12, 0, 0, 0)),
-                                          //       ),
-                                          //     ),
-                                          //     child: Row(
-                                          //       crossAxisAlignment:
-                                          //           CrossAxisAlignment.center,
-                                          //       children: [
-                                          //         Expanded(
-                                          //           child: Row(
-                                          //             children: [
-                                          //               Container(
-                                          //                 width: 16.w,
-                                          //                 child: Image.asset(
-                                          //                   "assets/images/Groupe_ou_Asso.png",
-                                          //                   // scale: ,
-                                          //                 ),
-                                          //                 margin: EdgeInsets.only(
-                                          //                     right: 10.w),
-                                          //               ),
-                                          //               Text(
-                                          //                 "Groups & associations"
-                                          //                     .tr(),
-                                          //                 style: TextStyle(
-                                          //                   fontSize: 15.sp,
-                                          //                   color:
-                                          //                       AppColors.blackBlue,
-                                          //                   fontWeight:
-                                          //                       FontWeight.w500,
-                                          //                 ),
-                                          //               ),
-                                          //             ],
-                                          //           ),
-                                          //         ),
-                                          //         Text(
-                                          //           "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
-                                          //           style: TextStyle(
-                                          //             fontSize: 10.sp,
-                                          //             color: Color.fromARGB(
-                                          //               125,
-                                          //               20,
-                                          //               45,
-                                          //               99,
-                                          //             ),
-                                          //             fontWeight: FontWeight.w500,
-                                          //           ),
-                                          //         ),
-                                          //         Icon(
-                                          //           Icons.arrow_right,
-                                          //           color: AppColors.blackBlue,
-                                          //           size: 12.sp,
-                                          //         ),
-                                          //       ],
-                                          //     ),
-                                          //   ),
-                                          // ),
-
-                                          GestureDetector(
-                                            onTap: () {
-                                              updateTrackingData(
-                                                  "profile.detailGroup",
-                                                  "${DateTime.now()}", {});
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DetailUsergroupPage(),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.only(
-                                                top: 20.h,
-                                                left: 10.w,
-                                                right: 15.w,
-                                                bottom: 20.h,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                // color: Colors.black12,
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                      width: 1.r,
-                                                      color: Color.fromARGB(
-                                                          12, 0, 0, 0)),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: 28.w,
-                                                          child: Image.asset(
-                                                            "assets/images/AssoplusFinal.png",
-                                                            // scale: ,
-                                                          ),
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10.w),
-                                                        ),
-                                                        Text(
-                                                          "${"Votre groupe".tr()} ASSO+"
-                                                              .tr(),
-                                                          style: TextStyle(
-                                                            fontSize: 18.sp,
-                                                            color: AppColors
-                                                                .blackBlue,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
-                                                    style: TextStyle(
-                                                      fontSize: 11.sp,
-                                                      color: Color.fromARGB(
-                                                        125,
-                                                        20,
-                                                        45,
-                                                        99,
-                                                      ),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons.arrow_right,
-                                                    color: AppColors.blackBlue,
-                                                    size: 18.sp,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-
-                                          // GestureDetector(
-                                          //   onTap: () {
-                                          //     // context.read<MembreCubit>().showMembersAss(
-                                          //     //     AppCubitStorage().state.codeAssDefaul);
-                                          //     Navigator.push(
-                                          //       context,
-                                          //       MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             AdministrationPageWebview(
-                                          //           forAdmin: false,
-                                          //           urlPage:
-                                          //               'https://business.faroty.com/groups',
-                                          //         ),
-                                          //       ),
-                                          //     );
-                                          //   },
-                                          //   child: Container(
-                                          //     padding: EdgeInsets.only(
-                                          //       top: 15.h,
-                                          //       left: 10.w,
-                                          //       right: 10.w,
-                                          //       bottom: 15.h,
-                                          //     ),
-                                          //     decoration: BoxDecoration(
-                                          //       // color: Colors.black12,
-                                          //       border: Border(
-                                          //         bottom: BorderSide(
-                                          //             width: 1.r,
-                                          //             color: Color.fromARGB(
-                                          //                 12, 0, 0, 0)),
-                                          //       ),
-                                          //     ),
-                                          //     child: Row(
-                                          //       crossAxisAlignment:
-                                          //           CrossAxisAlignment.center,
-                                          //       children: [
-                                          //         Expanded(
-                                          //           child: Row(
-                                          //             children: [
-                                          //               Container(
-                                          //                 width: 20.w,
-                                          //                 child: Image.asset(
-                                          //                   "assets/images/AssoplusFinal.png",
-                                          //                   // scale: ,
-                                          //                 ),
-                                          //                 margin: EdgeInsets.only(
-                                          //                     right: 5.w),
-                                          //               ),
-                                          //               Text(
-                                          //                 "Créer un groupe ASSO+"
-                                          //                     .tr(),
-                                          //                 style: TextStyle(
-                                          //                   fontSize: 15.sp,
-                                          //                   color:
-                                          //                       AppColors.blackBlue,
-                                          //                   fontWeight:
-                                          //                       FontWeight.w500,
-                                          //                 ),
-                                          //               ),
-                                          //             ],
-                                          //           ),
-                                          //         ),
-                                          //         Icon(
-                                          //           Icons.arrow_right,
-                                          //           color: AppColors.blackBlue,
-                                          //           size: 12.sp,
-                                          //         ),
-                                          //       ],
-                                          //     ),
-                                          //   ),
-                                          // ),
-
-                                          // GestureDetector(
-                                          //   onTap: () {
-                                          //     context
-                                          //         .read<MembreCubit>()
-                                          //         .showMembersAss(AppCubitStorage()
-                                          //             .state
-                                          //             .codeAssDefaul);
-                                          //     Navigator.push(
-                                          //       context,
-                                          //       MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             MembersAssPage(),
-                                          //       ),
-                                          //     );
-                                          //   },
-                                          //   child: Container(
-                                          //     padding: EdgeInsets.only(
-                                          //       top: 15.h,
-                                          //       left: 10.w,
-                                          //       right: 10.w,
-                                          //       bottom: 15.h,
-                                          //     ),
-                                          //     decoration: BoxDecoration(
-                                          //       // color: Colors.black12,
-                                          //       border: Border(
-                                          //         bottom: BorderSide(
-                                          //             width: 1.r,
-                                          //             color: Color.fromARGB(
-                                          //                 12, 0, 0, 0)),
-                                          //       ),
-                                          //     ),
-                                          //     child: Row(
-                                          //       crossAxisAlignment:
-                                          //           CrossAxisAlignment.center,
-                                          //       children: [
-                                          //         Expanded(
-                                          //           child: Row(
-                                          //             children: [
-                                          //               Container(
-                                          //                 child: Icon(
-                                          //                   Icons.groups,
-                                          //                   color:
-                                          //                       AppColors.blackBlue,
-                                          //                   size: 15.sp,
-                                          //                 ),
-                                          //                 margin: EdgeInsets.only(
-                                          //                     right: 10.w),
-                                          //               ),
-                                          //               Text(
-                                          //                 "Membres".tr(),
-                                          //                 style: TextStyle(
-                                          //                   fontSize: 15.sp,
-                                          //                   color:
-                                          //                       AppColors.blackBlue,
-                                          //                   fontWeight:
-                                          //                       FontWeight.w500,
-                                          //                 ),
-                                          //               ),
-                                          //             ],
-                                          //           ),
-                                          //         ),
-                                          //         Icon(
-                                          //           Icons.arrow_right,
-                                          //           color: AppColors.blackBlue,
-                                          //           size: 12.sp,
-                                          //         ),
-                                          //       ],
-                                          //     ),
-                                          //   ),
-                                          // ),
-
-                                          GestureDetector(
-                                            onTap: () {
-                                              updateTrackingData(
-                                                  "profile.parameter",
-                                                  "${DateTime.now()}", {});
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ParamsAppPage(),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.only(
-                                                top: 20.h,
-                                                left: 15.w,
-                                                right: 15.w,
-                                                bottom: 20.h,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                // color: Colors.black12,
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    width: 1.r,
-                                                    color: Color.fromARGB(
-                                                        12, 0, 0, 0),
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          child: Icon(
-                                                            Icons
-                                                                .settings_outlined,
-                                                            color: Colors.brown,
-                                                            size: 18.sp,
-                                                          ),
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10.w),
-                                                        ),
-                                                        Text(
-                                                          "paramètres".tr(),
-                                                          style: TextStyle(
-                                                            fontSize: 18.sp,
-                                                            color: AppColors
-                                                                .blackBlue,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons.arrow_right,
-                                                    color: AppColors.blackBlue,
-                                                    size: 18.sp,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              updateTrackingData(
-                                                  "profile.shareApp",
-                                                  "${DateTime.now()}", {});
-                                              Share.share(
-                                                """${'Gérez vos associations et groupes avec *Groups & Assocations* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} :  \nPlay Store https://play.google.com/store/apps/details?id=com.faroty.groups \nApp Store https://apps.apple.com/cm/app/asso/id6483809142?l=en-GB" \n${'et sur'.tr()}" groups.faroty.com"""
-                                                    .tr(),
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.only(
-                                                top: 20.h,
-                                                left: 15.w,
-                                                right: 15.w,
-                                                bottom: 20.h,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                // color: Colors.black12,
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                      width: 1.r,
-                                                      color: Color.fromARGB(
-                                                          12, 0, 0, 0)),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          child: Icon(
-                                                            Icons
-                                                                .share_outlined,
-                                                            color: AppColors
-                                                                .greenAssociation,
-                                                            size: 18.sp,
-                                                          ),
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                            right: 10.w,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          "partager_l'application"
-                                                              .tr(),
-                                                          style: TextStyle(
-                                                            fontSize: 18.sp,
-                                                            color: AppColors
-                                                                .blackBlue,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons.arrow_right,
-                                                    color: AppColors.blackBlue,
-                                                    size: 18.sp,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            // ),
-                          ],
+                              // ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

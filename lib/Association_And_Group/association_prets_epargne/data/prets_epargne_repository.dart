@@ -13,12 +13,38 @@ class PretEpargneRepository {
     return data;
   }
 
+  Future<Map<String, dynamic>> getAllAssEpargnes(codeTournois) async {
+    final response = await dio.get(
+      '${Variables.LienAIP}/api/v1/tournois/$codeTournois/all-savings-members?page=1&per_page=1000',
+    );
+    var data = response.data['data'];
+    return data;
+  }
+
   Future<Map<String, dynamic>> getPret() async {
     final response = await dio.get(
       '${Variables.LienAIP}/api/v1/tournois/${AppCubitStorage().state.codeTournois}/membre/${AppCubitStorage().state.membreCode}/get-details-loan',
     );
     var data = response.data['data'];
     return data;
+  }
+
+  Future<void> activeEpargne(saving_code) async {
+    print(";;;;; $saving_code");
+    final response = await dio.patch(
+      '${Variables.LienAIP}/api/v1/usergroup/${AppCubitStorage().state.codeAssDefaul}/saving/$saving_code/active-saving-member',
+    );
+    // var data = response.data['data'];
+    // return data;
+  }
+
+  Future<void> suspendEpargne(saving_code) async {
+    print("///// $saving_code");
+    final response = await dio.patch(
+      '${Variables.LienAIP}/api/v1/usergroup/${AppCubitStorage().state.codeAssDefaul}/saving/$saving_code/suspend-saving-member',
+    );
+    // var data = response.data['data'];
+    // return data;
   }
 
   Future<List<dynamic>> getDetailEpargne(codeEpargne) async {

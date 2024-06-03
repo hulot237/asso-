@@ -510,7 +510,7 @@ class _LoginPageState extends State<LoginPage> {
                                         return Container(
                                           child: Center(
                                             child: CircularProgressIndicator(
-                                              color: AppColors.greenAssociation,
+                                              color: AppColors.green,
                                             ),
                                           ),
                                         );

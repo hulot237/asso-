@@ -30,7 +30,7 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
 
     try {
       final data = await CotisationRepository().DetailCotisation(codeCotisation);
-      print("object detailCotisationCubitdetailCotisationCubitdetailCotisationCubit");
+      print("detailCotisationCubitdetailCotisationCubitdetailCotisationCubit $codeCotisation");
 
       emit(
         state.copyWith(

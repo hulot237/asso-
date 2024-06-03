@@ -98,7 +98,7 @@ class _RetraitPageState extends State<RetraitPage> {
                 color: AppColors.white,
                 child: Center(
                   child: CircularProgressIndicator(
-                    color: AppColors.bleuLight,
+                   color: AppColors.green,
                   ),
                 ),
               );

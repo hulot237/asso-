@@ -7,14 +7,15 @@ import 'package:faroty_association_1/Association_And_Group/association_notificat
 class PretEpargneState extends Equatable {
   final Map<String, dynamic>? epargne;
   final bool isLoadingEpargne;
-    final Map<String, dynamic>? pret;
+  final Map<String, dynamic>? pret;
+  final Map<String, dynamic>? allAssEpargne;
+  final bool isLoadingAllAssEpargne;
   final bool isLoadingPret;
   final bool isLoadingDetailEpargne;
   final String? messageError;
   final List<dynamic>? detailEpargne;
   final List<dynamic>? detailPret;
   final bool isLoadingDetailPret;
-
 
   PretEpargneState({
     this.epargne,
@@ -25,7 +26,9 @@ class PretEpargneState extends Equatable {
     this.messageError,
     this.detailEpargne,
     this.detailPret,
-    this.isLoadingDetailPret= false,
+    this.isLoadingDetailPret = false,
+    this.isLoadingAllAssEpargne = false,
+    this.allAssEpargne,
   });
 
   @override
@@ -39,12 +42,16 @@ class PretEpargneState extends Equatable {
         isLoadingPret,
         detailPret,
         isLoadingDetailPret,
+        isLoadingAllAssEpargne,
+        allAssEpargne
       ];
 
   PretEpargneState copyWith({
     Map<String, dynamic>? epargne,
     bool? isLoadingEpargne,
     Map<String, dynamic>? pret,
+    Map<String, dynamic>? allAssEpargne,
+    bool? isLoadingAllAssEpargne,
     bool? isLoadingPret,
     bool? isLoadingDetailEpargne,
     String? messageError,
@@ -56,6 +63,8 @@ class PretEpargneState extends Equatable {
       epargne: epargne ?? this.epargne,
       isLoadingEpargne: isLoadingEpargne ?? this.isLoadingEpargne,
       pret: pret ?? this.pret,
+      allAssEpargne: allAssEpargne ?? this.allAssEpargne,
+      isLoadingAllAssEpargne: isLoadingAllAssEpargne ?? this.isLoadingAllAssEpargne,
       isLoadingPret: isLoadingPret ?? this.isLoadingPret,
       isLoadingDetailEpargne: isLoadingDetailEpargne ?? this.isLoadingDetailEpargne,
       messageError: messageError ?? this.messageError,

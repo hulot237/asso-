@@ -26,6 +26,7 @@ class UserGroupModel {
   String? entry_amount;
   String? min_help_amount;
   bool? is_tontine;
+  // bool? is_saving;
   bool? is_default;
   List<dynamic>? configs;
   List<TontineModel>? tontines;
@@ -59,6 +60,7 @@ class UserGroupModel {
     this.is_confirmed,
     this.tontines,
     this.tournois,
+    // this.is_saving,
   });
 
   factory UserGroupModel.fromJson(Map<String, dynamic> json) => UserGroupModel(
@@ -89,6 +91,7 @@ class UserGroupModel {
         is_confirmed: json["is_confirmed"],
         tontines: json['tontines'] != null ? (json['tontines'] as List).map((e) => TontineModel.fromJson(e)).toList(): null,
         tournois: json['tournois'] != null ? (json['tournois'] as List).map((e) => TournoiModel.fromJson(e)).toList(): null,
+        // is_saving: json[""],
       );
 }
 

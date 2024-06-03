@@ -142,7 +142,8 @@ class AuthCubit extends Cubit<AuthState> {
       alreadyShow: state.alreadyShow,
     ));
     try {
-      final data = await AuthRepository().LoginRepository(phoneNumber, countryCode);
+      final data =
+          await AuthRepository().LoginRepository(phoneNumber, countryCode);
 
       emit(
         state.copyWith(
@@ -151,7 +152,7 @@ class AuthCubit extends Cubit<AuthState> {
           detailUser: state.detailUser,
           isLoading: false,
           isLoadingDetailUser: false,
-          alreadyShow: state.alreadyShow!+1,
+          alreadyShow: state.alreadyShow! + 1,
         ),
       );
     } catch (e) {
@@ -162,15 +163,15 @@ class AuthCubit extends Cubit<AuthState> {
           isTrueNomber: true,
           isLoading: false,
           isLoadingDetailUser: false,
-          alreadyShow: state.alreadyShow!+1,
+          alreadyShow: state.alreadyShow! + 1,
         ),
       );
     }
   }
+
   void updateAlreadyShow(int value) {
     emit(state.copyWith(alreadyShow: value));
   }
-
 
   String userDataFromWebView = 'null';
 
@@ -186,6 +187,8 @@ class AuthCubit extends Cubit<AuthState> {
           "is_confirm": data['user']['is_confirm'],
           "is_wallet_confirm": data['user']['is_wallet_confirm'],
           "hash_id": data['user']['hashid'],
+          "api_token": data['api_token'],
+          "api_password": data['api_password'],
         },
         "api_token": data['api_token'],
         "api_password": data['api_password']

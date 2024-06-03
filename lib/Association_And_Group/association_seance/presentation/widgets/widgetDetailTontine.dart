@@ -9,6 +9,9 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class widgetDetailTontine extends StatefulWidget {
   widgetDetailTontine({
@@ -113,24 +116,30 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                       widget.isPayed == 0
                           ? GestureDetector(
                               onTap: () async {
-                                String msg =
-                                    "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
-                                String raisonComplete =
-                                    "Paiement de la tontine".tr();
-                                String motif = "payer_vous_même".tr();
-                                String paiementProcheMsg =
-                                    "partager_le_lien_de_paiement".tr();
-                                String msgAppBarPaiementPage =
-                                    "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
-                                Modal().showModalActionPayement(
-                                  context,
-                                  msg,
-                                  widget.lienDePaiement,
-                                  raisonComplete,
-                                  motif,
-                                  paiementProcheMsg,
-                                  msgAppBarPaiementPage,
+                                await launchUrlString(
+                                  "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                                  mode: LaunchMode.platformDefault,
                                 );
+                                // String msg =
+                                //     "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                // String raisonComplete =
+                                //     "Paiement de la tontine".tr();
+                                // String motif = "payer_vous_même".tr();
+                                // String paiementProcheMsg =
+                                //     "partager_le_lien_de_paiement".tr();
+                                // String msgAppBarPaiementPage =
+                                //     "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
+                                //     String elementUrl = "https://groups.faroty.com/details-tournois/${AppCubitStorage().state.codeTournois}";
+                                // Modal().showModalActionPayement(
+                                //   context,
+                                //   msg,
+                                //   widget.lienDePaiement,
+                                //   raisonComplete,
+                                //   motif,
+                                //   paiementProcheMsg,
+                                //   msgAppBarPaiementPage,
+                                //   elementUrl
+                                // );
                               },
                               child: Container(
                                 alignment: Alignment.center,
@@ -311,10 +320,10 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                                 child: Text(
                                   "${"montant_collecté".tr()} :",
                                   style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.blackBlueAccent1,
-                                ),
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.blackBlueAccent1,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -334,6 +343,154 @@ class _widgetDetailTontineState extends State<widgetDetailTontine> {
                     ],
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.only(
+                    top: 8.h,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 8.h,
+                    bottom: 2.h,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        width: .5.r,
+                        color: AppColors.blackBlueAccent2,
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (!context
+                          .read<AuthCubit>()
+                          .state
+                          .detailUser!["isMember"])
+                        if (widget.nomBeneficiaire != "")
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async {
+                                updateTrackingData(
+                                    "home.btnwithdrawnFundsContribution",
+                                    "${DateTime.now()}", {});
+                                await launchUrlString(
+                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                  mode: LaunchMode.platformDefault,
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 17.h,
+                                    child: SvgPicture.asset(
+                                      "assets/images/withdrawIcon.svg",
+                                      fit: BoxFit.scaleDown,
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Text(
+                                    "Retrait des fonds".tr(),
+                                    style: TextStyle(
+                                      color: AppColors.blackBlueAccent1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      // if (!context
+                      //     .read<AuthCubit>()
+                      //     .state
+                      //     .detailUser!["isMember"])
+                      // https://groups.faroty.com/cotisation-details/code
+                      if (!context
+                          .read<AuthCubit>()
+                          .state
+                          .detailUser!["isMember"])
+                        Expanded(
+                          child: InkWell(
+                            onTap: () async {
+                              updateTrackingData("home.btnAdministerTontine",
+                                  "${DateTime.now()}", {});
+                              await launchUrlString(
+                                "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
+                                mode: LaunchMode.platformDefault,
+                              );
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  // color: const Color.fromARGB(255, 0, 0, 0),
+                                  height: 17.h,
+                                  // width: 230,
+                                  child: SvgPicture.asset(
+                                    "assets/images/folderManageSimpleIcon.svg",
+                                    fit: BoxFit.scaleDown,
+                                    color: AppColors.blackBlueAccent1,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Text(
+                                  "Gerer".tr(),
+                                  style: TextStyle(
+                                    color: AppColors.blackBlueAccent1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      Expanded(
+                        child: InkWell(
+                          splashColor: AppColors.blackBlue,
+                          onTap: () {
+                            print("object3");
+                            Share.share(context
+                                    .read<AuthCubit>()
+                                    .state
+                                    .detailUser!["isMember"]
+                                ? "Aide-moi à payer ma tontine *${widget.nomTontine}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                                : "Nouvelle tontine créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant  *${(widget.nomBeneficiaire)}* .\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 17.h,
+                                child: SvgPicture.asset(
+                                  "assets/images/shareSimpleIcon.svg",
+                                  fit: BoxFit.scaleDown,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 3.h,
+                              ),
+                              Text(
+                                "Partager".tr(),
+                                style: TextStyle(
+                                  color: AppColors.blackBlueAccent1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              
+              
               ],
             ),
           ),

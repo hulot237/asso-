@@ -217,7 +217,30 @@
     "Je vous invite à rejoindre *${nomGroupe}* dans l'application ASSO+ pour nos cotisations et tontines.":"I invite you to join *${nomGroupe}* in the ASSO+ application for our contributions and tontines.",
     "Lien d'invitation":"Lien d'invitation",
     "Rapport":"Rapport",
-    "Le rapport est disponible":"Le rapport est disponible"
+    "Le rapport est disponible":"Le rapport est disponible",
+    "Payer à partir du tableau de bord":"Payer à partir du tableau de bord",
+    "Gerer" : "Gérer",
+    "Partager" :"Partager",
+    "Retrait des fonds":"Retrait des fonds",
+    "Vous avez reçu un paiement de ":"Vous avez reçu un paiement de ",
+    "Epargne":"Épargnes",
+    "toutes_les_epargnes":"Toutes les épargnes",
+    "aucune_epargnant":"Aucun épargnant",
+    "Ajouter un épargnant":"Ajouter un épargnant",
+    "Créé le, ":"Crée le, ",
+    "INTERÊT RECENT":"INTERÊT RECENT",
+    "INTÉRÊT GÉNÉRÉ":"INTÉRÊT GÉNÉRÉ",
+    "Fixe mensuel":"Fixe mensuel",
+    "Indexé sur les prêts":"Indexé sur les prêts",
+    "montant épargné":"Montant épargné",
+    "Vous confirmez avoir reçu le paiement de ":"Vous confirmez avoir reçu le paiement de ",
+    "pour son épargne ?":"pour son épargne ?",
+    "Dépôt":"Dépôt",
+    "Activer":"Activer",
+    "Suspendre":"Suspendre",
+    "Actif":"Actif",
+    "Suspendu":"Suspendu",
+    "Inactif":"Inactif"
 
 
 

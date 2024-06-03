@@ -29,9 +29,9 @@ class ButtonRapport extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.only(
-          top: 15.h,
+          top: 7.h,
         ),
-        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+        padding: EdgeInsets.only(top: 7.h, bottom: 7.h),
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -43,13 +43,13 @@ class ButtonRapport extends StatelessWidget {
             ),
           ],
           color: AppColors.colorButton,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(7.r),
         ),
         child: Text(
           "Le rapport est disponible".tr(),
           style: TextStyle(
             color: AppColors.white,
-            fontSize: 18.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.bold,
           ),
         ),

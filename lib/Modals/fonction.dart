@@ -220,19 +220,47 @@ checkTransparenceStatus(var ListConfigs, var UserIsMember) {
   List<dynamic> transparenceObject =
       ListConfigs.where((objet) => objet["name"] == "has_transparence")
           .toList();
+  print("${transparenceObject}");
   if (transparenceObject.length > 0) {
     // Vérification si l'objet a été trouvé et si is_check est égal à true
     if (transparenceObject[0]["is_check"] == false && UserIsMember == true) {
       //on masque les details
-
+      print("checkTransparenceStatus false");
       return false;
     } else {
       //on affiche les details
-
+      print("checkTransparenceStatus true");
       return true;
     }
   } else if (transparenceObject.length == 0) {
+    print("checkTransparenceStatus true");
     return true;
+  }
+}
+
+checkTransparenceLoans(var ListConfigs, var UserIsMember) {
+  // Recherche de l'objet dans le tableau avec name == "has_transparence"
+
+  List<dynamic> transparenceObject =
+      ListConfigs.where((objet) => objet["name"] == "has_loans").toList();
+
+  if (transparenceObject.length > 0) {
+    // Vérification si l'objet a été trouvé et si is_check est égal à true
+    if (transparenceObject[0]["is_check"] == false || UserIsMember == true) {
+      //on masque les details
+      print("checkTransparenceLoans false");
+      return false;
+    } else if (transparenceObject[0]["is_check"] == true &&
+        UserIsMember == false) {
+      //on affiche les details
+
+      return true;
+    } else {
+      return false;
+    }
+  } else if (transparenceObject.length == 0) {
+    print("checkTransparenceLoans true");
+    return false;
   }
 }
 
@@ -306,7 +334,6 @@ updateTrackingData(String code, String date, Map<String, dynamic> data) async {
       ..interceptors.addAll([
         TokenInterceptor(),
       ]);
-
 
     // Envoi des données à l'API
     Response response = await dio.post(

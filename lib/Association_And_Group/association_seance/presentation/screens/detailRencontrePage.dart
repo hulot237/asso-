@@ -42,6 +42,7 @@ class detailRencontrePage extends StatefulWidget {
     required this.codeSeance,
     required this.dateRencontreAPI,
     required this.rapportUrl,
+    required this.codeTournoi,
   });
 
   String nomRecepteurRencontre;
@@ -56,6 +57,7 @@ class detailRencontrePage extends StatefulWidget {
   String codeSeance;
   String dateRencontreAPI;
   String? rapportUrl;
+  String codeTournoi;
   @override
   State<detailRencontrePage> createState() => _detailRencontrePageState();
 }
@@ -191,14 +193,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                     nomRecepteurRencontre: widget.nomRecepteurRencontre,
                     prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
                     dateRencontreAPI: widget.dateRencontreAPI,
+                    rapportUrl: widget.rapportUrl,
                   ),
                 ),
-                if (widget.rapportUrl != null)
-                  ButtonRapport(
-                    nomElement:
-                        "${"rencontre".tr()} ${widget.identifiantRencontre}",
-                    rapportUrl: "${widget.rapportUrl}",
-                  ),
                 Container(
                   margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
                   padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
@@ -266,12 +263,36 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                             .where((objet) => objet["is_tontine"] == 0)
                             .toList();
 
-                    List<dynamic> allSanctionUserConnect =
-                        currentDetailSeance["sanctions"]
-                            .where((sanctions) =>
-                                sanctions["membre"]["membre_code"] ==
-                                AppCubitStorage().state.membreCode)
-                            .toList();
+                    List<dynamic> allSanctionUserConnect;
+
+                    // List<dynamic> allSanctionUserConnect =
+                    //     currentDetailSeance["sanctions"]
+                    //         .where((sanctions) =>
+                    //             sanctions["membre"]["membre_code"] ==
+                    //             AppCubitStorage().state.membreCode)
+                    //         .toList();
+                    if (context
+                        .read<AuthCubit>()
+                        .state
+                        .detailUser!["isMember"]) {
+                      allSanctionUserConnect = currentDetailSeance["sanctions"]
+                          .where((sanctions) =>
+                              sanctions["membre"]["membre_code"] ==
+                              AppCubitStorage().state.membreCode)
+                          .toList();
+                    } else {
+                      allSanctionUserConnect = currentDetailSeance["sanctions"]
+                          // .where((sanctions) =>
+                          //     sanctions["membre"]["membre_code"] ==
+                          //     AppCubitStorage().state.membreCode)
+                          .toList();
+                    }
+
+                    // context
+                    //                 .read<AuthCubit>()
+                    //                 .state
+                    //                 .detailUser!["isMember"]
+
                     return TabBarView(
                       controller: _tabController,
                       children: [
@@ -316,7 +337,9 @@ class _detailRencontrePageState extends State<detailRencontrePage>
 
                                                   Modal()
                                                       .showBottomSheetHistTontine(
-                                                          context);
+                                                          context,
+                                                          ItemDetailCotisation[
+                                                              "code"]);
                                                 }
                                               },
                                               child: Container(
@@ -440,78 +463,77 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                           final ItemDetailCotisation =
                                               objetCotisationUniquement[index];
                                           return Container(
-                                              margin: EdgeInsets.only(
-                                                left: 7.w,
-                                                right: 7.w,
-                                                top: 3.h,
-                                                bottom: 7.h,
-                                              ),
-                                              child: WidgetCotisation(
-                                                rapportUrl: ItemDetailCotisation[
-                                                    "rapport"],
-                                                screenSource: "meeting",
-                                                isPayed: ItemDetailCotisation[
-                                                    "is_payed"],
-                                                montantCotisations:
-                                                    ItemDetailCotisation[
-                                                        "amount"],
-                                                motifCotisations:
-                                                    ItemDetailCotisation[
-                                                        "name"],
-                                                dateCotisation:
-                                                    ItemDetailCotisation[
-                                                        "start_date"],
-                                                heureCotisation: AppCubitStorage()
-                                                            .state
-                                                            .Language ==
-                                                        "fr"
-                                                    ? formatTimeToFrench(
-                                                        ItemDetailCotisation[
-                                                            "start_date"])
-                                                    : formatTimeToEnglish(
-                                                        ItemDetailCotisation[
-                                                            "start_date"]),
-                                                soldeCotisation:
-                                                    ItemDetailCotisation[
-                                                        "total_cotise"],
-                                                codeCotisation:
-                                                    ItemDetailCotisation[
-                                                        "cotisation_code"],
-                                                type: ItemDetailCotisation[
-                                                    "type"],
-                                                lienDePaiement: ItemDetailCotisation[
-                                                            "cotisation_pay_link"] ==
-                                                        null
-                                                    ? "le lien n'a pas été généré"
-                                                    : ItemDetailCotisation[
-                                                        "cotisation_pay_link"],
-                                                is_passed: ItemDetailCotisation[
-                                                    "is_passed"],
-                                                is_tontine:
-                                                    ItemDetailCotisation[
-                                                        "is_tontine"],
-                                                source: ItemDetailCotisation[
-                                                            "seance"] ==
-                                                        null
-                                                    ? ''
-                                                    : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
-                                                nomBeneficiaire: ItemDetailCotisation[
-                                                            "membre"] ==
-                                                        null
-                                                    ? ''
-                                                    : ItemDetailCotisation[
-                                                                    "membre"]
-                                                                ["last_name"] ==
-                                                            null
-                                                        ? "${ItemDetailCotisation["membre"]["first_name"]}"
-                                                        : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
-                                                rubrique: ItemDetailCotisation[
-                                                            "ass_rubrique"] ==
-                                                        null
-                                                    ? ""
-                                                    : ItemDetailCotisation[
-                                                        "ass_rubrique"]["name"],
-                                              ));
+                                            margin: EdgeInsets.only(
+                                              left: 7.w,
+                                              right: 7.w,
+                                              top: 3.h,
+                                              bottom: 7.h,
+                                            ),
+                                            child: WidgetCotisation(
+                                              rapportUrl: ItemDetailCotisation[
+                                                  "rapport"],
+                                              screenSource: "meeting",
+                                              isPayed: ItemDetailCotisation[
+                                                  "is_payed"],
+                                              montantCotisations:
+                                                  ItemDetailCotisation[
+                                                      "amount"],
+                                              motifCotisations:
+                                                  ItemDetailCotisation["name"],
+                                              dateCotisation:
+                                                  ItemDetailCotisation[
+                                                      "start_date"],
+                                              heureCotisation: AppCubitStorage()
+                                                          .state
+                                                          .Language ==
+                                                      "fr"
+                                                  ? formatTimeToFrench(
+                                                      ItemDetailCotisation[
+                                                          "start_date"])
+                                                  : formatTimeToEnglish(
+                                                      ItemDetailCotisation[
+                                                          "start_date"]),
+                                              soldeCotisation:
+                                                  ItemDetailCotisation[
+                                                      "total_cotise"],
+                                              codeCotisation:
+                                                  ItemDetailCotisation[
+                                                      "cotisation_code"],
+                                              type:
+                                                  ItemDetailCotisation["type"],
+                                              lienDePaiement: ItemDetailCotisation[
+                                                          "cotisation_pay_link"] ==
+                                                      null
+                                                  ? "le lien n'a pas été généré"
+                                                  : ItemDetailCotisation[
+                                                      "cotisation_pay_link"],
+                                              is_passed: ItemDetailCotisation[
+                                                  "is_passed"],
+                                              is_tontine: ItemDetailCotisation[
+                                                  "is_tontine"],
+                                              source: ItemDetailCotisation[
+                                                          "seance"] ==
+                                                      null
+                                                  ? ''
+                                                  : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
+                                              nomBeneficiaire: ItemDetailCotisation[
+                                                          "membre"] ==
+                                                      null
+                                                  ? ''
+                                                  : ItemDetailCotisation[
+                                                                  "membre"]
+                                                              ["last_name"] ==
+                                                          null
+                                                      ? "${ItemDetailCotisation["membre"]["first_name"]}"
+                                                      : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}",
+                                              rubrique: ItemDetailCotisation[
+                                                          "ass_rubrique"] ==
+                                                      null
+                                                  ? ""
+                                                  : ItemDetailCotisation[
+                                                      "ass_rubrique"]["name"],
+                                            ),
+                                          );
                                         },
                                       ),
                                     ),
@@ -568,6 +590,10 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                           (BuildContext context, int index) {
                                         final currentSaction =
                                             allSanctionUserConnect[index];
+                                        print(context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .detailUser!["isMember"]);
                                         return Container(
                                           margin: EdgeInsets.only(
                                             left: 7.w,
@@ -576,6 +602,16 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                             bottom: 7.h,
                                           ),
                                           child: WidgetSanction(
+                                            codeTournoi: widget.codeTournoi,
+                                            sanction_code:
+                                                currentSaction["sanction_code"],
+                                            membreCode: "",
+                                            isAdmin: !context
+                                                .read<AuthCubit>()
+                                                .state
+                                                .detailUser!["isMember"],
+                                            nomProprietaire:
+                                                "${currentSaction["membre"]["first_name"]} ${currentSaction["membre"]["last_name"] ?? ""}",
                                             screenSource: "meeting.sanction",
                                             objetSanction:
                                                 currentSaction["libelle"] ==
@@ -672,4 +708,3 @@ class _detailRencontrePageState extends State<detailRencontrePage>
     );
   }
 }
-

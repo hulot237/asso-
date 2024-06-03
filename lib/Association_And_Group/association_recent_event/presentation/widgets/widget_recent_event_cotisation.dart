@@ -14,8 +14,13 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class widgetRecentEventCotisation extends StatefulWidget {
+  var is_tontine;
+
   widgetRecentEventCotisation({
     super.key,
     required this.dateOpen,
@@ -31,6 +36,7 @@ class widgetRecentEventCotisation extends StatefulWidget {
     required this.nomBeneficiaire,
     required this.rublique,
     required this.rapportUrl,
+    required this.is_tontine,
   });
   String dateClose;
   String dateOpen;
@@ -51,9 +57,12 @@ class widgetRecentEventCotisation extends StatefulWidget {
       _widgetRecentEventCotisationState();
 }
 
-class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisation> {
+class _widgetRecentEventCotisationState
+    extends State<widgetRecentEventCotisation> {
   Future<void> handleDetailCotisation(codeCotisation) async {
-    final detailCotisation = await context.read<CotisationDetailCubit>().detailCotisationCubit(codeCotisation);
+    final detailCotisation = await context
+        .read<CotisationDetailCubit>()
+        .detailCotisationCubit(codeCotisation);
   }
 
   @override
@@ -74,7 +83,10 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
         );
       return GestureDetector(
         onTap: () {
-          updateTrackingData("home.contribution", "${DateTime.now()}", {"type": 'contribution', "contribution_id": "${widget.codeCotisation}"});
+          updateTrackingData("home.contribution", "${DateTime.now()}", {
+            "type": 'contribution',
+            "contribution_id": "${widget.codeCotisation}"
+          });
           if (checkTransparenceStatus(
               context
                   .read<UserGroupCubit>()
@@ -86,18 +98,46 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
             handleDetailCotisation(widget.codeCotisation);
 
             Modal().showBottomSheetHistCotisation(
-                context,
-                widget.codeCotisation,
-                widget.lienDePaiement,
-                widget.dateOpen,
-                widget.dateOpen,
-                widget.montantCotisation,
-                widget.motif,
-                widget.montantCollecte,
-                widget.type,
-                widget.isPassed,
-                widget.rapportUrl,
-                0);
+              context,
+              widget.codeCotisation,
+              widget.lienDePaiement,
+              widget.dateOpen,
+              widget.dateOpen,
+              widget.montantCotisation,
+              widget.motif,
+              widget.montantCollecte,
+              widget.type,
+              widget.isPassed,
+              widget.rapportUrl,
+              0,
+              widget.source,
+              widget.nomBeneficiaire,
+              widget.rublique,
+              widget.is_tontine,
+            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => DetailCotisationPage(
+            //       codeCotisation: widget.codeCotisation,
+            //       lienDePaiement: widget.lienDePaiement,
+            //       dateCotisation: widget.dateOpen,
+            //       heureCotisation: widget.dateOpen,
+            //       montantCotisations: widget.montantCotisation,
+            //       motifCotisations: widget.motif,
+            //       soldeCotisation: widget.montantCollecte,
+            //       type: widget.type,
+            //       isPassed: widget.isPassed,
+            //       isPayed: 0,
+            //       rapportUrl: widget.rapportUrl,
+            //       is_passed: widget.isPassed,
+            //       source: widget.source,
+            //       is_tontine: widget.is_tontine,
+            //       nomBeneficiaire: widget.nomBeneficiaire,
+            //       rubrique: widget.rublique,
+            //     ),
+            //   ),
+            // );
           } else {
             handleDetailCotisation(widget.codeCotisation);
 
@@ -116,6 +156,11 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                   isPassed: widget.isPassed,
                   isPayed: 0,
                   rapportUrl: widget.rapportUrl,
+                  is_passed: widget.isPassed,
+                  source: widget.source,
+                  is_tontine: widget.is_tontine,
+                  nomBeneficiaire: widget.nomBeneficiaire,
+                  rubrique: widget.rublique,
                 ),
               ),
             );
@@ -135,7 +180,12 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                   width: 0.5.r,
                 ),
               ),
-              padding: EdgeInsets.all(10.r),
+              padding: EdgeInsets.only(
+                top: 10.h,
+                bottom: 7.h,
+                left: 10.w,
+                right: 10.w,
+              ),
               child: Column(
                 children: [
                   Row(
@@ -167,26 +217,37 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                       ),
                       GestureDetector(
                         onTap: () async {
-                          updateTrackingData("home.btnContribution", "${DateTime.now()}", {"type": 'contribution', "contribution_id": "${widget.codeCotisation}"});
-                          String msg =
-                              "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
+                          await launchUrlString(
+                                          "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                                          mode: LaunchMode.platformDefault,
+                                        );
+                          // updateTrackingData(
+                          //     "home.btnContribution", "${DateTime.now()}", {
+                          //   "type": 'contribution',
+                          //   "contribution_id": "${widget.codeCotisation}"
+                          // });
+                          // String msg =
+                          //     "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
 
-                          String raisonComplete =
-                              'Paiement de la cotisation'.tr();
-                          String motif = "payer_vous_même".tr();
-                          String paiementProcheMsg =
-                              "partager_le_lien_de_paiement".tr();
-                          String msgAppBarPaiementPage =
-                              "${'Paiement de la cotisation'.tr()}  ${widget.motif}";
-                          Modal().showModalActionPayement(
-                            context,
-                            msg,
-                            widget.lienDePaiement,
-                            raisonComplete,
-                            motif,
-                            paiementProcheMsg,
-                            msgAppBarPaiementPage,
-                          );
+                          // String raisonComplete =
+                          //     'Paiement de la cotisation'.tr();
+                          // String motif = "payer_vous_même".tr();
+                          // String paiementProcheMsg =
+                          //     "partager_le_lien_de_paiement".tr();
+                          // String msgAppBarPaiementPage =
+                          //     "${'Paiement de la cotisation'.tr()}  ${widget.motif}";
+                          // String elementUrl =
+                          //     "https://groups.faroty.com/cotisations-details/${widget.codeCotisation}";
+                          // Modal().showModalActionPayement(
+                          //   context,
+                          //   msg,
+                          //   widget.lienDePaiement,
+                          //   raisonComplete,
+                          //   motif,
+                          //   paiementProcheMsg,
+                          //   msgAppBarPaiementPage,
+                          //   elementUrl,
+                          // );
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -231,7 +292,9 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                             overflow: TextOverflow.clip,
                           ),
                         ),
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
                         Text(
                           widget.source == ''
                               ? "(${(widget.nomBeneficiaire)})"
@@ -305,7 +368,9 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 2.h,),
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
                                   Container(
                                     child: Text(
                                       "${formatMontantFrancais(
@@ -336,13 +401,16 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                                 ),
                               ),
                             ),
-                            SizedBox(height: 2.h,),
+                            SizedBox(
+                              height: 2.h,
+                            ),
                             Container(
                               child: Text(
                                 widget.type == "1"
-                                  ? "volontaire".tr():
-                                  // : "type_fixe".tr(),
-                                "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
+                                    ? "volontaire".tr()
+                                    :
+                                    // : "type_fixe".tr(),
+                                    "${formatMontantFrancais(double.parse("${widget.montantCotisation}"))} FCFA",
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   color: AppColors.blackBlue,
@@ -375,6 +443,155 @@ class _widgetRecentEventCotisationState extends State<widgetRecentEventCotisatio
                         ),
                       ),
                     ),
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                    ),
+                    padding: EdgeInsets.only(
+                      top: 8.h,
+                      bottom: 0.h,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: .5.r,
+                          color: AppColors.blackBlueAccent2,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if (!context
+                            .read<AuthCubit>()
+                            .state
+                            .detailUser!["isMember"])
+                          if (widget.nomBeneficiaire != "")
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async{
+                                  updateTrackingData(
+                                        "home.btnwithdrawnFundsContribution",
+                                        "${DateTime.now()}", {});
+                                    await launchUrlString(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                      mode: LaunchMode.platformDefault,
+                                    );
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 17.h,
+                                      child: SvgPicture.asset(
+                                        "assets/images/withdrawIcon.svg",
+                                        fit: BoxFit.scaleDown,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                        height: 3.h,
+                                      ),
+                                      Text(
+                                        "Retrait des fonds".tr(),
+                                        style: TextStyle(
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        // if (!context
+                        //     .read<AuthCubit>()
+                        //     .state
+                        //     .detailUser!["isMember"])
+                        // https://groups.faroty.com/cotisation-details/code
+                        if (!context
+                            .read<AuthCubit>()
+                            .state
+                            .detailUser!["isMember"])
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async {
+                                updateTrackingData("home.btnAdminister",
+                                    "${DateTime.now()}", {});
+                                await launchUrlString(
+                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
+                                  mode: LaunchMode.platformDefault,
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    // color: const Color.fromARGB(255, 0, 0, 0),
+                                    height: 17.h,
+                                    // width: 230,
+                                    child: SvgPicture.asset(
+                                      "assets/images/folderManageSimpleIcon.svg",
+                                      fit: BoxFit.scaleDown,
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                        height: 3.h,
+                                      ),
+                                      Text(
+                                        "Gerer".tr(),
+                                        style: TextStyle(
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                        ),
+                                      ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        Expanded(
+                          child: InkWell(
+                            splashColor: AppColors.blackBlue,
+                            onTap: () {
+                              print("object3");
+                              Share.share(context
+                                      .read<AuthCubit>()
+                                      .state
+                                      .detailUser!["isMember"]
+                                  ? "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                                  : "Nouvelle cotisation créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 17.h,
+                                  child: SvgPicture.asset(
+                                    "assets/images/shareSimpleIcon.svg",
+                                    fit: BoxFit.scaleDown,
+                                    color: AppColors.blackBlueAccent1,
+                                  ),
+                                ),
+                                SizedBox(
+                                        height: 3.h,
+                                      ),
+                                      Text(
+                                        "Partager".tr(),
+                                        style: TextStyle(
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                        ),
+                                      ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                
+                
                 ],
               ),
             ),

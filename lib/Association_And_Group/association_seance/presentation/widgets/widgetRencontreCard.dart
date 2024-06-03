@@ -28,6 +28,7 @@ class WidgetRencontreCard extends StatefulWidget {
     required this.typeRencontre,
     required this.screenSource,
     required this.rapportUrl,
+    required this.codeTournoi
   });
 
   String prenomRecepteurRencontre;
@@ -44,6 +45,7 @@ class WidgetRencontreCard extends StatefulWidget {
   bool maskElt;
   String typeRencontre;
   String screenSource;
+  String codeTournoi;
   String? rapportUrl;
 
   @override
@@ -91,6 +93,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
             context,
             MaterialPageRoute(
               builder: (context) => detailRencontrePage(
+                codeTournoi: widget.codeTournoi,
                 codeSeance: widget.codeSeance,
                 dateRencontre: widget.dateRencontre,
                 descriptionRencontre: widget.descriptionRencontre,

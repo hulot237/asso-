@@ -33,6 +33,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 //@RoutePage()
@@ -44,7 +45,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, WidgetsBindingObserver {
+class _HomeScreenState extends State<HomeScreen>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   Future<void> handleAllUserGroup() async {
     final AllUserGroup = await context
         .read<UserGroupCubit>()
@@ -136,32 +138,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
     super.initState();
   }
 
-    @override
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
-    @override
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-          clearSessionIdStorage();
-    handleAllUserGroup();
-    handleTournoiDefault();
-    handleRecentEvent(AppCubitStorage().state.membreCode);
-    handleChangeAss(AppCubitStorage().state.codeAssDefaul);
-    handleDetailUser(AppCubitStorage().state.membreCode,
-        AppCubitStorage().state.codeTournois);
-    context.read<AuthCubit>().getUid();
-    context.read<PretEpargneCubit>().getEpargne();
-    context.read<PretEpargneCubit>().getPret();
-    context.read<SessionCubit>().GetSessionCubit();
+      clearSessionIdStorage();
+      handleAllUserGroup();
+      handleTournoiDefault();
+      handleRecentEvent(AppCubitStorage().state.membreCode);
+      handleChangeAss(AppCubitStorage().state.codeAssDefaul);
+      handleDetailUser(AppCubitStorage().state.membreCode,
+          AppCubitStorage().state.codeTournois);
+      context.read<AuthCubit>().getUid();
+      context.read<PretEpargneCubit>().getEpargne();
+      context.read<PretEpargneCubit>().getPret();
+      context.read<SessionCubit>().GetSessionCubit();
       print("RETOUR");
     }
   }
-
-
-
 
   Future refresh() async {
     handleRecentEvent(AppCubitStorage().state.membreCode);
@@ -618,12 +617,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                   PretEpargneState>(
                                                 builder: (PretEpargnecontext,
                                                     PretEpargnestate) {
-                                                  if (PretEpargnestate
-                                                              .isLoadingEpargne ==
-                                                          true &&
-                                                      PretEpargnestate
-                                                              .epargne ==
-                                                          null)
+                                                  if (PretEpargnestate.isLoadingEpargne == true && PretEpargnestate.epargne == null)
                                                     return Container(
                                                       padding: EdgeInsets.only(
                                                           top: 15.h),
@@ -891,6 +885,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                                     msgAppBarPaiementPage =
                                                                     "Effectuer une épargne"
                                                                         .tr();
+                                                                String
+                                                                    elementUrl =
+                                                                    "https://groups.faroty.com/loan";
                                                                 Modal()
                                                                     .showModalActionPayement(
                                                                   context,
@@ -901,6 +898,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                                   motif,
                                                                   paiementProcheMsg,
                                                                   msgAppBarPaiementPage,
+                                                                  elementUrl,
                                                                 );
                                                               },
 
@@ -1145,17 +1143,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                                           msgAppBarPaiementPage =
                                                                           "Effectuer une remboursement"
                                                                               .tr();
-                                                                      Modal()
-                                                                          .showModalActionPayement(
-                                                                        context,
-                                                                        msg,
-                                                                        pret[
-                                                                            "loan_pay_link"],
-                                                                        raisonComplete,
-                                                                        motif,
-                                                                        paiementProcheMsg,
-                                                                        msgAppBarPaiementPage,
-                                                                      );
+                                                                      String
+                                                                          elementUrl =
+                                                                          "https://groups.faroty.com/loan";
+                                                                      Modal().showModalActionPayement(
+                                                                          context,
+                                                                          msg,
+                                                                          pret[
+                                                                              "loan_pay_link"],
+                                                                          raisonComplete,
+                                                                          motif,
+                                                                          paiementProcheMsg,
+                                                                          msgAppBarPaiementPage,
+                                                                          elementUrl);
                                                                     },
                                                                     child:
                                                                         Container(
@@ -1513,20 +1513,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                                     msgAppBarPaiementPage =
                                                                     "Effectuer le paiement de votre fond de caisse"
                                                                         .tr();
+                                                                String
+                                                                    elementUrl =
+                                                                    "https://groups.faroty.com/fond-caisse";
                                                                 if (currentDetailUser[
                                                                         "is_inscription_payed"] !=
                                                                     1)
-                                                                  Modal()
-                                                                      .showModalActionPayement(
-                                                                    context,
-                                                                    msg,
-                                                                    currentDetailUser[
-                                                                        "inscription_pay_link"],
-                                                                    raisonComplete,
-                                                                    motif,
-                                                                    paiementProcheMsg,
-                                                                    msgAppBarPaiementPage,
-                                                                  );
+                                                                  Modal().showModalActionPayement(
+                                                                      context,
+                                                                      msg,
+                                                                      currentDetailUser[
+                                                                          "inscription_pay_link"],
+                                                                      raisonComplete,
+                                                                      motif,
+                                                                      paiementProcheMsg,
+                                                                      msgAppBarPaiementPage,
+                                                                      elementUrl);
                                                               },
                                                               child: Container(
                                                                 alignment:
@@ -1747,7 +1749,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                                   ),
                                                                   child:
                                                                       WidgetRencontreCard(
-
+                                                                        codeTournoi: AppCubitStorage().state.codeTournois!,
                                                                     rapportUrl: currentDetailtournoiCourant["tournois"]
                                                                             [
                                                                             "seance"][0]
@@ -1851,25 +1853,94 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                               margin: EdgeInsets
                                                                   .symmetric(
                                                                       vertical:
-                                                                          50.h),
+                                                                          40.h),
                                                               child: Center(
-                                                                child: Text(
-                                                                  "Pas de rencontre en cours"
-                                                                      .tr(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            20,
-                                                                            45,
-                                                                            99,
-                                                                            0.26),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w100,
-                                                                    fontSize:
-                                                                        20.sp,
-                                                                  ),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Text(
+                                                                      "Pas de rencontre en cours"
+                                                                          .tr(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Color
+                                                                            .fromRGBO(
+                                                                                20,
+                                                                                45,
+                                                                                99,
+                                                                                0.26),
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w100,
+                                                                        fontSize:
+                                                                            20.sp,
+                                                                      ),
+                                                                    ),
+                                                                    
+
+
+                                                                     if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                                                                            InkWell(
+                                                                              onTap: () async {
+                                                                                updateTrackingData("transactions.btnAddMeeting", "${DateTime.now()}", {});
+                                                                                await launchUrlString(
+                                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
+                                                                                  mode: LaunchMode.platformDefault,
+                                                                                );
+                                                                              },
+                                                                              child: Container(
+                                                                                height: 40.h,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: AppColors.pageBackground,
+                                                                                  border: Border.all(
+                                                                                    width: 2.w,
+                                                                                    color: AppColors.blackBlue.withOpacity(1),
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    20.r,
+                                                                                  ),
+                                                                                ),
+                                                                                margin: EdgeInsets.only(
+                                                                                  top: 10.w,
+                                                                                ),
+                                                                                padding: EdgeInsets.symmetric(
+                                                                                  horizontal: 10.w,
+                                                                                  vertical: 7.h,
+                                                                                ),
+                                                                                width: MediaQuery.of(context).size.width / 1.5,
+                                                                                child: Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      "Ajouter une rencontre".tr(),
+                                                                                      style: TextStyle(
+                                                                                        color: AppColors.blackBlue.withOpacity(1),
+                                                                                        fontWeight: FontWeight.w900,
+                                                                                        fontSize: 18.sp,
+                                                                                        letterSpacing: 0.2.w,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Container(
+                                                                                      width: 20.w,
+                                                                                      height: 20.w,
+                                                                                      margin: EdgeInsets.only(left: 3.w),
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(360),
+                                                                                        border: Border.all(
+                                                                                          width: 1.5.w,
+                                                                                          color: AppColors.blackBlue.withOpacity(1),
+                                                                                        ),
+                                                                                      ),
+                                                                                      child: SvgPicture.asset(
+                                                                                        "assets/images/addIcon.svg",
+                                                                                        fit: BoxFit.scaleDown,
+                                                                                        color: AppColors.blackBlue.withOpacity(1),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                  ],
                                                                 ),
                                                               ),
                                                             );
@@ -1956,7 +2027,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
 
                                       List<Widget> listWidgetCotisation =
                                           listeCotisation.map((monObjet) {
-                                            print("$monObjet");
+                                        print("$monObjet");
                                         return widgetRecentEventCotisation(
                                           rapportUrl: monObjet["rapport"],
                                           rublique: monObjet["ass_rubrique"] ==
@@ -1986,12 +2057,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                       null
                                                   ? "${monObjet["membre"]["first_name"]}"
                                                   : "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"]}",
+                                          is_tontine: monObjet["is_tontine"],
                                         );
                                       }).toList();
 
                                       List<Widget> listWidgetSanction =
                                           listeSanction.map((monObjet) {
+                                        final currentDetailUser = context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .detailUser;
+                                            print("${monObjet}");
                                         return widgetRecentEventSanction(
+                                          membreCode: AppCubitStorage().state.membreCode,
+                                          // "${monObjet["membre"]["membre_code"]}",
+                                          nomProprietaire: "${currentDetailUser!["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
+                                          // "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"] ?? ""}",
+                                          resteAPayer:
+                                              monObjet["amount_remaining"],
                                           motif: monObjet["motif"],
                                           dateOpen: monObjet["start_date"],
                                           montantSanction:
@@ -2028,7 +2111,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                         ),
                                       ];
 
-                                      return listeWidgetFinale.length > 0
+                                      return listWidgetTontine.length > 0 || listWidgetCotisation.length > 0 || listWidgetSanction.length > 0
+
                                           ? SliverList.builder(
                                               itemCount:
                                                   listeWidgetFinale.length,
@@ -2054,16 +2138,87 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                                                 margin:
                                                     EdgeInsets.only(top: 50.h),
                                                 child: Center(
-                                                  child: Text(
-                                                    "Aucun_evenement_recent"
-                                                        .tr(),
-                                                    style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          20, 45, 99, 0.26),
-                                                      fontWeight:
-                                                          FontWeight.w100,
-                                                      fontSize: 20.sp,
-                                                    ),
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Aucun_evenement_recent"
+                                                            .tr(),
+                                                        style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              20, 45, 99, 0.26),
+                                                          fontWeight:
+                                                              FontWeight.w100,
+                                                          fontSize: 20.sp,
+                                                        ),
+                                                      ),
+                                                       if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                                                                            InkWell(
+                                                                              onTap:
+                                                                          () async {
+                                                                        updateTrackingData(
+                                                                            "transactions.btnAddContribution",
+                                                                            "${DateTime.now()}",
+                                                                            {});
+                                                                        await launchUrlString(
+                                                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
+                                                                          mode:
+                                                                              LaunchMode.platformDefault,
+                                                                        );
+                                                                      },
+                                                                              child: Container(
+                                                                                height: 40.h,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: AppColors.pageBackground,
+                                                                                  border: Border.all(
+                                                                                    width: 2.w,
+                                                                                    color: AppColors.blackBlue.withOpacity(1),
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    20.r,
+                                                                                  ),
+                                                                                ),
+                                                                                margin: EdgeInsets.only(
+                                                                                  top: 10.w,
+                                                                                ),
+                                                                                padding: EdgeInsets.symmetric(
+                                                                                  horizontal: 10.w,
+                                                                                  vertical: 7.h,
+                                                                                ),
+                                                                                width: MediaQuery.of(context).size.width / 1.5,
+                                                                                child: Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      "Ajouter une cotisation".tr(),
+                                                                                      style: TextStyle(
+                                                                                        color: AppColors.blackBlue.withOpacity(1),
+                                                                                        fontWeight: FontWeight.w900,
+                                                                                        fontSize: 18.sp,
+                                                                                        letterSpacing: 0.2.w,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Container(
+                                                                                      width: 20.w,
+                                                                                      height: 20.w,
+                                                                                      margin: EdgeInsets.only(left: 3.w),
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(360),
+                                                                                        border: Border.all(
+                                                                                          width: 1.5.w,
+                                                                                          color: AppColors.blackBlue.withOpacity(1),
+                                                                                        ),
+                                                                                      ),
+                                                                                      child: SvgPicture.asset(
+                                                                                        "assets/images/addIcon.svg",
+                                                                                        fit: BoxFit.scaleDown,
+                                                                                        color: AppColors.blackBlue.withOpacity(1),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),

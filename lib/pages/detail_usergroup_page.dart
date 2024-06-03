@@ -188,6 +188,7 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                               context,
                                               currentInfoAllTournoiAssCourant
                                                   .user_group!.tournois!,
+                                                  false
                                             );
                                           },
                                           child: Container(

@@ -10,6 +10,7 @@ import 'package:faroty_association_1/Association_And_Group/association_notificat
 import 'package:faroty_association_1/Association_And_Group/association_payements/business_logic/association_payements_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_sanction/business_logic/sanction_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
@@ -152,6 +153,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SessionCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SanctionCubit(),
         ),
       ],
       child: ScreenUtilInit(

@@ -203,6 +203,7 @@ class _AccountPageState extends State<AccountPage> {
                             String msgAppBarPaiementPage =
                                 "Effectuer le paiement de votre fond de caisse"
                                     .tr();
+                                     String elementUrl = "https://groups.faroty.com/fond-caisse";
                             if (currentDetailUser["is_inscription_payed"] != 1)
                               Modal().showModalActionPayement(
                                 context,
@@ -212,6 +213,7 @@ class _AccountPageState extends State<AccountPage> {
                                 motif,
                                 paiementProcheMsg,
                                 msgAppBarPaiementPage,
+                                elementUrl
                               );
                           },
                           child: Column(
@@ -248,6 +250,7 @@ class _AccountPageState extends State<AccountPage> {
                                         String msgAppBarPaiementPage =
                                             "Effectuer le paiement de votre fond de caisse"
                                                 .tr();
+                                                String elementUrl = "https://groups.faroty.com/fond-caisse";
                                         if (currentDetailUser[
                                                 "is_inscription_payed"] !=
                                             1)
@@ -260,6 +263,7 @@ class _AccountPageState extends State<AccountPage> {
                                             motif,
                                             paiementProcheMsg,
                                             msgAppBarPaiementPage,
+                                            elementUrl
                                           );
                                       },
                                       child: Row(

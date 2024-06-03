@@ -16,6 +16,7 @@ class DetailContributionCubit extends Cubit<ContributionState> {
     emit(state.copyWith( isloadingcontibutionTontine: true));
     try {
       final data = await TontineRepository().DetailContributionTontine(codeContribution);
+      print("widgetDetailHistoriqueTontineCard $codeContribution");
 
         emit(
           state.copyWith(

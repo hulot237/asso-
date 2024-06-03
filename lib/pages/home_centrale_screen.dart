@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_sanction/business_logic/sanction_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -296,6 +297,8 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
                   context.read<AuthCubit>().getUid();
                   context.read<PretEpargneCubit>().getEpargne();
                   context.read<PretEpargneCubit>().getPret();
+                  // context.read<SanctionCubit>().getAllSanctions();
+
                 }
 
                 if (_pageIndex == 1) {
@@ -304,6 +307,8 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
                       AppCubitStorage().state.codeTournois,
                       AppCubitStorage().state.membreCode);
                   handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
+                  context.read<SanctionCubit>().getAllSanctions(AppCubitStorage().state.codeTournoisHist);
+                  context.read<PretEpargneCubit>().getAllAssEpargnes(AppCubitStorage().state.codeTournoisHist);
                 }
 
                 if (_pageIndex == 2) {

@@ -2,6 +2,7 @@
 class AppStorageModel {
   String? Language;
   String? codeTournois;
+  String? codeTournoisHist;
   String? xSessionId;
   String? codeAssDefaul;
   String? membreCode;
@@ -16,6 +17,7 @@ class AppStorageModel {
   AppStorageModel({
     this.Language,
     this.codeTournois,
+    this.codeTournoisHist,
     this.xSessionId,
     this.codeAssDefaul,
     this.membreCode,
@@ -30,6 +32,7 @@ class AppStorageModel {
   AppStorageModel copyWith({
     String? Language,
     String? codeTournois,
+    String? codeTournoisHist,
     String? xSessionId,
     String? codeAssDefaul,
     String? membreCode,
@@ -43,6 +46,7 @@ class AppStorageModel {
     return AppStorageModel(
       Language: Language ?? this.Language,
       codeTournois: codeTournois ?? this.codeTournois,
+      codeTournoisHist: codeTournoisHist?? this.codeTournoisHist,
       xSessionId: xSessionId ?? this.xSessionId,
       codeAssDefaul: codeAssDefaul ?? this.codeAssDefaul,
       membreCode: membreCode ?? this.membreCode,

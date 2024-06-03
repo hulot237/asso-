@@ -7,6 +7,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
           AppStorageModel(
             Language: "fr",
             codeTournois: null,
+            codeTournoisHist: null,
             xSessionId: null,
             codeAssDefaul: null,
             membreCode: null,
@@ -24,6 +25,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     return AppStorageModel(
       Language: json['Language'],
       codeTournois: json["codeTournois"],
+      codeTournoisHist: json['codeTournoisHist'],
       xSessionId: json['xSessionId'],
       codeAssDefaul: json['codeAssDefaul'],
       membreCode: json["membreCode"],
@@ -50,6 +52,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       'passwordKey': state.passwordKey,
       'isLoading': state.isLoading,
       "trakingData": state.trakingData,
+      'codeTournoisHist': state.codeTournoisHist
     };
   }
 
@@ -113,6 +116,26 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
 
     emit(
       state.copyWith(codeTournois: newValue, isLoading: false),
+    );
+  }
+
+  Future<void> updateCodeTournoisHist(String newValue) async {
+    bool donneesChargees = false;
+    emit(state.copyWith(isLoading: true));
+
+    do {
+      await Future.delayed(
+        Duration(
+          seconds: 1,
+        ),
+      );
+      if (newValue != null) {
+        donneesChargees = true;
+      }
+    } while (!donneesChargees);
+
+    emit(
+      state.copyWith(codeTournoisHist: newValue, isLoading: false),
     );
   }
 
@@ -245,7 +268,8 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
   //   }
   // }
 
-  Future<void> updateTrakingData(String code, String date, Map<String, dynamic> data) async {
+  Future<void> updateTrakingData(
+      String code, String date, Map<String, dynamic> data) async {
     bool donneesChargees = false;
     UserAction oneAction = UserAction(code: code, date: date, data: data);
     List<UserAction> updatedTrackingData = List.from(state.trakingData ?? []);

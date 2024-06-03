@@ -328,7 +328,10 @@ class _DetailTontinePageState extends State<DetailTontinePage>
 
                                   Modal().showBottomSheetHistTontine(
                                     tontineContext,
+                                    itemTontine["code"],
+                                   codeTontine:  widget.codeTontine
                                   );
+                                  // widget.codeTontine;
                                 }
                               },
                               child: Container(

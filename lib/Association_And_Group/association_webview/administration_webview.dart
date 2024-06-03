@@ -120,31 +120,33 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
                 isLoadToGoApp = true;
               });
               var loginInfo = await context.read<AuthCubit>().state.loginInfo;
+              print("${loginInfo}");
+              // await AppCubitStorage()
+              //     .updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
+              // await AppCubitStorage().updateTokenUser(loginInfo.token!);
+              // await AppCubitStorage()
+              //     .updatemembreCode(loginInfo.user!.membre_code!);
+              // await AppCubitStorage()
+              //     .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
+              // await AppCubitStorage().updateuserNameKey(loginInfo.username!);
+              // await AppCubitStorage().updatepasswordKey(loginInfo.password!);
+              // await context
+              //     .read<UserGroupCubit>()
+              //     .AllUserGroupOfUserCubit(loginInfo.token);
 
-              await AppCubitStorage()
-                  .updateCodeAssDefaul(loginInfo!.userGroup!.first.urlcode!);
-              await AppCubitStorage().updateTokenUser(loginInfo.token!);
-              await AppCubitStorage()
-                  .updatemembreCode(loginInfo.user!.membre_code!);
-              await AppCubitStorage()
-                  .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
-              await AppCubitStorage().updateuserNameKey(loginInfo.username!);
-              await AppCubitStorage().updatepasswordKey(loginInfo.password!);
-              await context
-                  .read<UserGroupCubit>()
-                  .AllUserGroupOfUserCubit(loginInfo.token);
-
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => HomeCentraleScreen(),
-                ),
-                (route) => false,
-              );
-              setState(() {
-                isLoadToGoApp = false;
-              });
+              // Navigator.of(context).pushAndRemoveUntil(
+              //   MaterialPageRoute(
+              //     builder: (BuildContext context) => HomeCentraleScreen(),
+              //   ),
+              //   (route) => false,
+              // );
+              // setState(() {
+              //   isLoadToGoApp = false;
+              // });
             } else {
-              Navigator.pop(context);
+              var loginInfo = await context.read<AuthCubit>().state.loginInfo;
+              print("${loginInfo}");
+              // Navigator.pop(context);
             }
           },
           child: Container(
@@ -198,23 +200,25 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-      ..setOnConsoleMessage((message) async {
-        print("Le message du logg ${message.message}");
-        if (message.message.startsWith("for-mobile ")) {
-          String userData = message.message.split("for-mobile ")[1];
-          final userDataMap = jsonDecode(userData);
-          // print("====== ${userDataMap["api_token"]}");
-          // print("====== ${userDataMap["api_password"]}");
-          await (
-            userDataMap["api_token"],
-            userDataMap["api_password"],
-          );
+      ..setOnConsoleMessage(
+        (message) async {
+          print("Le message du logg ${message.message}");
+          if (message.message.startsWith("for-mobile ")) {
+            String userData = message.message.split("for-mobile ")[1];
+            final userDataMap = jsonDecode(userData);
+            // print("====== ${userDataMap["api_token"]}");
+            // print("====== ${userDataMap["api_password"]}");
+            await (
+              userDataMap["api_token"],
+              userDataMap["api_password"],
+            );
 
-          setState(() {
-            userDataFromWebView = userData;
-          });
-        }
-      })
+            setState(() {
+              userDataFromWebView = userData;
+            });
+          }
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
