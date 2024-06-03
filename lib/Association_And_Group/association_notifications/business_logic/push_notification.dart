@@ -31,11 +31,26 @@ class PushNotifications {
   static Future localNotiInit() async {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings(
+            'android/app/src/main/res/drawable/AssoplusNotification.png');
     final DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
       onDidReceiveLocalNotification: (id, title, body, payload) => null,
     );
+
+    // AndroidNotificationDetails androidNotificationDetails =
+    //     AndroidNotificationDetails(
+    //   "notification_id",
+    //   "notification channel name",
+    //   channelDescription: "notification channel description",
+    //   icon: "@mipmap/ic_launcher",
+    //   playSound: true,
+    //   sound: RawResourceAndroidNotificationSound("notification.wav"),
+    //   // actions: [
+    //   //   accept_button,
+    //   // ]
+    // );
+
     final LinuxInitializationSettings initializationSettingsLinux =
         LinuxInitializationSettings(defaultActionName: 'Open notification');
     final InitializationSettings initializationSettings =

@@ -73,17 +73,16 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                     functionToCall: () {},
                   )
                 : Material(
-                  color: Colors.transparent,
-                  child: Scaffold(
+                    color: Colors.transparent,
+                    child: Scaffold(
                       backgroundColor: AppColors.pageBackground,
                       appBar: AppBar(
                         title: Text(
                           "${DetailAss!.user_group!.name} (${DetailAss!.user_group!.matricule})",
                           style: TextStyle(
-                            fontSize: 16.sp,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 16.sp,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.bold),
                         ),
                         backgroundColor: AppColors.backgroundAppBAr,
                         elevation: 0,
@@ -182,14 +181,15 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            updateTrackingData("detailGroup.tournoi","${DateTime.now()}", {});
+                                            updateTrackingData(
+                                                "detailGroup.tournoi",
+                                                "${DateTime.now()}", {});
                                             // context.read<ServiceCubit>().state.currentService!.id;
                                             Modal().showBottomSheetListTournoi(
-                                              context,
-                                              currentInfoAllTournoiAssCourant
-                                                  .user_group!.tournois!,
-                                                  false
-                                            );
+                                                context,
+                                                currentInfoAllTournoiAssCourant
+                                                    .user_group!.tournois!,
+                                                false);
                                           },
                                           child: Container(
                                             margin: EdgeInsets.only(top: 10.h),
@@ -231,8 +231,8 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                                         "tournoi".tr(),
                                                         style: TextStyle(
                                                           fontSize: 18.sp,
-                                                          color:
-                                                              AppColors.blackBlue,
+                                                          color: AppColors
+                                                              .blackBlue,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -264,7 +264,7 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                             ),
                                           ),
                                         ),
-                  
+
                                         // GestureDetector(
                                         //   onTap: () {
                                         //     Navigator.push(
@@ -345,12 +345,15 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                         // ),
                                         GestureDetector(
                                           onTap: () {
-                                            updateTrackingData("detailGroup.members","${DateTime.now()}", {});
+                                            updateTrackingData(
+                                                "detailGroup.members",
+                                                "${DateTime.now()}", {});
                                             context
                                                 .read<MembreCubit>()
-                                                .showMembersAss(AppCubitStorage()
-                                                    .state
-                                                    .codeAssDefaul);
+                                                .showMembersAss(
+                                                    AppCubitStorage()
+                                                        .state
+                                                        .codeAssDefaul);
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -387,8 +390,8 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                                       Container(
                                                         child: Icon(
                                                           Icons.groups,
-                                                          color:
-                                                              AppColors.blackBlue,
+                                                          color: AppColors
+                                                              .blackBlue,
                                                           size: 20.sp,
                                                         ),
                                                         margin: EdgeInsets.only(
@@ -398,8 +401,8 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                                         "Membres".tr(),
                                                         style: TextStyle(
                                                           fontSize: 18.sp,
-                                                          color:
-                                                              AppColors.blackBlue,
+                                                          color: AppColors
+                                                              .blackBlue,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -416,10 +419,12 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                             ),
                                           ),
                                         ),
-                  
+
                                         GestureDetector(
                                           onTap: () {
-                                            updateTrackingData("detailGroup.btnSwitch","${DateTime.now()}", {});
+                                            updateTrackingData(
+                                                "detailGroup.btnSwitch",
+                                                "${DateTime.now()}", {});
                                             // context.read<cubi>().state.currentService!.id;
                                             Modal().showBottomSheetListAss(
                                               context,
@@ -465,8 +470,8 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                                             .tr(),
                                                         style: TextStyle(
                                                           fontSize: 18.sp,
-                                                          color:
-                                                              AppColors.blackBlue,
+                                                          color: AppColors
+                                                              .blackBlue,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -496,10 +501,12 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                             ),
                                           ),
                                         ),
-                  
+
                                         GestureDetector(
                                           onTap: () async {
-                                            updateTrackingData("detailGroup.btnAddAsso","${DateTime.now()}", {});
+                                            updateTrackingData(
+                                                "detailGroup.btnAddAsso",
+                                                "${DateTime.now()}", {});
                                             // print("${dataForCookies}");
                                             // print("objectobjectobjectobjectobject${context.read<AuthCubit>().state.dataCookies}");
                                             await launchUrlString(
@@ -547,8 +554,8 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                                             .tr(),
                                                         style: TextStyle(
                                                           fontSize: 18.sp,
-                                                          color:
-                                                              AppColors.blackBlue,
+                                                          color: AppColors
+                                                              .blackBlue,
                                                           fontWeight:
                                                               FontWeight.w500,
                                                         ),
@@ -565,83 +572,94 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                             ),
                                           ),
                                         ),
-                  if (!context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"])
-                                        GestureDetector(
-                                          onTap: () {
-                                            updateTrackingData("detailGroup.inviteMember","${DateTime.now()}", {});
-                                            Modal().showShareLinkPage(
-                                                context,
-                                                context.read<UserGroupCubit>().state.changeAssData!.user_group!.name
-                                                // "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
-                                                // "Photo de profil".tr(),
-                                                );
-                                            // _pickImage();
-                                            // _cropImage();
-                                            // Modal().showBottomShreetEditProfilPhoto(
-                                            //     context, "key", _pickImage());
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 10.h),
-                                            padding: EdgeInsets.only(
-                                              top: 20.h,
-                                              left: 10.w,
-                                              right: 15.w,
-                                              bottom: 20.h,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              // color: Colors.black12,
-                                              color: AppColors.white,
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.r,
-                                                    color: Color.fromARGB(
-                                                        12, 0, 0, 0)),
+                                        if (!context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .detailUser!["isMember"])
+                                          GestureDetector(
+                                            onTap: () {
+                                              updateTrackingData(
+                                                  "detailGroup.inviteMember",
+                                                  "${DateTime.now()}", {});
+                                              Modal().showShareLinkPage(
+                                                  context,
+                                                  context
+                                                      .read<UserGroupCubit>()
+                                                      .state
+                                                      .changeAssData!
+                                                      .user_group!
+                                                      .name
+                                                  // "${Variables.LienAIP}${currentDetailUser!["photo_profil"]}",
+                                                  // "Photo de profil".tr(),
+                                                  );
+                                              // _pickImage();
+                                              // _cropImage();
+                                              // Modal().showBottomShreetEditProfilPhoto(
+                                              //     context, "key", _pickImage());
+                                            },
+                                            child: Container(
+                                              margin:
+                                                  EdgeInsets.only(top: 10.h),
+                                              padding: EdgeInsets.only(
+                                                top: 20.h,
+                                                left: 10.w,
+                                                right: 15.w,
+                                                bottom: 20.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                // color: Colors.black12,
+                                                color: AppColors.white,
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                      width: 1.r,
+                                                      color: Color.fromARGB(
+                                                          12, 0, 0, 0)),
+                                                ),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Expanded(
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 20.w,
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            "assets/images/shareIcon.svg",
+                                                            // fit: BoxFit.scaleDown,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  right: 10.w,
+                                                                  left: 5.w),
+                                                        ),
+                                                        Text(
+                                                          "Lien d'invitation"
+                                                              .tr(),
+                                                          style: TextStyle(
+                                                            fontSize: 18.sp,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // Icon(
+                                                  //   Icons.arrow_right,
+                                                  //   color: AppColors.blackBlue,
+                                                  //   size: 14.sp,
+                                                  // ),
+                                                ],
                                               ),
                                             ),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Expanded(
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 20.w,
-                                                        child: SvgPicture.asset(
-                                                          "assets/images/shareIcon.svg",
-                                                          // fit: BoxFit.scaleDown,
-                                                          color:
-                                                              AppColors.blackBlue,
-                                                        ),
-                                                        margin: EdgeInsets.only(
-                                                            right: 10.w,
-                                                            left: 5.w),
-                                                      ),
-                                                      Text(
-                                                       "Lien d'invitation".tr(),
-                                                        style: TextStyle(
-                                                          fontSize: 18.sp,
-                                                          color:
-                                                              AppColors.blackBlue,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                // Icon(
-                                                //   Icons.arrow_right,
-                                                //   color: AppColors.blackBlue,
-                                                //   size: 14.sp,
-                                                // ),
-                                              ],
-                                            ),
                                           ),
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -655,7 +673,8 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                               .detailUser!["isMember"])
                             InkWell(
                               onTap: () async {
-                                updateTrackingData("detailGroup.btnAdminister","${DateTime.now()}", {});
+                                updateTrackingData("detailGroup.btnAdminister",
+                                    "${DateTime.now()}", {});
                                 await launchUrlString(
                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
                                   mode: LaunchMode.platformDefault,
@@ -715,7 +734,7 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                         ],
                       ),
                     ),
-                );
+                  );
           },
         );
       },
