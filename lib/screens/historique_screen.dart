@@ -968,7 +968,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                             builder: (DetailTournoiContext,
                                                 DetailTournoiState) {
                                               if (DetailTournoiState
-                                                          .isLoading ==
+                                                          .isLoadingHist ==
                                                       true &&
                                                   DetailTournoiState
                                                           .detailtournoiCourantHist ==
