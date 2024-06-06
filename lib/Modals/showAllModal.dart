@@ -1714,88 +1714,9 @@ class Modal {
       context: context,
       builder: (context) {
         return SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-              color: AppColors.white,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    height: 5.h,
-                    width: 55.w,
-                    decoration: BoxDecoration(
-                        color: AppColors.blackBlue,
-                        borderRadius: BorderRadius.circular(50)),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                    child: Text(
-                      "entrer_la_nouvelle_valeur".tr(),
-                      style: TextStyle(
-                        fontSize: 17.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.blackBlueAccent1,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: 20.w,
-                      right: 20.w,
-                    ),
-                    padding: EdgeInsets.only(left: 15.w),
-                    // height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      color: Color.fromARGB(15, 20, 45, 99),
-                    ),
-                    child: TextField(
-                      controller: infoUserController,
-                      autofocus: true,
-                      style: TextStyle(fontSize: 15.sp),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      await handleUpdateInfoUser(
-                          key,
-                          infoUserController.text,
-                          AppCubitStorage().state.codeAssDefaul,
-                          AppCubitStorage().state.membreCode);
-                      await handleDetailUser(AppCubitStorage().state.membreCode,
-                          AppCubitStorage().state.codeTournois);
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10.r),
-                      margin: EdgeInsets.only(
-                        top: 10.h,
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      child: Text(
-                        "confirmer".tr(),
-                        style:
-                            TextStyle(color: AppColors.white, fontSize: 12.sp),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          child: UpdateInfoUserWidget(
+            infoUserController: infoUserController,
+            keyForApi: key,
           ),
         );
       },
@@ -2271,6 +2192,142 @@ class Modal {
   }
 }
 
+class UpdateInfoUserWidget extends StatefulWidget {
+  UpdateInfoUserWidget({
+    super.key,
+    required this.infoUserController,
+    required this.keyForApi,
+  });
+
+  final TextEditingController infoUserController;
+  var keyForApi;
+
+  @override
+  State<UpdateInfoUserWidget> createState() => _UpdateInfoUserWidgetState();
+}
+
+class _UpdateInfoUserWidgetState extends State<UpdateInfoUserWidget> {
+  bool isload = false;
+  @override
+  Widget build(BuildContext context) {
+    Future<void> handleDetailUser(userCode, codeTournoi) async {
+      final allCotisationAss = await context
+          .read<AuthCubit>()
+          .detailAuthCubit(userCode, codeTournoi);
+    }
+
+    Future<void> handleUpdateInfoUser(
+        keyForApi, value, partner_urlcode, membre_code) async {
+      final allCotisationAss = await context
+          .read<AuthUpdateCubit>()
+          .UpdateInfoUserCubit(keyForApi, value, partner_urlcode, membre_code);
+
+      if (allCotisationAss != null) {
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+        color: AppColors.white,
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 5.h,
+              width: 55.w,
+              decoration: BoxDecoration(
+                  color: AppColors.blackBlue,
+                  borderRadius: BorderRadius.circular(50)),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+              child: Text(
+                "entrer_la_nouvelle_valeur".tr(),
+                style: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.blackBlueAccent1,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: 20.w,
+                right: 20.w,
+              ),
+              padding: EdgeInsets.only(left: 15.w),
+              // height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                color: Color.fromARGB(15, 20, 45, 99),
+              ),
+              child: TextField(
+                controller: widget.infoUserController,
+                autofocus: true,
+                style: TextStyle(fontSize: 15.sp),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                setState(() {
+                  isload = true;
+                });
+                
+                await handleUpdateInfoUser(
+                    widget.keyForApi,
+                    widget.infoUserController.text,
+                    AppCubitStorage().state.codeAssDefaul,
+                    AppCubitStorage().state.membreCode);
+                await handleDetailUser(AppCubitStorage().state.membreCode,
+                    AppCubitStorage().state.codeTournois);
+                Navigator.pop(context);
+                setState(() {
+                  isload = false;
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.all(10.r),
+                margin: EdgeInsets.only(
+                  top: 10.h,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                decoration: BoxDecoration(
+                  color: isload
+                    ? AppColors.white
+                    :AppColors.colorButton,
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                child: isload
+                    ? Container(width: 20.r, height: 20.r,child: CircularProgressIndicator(color: AppColors.colorButton, strokeWidth: 2.w,))
+                    : Text(
+                        "confirmer".tr(),
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class CotisationHistoriqueWidget extends StatefulWidget {
   CotisationHistoriqueWidget({
     super.key,
@@ -2490,10 +2547,9 @@ class _CotisationHistoriqueWidgetState
                   ),
                 ),
               );
-              if (
-                CotisationDetailstate.isLoading == true &&
+            if (CotisationDetailstate.isLoading == true &&
                 CotisationDetailstate.detailCotisation != null)
-                return Expanded(
+              return Expanded(
                 child: Center(
                   child: EasyLoader(
                     backgroundColor: Color.fromARGB(0, 255, 255, 255),

@@ -1975,8 +1975,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                         .height /
                                                     7),
                                             child: EasyLoader(
-                                              backgroundColor: Color.fromARGB(
-                                                  0, 255, 255, 255),
+                                              backgroundColor: Color.fromARGB(0, 255, 16, 16),
                                               iconSize: 50.r,
                                               iconColor:
                                                   AppColors.blackBlueAccent1,

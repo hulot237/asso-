@@ -26,7 +26,10 @@
     android:name="com.google.firebase.messaging.default_notification_color"
     android:resource="@color/colorNotification" />
 
-
+<activity
+    android:name="com.yalantis.ucrop.UCropActivity"
+    android:screenOrientation="portrait"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

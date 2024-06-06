@@ -46,11 +46,10 @@ Widget PageScaffold({
         ),
         backgroundColor: AppColors.backgroundAppBAr,
         leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: BackButtonWidget(colorIcon: AppColors.white)
-        ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: BackButtonWidget(colorIcon: AppColors.white)),
       ),
       child: child,
     );
@@ -61,16 +60,19 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "paramètres".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
+        style: TextStyle(
+          fontSize: 16.sp,
+          color: AppColors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
       leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: BackButtonWidget(colorIcon: AppColors.white)
-      ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: BackButtonWidget(colorIcon: AppColors.white)),
     ),
     body: child,
   );
@@ -146,7 +148,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                updateTrackingData("parameter.language","${DateTime.now()}", {});
+                                updateTrackingData("parameter.language",
+                                    "${DateTime.now()}", {});
                                 // Navigator.pop(context);
                                 // Navigator.push(
                                 //   context,
@@ -204,7 +207,6 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                
                                 // Navigator.pop(context);
                                 // Navigator.push(
                                 //   context,
@@ -276,7 +278,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
 
                 GestureDetector(
                   onTap: () {
-                    updateTrackingData("parameter.aboutHelp","${DateTime.now()}", {});
+                    updateTrackingData(
+                        "parameter.aboutHelp", "${DateTime.now()}", {});
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -403,7 +406,8 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                updateTrackingData("parameter.logOut","${DateTime.now()}", {});
+                                updateTrackingData("parameter.logOut",
+                                    "${DateTime.now()}", {});
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -548,7 +552,6 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                       ),
                     ],
                     onExpansionChanged: (e) async {
-
                       setState(() {
                         // print(e);
                         _customIconLangue = e;
@@ -564,9 +567,9 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                             "Code usernamekey: ${AppCubitStorage().state.userNameKey}");
                         print(
                             "Code passswordkey: ${AppCubitStorage().state.passwordKey}");
-                            print(
+                        print(
                             "Code id session: ${AppCubitStorage().state.xSessionId}");
-                            print(
+                        print(
                             "Code tournoiHist: ${AppCubitStorage().state.codeTournoisHist}");
                       });
                     },
@@ -906,43 +909,44 @@ class _ParamsAppPageState extends State<ParamsAppPage> {
                 // ),
                 Expanded(
                   child: Container(
-              margin: EdgeInsets.only(bottom: 5.h),
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "By",
-                        style: TextStyle(
-                            fontSize: 9.sp,
-                            color: Colors.grey[600],
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w900),
-                        textAlign: TextAlign.center,
-                      ),
-                      Container(
-                        width: 40.r,
-                        child: Image.asset("assets/images/FAroty_gris.png"),
-                      ),
-                      Text(
-                        "Version ${Variables.version}",
-                        style: TextStyle(
-                          fontSize: 9.sp,
-                          color: Colors.grey[600],
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w900,
+                    margin: EdgeInsets.only(bottom: 5.h),
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "By",
+                              style: TextStyle(
+                                  fontSize: 9.sp,
+                                  color: Colors.grey[600],
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w900),
+                              textAlign: TextAlign.center,
+                            ),
+                            Container(
+                              width: 40.r,
+                              child:
+                                  Image.asset("assets/images/FAroty_gris.png"),
+                            ),
+                            Text(
+                              "Version ${Variables.version}",
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: Colors.grey[600],
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w900,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
                 )
               ],
             ),

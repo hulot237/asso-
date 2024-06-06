@@ -11,7 +11,7 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> UserDetail(userCode, codeTournoi) async {
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi&version_app=${Variables.version}&app_mode=${Platform.isAndroid?"android":"ios"}',
+      '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi&version_app=${Variables.version}&app_mode=${Platform.isAndroid ? "android" : "ios"}',
     );
     final Map<String, dynamic> dataJson = response.data["data"];
 
@@ -96,12 +96,18 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> UpdateInfoUserRepository(
       key, value, partner_urlcode, membre_code) async {
+    print("key $key");
+    log(
+      "$value ..",
+    );
+    print("partner_urlcode $partner_urlcode");
+    print("membre_code $membre_code");
     try {
       final response =
           await dio.put('${Variables.LienAIP}/api/v1/membre/update', data: {
         "key": key,
         "value": value,
-        "photo_profil": value,
+        "photo_profil_mobile": value,
         "partner_urlcode": partner_urlcode,
         "membre_code": membre_code,
       });
