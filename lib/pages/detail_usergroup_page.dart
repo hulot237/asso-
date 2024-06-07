@@ -86,16 +86,14 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                         ),
                         backgroundColor: AppColors.backgroundAppBAr,
                         elevation: 0,
-                        leading: Platform.isAndroid
-                            ? GestureDetector(
+                        leading: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pop(context);
                                 },
                                 child: BackButtonWidget(
                                   colorIcon: AppColors.white,
                                 ),
-                              )
-                            : Container(),
+                              ),
                         // actions: [
                         //   Stack(
                         //     alignment: Alignment.center,

@@ -234,8 +234,8 @@ class _SettingScreenState extends State<SettingScreen>
                                             borderRadius:
                                                 BorderRadius.circular(50.r),
                                           ),
-                                          height: 30.w,
-                                          width: 30.w,
+                                          height: 30.h,
+                                          width: 30.h,
                                           child: Image.network(
                                             // "zz",
                                             "${Variables.LienAIP}${DetailAss!.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
@@ -291,8 +291,8 @@ class _SettingScreenState extends State<SettingScreen>
                                         50.r,
                                       ),
                                     ),
-                                    height: 30.w,
-                                    width: 30.w,
+                                    height: 30.h,
+                                    width: 30.h,
                                     child: Image.asset(
                                       "assets/images/Groupe_ou_Asso.png",
                                       scale: 4,
@@ -301,8 +301,8 @@ class _SettingScreenState extends State<SettingScreen>
                                 ),
                               Container(
                                 margin: EdgeInsets.only(right: 10.w),
-                                height: 30.w,
-                                width: 30.w,
+                                height: 30.h,
+                                width: 30.h,
                                 child: AddAssoWidget(
                                   screenSource: "profile.btnAddAsso",
                                 ),
@@ -336,7 +336,7 @@ class _SettingScreenState extends State<SettingScreen>
                                         child: Icon(
                                           Icons.notifications_active_outlined,
                                           color: AppColors.white,
-                                          size: 30.sp,
+                                          size: 30.h,
                                         ),
                                       ),
                                       BlocBuilder<NotificationCubit,
