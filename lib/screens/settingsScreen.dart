@@ -163,6 +163,7 @@ class _SettingScreenState extends State<SettingScreen>
                   : Scaffold(
                       backgroundColor: AppColors.pageBackground,
                       appBar: AppBar(
+                        centerTitle: false,
                         title: Text(
                           "Profil".tr(),
                           style: TextStyle(

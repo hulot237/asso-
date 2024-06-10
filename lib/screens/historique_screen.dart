@@ -376,6 +376,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                               appBar: PreferredSize(
                                 preferredSize: Size.fromHeight(110.h),
                                 child: AppBar(
+                                  centerTitle: false,
                                   // toolbarHeight: 130.h,
                                   title: Text(
                                     "historiques".tr(),

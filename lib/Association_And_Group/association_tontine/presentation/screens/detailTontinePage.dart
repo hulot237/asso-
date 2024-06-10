@@ -299,9 +299,9 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                   child: Stack(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(
-                          bottom: Platform.isIOS ? 70.h : 10.h,
-                        ),
+                        // padding: EdgeInsets.only(
+                        //   bottom: 70.h,
+                        // ),
                         child: ListView.builder(
                           padding: EdgeInsets.all(0),
                           shrinkWrap: true,
@@ -335,7 +335,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                 }
                               },
                               child: Container(
-                                margin: EdgeInsets.all(5.r),
+                                margin: EdgeInsets.all(10.r),
                                 child: widgetDetailHistoriqueTontineCard(
                                   isPayed: itemTontine['is_payed'],
                                   nomTontine: widget.nomTontine,
