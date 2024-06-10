@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class WidgetCotisation extends StatefulWidget {
@@ -67,6 +68,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -190,9 +193,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        await launchUrlString(
+                                         launchWeb(
                                           "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                          mode: LaunchMode.platformDefault,
                                         );
                                         updateTrackingData(
                                             "${widget.screenSource}.btnContribution",
@@ -390,9 +392,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                     updateTrackingData(
                                         "${widget.screenSource}.btnwithdrawnFundsContribution",
                                         "${DateTime.now()}", {});
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                     print("object1");
                                   },
@@ -433,13 +434,13 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             Expanded(
                               child: InkWell(
                                 onTap: () async {
+
                                   updateTrackingData(
                                       "${widget.screenSource}.btnAdministerContribution",
                                       "${DateTime.now()}", {});
-                                  await launchUrlString(
-                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
-                                    mode: LaunchMode.platformDefault,
-                                  );
+                                  // print("https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile");
+                                  launchWeb(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile");
                                 },
                                 child: Column(
                                   children: [
@@ -510,8 +511,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                         ],
                       ),
                     )
-                  
-                  
                   ],
                 ),
               ),

@@ -72,12 +72,12 @@ Widget PageScaffold({
 class _ProposAidePageState extends State<ProposAidePage> {
   @override
   Widget build(BuildContext context) {
-    Future<void> _launchSocial(webUrl) async {
-      await launchUrlString(
-        webUrl,
-        mode: LaunchMode.platformDefault,
-      );
-    }
+    // Future<void> _launchSocial(webUrl) async {
+    //   await launchWeb(
+    //     webUrl,
+    //     mode: LaunchMode.platformDefault,
+    //   );
+    // }
 
     return Material(
       type: MaterialType.transparency,
@@ -96,7 +96,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   onTap: () {
                     updateTrackingData(
                         "aboutHelp.privacyPolicy", "${DateTime.now()}", {});
-                    _launchSocial("https://faroty.com/privacies");
+                    launchWeb("https://faroty.com/privacies");
                   },
                   title: Row(
                     children: [
@@ -129,7 +129,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   onTap: () {
                     updateTrackingData(
                         "aboutHelp.conditionOfUse", "${DateTime.now()}", {});
-                    _launchSocial("https://faroty.com/termes");
+                    launchWeb("https://faroty.com/termes");
                   },
                   title: Row(
                     children: [
@@ -162,7 +162,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   onTap: () {
                     updateTrackingData(
                         "aboutHelp.aboutApp", "${DateTime.now()}", {});
-                    _launchSocial("https://faroty.com/Businesspage");
+                    launchWeb("https://faroty.com/Businesspage");
                   },
                   title: Row(
                     children: [
@@ -196,7 +196,7 @@ class _ProposAidePageState extends State<ProposAidePage> {
                   onTap: () {
                     updateTrackingData(
                         "aboutHelp.helpCenter", "${DateTime.now()}", {});
-                    _launchSocial("https://faroty.com/helpdesk");
+                    launchWeb("https://faroty.com/helpdesk");
                   },
                   title: Row(
                     children: [

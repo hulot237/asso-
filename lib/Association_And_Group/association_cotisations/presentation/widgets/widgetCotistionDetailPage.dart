@@ -194,9 +194,8 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        await launchUrlString(
+                                         launchWeb(
                                           "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                          mode: LaunchMode.platformDefault,
                                         );
                                         // updateTrackingData(
                                         //     "${widget.screenSource}.btnContribution",
@@ -540,9 +539,8 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                     updateTrackingData(
                                         "${widget.screenSource}.btnwithdrawnFundsContribution",
                                         "${DateTime.now()}", {});
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                   },
                                   child: Column(
@@ -584,9 +582,8 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                 onTap: () async {
                                   updateTrackingData("home.btnAdminister",
                                       "${DateTime.now()}", {});
-                                  await launchUrlString(
+                                   launchWeb(
                                     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
-                                    mode: LaunchMode.platformDefault,
                                   );
                                 },
                                 child: Column(

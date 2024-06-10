@@ -29,9 +29,8 @@ class AddAssoElement extends StatelessWidget {
 
               onTap: () async {
                 updateTrackingData("${screenSource}","${DateTime.now()}", {});
-                await launchUrlString(
+                 launchWeb(
                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/${routeElement}&app_mode=mobile",
-                  mode: LaunchMode.platformDefault,
                 );
               },
               child: Container(

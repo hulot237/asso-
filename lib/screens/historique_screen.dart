@@ -415,10 +415,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                         "transactions.btnAdminister",
                                                         "${DateTime.now()}",
                                                         {});
-                                                    await launchUrlString(
+                                                     launchWeb(
                                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                                      mode: LaunchMode
-                                                          .platformDefault,
+                                                   
                                                     );
                                                   },
                                                   child: Container(
@@ -673,28 +672,28 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     DetailTournoiCourantState>(
                                                 builder: (DetailTournoiContext,
                                                     DetailTournoiState) {
-                                                      if (DetailTournoiState
+                                              if (DetailTournoiState
                                                           .isLoading ==
                                                       true &&
                                                   DetailTournoiState
                                                           .detailtournoiCourantHist ==
                                                       null)
                                                 return Container(
-                                                  // child: Expanded(
-                                                  //   child: EasyLoader(
-                                                  //     backgroundColor:
-                                                  //         Color.fromARGB(
-                                                  //             0, 255, 255, 255),
-                                                  //     iconSize: 50.r,
-                                                  //     iconColor: AppColors
-                                                  //         .blackBlueAccent1,
-                                                  //     image: AssetImage(
-                                                  //       "assets/images/AssoplusFinal.png",
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-                                                );
-                                                
+                                                    // child: Expanded(
+                                                    //   child: EasyLoader(
+                                                    //     backgroundColor:
+                                                    //         Color.fromARGB(
+                                                    //             0, 255, 255, 255),
+                                                    //     iconSize: 50.r,
+                                                    //     iconColor: AppColors
+                                                    //         .blackBlueAccent1,
+                                                    //     image: AssetImage(
+                                                    //       "assets/images/AssoplusFinal.png",
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
+                                                    );
+
                                               return PopupMenuButton(
                                                 elevation: 5,
                                                 shadowColor:
@@ -828,7 +827,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 //   if (value == "tournoi") {
                                                 //     print(value);
                                                 //     await AppCubitStorage().updateCodeTournoisDefault(item.matricule);
-                                                //     // await launchUrlString(
+                                                //     // await launchWeb(
                                                 //     //   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=1&app_mode=mobile",
                                                 //     //   mode: LaunchMode.platformDefault,
                                                 //     // );
@@ -1003,8 +1002,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                               //     ),
                                               //   );
                                               final currentDetailtournoiCourant =
-                                                  DetailTournoiContext
-                                                      .read<
+                                                  DetailTournoiContext.read<
                                                           DetailTournoiCourantCubit>()
                                                       .state
                                                       .detailtournoiCourantHist;
@@ -1202,9 +1200,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                             InkWell(
                                                                               onTap: () async {
                                                                                 updateTrackingData("transactions.btnAddMeeting", "${DateTime.now()}", {});
-                                                                                await launchUrlString(
+                                                                                 launchWeb(
                                                                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                                                                                  mode: LaunchMode.platformDefault,
+                                                                               
                                                                                 );
                                                                               },
                                                                               child: Container(
@@ -1312,15 +1310,14 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                   builder:
                                                       (DetailTournoiContext,
                                                           DetailTournoiState) {
-                                                            if (DetailTournoiState
-                                                          .isLoading ==
-                                                      true &&
-                                                  DetailTournoiState
-                                                          .detailtournoiCourantHist ==
-                                                      null)
-                                                return Container(
-                                                );
-                                                            
+                                                if (DetailTournoiState
+                                                            .isLoading ==
+                                                        true &&
+                                                    DetailTournoiState
+                                                            .detailtournoiCourantHist ==
+                                                        null)
+                                                  return Container();
+
                                                 return PopupMenuButton(
                                                   elevation: 5,
                                                   shadowColor: AppColors
@@ -1567,7 +1564,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     DetailTournoiCourantState>(
                                                 builder: (DetailTournoiContext,
                                                     DetailTournoiState) {
-                                                      if (DetailTournoiState
+                                              if (DetailTournoiState
                                                           .isLoading ==
                                                       true &&
                                                   DetailTournoiState
@@ -1589,8 +1586,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                   ),
                                                 );
                                               final currentDetailtournoiCourant =
-                                                  DetailTournoiContext
-                                                      .read<
+                                                  DetailTournoiContext.read<
                                                           DetailTournoiCourantCubit>()
                                                       .state
                                                       .detailtournoiCourantHist;
@@ -1835,14 +1831,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     CotisationState>(
                                                 builder: (CotisationContext,
                                                     CotisationState) {
-                                                      if (CotisationState
-                                                          .isLoading ==
+                                              if (CotisationState.isLoading ==
                                                       true &&
                                                   CotisationState
                                                           .allCotisationAss ==
-                                                      null)
-                                                return Container(
-                                                );
+                                                      null) return Container();
                                               return PopupMenuButton(
                                                 elevation: 5,
                                                 shadowColor:
@@ -1972,7 +1965,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                 //   if (value == "tournoi") {
                                                 //     print(value);
                                                 //     await AppCubitStorage().updateCodeTournoisDefault(item.matricule);
-                                                //     // await launchUrlString(
+                                                //     // await launchWeb(
                                                 //     //   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=1&app_mode=mobile",
                                                 //     //   mode: LaunchMode.platformDefault,
                                                 //     // );
@@ -2333,10 +2326,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                             "transactions.btnAddContribution",
                                                                             "${DateTime.now()}",
                                                                             {});
-                                                                        await launchUrlString(
+                                                                         launchWeb(
                                                                           "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
-                                                                          mode:
-                                                                              LaunchMode.platformDefault,
                                                                         );
                                                                       },
                                                                       child:
@@ -2455,14 +2446,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     CotisationState>(
                                                 builder: (CotisationContext,
                                                     CotisationState) {
-                                                       if (CotisationState
-                                                          .isLoading ==
+                                              if (CotisationState.isLoading ==
                                                       true &&
                                                   CotisationState
                                                           .allCotisationAss ==
-                                                      null)
-                                                return Container(
-                                                );
+                                                      null) return Container();
                                               return PopupMenuButton(
                                                 elevation: 5,
                                                 shadowColor:
@@ -2721,10 +2709,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                               .state
                                               .detailUser!["isMember"])
                                             BlocBuilder<AuthCubit, AuthState>(
-
                                               builder:
                                                   (AuthContext, AuthState) {
-                                                    
                                                 final currentDetailUser =
                                                     context
                                                         .read<AuthCubit>()
@@ -2906,10 +2892,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                               "transactions.btnAddSanction",
                                                                               "${DateTime.now()}",
                                                                               {});
-                                                                          await launchUrlString(
+                                                                           launchWeb(
                                                                             "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanctions?query=1&app_mode=mobile",
-                                                                            mode:
-                                                                                LaunchMode.platformDefault,
                                                                           );
                                                                         },
                                                                         child:
@@ -3176,10 +3160,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                               "transactions.btnAddSanction",
                                                                               "${DateTime.now()}",
                                                                               {});
-                                                                          await launchUrlString(
+                                                                           launchWeb(
                                                                             "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanctions?query=1&app_mode=mobile",
-                                                                            mode:
-                                                                                LaunchMode.platformDefault,
                                                                           );
                                                                         },
                                                                         child:
@@ -3861,7 +3843,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                                           //   updateTrackingData(
                                                                                           //       "${widget.screenSource}.btnwithdrawnFundsContribution",
                                                                                           //       "${DateTime.now()}", {});
-                                                                                          //   await launchUrlString(
+                                                                                          //   await launchWeb(
                                                                                           //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
                                                                                           //     mode: LaunchMode.platformDefault,
                                                                                           //   );
@@ -3988,10 +3970,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                               "transactions.btnAddSaving",
                                                                               "${DateTime.now()}",
                                                                               {});
-                                                                          await launchUrlString(
+                                                                           launchWeb(
                                                                             "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/loan?query=1&app_mode=mobile",
-                                                                            mode:
-                                                                                LaunchMode.platformDefault,
                                                                           );
                                                                         },
                                                                         child:
@@ -4528,7 +4508,7 @@ class _buttonSuspendState extends State<buttonSuspend> {
         //   updateTrackingData("transactions.btnAddSharesaving", "${DateTime.now()}", {});
         //     Share.share(
         //        "Vous pouvez *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
-        //   await launchUrlString(
+        //   await launchWeb(
         //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/loan?query=1&app_mode=mobile",
         //     mode: LaunchMode.platformDefault,
         //   );

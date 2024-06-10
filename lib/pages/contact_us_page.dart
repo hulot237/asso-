@@ -113,12 +113,12 @@ class _ContactUsPageState extends State<ContactUsPage>
       return;
     }
 
-    Future<void> _launchSocial(webUrl) async {
-      await launchUrlString(
-        webUrl,
-        mode: LaunchMode.platformDefault,
-      );
-    }
+    // Future<void> _launchSocial(webUrl) async {
+    //    launchWeb(
+    //     webUrl,
+    //     mode: LaunchMode.platformDefault,
+    //   );
+    // }
 
     return Material(
       type: MaterialType.transparency,
@@ -291,7 +291,7 @@ class _ContactUsPageState extends State<ContactUsPage>
                             onTap: () {
                               updateTrackingData("contactUs.linkedin",
                                   "${DateTime.now()}", {});
-                              _launchSocial(
+                              launchWeb(
                                 "https://www.linkedin.com/company/faroty/",
                               );
                             },
@@ -339,7 +339,7 @@ class _ContactUsPageState extends State<ContactUsPage>
                             onTap: () {
                               updateTrackingData(
                                   "contactUs.x", "${DateTime.now()}", {});
-                              _launchSocial(
+                              launchWeb(
                                 "https://x.com/farotyMe/",
                               );
                             },
@@ -387,7 +387,7 @@ class _ContactUsPageState extends State<ContactUsPage>
                             onTap: () {
                               updateTrackingData("contactUs.instagram",
                                   "${DateTime.now()}", {});
-                              _launchSocial(
+                              launchWeb(
                                 "https://www.instagram.com/farotyme/",
                               );
                             },
@@ -435,7 +435,7 @@ class _ContactUsPageState extends State<ContactUsPage>
                             onTap: () {
                               updateTrackingData("contactUs.facebook",
                                   "${DateTime.now()}", {});
-                              _launchSocial(
+                              launchWeb(
                                 "https://www.facebook.com/farotyMe/",
                               );
                             },

@@ -52,9 +52,8 @@ Widget PageScaffold({
         trailing: Container(
           child: !context.read<AuthCubit>().state.detailUser!["isMember"] ?InkWell(
             onTap: () async {
-              await launchUrlString(
+               launchWeb(
                 "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/new-membres&app_mode=mobile",
-                mode: LaunchMode.platformDefault,
               );
             },
             child: Container(
@@ -96,9 +95,8 @@ Widget PageScaffold({
         if (!context.read<AuthCubit>().state.detailUser!["isMember"])
           InkWell(
             onTap: () async {
-              await launchUrlString(
+               launchWeb(
                 "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/new-membres&app_mode=mobile",
-                mode: LaunchMode.platformDefault,
               );
             },
             child: Container(

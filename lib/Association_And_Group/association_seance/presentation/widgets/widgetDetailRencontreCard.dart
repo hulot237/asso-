@@ -521,9 +521,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                       } else {
                         return InkWell(
                           onTap: () async {
-                            await launchUrlString(
+                             launchWeb(
                               "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}&app_mode=mobile",
-                              mode: LaunchMode.platformDefault,
                             );
                           },
                           child: currentDetailSeanceRapport != ""
@@ -564,9 +563,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 onTap: () async {
                                   // updateTrackingData("home.btnAdminister",
                                   //     "${DateTime.now()}", {});
-                                  await launchUrlString(
+                                   launchWeb(
                                     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}&app_mode=mobile",
-                                    mode: LaunchMode.platformDefault,
                                   );
                                 },
                                 child: Column(
@@ -614,7 +612,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     //       "home.btnwithdrawnFundsContribution",
                                     //       "${DateTime.now()}", {});
                                     // SeanceRepository().CloseSeance(widget.codeSeance);
-                                    //   await launchUrlString(
+                                    //   await launchWeb(
                                     //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
                                     //     mode: LaunchMode.platformDefault,
                                     //   );
@@ -690,7 +688,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                             //       // updateTrackingData(
                             //       //       "home.btnwithdrawnFundsContribution",
                             //       //       "${DateTime.now()}", {});
-                            //       //   await launchUrlString(
+                            //       //   await launchWeb(
                             //       //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
                             //       //     mode: LaunchMode.platformDefault,
                             //       //   );
@@ -758,24 +756,20 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 onSelected: (value) async {
                                   if (value == "cotisation") {
                                     print(value);
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=1&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                   } else if (value == "sanction") {
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=2&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                   } else if (value == "tontine") {
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=4&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                   } else if (value == "rappot") {
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=3&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                   } else if (value == "pdf") {
                                     setState(() {

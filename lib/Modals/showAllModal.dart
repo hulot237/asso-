@@ -171,9 +171,8 @@ class Modal {
                     GestureDetector(
                       onTap: () async {
                         print("objectobjectobjectobjectobject");
-                        await launchUrlString(
+                         launchWeb(
                           "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://business.faroty.com/groups&app_mode=mobile",
-                          mode: LaunchMode.platformDefault,
                         );
                       },
                       child: Container(
@@ -1766,9 +1765,8 @@ class Modal {
                   Navigator.pop(
                     context,
                   );
-                  await launchUrlString(
+                   launchWeb(
                     "https://${lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                    mode: LaunchMode.platformDefault,
                   );
 
                   // Navigator.push(
@@ -1835,9 +1833,8 @@ class Modal {
                     Navigator.pop(
                       context,
                     );
-                    await launchUrlString(
+                     launchWeb(
                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=${elementUrl}&app_mode=mobile",
-                      mode: LaunchMode.platformDefault,
                     );
                   },
                   child: Container(

@@ -269,9 +269,8 @@ class _SettingScreenState extends State<SettingScreen>
                                   onTap: () async {
                                     updateTrackingData("profile.btnAdminister",
                                         "${DateTime.now()}", {});
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                   },
                                   child: Container(

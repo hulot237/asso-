@@ -112,9 +112,8 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                     GestureDetector(
                       onTap: () async {
 
-                        await launchUrlString(
+                         launchWeb(
                                   "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                  mode: LaunchMode.platformDefault,
                                 );
                         // updateTrackingData("home.btnSanction", "${DateTime.now()}", {"type": 'sanction', "sanction_id": "${widget.codeCotisation}"});
                         // String msg =
@@ -334,7 +333,7 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                           //       onTap: () async {
                           //         // updateTrackingData("home.btnAdminister",
                           //         //     "${DateTime.now()}", {});
-                          //         // await launchUrlString(
+                          //         // await launchWeb(
                           //         //   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
                           //         //   mode: LaunchMode.platformDefault,
                           //         // );

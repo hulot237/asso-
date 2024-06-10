@@ -118,9 +118,8 @@ class _widgetDetailHistoriqueTontineCardState
                       widget.isPayed == 0
                           ? GestureDetector(
                               onTap: () async {
-                                await launchUrlString(
+                                 launchWeb(
                                   "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                  mode: LaunchMode.platformDefault,
                                 );
 
                                 // String msg =
@@ -313,9 +312,8 @@ class _widgetDetailHistoriqueTontineCardState
                                 updateTrackingData(
                                     "home.btnwithdrawnFundsContribution",
                                     "${DateTime.now()}", {});
-                                await launchUrlString(
+                                 launchWeb(
                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                  mode: LaunchMode.platformDefault,
                                 );
                               },
                               child: Column(
@@ -357,9 +355,8 @@ class _widgetDetailHistoriqueTontineCardState
                             onTap: () async {
                               updateTrackingData("home.btnAdministerTontine",
                                   "${DateTime.now()}", {});
-                              await launchUrlString(
+                               launchWeb(
                                 "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
-                                mode: LaunchMode.platformDefault,
                               );
                             },
                             child: Column(

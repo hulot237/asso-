@@ -5,6 +5,7 @@ import 'package:faroty_association_1/Association_And_Group/user_group/business_l
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/app_storage_model_tracking.dart';
 import 'package:faroty_association_1/network/token_interceptor.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String formatMontantFrancais(double montant) {
   // Utilise la fonction 'toStringAsFixed' pour formater le montant avec deux décimales
@@ -351,3 +352,12 @@ updateTrackingData(String code, String date, Map<String, dynamic> data) async {
     print('Erreur lors de la mise à jour des données de suivi: $e');
   }
 }
+
+
+  Future<void> launchWeb(webUrl) async {
+    final url = webUrl;
+    var uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw 'Could not launch';
+    }
+  }

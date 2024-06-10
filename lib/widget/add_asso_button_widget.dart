@@ -29,9 +29,8 @@ class _AddAssoWidgetState extends State<AddAssoWidget> {
         updateTrackingData("${widget.screenSource}", "${DateTime.now()}", {});
         // print("${dataForCookies}");
         print("objectobjectobjectobjectobject${context.read<AuthCubit>().state.dataCookies}");
-        await launchUrlString(
+         launchWeb(
           "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://business.faroty.com/groups&app_mode=mobile",
-          mode: LaunchMode.platformDefault,
         );
       },
       child: Container(
