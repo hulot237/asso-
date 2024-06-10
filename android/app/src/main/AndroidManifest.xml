@@ -13,7 +13,7 @@
     </queries>
 
     <application
-        android:label="Asso+"
+        android:label="ASSO+"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
