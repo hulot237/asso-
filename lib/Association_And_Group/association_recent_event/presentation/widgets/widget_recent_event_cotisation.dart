@@ -2,7 +2,10 @@ import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widget_pay_another_person.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
@@ -215,38 +218,27 @@ class _widgetRecentEventCotisationState
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        onTap: () async {
-                           launchWeb(
-                                          "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                        );
-                          // updateTrackingData(
-                          //     "home.btnContribution", "${DateTime.now()}", {
-                          //   "type": 'contribution',
-                          //   "contribution_id": "${widget.codeCotisation}"
-                          // });
-                          // String msg =
-                          //     "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
 
-                          // String raisonComplete =
-                          //     'Paiement de la cotisation'.tr();
-                          // String motif = "payer_vous_même".tr();
-                          // String paiementProcheMsg =
-                          //     "partager_le_lien_de_paiement".tr();
-                          // String msgAppBarPaiementPage =
-                          //     "${'Paiement de la cotisation'.tr()}  ${widget.motif}";
-                          // String elementUrl =
-                          //     "https://groups.faroty.com/cotisations-details/${widget.codeCotisation}";
-                          // Modal().showModalActionPayement(
-                          //   context,
-                          //   msg,
-                          //   widget.lienDePaiement,
-                          //   raisonComplete,
-                          //   motif,
-                          //   paiementProcheMsg,
-                          //   msgAppBarPaiementPage,
-                          //   elementUrl,
-                          // );
+                      PopupMenuButton(
+                        elevation: 5,
+                        shadowColor: AppColors.barrierColorModal,
+                        onSelected: (value) async {
+                          if (value == "mySelf") {
+                            print("value");
+                            launchWeb(
+                              "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                            );
+                          } else if (value == "anotherPerson") {
+                            handleDetailCotisation(widget.codeCotisation);
+                            Modal().showModalPayForAnotherPersonCotisation(
+                              context,
+                              widget.codeCotisation,
+                              widget.lienDePaiement,
+                              widget.motif,
+                              widget.montantCotisation,
+                              widget.type == "1" ? true:false,
+                            );
+                          }
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -270,7 +262,68 @@ class _widgetRecentEventCotisationState
                             ),
                           ),
                         ),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          PopupMenuItem(
+                            value: "mySelf",
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Container(
+                                    height: 22.h,
+                                    width: 22.w,
+                                    child: SvgPicture.asset(
+                                      "assets/images/person.svg",
+                                      fit: BoxFit.cover,
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'Payer pour moi'.tr(),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: "anotherPerson",
+                            // onTap: () {
+                            //   _showSimpleModalDialog(context);
+                            // },
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Container(
+                                    height: 22.h,
+                                    width: 22.w,
+                                    child: SvgPicture.asset(
+                                      "assets/images/friendsTalking.svg",
+                                      fit: BoxFit.cover,
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  "Payer pour quelqu'un".tr(),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
+                    
+                    
                     ],
                   ),
                   Container(
@@ -468,13 +521,13 @@ class _widgetRecentEventCotisationState
                           if (widget.nomBeneficiaire != "")
                             Expanded(
                               child: InkWell(
-                                onTap: () async{
+                                onTap: () async {
                                   updateTrackingData(
-                                        "home.btnwithdrawnFundsContribution",
-                                        "${DateTime.now()}", {});
-                                     launchWeb(
-                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                    );
+                                      "home.btnwithdrawnFundsContribution",
+                                      "${DateTime.now()}", {});
+                                  launchWeb(
+                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                  );
                                 },
                                 child: Column(
                                   children: [
@@ -486,18 +539,17 @@ class _widgetRecentEventCotisationState
                                         color: AppColors.blackBlueAccent1,
                                       ),
                                     ),
-
                                     SizedBox(
-                                        height: 3.h,
+                                      height: 3.h,
+                                    ),
+                                    Text(
+                                      "Retrait des fonds".tr(),
+                                      style: TextStyle(
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11.sp,
                                       ),
-                                      Text(
-                                        "Retrait des fonds".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlueAccent1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11.sp,
-                                        ),
-                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -516,7 +568,7 @@ class _widgetRecentEventCotisationState
                               onTap: () async {
                                 updateTrackingData("home.btnAdminister",
                                     "${DateTime.now()}", {});
-                                 launchWeb(
+                                launchWeb(
                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
                                 );
                               },
@@ -533,16 +585,16 @@ class _widgetRecentEventCotisationState
                                     ),
                                   ),
                                   SizedBox(
-                                        height: 3.h,
-                                      ),
-                                      Text(
-                                        "Gerer".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlueAccent1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11.sp,
-                                        ),
-                                      ),
+                                    height: 3.h,
+                                  ),
+                                  Text(
+                                    "Gerer".tr(),
+                                    style: TextStyle(
+                                      color: AppColors.blackBlueAccent1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11.sp,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -556,7 +608,7 @@ class _widgetRecentEventCotisationState
                                       .read<AuthCubit>()
                                       .state
                                       .detailUser!["isMember"]
-                                  ? "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisation.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                                  ? "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${ widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantCotisation.toString() ))} FCFA"} * .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
                                   : "Nouvelle cotisation créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
                             },
                             child: Column(
@@ -570,16 +622,16 @@ class _widgetRecentEventCotisationState
                                   ),
                                 ),
                                 SizedBox(
-                                        height: 3.h,
-                                      ),
-                                      Text(
-                                        "Partager".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlueAccent1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11.sp,
-                                        ),
-                                      ),
+                                  height: 3.h,
+                                ),
+                                Text(
+                                  "Partager".tr(),
+                                  style: TextStyle(
+                                    color: AppColors.blackBlueAccent1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11.sp,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -587,8 +639,6 @@ class _widgetRecentEventCotisationState
                       ],
                     ),
                   )
-                
-                
                 ],
               ),
             ),
@@ -598,4 +648,7 @@ class _widgetRecentEventCotisationState
       );
     });
   }
+
+
+
 }

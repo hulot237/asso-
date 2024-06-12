@@ -379,7 +379,8 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                   centerTitle: false,
                                   // toolbarHeight: 130.h,
                                   title: Text(
-                                    "historiques".tr(),
+                                    'Historiques'.tr(),
+                                    // "historiques".tr(),
                                     style: TextStyle(
                                         fontSize: 16.sp,
                                         color: AppColors.white,

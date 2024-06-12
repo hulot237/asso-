@@ -1379,7 +1379,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                     "profile.shareApp",
                                                     "${DateTime.now()}", {});
                                                 Share.share(
-                                                  """${'Gérez vos associations et groupes avec *Groups & Assocations* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} :  \nPlay Store https://play.google.com/store/apps/details?id=com.faroty.groups \nApp Store https://apps.apple.com/cm/app/asso/id6483809142?l=en-GB" \n${'et sur'.tr()}" groups.faroty.com"""
+                                                  """${'Gérez vos associations et groupes avec *ASSO+* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} : \nhttps://faroty.com/dl/groups \n${'et sur'.tr()} https://groups.faroty.com"""
                                                       .tr(),
                                                 );
                                               },

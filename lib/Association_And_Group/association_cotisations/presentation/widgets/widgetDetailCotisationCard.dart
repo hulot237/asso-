@@ -102,7 +102,7 @@ class _widgetDetailCotisationCardState
                                   GestureDetector(
                                       onTap: () async {
                                         String msg =
-                                            "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                            "Aide-moi à payer ma cotisation *${widget.motifCotisations}* .\nMontant: *${ widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantCotisations.toString() ))} FCFA"} * .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
                                         String raisonComplete =
                                             'Paiement de la cotisation'.tr();
                                         String motif = "payer_vous_même".tr();
