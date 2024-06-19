@@ -16,6 +16,7 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
             detailtournoiCourant: null,
             detailtournoiCourantHist: null,
             isLoading: false,
+            isLoadingHist : false,
           ),
         );
 
@@ -70,10 +71,10 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
     print("detailTournoiCourantCubitHistdetailTournoiCourantCubitHistdetailTournoiCourantCubitHist");
     emit(
       state.copyWith(
-        isLoading: true,
+        isLoadingHist: true,
         changeTournoi: state.changeTournoi,
         detailtournoiCourantHist: state.detailtournoiCourantHist,
-        detailtournoiCourant: state.detailtournoiCourant,
+        // detailtournoiCourant: state.detailtournoiCourant,
       ),
     );
     try {
@@ -85,8 +86,8 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
           state.copyWith(
             changeTournoi: state.changeTournoi,
             detailtournoiCourantHist: data,
-            detailtournoiCourant: state.detailtournoiCourant,
-            isLoading: false,
+            // detailtournoiCourant: state.detailtournoiCourant,
+            isLoadingHist: false,
           ),
         );
 
@@ -98,8 +99,8 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
           state.copyWith(
             changeTournoi: state.changeTournoi,
             detailtournoiCourantHist: {},
-            detailtournoiCourant: state.detailtournoiCourant,
-            isLoading: false,
+            // detailtournoiCourant: state.detailtournoiCourant,
+            isLoadingHist: false,
           ),
         );
         return false;
@@ -109,8 +110,8 @@ class DetailTournoiCourantCubit extends Cubit<DetailTournoiCourantState> {
         state.copyWith(
           changeTournoi: state.changeTournoi,
           detailtournoiCourantHist: {},
-          detailtournoiCourant: state.detailtournoiCourant,
-          isLoading: false,
+          // detailtournoiCourant: state.detailtournoiCourant,
+          isLoadingHist: false,
         ),
       );
       return true;

@@ -1,15 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
-import 'package:faroty_association_1/Association_And_Group/association/data/association_model.dart';
-import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_model.dart';
-
 class DetailTournoiCourantState extends Equatable {
   final Map<String, dynamic>? detailtournoiCourant;
   final Map<String, dynamic>? detailtournoiCourantHist;
   final Map<String, dynamic>? changeTournoi;
   // final List<dynamic>? allTournoiAss;
   final bool isLoading;
+  final bool isLoadingHist;
 
   DetailTournoiCourantState({
     this.detailtournoiCourant,
@@ -17,6 +15,7 @@ class DetailTournoiCourantState extends Equatable {
     this.changeTournoi,
     // this.allTournoiAss,
     this.isLoading = false,
+    this.isLoadingHist = false,
   });
 
   @override
@@ -26,6 +25,7 @@ class DetailTournoiCourantState extends Equatable {
         changeTournoi,
         // allTournoiAss,
         isLoading,
+        isLoadingHist,
       ];
 
   DetailTournoiCourantState copyWith({
@@ -33,12 +33,14 @@ class DetailTournoiCourantState extends Equatable {
     Map<String, dynamic>? detailtournoiCourantHist,
     Map<String, dynamic>? changeTournoi,
     bool? isLoading,
+    bool? isLoadingHist,
   }) {
     return DetailTournoiCourantState(
       detailtournoiCourant: detailtournoiCourant ?? this.detailtournoiCourant,
       detailtournoiCourantHist: detailtournoiCourantHist ?? this.detailtournoiCourantHist,
       changeTournoi: changeTournoi ?? this.changeTournoi,
       isLoading: isLoading ?? this.isLoading,
+      isLoadingHist: isLoadingHist ?? this.isLoadingHist,
     );
   }
 

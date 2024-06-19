@@ -37,32 +37,9 @@ Widget PageScaffold({
         middle: Text(
           "Liste des membres".tr(),
           style: TextStyle(
-            fontSize: 16.sp,
-            color: AppColors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        trailing: Row(
-          children: [
-            if (!context.read<AuthCubit>().state.detailUser!["isMember"])
-              InkWell(
-                onTap: () async {
-                  await launchUrlString(
-                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/new-membres&app_mode=mobile",
-                    mode: LaunchMode.platformDefault,
-                  );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(right: 10.w),
-                  color: AppColors.backgroundAppBAr,
-                  child: SvgPicture.asset(
-                    "assets/images/addMemberIcon.svg",
-                    fit: BoxFit.scaleDown,
-                    color: AppColors.white,
-                  ),
-                ),
-              ),
-          ],
+              fontSize: 16.sp,
+              color: AppColors.white,
+              fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
           onTap: () {
@@ -71,6 +48,24 @@ Widget PageScaffold({
           child: BackButtonWidget(
             colorIcon: AppColors.white,
           ),
+        ),
+        trailing: Container(
+          child: !context.read<AuthCubit>().state.detailUser!["isMember"] ?InkWell(
+            onTap: () async {
+               launchWeb(
+                "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/new-membres&app_mode=mobile",
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10.w),
+              color: AppColors.backgroundAppBAr,
+              child: SvgPicture.asset(
+                "assets/images/addMemberIcon.svg",
+                fit: BoxFit.scaleDown,
+                color: AppColors.white,
+              ),
+            ),
+          ):Container(),
         ),
       ),
       child: child,
@@ -100,9 +95,8 @@ Widget PageScaffold({
         if (!context.read<AuthCubit>().state.detailUser!["isMember"])
           InkWell(
             onTap: () async {
-              await launchUrlString(
+               launchWeb(
                 "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/new-membres&app_mode=mobile",
-                mode: LaunchMode.platformDefault,
               );
             },
             child: Container(
@@ -160,9 +154,9 @@ class _MembersAssPageState extends State<MembersAssPage>
 
   @override
   Widget build(BuildContext context) {
-    return PageScaffold(
-      context: context,
-      child: Material(
+    return Material(
+      child: PageScaffold(
+        context: context,
         child: Container(
           margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
           child: Column(

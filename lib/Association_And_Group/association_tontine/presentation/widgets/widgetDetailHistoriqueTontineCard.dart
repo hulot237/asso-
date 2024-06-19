@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
@@ -50,6 +51,12 @@ class _widgetDetailHistoriqueTontineCardState
     final detailCotisation = await context
         .read<CotisationDetailCubit>()
         .detailCotisationCubit(codeCotisation);
+  }
+
+    Future<void> handleDetailContributionTontine(codeContribution) async {
+    final detailCotisation = await context
+        .read<DetailContributionCubit>()
+        .detailContributionTontineCubit(codeContribution);
   }
 
   @override
@@ -116,57 +123,142 @@ class _widgetDetailHistoriqueTontineCardState
                         ),
                       ),
                       widget.isPayed == 0
-                          ? GestureDetector(
-                              onTap: () async {
-                                await launchUrlString(
-                                  "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                  mode: LaunchMode.platformDefault,
-                                );
+                          ? 
+                          // GestureDetector(
+                          //     onTap: () async {
+                          //        launchWeb(
+                          //         "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                          //       );
+                          //     },
+                          //     child: Container(
+                          //       alignment: Alignment.center,
+                          //       width: 72.w,
+                          //       padding: EdgeInsets.symmetric(
+                          //         horizontal: 8.w,
+                          //         vertical: 5.h,
+                          //       ),
+                          //       decoration: BoxDecoration(
+                          //         color: AppColors.colorButton,
+                          //         borderRadius: BorderRadius.circular(15.r),
+                          //       ),
+                          //       child: Container(
+                          //         child: Text(
+                          //           "Tontiner",
+                          //           style: TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: 12.sp,
+                          //             color: AppColors.white,
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   )
 
-                                // String msg =
-                                //     "Aide-moi à payer ma tontine *${widget.nomTontine}* .\nMontant: *${formatMontantFrancais(widget.montantTontine.toDouble())} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider";
-                                // String raisonComplete =
-                                //     "Paiement de la tontine".tr();
-                                // String motif = "payer_vous_même".tr();
-                                // String paiementProcheMsg =
-                                //     "partager_le_lien_de_paiement".tr();
-                                // String msgAppBarPaiementPage =
-                                //     "${'Paiement de la tontine'.tr()}  ${widget.nomTontine}";
-                                // String elementUrl = "https://groups.faroty.com/details-tournois/${AppCubitStorage().state.codeTournois}";
-                                // Modal().showModalActionPayement(
-                                //   context,
-                                //   msg,
-                                //   widget.lienDePaiement,
-                                //   raisonComplete,
-                                //   motif,
-                                //   paiementProcheMsg,
-                                //   msgAppBarPaiementPage,
-                                //   elementUrl
-                                // );
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: 72.w,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w,
-                                  vertical: 5.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.colorButton,
-                                  borderRadius: BorderRadius.circular(15.r),
-                                ),
-                                child: Container(
-                                  child: Text(
-                                    "Tontiner",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.sp,
-                                      color: AppColors.white,
+                      PopupMenuButton(
+                        elevation: 5,
+                        shadowColor: AppColors.barrierColorModal,
+                        onSelected: (value) async {
+                          if (value == "mySelf") {
+                            print("value");
+                            launchWeb(
+                              "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                            );
+                          } else if (value == "anotherPerson") {
+                            handleDetailContributionTontine(
+                              widget.codeCotisation,
+                            );
+                            Modal().showModalPayForAnotherPersonTontine(
+                              context,
+                              widget.codeCotisation,
+                              widget.lienDePaiement,
+                              widget.nomTontine,
+                              widget.montantTontine,
+                            );
+                          }
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 72.w,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 5.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.colorButton,
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          child: Container(
+                            child: Text(
+                              "Tontiner",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12.sp,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          PopupMenuItem(
+                            value: "mySelf",
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Container(
+                                    height: 22.h,
+                                    width: 22.w,
+                                    child: SvgPicture.asset(
+                                      "assets/images/person.svg",
+                                      fit: BoxFit.cover,
+                                      color: AppColors.blackBlueAccent1,
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
+                                Text(
+                                  'Payer pour moi'.tr(),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: "anotherPerson",
+                            // onTap: () {
+                            //   _showSimpleModalDialog(context);
+                            // },
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Container(
+                                    height: 22.h,
+                                    width: 22.w,
+                                    child: SvgPicture.asset(
+                                      "assets/images/friendsTalking.svg",
+                                      fit: BoxFit.cover,
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  "Payer pour quelqu'un".tr(),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+
                           : Text(
                               "payé".tr(),
                               style: TextStyle(
@@ -313,9 +405,8 @@ class _widgetDetailHistoriqueTontineCardState
                                 updateTrackingData(
                                     "home.btnwithdrawnFundsContribution",
                                     "${DateTime.now()}", {});
-                                await launchUrlString(
+                                 launchWeb(
                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                  mode: LaunchMode.platformDefault,
                                 );
                               },
                               child: Column(
@@ -357,9 +448,8 @@ class _widgetDetailHistoriqueTontineCardState
                             onTap: () async {
                               updateTrackingData("home.btnAdministerTontine",
                                   "${DateTime.now()}", {});
-                              await launchUrlString(
+                               launchWeb(
                                 "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
-                                mode: LaunchMode.platformDefault,
                               );
                             },
                             child: Column(

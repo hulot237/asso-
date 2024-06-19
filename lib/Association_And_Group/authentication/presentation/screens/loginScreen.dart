@@ -75,25 +75,25 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> initPlatformState() async {
-    final bool? result = await telephony.requestPhoneAndSmsPermissions;
+  // Future<void> initPlatformState() async {
+  //   final bool? result = await telephony.requestPhoneAndSmsPermissions;
 
-    // if (result != null && result) {
-    //   telephony.listenIncomingSms(
-    //     onNewMessage: _onMessage,
-    //     listenInBackground: false,
-    //   );
-    // }
+  //   // if (result != null && result) {
+  //   //   telephony.listenIncomingSms(
+  //   //     onNewMessage: _onMessage,
+  //   //     listenInBackground: false,
+  //   //   );
+  //   // }
 
-    if (!mounted) return;
-  }
+  //   if (!mounted) return;
+  // }
 
   @override
   @override
   void initState() {
     super.initState();
     // startTimer();
-    initPlatformState();
+    // initPlatformState();
   }
 
   @override

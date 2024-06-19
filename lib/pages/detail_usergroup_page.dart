@@ -86,16 +86,14 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                         ),
                         backgroundColor: AppColors.backgroundAppBAr,
                         elevation: 0,
-                        leading: Platform.isAndroid
-                            ? GestureDetector(
+                        leading: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pop(context);
                                 },
                                 child: BackButtonWidget(
                                   colorIcon: AppColors.white,
                                 ),
-                              )
-                            : Container(),
+                              ),
                         // actions: [
                         //   Stack(
                         //     alignment: Alignment.center,
@@ -509,9 +507,9 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                                                 "${DateTime.now()}", {});
                                             // print("${dataForCookies}");
                                             // print("objectobjectobjectobjectobject${context.read<AuthCubit>().state.dataCookies}");
-                                            await launchUrlString(
+                                             launchWeb(
                                               "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://business.faroty.com/groups&app_mode=mobile",
-                                              mode: LaunchMode.platformDefault,
+                                              
                                             );
                                           },
                                           child: Container(
@@ -675,9 +673,8 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                               onTap: () async {
                                 updateTrackingData("detailGroup.btnAdminister",
                                     "${DateTime.now()}", {});
-                                await launchUrlString(
+                                 launchWeb(
                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                  mode: LaunchMode.platformDefault,
                                 );
                               },
                               child: Container(

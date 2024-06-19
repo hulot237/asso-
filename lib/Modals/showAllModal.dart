@@ -16,6 +16,7 @@ import 'package:faroty_association_1/Association_And_Group/association_sanction/
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widget_pay_another_person.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/data/tournoi_model.dart';
@@ -171,9 +172,8 @@ class Modal {
                     GestureDetector(
                       onTap: () async {
                         print("objectobjectobjectobjectobject");
-                        await launchUrlString(
+                        launchWeb(
                           "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://business.faroty.com/groups&app_mode=mobile",
-                          mode: LaunchMode.platformDefault,
                         );
                       },
                       child: Container(
@@ -1563,6 +1563,238 @@ class Modal {
     );
   }
 
+
+
+
+
+
+  showModalPayForAnotherPersonTontine(BuildContext context, codeContribution, lienDePaiement,
+      nomTontine, montantTontine,
+      {codeTontine}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: EdgeInsets.all(10),
+          child: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15.h),
+                    child: Text(
+                      "Choisir un membre".tr(),
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                    padding: EdgeInsets.only(top: 15.h),
+                  ),
+
+                  BlocBuilder<DetailContributionCubit, ContributionState>(
+                    builder: (context, state) {
+                      if (state.isLoadingContibutionTontine == null ||
+                          state.isLoadingContibutionTontine == true)
+                        return Center(
+                          child: Container(
+                            child: EasyLoader(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              iconSize: 50,
+                              iconColor: AppColors.blackBlueAccent1,
+                              image: AssetImage(
+                                "assets/images/AssoplusFinal.png",
+                              ),
+                            ),
+                          ),
+                        );
+
+                      final okayTontine = context
+                          .read<DetailContributionCubit>()
+                          .state
+                          .detailContributionTontine!["membres"];
+                      print("$okayTontine");
+
+                      List listeOkayTontine = okayTontine;
+
+                      List<Widget> listWidgetOkayTontine =
+                          listeOkayTontine.map((monObjet) {
+                        return Card(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          child: widgetPayAnotherPerson(
+                            date: formatDateLiteral(monObjet["updated_at"]),
+                            imageProfil:
+                                monObjet["membre"]["photo_profil"] == null
+                                    ? ""
+                                    : monObjet["membre"]["photo_profil"],
+                            is_versement_finished: monObjet["is_payed"],
+                            montantVersee: monObjet["balance"],
+                            nom: monObjet["membre"]["first_name"] == null
+                                ? ""
+                                : monObjet["membre"]["first_name"],
+                            prenom: monObjet["membre"]["last_name"] == null
+                                ? ""
+                                : monObjet["membre"]["last_name"],
+                            amount_remaining: monObjet["amount_remaining"],
+                            memberCode: monObjet["membre"]["membre_code"],
+                            codeContribution: codeContribution,
+                            codeUserContribution: monObjet["code"],
+                            codeTontine: codeTontine,
+                            lienDePaiement: lienDePaiement,
+                            nomTontine: nomTontine,
+                            montantTontine: montantTontine,
+                            isVolontaire: false,
+                          ),
+                        );
+                      }).toList();
+
+                      final listeFinale = [
+                        ...listWidgetOkayTontine,
+                        SizedBox(height: 10), // Espacement en bas
+                      ];
+
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: listeFinale,
+                        ),
+                      );
+                    },
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
+
+
+
+    void showModalPayForAnotherPersonCotisation(BuildContext context, codeContribution, lienDePaiement,
+      nomTontine, montantTontine, isVolontaire,
+      {codeTontine}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: EdgeInsets.all(10),
+          child: Container(
+            // padding: EdgeInsets.all(12.0),
+            // Utiliser un SingleChildScrollView pour permettre le défilement
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15.h),
+                    child: Text(
+                      "Choisir un membre".tr(),
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                    padding: EdgeInsets.only(top: 15.h),
+                  ),
+                  Container(
+                    // height: MediaQuery.of(context).size.height * 0.8, // Définissez la hauteur maximale ici
+                    child: BlocBuilder<CotisationDetailCubit,
+                        CotisationDetailState>(
+                      builder: (context, state) {
+                        if (state.isLoading == null ||
+                            state.isLoading == true ||
+                            state.detailCotisation == null)
+                          return Center(
+                            child: EasyLoader(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              iconSize: 50,
+                              iconColor: AppColors.blackBlueAccent1,
+                              image: AssetImage(
+                                "assets/images/AssoplusFinal.png",
+                              ),
+                            ),
+                          );
+
+                        final currentDetailCotisation = context
+                            .read<CotisationDetailCubit>()
+                            .state
+                            .detailCotisation;
+
+                        List listeOkayCotisation =
+                            currentDetailCotisation!["membres"];
+
+                        List<Widget> listWidgetOkayCotis =
+                            listeOkayCotisation.map((monObjet) {
+                          return Card(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: widgetPayAnotherPerson(
+                              date: formatDateLiteral(monObjet["updated_at"]),
+                              imageProfil:
+                                  monObjet["membre"]["photo_profil"] == null
+                                      ? ""
+                                      : monObjet["membre"]["photo_profil"],
+                              is_versement_finished: monObjet["is_payed"],
+                              montantVersee: monObjet["balance"],
+                              nom: monObjet["membre"]["first_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["first_name"],
+                              prenom: monObjet["membre"]["last_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["last_name"],
+                              amount_remaining: monObjet["amount_remaining"],
+                              memberCode: monObjet["membre"]["membre_code"],
+                              codeContribution: codeContribution,
+                              codeUserContribution: monObjet["code"],
+                              codeTontine: codeTontine,
+                              lienDePaiement: lienDePaiement,
+                              nomTontine: nomTontine,
+                              montantTontine: montantTontine,
+                              isVolontaire: isVolontaire,
+                            ),
+                          );
+                        }).toList();
+
+                        final listeFinale = [
+                          ...listWidgetOkayCotis,
+                          SizedBox(height: 10), // Espacement en bas
+                        ];
+
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: listeFinale,
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
   void showBottomSheetEditProfilPhoto(BuildContext context, key, _pickImage) {
     TextEditingController infoUserController = TextEditingController();
     Future<void> handleDetailUser(userCode, codeTournoi) async {
@@ -1714,88 +1946,9 @@ class Modal {
       context: context,
       builder: (context) {
         return SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-              color: AppColors.white,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    height: 5.h,
-                    width: 55.w,
-                    decoration: BoxDecoration(
-                        color: AppColors.blackBlue,
-                        borderRadius: BorderRadius.circular(50)),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                    child: Text(
-                      "entrer_la_nouvelle_valeur".tr(),
-                      style: TextStyle(
-                        fontSize: 17.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.blackBlueAccent1,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: 20.w,
-                      right: 20.w,
-                    ),
-                    padding: EdgeInsets.only(left: 15.w),
-                    // height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      color: Color.fromARGB(15, 20, 45, 99),
-                    ),
-                    child: TextField(
-                      controller: infoUserController,
-                      autofocus: true,
-                      style: TextStyle(fontSize: 15.sp),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      await handleUpdateInfoUser(
-                          key,
-                          infoUserController.text,
-                          AppCubitStorage().state.codeAssDefaul,
-                          AppCubitStorage().state.membreCode);
-                      await handleDetailUser(AppCubitStorage().state.membreCode,
-                          AppCubitStorage().state.codeTournois);
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10.r),
-                      margin: EdgeInsets.only(
-                        top: 10.h,
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      child: Text(
-                        "confirmer".tr(),
-                        style:
-                            TextStyle(color: AppColors.white, fontSize: 12.sp),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          child: UpdateInfoUserWidget(
+            infoUserController: infoUserController,
+            keyForApi: key,
           ),
         );
       },
@@ -1845,9 +1998,8 @@ class Modal {
                   Navigator.pop(
                     context,
                   );
-                  await launchUrlString(
+                  launchWeb(
                     "https://${lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                    mode: LaunchMode.platformDefault,
                   );
 
                   // Navigator.push(
@@ -1914,9 +2066,8 @@ class Modal {
                     Navigator.pop(
                       context,
                     );
-                    await launchUrlString(
+                    launchWeb(
                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=${elementUrl}&app_mode=mobile",
-                      mode: LaunchMode.platformDefault,
                     );
                   },
                   child: Container(
@@ -2271,6 +2422,146 @@ class Modal {
   }
 }
 
+class UpdateInfoUserWidget extends StatefulWidget {
+  UpdateInfoUserWidget({
+    super.key,
+    required this.infoUserController,
+    required this.keyForApi,
+  });
+
+  final TextEditingController infoUserController;
+  var keyForApi;
+
+  @override
+  State<UpdateInfoUserWidget> createState() => _UpdateInfoUserWidgetState();
+}
+
+class _UpdateInfoUserWidgetState extends State<UpdateInfoUserWidget> {
+  bool isload = false;
+  @override
+  Widget build(BuildContext context) {
+    Future<void> handleDetailUser(userCode, codeTournoi) async {
+      final allCotisationAss = await context
+          .read<AuthCubit>()
+          .detailAuthCubit(userCode, codeTournoi);
+    }
+
+    Future<void> handleUpdateInfoUser(
+        keyForApi, value, partner_urlcode, membre_code) async {
+      final allCotisationAss = await context
+          .read<AuthUpdateCubit>()
+          .UpdateInfoUserCubit(keyForApi, value, partner_urlcode, membre_code);
+
+      if (allCotisationAss != null) {
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+        color: AppColors.white,
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 5.h,
+              width: 55.w,
+              decoration: BoxDecoration(
+                  color: AppColors.blackBlue,
+                  borderRadius: BorderRadius.circular(50)),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+              child: Text(
+                "entrer_la_nouvelle_valeur".tr(),
+                style: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.blackBlueAccent1,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: 20.w,
+                right: 20.w,
+              ),
+              padding: EdgeInsets.only(left: 15.w),
+              // height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                color: Color.fromARGB(15, 20, 45, 99),
+              ),
+              child: TextField(
+                controller: widget.infoUserController,
+                autofocus: true,
+                style: TextStyle(fontSize: 15.sp),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                setState(() {
+                  isload = true;
+                });
+
+                await handleUpdateInfoUser(
+                    widget.keyForApi,
+                    widget.infoUserController.text,
+                    AppCubitStorage().state.codeAssDefaul,
+                    AppCubitStorage().state.membreCode);
+                await handleDetailUser(AppCubitStorage().state.membreCode,
+                    AppCubitStorage().state.codeTournois);
+                Navigator.pop(context);
+                setState(() {
+                  isload = false;
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.all(10.r),
+                margin: EdgeInsets.only(
+                  top: 10.h,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                decoration: BoxDecoration(
+                  color: isload ? AppColors.white : AppColors.colorButton,
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                child: isload
+                    ? Container(
+                        width: 20.r,
+                        height: 20.r,
+                        child: CircularProgressIndicator(
+                          color: AppColors.colorButton,
+                          strokeWidth: 2.w,
+                        ))
+                    : Text(
+                        "confirmer".tr(),
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class CotisationHistoriqueWidget extends StatefulWidget {
   CotisationHistoriqueWidget({
     super.key,
@@ -2413,6 +2704,9 @@ class _CotisationHistoriqueWidgetState
                       )
                     ],
                   ),
+
+
+
                   BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
                       builder:
                           (detailCotisationContext, detailCotisationState) {
@@ -2467,12 +2761,15 @@ class _CotisationHistoriqueWidgetState
                             size: 18.sp,
                           ),
                         ));
-                  }),
+                  },),
                 ],
               ),
             ),
           ],
         ),
+
+
+
         BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
           builder: (CotisationDetailcontext, CotisationDetailstate) {
             if (CotisationDetailstate.isLoading == null ||
@@ -2490,10 +2787,9 @@ class _CotisationHistoriqueWidgetState
                   ),
                 ),
               );
-              if (
-                CotisationDetailstate.isLoading == true &&
+            if (CotisationDetailstate.isLoading == true &&
                 CotisationDetailstate.detailCotisation != null)
-                return Expanded(
+              return Expanded(
                 child: Center(
                   child: EasyLoader(
                     backgroundColor: Color.fromARGB(0, 255, 255, 255),

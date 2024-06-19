@@ -86,7 +86,7 @@ class _VerificationPageState extends State<VerificationPage> {
   void initState() {
     super.initState();
     startTimer();
-    initPlatformState();
+    // initPlatformState();
   }
 
   @override
@@ -95,45 +95,45 @@ class _VerificationPageState extends State<VerificationPage> {
     super.dispose();
   }
 
-  Future<void> initPlatformState() async {
-    final bool? result = await telephony.requestPhoneAndSmsPermissions;
+  // Future<void> initPlatformState() async {
+  //   final bool? result = await telephony.requestPhoneAndSmsPermissions;
 
-    if (result != null && result) {
-      telephony.listenIncomingSms(
-        onNewMessage: _onMessage,
-        listenInBackground: false,
-      );
-    }
+  //   if (result != null && result) {
+  //     telephony.listenIncomingSms(
+  //       onNewMessage: _onMessage,
+  //       listenInBackground: false,
+  //     );
+  //   }
 
-    if (!mounted) return;
-  }
+  //   if (!mounted) return;
+  // }
 
-  Future<void> _onMessage(SmsMessage message) async {
-    print("hhhhhhhhhhh ${message.toString()}");
-    if (message.address != "ASSO+") {
-      // setState(() {
-      //   codeController.text = message.body!;
-      // });
-      return;
-    } else {
-      String? otp;
-      setState(() {
-        List<String> words = message.body!.split(' ');
-        for (int i = words.length - 1; i >= 0; i--) {
-          String word = words[i];
-          if (word.length >= 5 &&
-              RegExp(r'^[0-9]+$').hasMatch(
-                word.substring(0, 5),
-              )) {
-            otp = word.substring(0, 5);
-            break;
-          }
-        }
-        print("$otp");
-        _pinController.text = otp!;
-      });
-    }
-  }
+  // Future<void> _onMessage(SmsMessage message) async {
+  //   print("hhhhhhhhhhh ${message.toString()}");
+  //   if (message.address != "ASSO+") {
+  //     // setState(() {
+  //     //   codeController.text = message.body!;
+  //     // });
+  //     return;
+  //   } else {
+  //     String? otp;
+  //     setState(() {
+  //       List<String> words = message.body!.split(' ');
+  //       for (int i = words.length - 1; i >= 0; i--) {
+  //         String word = words[i];
+  //         if (word.length >= 5 &&
+  //             RegExp(r'^[0-9]+$').hasMatch(
+  //               word.substring(0, 5),
+  //             )) {
+  //           otp = word.substring(0, 5);
+  //           break;
+  //         }
+  //       }
+  //       print("$otp");
+  //       _pinController.text = otp!;
+  //     });
+  //   }
+  // }
 
   Future handleLogin() async {
     final numeroPhone = widget.numeroPhone;

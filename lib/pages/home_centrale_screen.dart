@@ -164,116 +164,116 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
     }
 
     return PageScaffold(
-      context: context,
-      indexPage: _pageIndex,
-      child: screens,
-      itemListIos: itemListIos,
-      // itemListAndroid: itemListAndroid,
+        context: context,
+        indexPage: _pageIndex,
+        child: screens,
+        itemListIos: itemListIos,
+        // itemListAndroid: itemListAndroid,
       childBottomNavBar: Platform.isAndroid
           ? Material(
               type: MaterialType.transparency,
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.r),
-                  topRight: Radius.circular(20.r),
-                ),
-                child: BottomNavigationBar(
-                  backgroundColor: AppColors.white,
-                  // type: BottomNavigationBarType.shifting,
-                  selectedIconTheme: IconThemeData(size: 25.sp),
-                  unselectedIconTheme: IconThemeData(size: 25.sp),
-                  selectedFontSize: 14.sp,
-                  unselectedFontSize: 14.sp,
-                  unselectedItemColor: AppColors.blackBlue,
-                  selectedItemColor: Color.fromARGB(255, 96, 134, 8),
-                  selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: Container(
-                        margin: EdgeInsets.all(2.h),
-                        width: 60.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                            color: AppColors.colorButton
-                                .withOpacity(_pageIndex == 0 ? 0.1 : 0),
-                            borderRadius: BorderRadius.circular(15.r)),
-                        child: SvgPicture.asset(
-                          _pageIndex == 0
-                              ? "assets/images/homeSelectIcon.svg"
-                              : "assets/images/homeUnselectIcon.svg",
-                          fit: BoxFit.scaleDown,
-                          color: _pageIndex == 0
-                              ? AppColors.colorButton
-                              : AppColors.blackBlue,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
+              ),
+              child: BottomNavigationBar(
+                backgroundColor: AppColors.white,
+                // type: BottomNavigationBarType.shifting,
+                selectedIconTheme: IconThemeData(size: 25.sp),
+                unselectedIconTheme: IconThemeData(size: 25.sp),
+                selectedFontSize: 14.sp,
+                unselectedFontSize: 14.sp,
+                unselectedItemColor: AppColors.blackBlue,
+                selectedItemColor: Color.fromARGB(255, 96, 134, 8),
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      margin: EdgeInsets.all(2.h),
+                      width: 60.w,
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                          color: AppColors.colorButton
+                              .withOpacity(_pageIndex == 0 ? 0.1 : 0),
+                          borderRadius: BorderRadius.circular(15.r)),
+                      child: SvgPicture.asset(
+                        _pageIndex == 0
+                            ? "assets/images/homeSelectIcon.svg"
+                            : "assets/images/homeUnselectIcon.svg",
+                        fit: BoxFit.scaleDown,
+                        color: _pageIndex == 0
+                            ? AppColors.colorButton
+                            : AppColors.blackBlue,
+                      ),
+                    ),
+                    label: 'Accueil'.tr(),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      margin: EdgeInsets.all(2.h),
+                      width: 60.w,
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.colorButton.withOpacity(
+                          _pageIndex == 1 ? 0.1 : 0,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          15.r,
                         ),
                       ),
-                      label: 'Accueil'.tr(),
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Container(
-                        margin: EdgeInsets.all(2.h),
-                        width: 60.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.colorButton.withOpacity(
-                            _pageIndex == 1 ? 0.1 : 0,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            15.r,
-                          ),
-                        ),
-                        child: SvgPicture.asset(
-                          _pageIndex == 1
-                              ? "assets/images/listSelectIcon.svg"
-                              : "assets/images/listUnselectIcon.svg",
-                          fit: BoxFit.scaleDown,
-                          color: _pageIndex == 1
-                              ? AppColors.colorButton
-                              : AppColors.blackBlue,
-                        ),
+                      child: SvgPicture.asset(
+                        _pageIndex == 1
+                            ? "assets/images/listSelectIcon.svg"
+                            : "assets/images/listUnselectIcon.svg",
+                        fit: BoxFit.scaleDown,
+                        color: _pageIndex == 1
+                            ? AppColors.colorButton
+                            : AppColors.blackBlue,
                       ),
-                      label: 'Historiques'.tr(),
                     ),
-                    BottomNavigationBarItem(
-                      icon: Container(
-                        margin: EdgeInsets.all(2.h),
-                        width: 60.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                            color: AppColors.colorButton
-                                .withOpacity(_pageIndex == 2 ? 0.1 : 0),
-                            borderRadius: BorderRadius.circular(15.r)),
-                        child: SvgPicture.asset(
-                          _pageIndex == 2
-                              ? "assets/images/personSelectIcon.svg"
-                              : "assets/images/personUnselectIcon.svg",
-                          fit: BoxFit.scaleDown,
-                          color: _pageIndex == 2
-                              ? AppColors.colorButton
-                              : AppColors.blackBlue,
-                        ),
+                    label: 'Historiques'.tr(),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      margin: EdgeInsets.all(2.h),
+                      width: 60.w,
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                          color: AppColors.colorButton
+                              .withOpacity(_pageIndex == 2 ? 0.1 : 0),
+                          borderRadius: BorderRadius.circular(15.r)),
+                      child: SvgPicture.asset(
+                        _pageIndex == 2
+                            ? "assets/images/personSelectIcon.svg"
+                            : "assets/images/personUnselectIcon.svg",
+                        fit: BoxFit.scaleDown,
+                        color: _pageIndex == 2
+                            ? AppColors.colorButton
+                            : AppColors.blackBlue,
                       ),
-                      label: 'Profil'.tr(),
                     ),
-                  ],
-                  currentIndex: _pageIndex,
-                  onTap: (index) async {
-                    index == 0
-                        ? updateTrackingData("home.index", "${DateTime.now()}", {})
-                        : index == 1
-                            ? updateTrackingData(
-                                "transactions.index", "${DateTime.now()}", {})
-                            : updateTrackingData(
-                                "profile.index", "${DateTime.now()}", {});
-                    setState(
-                      () {
-                        _pageIndex = index;
-                        print(index);
-                      },
-                    );
-                  },
-                ),
+                    label: 'Profil'.tr(),
+                  ),
+                ],
+                currentIndex: _pageIndex,
+                onTap: (index) async {
+                  index == 0
+                      ? updateTrackingData("home.index", "${DateTime.now()}", {})
+                      : index == 1
+                          ? updateTrackingData(
+                              "transactions.index", "${DateTime.now()}", {})
+                          : updateTrackingData(
+                              "profile.index", "${DateTime.now()}", {});
+                  setState(
+                    () {
+                      _pageIndex = index;
+                      print(index);
+                    },
+                  );
+                },
+              ),
               ),
             )
           : CupertinoTabBar(
@@ -298,9 +298,9 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
                   context.read<PretEpargneCubit>().getEpargne();
                   context.read<PretEpargneCubit>().getPret();
                   // context.read<SanctionCubit>().getAllSanctions();
-
+      
                 }
-
+      
                 if (_pageIndex == 1) {
                   handleTournoiDefault();
                   handleAllCotisationAssTournoi(
@@ -310,12 +310,12 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
                   context.read<SanctionCubit>().getAllSanctions(AppCubitStorage().state.codeTournoisHist);
                   context.read<PretEpargneCubit>().getAllAssEpargnes(AppCubitStorage().state.codeTournoisHist);
                 }
-
+      
                 if (_pageIndex == 2) {
                   countNotifications();
                 }
               },
-            ),
+      ),
     );
   }
 }

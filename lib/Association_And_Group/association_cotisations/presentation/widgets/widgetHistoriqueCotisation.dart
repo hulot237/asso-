@@ -310,33 +310,34 @@ class _WidgetHistoriqueCotisationState
     hashId,
   ) {
     showDialog(
-        context: context,
-        barrierColor: AppColors.barrierColorModal,
-        builder: (BuildContext context) {
-          Future<void> handleDetailCotisation(codeCotisation) async {
-            // final detailTournoiCourant = await context
-            //     .read<DetailTournoiCourantCubit>()
-            //     .detailTournoiCourantCubit();
-            final detailCotisation = await context
-                .read<CotisationDetailCubit>()
-                .detailCotisationCubit(codeCotisation);
-          }
+      context: context,
+      barrierColor: AppColors.barrierColorModal,
+      builder: (BuildContext context) {
+        Future<void> handleDetailCotisation(codeCotisation) async {
+          // final detailTournoiCourant = await context
+          //     .read<DetailTournoiCourantCubit>()
+          //     .detailTournoiCourantCubit();
+          final detailCotisation = await context
+              .read<CotisationDetailCubit>()
+              .detailCotisationCubit(codeCotisation);
+        }
 
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.r)),
-            child: Container(
-              constraints: BoxConstraints(maxHeight: 250.h),
-              child: paiementWidget(
-                nom: nom,
-                codeCotisation: codeCotisation,
-                codeMembre: codeMembre,
-                hashId: hashId,
-                resteAPayer: resteAPayer,
-              ),
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 250.h),
+            child: paiementWidget(
+              nom: nom,
+              codeCotisation: codeCotisation,
+              codeMembre: codeMembre,
+              hashId: hashId,
+              resteAPayer: resteAPayer,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 

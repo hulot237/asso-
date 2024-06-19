@@ -472,10 +472,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                                               "home.btnAdminister",
                                                                               "${DateTime.now()}",
                                                                               {});
-                                                                          await launchUrlString(
+                                                                           launchWeb(
                                                                             "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                                                            mode:
-                                                                                LaunchMode.platformDefault,
                                                                           );
                                                                         },
                                                                         child:
@@ -1882,9 +1880,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                                             InkWell(
                                                                               onTap: () async {
                                                                                 updateTrackingData("transactions.btnAddMeeting", "${DateTime.now()}", {});
-                                                                                await launchUrlString(
+                                                                                 launchWeb(
                                                                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                                                                                  mode: LaunchMode.platformDefault,
                                                                                 );
                                                                               },
                                                                               child: Container(
@@ -1975,8 +1972,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                         .height /
                                                     7),
                                             child: EasyLoader(
-                                              backgroundColor: Color.fromARGB(
-                                                  0, 255, 255, 255),
+                                              backgroundColor: Color.fromARGB(0, 255, 16, 16),
                                               iconSize: 50.r,
                                               iconColor:
                                                   AppColors.blackBlueAccent1,
@@ -2159,10 +2155,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                                             "transactions.btnAddContribution",
                                                                             "${DateTime.now()}",
                                                                             {});
-                                                                        await launchUrlString(
+                                                                         launchWeb(
                                                                           "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
-                                                                          mode:
-                                                                              LaunchMode.platformDefault,
                                                                         );
                                                                       },
                                                                               child: Container(

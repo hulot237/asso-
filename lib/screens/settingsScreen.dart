@@ -163,6 +163,7 @@ class _SettingScreenState extends State<SettingScreen>
                   : Scaffold(
                       backgroundColor: AppColors.pageBackground,
                       appBar: AppBar(
+                        centerTitle: false,
                         title: Text(
                           "Profil".tr(),
                           style: TextStyle(
@@ -234,8 +235,8 @@ class _SettingScreenState extends State<SettingScreen>
                                             borderRadius:
                                                 BorderRadius.circular(50.r),
                                           ),
-                                          height: 30.w,
-                                          width: 30.w,
+                                          height: 30.h,
+                                          width: 30.h,
                                           child: Image.network(
                                             // "zz",
                                             "${Variables.LienAIP}${DetailAss!.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
@@ -269,9 +270,8 @@ class _SettingScreenState extends State<SettingScreen>
                                   onTap: () async {
                                     updateTrackingData("profile.btnAdminister",
                                         "${DateTime.now()}", {});
-                                    await launchUrlString(
+                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                      mode: LaunchMode.platformDefault,
                                     );
                                   },
                                   child: Container(
@@ -291,8 +291,8 @@ class _SettingScreenState extends State<SettingScreen>
                                         50.r,
                                       ),
                                     ),
-                                    height: 30.w,
-                                    width: 30.w,
+                                    height: 30.h,
+                                    width: 30.h,
                                     child: Image.asset(
                                       "assets/images/Groupe_ou_Asso.png",
                                       scale: 4,
@@ -301,8 +301,8 @@ class _SettingScreenState extends State<SettingScreen>
                                 ),
                               Container(
                                 margin: EdgeInsets.only(right: 10.w),
-                                height: 30.w,
-                                width: 30.w,
+                                height: 30.h,
+                                width: 30.h,
                                 child: AddAssoWidget(
                                   screenSource: "profile.btnAddAsso",
                                 ),
@@ -336,7 +336,7 @@ class _SettingScreenState extends State<SettingScreen>
                                         child: Icon(
                                           Icons.notifications_active_outlined,
                                           color: AppColors.white,
-                                          size: 30.sp,
+                                          size: 30.h,
                                         ),
                                       ),
                                       BlocBuilder<NotificationCubit,
@@ -1379,7 +1379,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                     "profile.shareApp",
                                                     "${DateTime.now()}", {});
                                                 Share.share(
-                                                  """${'Gérez vos associations et groupes avec *Groups & Assocations* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} :  \nPlay Store https://play.google.com/store/apps/details?id=com.faroty.groups \nApp Store https://apps.apple.com/cm/app/asso/id6483809142?l=en-GB" \n${'et sur'.tr()}" groups.faroty.com"""
+                                                  """${'Gérez vos associations et groupes avec *ASSO+* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} : \nhttps://faroty.com/dl/groups \n${'et sur'.tr()} https://groups.faroty.com"""
                                                       .tr(),
                                                 );
                                               },

@@ -137,9 +137,8 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                               widget.isSanctionPayed == 0)
                             GestureDetector(
                               onTap: () async {
-                                await launchUrlString(
+                                 launchWeb(
                                   "https://${widget.lienPaiement}?code=${AppCubitStorage().state.membreCode}",
-                                  mode: LaunchMode.platformDefault,
                                 );
                                 // String msg =
                                 //     "Aide-moi à payer ma sanction de *${widget.motifSanction}* du montant  *${formatMontantFrancais(double.parse(widget.montantSanction))} FCFA* directement via le lien https://${widget.lienPaiement}?code=${AppCubitStorage().state.membreCode}.";
@@ -488,7 +487,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                           //       onTap: () async {
                           //         // updateTrackingData("home.btnAdminister",
                           //         //     "${DateTime.now()}", {});
-                          //         // await launchUrlString(
+                          //         // await launchWeb(
                           //         //   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
                           //         //   mode: LaunchMode.platformDefault,
                           //         // );

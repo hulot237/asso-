@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -86,11 +87,11 @@ class _UpdatePageState extends State<UpdatePage> {
                   ),
                   InkWell(
                     onTap: () async {
-                      await launchUrlString(
+                       launchWeb(
                         Platform.isIOS
                             ? "https://apps.apple.com/cm/app/asso/id6483809142?l=en-GB"
                             : "https://play.google.com/store/apps/details?id=com.faroty.groups&pcampaignid=web_share",
-                        mode: LaunchMode.externalApplication,
+                        
                       );
                     },
                     child: Container(
