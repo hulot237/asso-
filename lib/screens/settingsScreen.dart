@@ -195,6 +195,14 @@ class _SettingScreenState extends State<SettingScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 10.w),
+                                height: 30.h,
+                                width: 30.h,
+                                child: AddAssoWidget(
+                                  screenSource: "profile.btnAddAsso",
+                                ),
+                              ),
                               Stack(
                                 children: [
                                   GestureDetector(
@@ -262,51 +270,44 @@ class _SettingScreenState extends State<SettingScreen>
                                   )
                                 ],
                               ),
-                              if (!context
-                                  .read<AuthCubit>()
-                                  .state
-                                  .detailUser!["isMember"])
-                                GestureDetector(
-                                  onTap: () async {
-                                    updateTrackingData("profile.btnAdminister",
-                                        "${DateTime.now()}", {});
-                                     launchWeb(
-                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                      right: 10.h,
-                                    ),
-                                    padding: EdgeInsets.all(
-                                      1.r,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1.r,
-                                        color: AppColors.blackBlue,
-                                      ),
-                                      color: AppColors.blackBlueAccent2,
-                                      borderRadius: BorderRadius.circular(
-                                        50.r,
-                                      ),
-                                    ),
-                                    height: 30.h,
-                                    width: 30.h,
-                                    child: Image.asset(
-                                      "assets/images/Groupe_ou_Asso.png",
-                                      scale: 4,
-                                    ),
-                                  ),
-                                ),
-                              Container(
-                                margin: EdgeInsets.only(right: 10.w),
-                                height: 30.h,
-                                width: 30.h,
-                                child: AddAssoWidget(
-                                  screenSource: "profile.btnAddAsso",
-                                ),
-                              ),
+                              // if (!context
+                              //     .read<AuthCubit>()
+                              //     .state
+                              //     .detailUser!["isMember"])
+                              //   GestureDetector(
+                              //     onTap: () async {
+                              //       updateTrackingData("profile.btnAdminister",
+                              //           "${DateTime.now()}", {});
+                              //       launchWeb(
+                              //         "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                              //       );
+                              //     },
+                              //     child: Container(
+                              //       margin: EdgeInsets.only(
+                              //         right: 10.h,
+                              //       ),
+                              //       padding: EdgeInsets.all(
+                              //         1.r,
+                              //       ),
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           width: 1.r,
+                              //           color: AppColors.blackBlue,
+                              //         ),
+                              //         color: AppColors.blackBlueAccent2,
+                              //         borderRadius: BorderRadius.circular(
+                              //           50.r,
+                              //         ),
+                              //       ),
+                              //       height: 30.h,
+                              //       width: 30.h,
+                              //       child: Image.asset(
+                              //         "assets/images/Groupe_ou_Asso.png",
+                              //         scale: 4,
+                              //       ),
+                              //     ),
+                              //   ),
+                              
                               GestureDetector(
                                 onTap: () {
                                   updateTrackingData("profile.btnNotification",
@@ -436,7 +437,7 @@ class _SettingScreenState extends State<SettingScreen>
                                   ),
                                 ),
                                 padding: EdgeInsets.only(
-                                  top: 20.h,
+                                  top: 10.h,
                                 ),
                                 margin: EdgeInsets.only(
                                   top: 10.h,
@@ -460,47 +461,39 @@ class _SettingScreenState extends State<SettingScreen>
                                         );
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.all(3.r),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.colorButton,
-                                            borderRadius:
-                                                BorderRadius.circular(100)),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          child: Container(
-                                            width: 100.w,
-                                            height: 100.w,
-                                            child: Image.network(
-                                              "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              updateTrackingData(
-                                                  "profile.profilePerson",
-                                                  "${DateTime.now()}", {});
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProfilPersonnelPage(),
+                                        //height: 20,
+                                        color: AppColors.white,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(3.r),
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.colorButton,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100)),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                child: Container(
+                                                  width: 80.w,
+                                                  height: 80.w,
+                                                  child: Image.network(
+                                                    "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
-                                              );
-                                            },
-                                            child: Container(
+                                              ),
+                                            ),
+                                            Container(
                                               padding: EdgeInsets.only(
                                                   left: 5.w,
                                                   right: 5.w,
                                                   top: 10.h,
-                                                  bottom: 15.h),
+                                                  bottom: 10.h),
                                               child: Text(
                                                 "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                                 overflow: TextOverflow.ellipsis,
@@ -511,7 +504,13 @@ class _SettingScreenState extends State<SettingScreen>
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        children: [
                                           Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
@@ -527,7 +526,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                   //     //     'https://groups.faroty.com/',
                                                   //   ),
                                                   // ),
-                        
+
                                                   // MaterialPageRoute(
                                                   //   builder: (context) =>
                                                   //       AdministrationPage(
@@ -538,7 +537,91 @@ class _SettingScreenState extends State<SettingScreen>
                                                   // );
                                                 },
                                                 child: Container(
-                                                  padding: EdgeInsets.all(15.r),
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 10.h,
+                                                    horizontal: 15.w,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      top: BorderSide(
+                                                        width: 1.w,
+                                                        color: AppColors
+                                                            .pageBackground,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        // padding: EdgeInsets.only(
+                                                        //   left: 8.w,
+                                                        //   right: 8.w,
+                                                        //   top: 10.h,
+                                                        //   bottom: 3.h,
+                                                        // ),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        child: Text(
+                                                          "${"numero_de_téléphone".tr()}",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 16.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${currentDetailUser["first_phone"] == null ? "" : currentDetailUser["first_phone"]}",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: AppColors
+                                                              .blackBlueAccent1,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // Navigator.push(
+                                                  // context,
+                                                  // MaterialPageRoute(
+                                                  //   builder: (context) =>
+                                                  //       WebViewExample(
+                                                  //     // lienDePaiement:
+                                                  //     //     'https://groups.faroty.com/',
+                                                  //   ),
+                                                  // ),
+
+                                                  // MaterialPageRoute(
+                                                  //   builder: (context) =>
+                                                  //       AdministrationPage(
+                                                  //     lienDePaiement:
+                                                  //         'https://api.group.rush.faroty.com/',
+                                                  //   ),
+                                                  // ),
+                                                  // );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 10.h,
+                                                      horizontal: 15.w),
                                                   decoration: BoxDecoration(
                                                     border: Border.symmetric(
                                                       horizontal: BorderSide(
@@ -560,7 +643,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                         //   top: 10.h,
                                                         //   bottom: 3.h,
                                                         // ),
-                                                        decoration: BoxDecoration(
+                                                        decoration:
+                                                            BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(5),
@@ -580,8 +664,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                       ),
                                                       Text(
                                                         "${currentDetailUser["matricule"]}",
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         style: TextStyle(
                                                           fontSize: 14.sp,
                                                           fontWeight:
@@ -603,11 +687,12 @@ class _SettingScreenState extends State<SettingScreen>
                                                     ClipboardData(
                                                       text:
                                                           "${currentDetailUser["membre_code"]}",
-                                                          // "${AppCubitStorage().state.tokenUser}",
+                                                      // "${AppCubitStorage().state.tokenUser}",
                                                     ),
                                                   ).then(
                                                     (value) {
-                                                      return toastification.show(
+                                                      return toastification
+                                                          .show(
                                                         context: context,
                                                         title: Text(
                                                           "Copié".tr(),
@@ -622,17 +707,19 @@ class _SettingScreenState extends State<SettingScreen>
                                                                       .bold),
                                                         ),
                                                         autoCloseDuration:
-                                                            Duration(seconds: 2),
+                                                            Duration(
+                                                                seconds: 2),
                                                         type: ToastificationType
                                                             .success,
                                                         // borderSide: BorderSide(
                                                         //   width: 2.w,
                                                         //   color: AppColors.colorButton,
                                                         // ),
-                                                        style: ToastificationStyle
-                                                            .minimal,
+                                                        style:
+                                                            ToastificationStyle
+                                                                .minimal,
                                                       );
-                        
+
                                                       // ScaffoldMessenger.of(
                                                       //         context)
                                                       //     .showSnackBar(
@@ -669,14 +756,17 @@ class _SettingScreenState extends State<SettingScreen>
                                                 },
                                                 child: Container(
                                                   color: Colors.transparent,
-                                                  padding: EdgeInsets.all(15.r),
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 10.h,
+                                                      horizontal: 15.w),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
                                                       Container(
-                                                        decoration: BoxDecoration(
+                                                        decoration:
+                                                            BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -822,7 +912,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                               color: AppColors
                                                                   .blackBlue,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             ),
                                                           ),
                                                         ],
@@ -830,7 +921,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                     ),
                                                     Icon(
                                                       Icons.arrow_right,
-                                                      color: AppColors.blackBlue,
+                                                      color:
+                                                          AppColors.blackBlue,
                                                       size: 18.sp,
                                                     ),
                                                   ],
@@ -876,7 +968,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Expanded(
                                                         child: Row(
@@ -885,12 +978,12 @@ class _SettingScreenState extends State<SettingScreen>
                                                               child: Icon(
                                                                 Icons
                                                                     .account_balance_wallet_outlined,
-                                                                color:
-                                                                    Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                                 size: 18.sp,
                                                               ),
-                                                              margin:
-                                                                  EdgeInsets.only(
+                                                              margin: EdgeInsets
+                                                                  .only(
                                                                       right:
                                                                           10.w),
                                                             ),
@@ -919,7 +1012,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                 ),
                                               ),
-                        
+
                                             // GestureDetector(
                                             //   onTap: () {
                                             //     // context.read<ServiceCubit>().state.currentService!.id;
@@ -998,7 +1091,7 @@ class _SettingScreenState extends State<SettingScreen>
                                             //     ),
                                             //   ),
                                             // ),
-                        
+
                                             // GestureDetector(
                                             //   onTap: () {
                                             //     // context.read<ServiceCubit>().state.currentService!.id;
@@ -1075,7 +1168,7 @@ class _SettingScreenState extends State<SettingScreen>
                                             //     ),
                                             //   ),
                                             // ),
-                        
+
                                             GestureDetector(
                                               onTap: () {
                                                 updateTrackingData(
@@ -1120,7 +1213,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                             ),
                                                             margin:
                                                                 EdgeInsets.only(
-                                                                    right: 10.w),
+                                                                    right:
+                                                                        10.w),
                                                           ),
                                                           Text(
                                                             "${"Votre groupe".tr()} ASSO+"
@@ -1130,7 +1224,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                               color: AppColors
                                                                   .blackBlue,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             ),
                                                           ),
                                                         ],
@@ -1152,14 +1247,15 @@ class _SettingScreenState extends State<SettingScreen>
                                                     ),
                                                     Icon(
                                                       Icons.arrow_right,
-                                                      color: AppColors.blackBlue,
+                                                      color:
+                                                          AppColors.blackBlue,
                                                       size: 18.sp,
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                             ),
-                        
+
                                             // GestureDetector(
                                             //   onTap: () {
                                             //     // context.read<MembreCubit>().showMembersAss(
@@ -1231,7 +1327,7 @@ class _SettingScreenState extends State<SettingScreen>
                                             //     ),
                                             //   ),
                                             // ),
-                        
+
                                             // GestureDetector(
                                             //   onTap: () {
                                             //     context
@@ -1302,7 +1398,7 @@ class _SettingScreenState extends State<SettingScreen>
                                             //     ),
                                             //   ),
                                             // ),
-                        
+
                                             GestureDetector(
                                               onTap: () {
                                                 updateTrackingData(
@@ -1344,12 +1440,14 @@ class _SettingScreenState extends State<SettingScreen>
                                                             child: Icon(
                                                               Icons
                                                                   .settings_outlined,
-                                                              color: Colors.brown,
+                                                              color:
+                                                                  Colors.brown,
                                                               size: 18.sp,
                                                             ),
                                                             margin:
                                                                 EdgeInsets.only(
-                                                                    right: 10.w),
+                                                                    right:
+                                                                        10.w),
                                                           ),
                                                           Text(
                                                             "paramètres".tr(),
@@ -1358,7 +1456,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                               color: AppColors
                                                                   .blackBlue,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             ),
                                                           ),
                                                         ],
@@ -1366,7 +1465,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                     ),
                                                     Icon(
                                                       Icons.arrow_right,
-                                                      color: AppColors.blackBlue,
+                                                      color:
+                                                          AppColors.blackBlue,
                                                       size: 18.sp,
                                                     ),
                                                   ],
@@ -1427,7 +1527,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                               color: AppColors
                                                                   .blackBlue,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             ),
                                                           ),
                                                         ],
@@ -1435,7 +1536,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                     ),
                                                     Icon(
                                                       Icons.arrow_right,
-                                                      color: AppColors.blackBlue,
+                                                      color:
+                                                          AppColors.blackBlue,
                                                       size: 18.sp,
                                                     ),
                                                   ],

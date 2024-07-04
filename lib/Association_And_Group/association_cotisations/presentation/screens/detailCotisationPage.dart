@@ -268,25 +268,29 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                             onTap: () {
                               print("${monObjet["membre"]["membre_code"]}");
                             },
-                            child: WidgetHistoriqueCotisation(
-                              codeMembre: monObjet["membre"]["membre_code"],
-                              versement_status: monObjet["statut"],
-                              matricule: monObjet["membre"]["matricule"],
-                              montantTotalAVerser: monObjet["amount_to_pay"],
-                              montantVersee: monObjet["balance"],
-                              resteAPayer: monObjet["amount_remaining"],
-                              codeCotisation: widget.codeCotisation,
-                              nom: monObjet["membre"]["first_name"] == null
-                                  ? ""
-                                  : monObjet["membre"]["first_name"],
-                              photoProfil:
-                                  monObjet["membre"]["photo_profil"] == null
-                                      ? ""
-                                      : monObjet["membre"]["photo_profil"],
-                              prenom: monObjet["membre"]["last_name"] == null
-                                  ? ""
-                                  : monObjet["membre"]["last_name"],
-                            ),
+                            child: BlocBuilder<CotisationDetailCubit,
+                                    CotisationDetailState>(
+                                builder: (CotiDetailcontext, CotiDetailstate) {
+                              return WidgetHistoriqueCotisation(
+                                codeMembre: monObjet["membre"]["membre_code"],
+                                versement_status: monObjet["statut"],
+                                matricule: monObjet["membre"]["matricule"],
+                                montantTotalAVerser: monObjet["amount_to_pay"],
+                                montantVersee: monObjet["balance"],
+                                resteAPayer: monObjet["amount_remaining"],
+                                codeCotisation: widget.codeCotisation,
+                                nom: monObjet["membre"]["first_name"] == null
+                                    ? ""
+                                    : monObjet["membre"]["first_name"],
+                                photoProfil:
+                                    monObjet["membre"]["photo_profil"] == null
+                                        ? ""
+                                        : monObjet["membre"]["photo_profil"],
+                                prenom: monObjet["membre"]["last_name"] == null
+                                    ? ""
+                                    : monObjet["membre"]["last_name"],
+                              );
+                            }),
                           ),
                         );
                       },

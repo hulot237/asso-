@@ -59,24 +59,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
         
   }
 
-  isPasseDate() {
-    // Date récupérée de l'API (sous forme de String)
-    String apiDateString = widget.dateRencontreAPI;
 
-    // Conversion de la chaîne en un objet DateTime
-    DateTime apiDate = DateTime.parse(apiDateString);
-
-    // Date actuelle
-    DateTime now = DateTime.now();
-
-    // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
-    if (apiDate.isBefore(now)) {
-      print('La date de l\'API est passée par rapport à la date actuelle.');
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -258,7 +241,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 ),
                               ),
                             ),
-                          if (widget.isActiveRencontre == 1 && isPasseDate())
+                          if (widget.isActiveRencontre == 1 && isPasseDate(widget.dateRencontreAPI))
                             Container(
                               padding: EdgeInsets.only(
                                 top: 5.h,
@@ -278,7 +261,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                                 ),
                               ),
                             ),
-                          if (!isPasseDate() && widget.isActiveRencontre == 1)
+                          if (!isPasseDate(widget.dateRencontreAPI) && widget.isActiveRencontre == 1)
                             Container(
                               padding: EdgeInsets.only(top: 5.h),
                               // decoration: BoxDecoration(

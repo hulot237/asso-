@@ -353,6 +353,7 @@ class _paiementWidgetTontineState extends State<paiementWidgetTontine> {
             height: 60.h,
             child: TextField(
               controller: infoUserController,
+              keyboardType: TextInputType.number,
               autofocus: true,
               style: TextStyle(fontSize: 20.sp),
               decoration: InputDecoration(

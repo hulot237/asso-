@@ -146,7 +146,7 @@ class _AdministrationPageWebviewState extends State<AdministrationPageWebview> {
             } else {
               var loginInfo = await context.read<AuthCubit>().state.loginInfo;
               print("${loginInfo}");
-              // Navigator.pop(context);
+              Navigator.pop(context);
             }
           },
           child: Container(

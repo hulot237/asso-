@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
@@ -55,6 +56,7 @@ class WidgetHistoriqueCotisation extends StatefulWidget {
 class _WidgetHistoriqueCotisationState
     extends State<WidgetHistoriqueCotisation> {
   bool load = false;
+
   @override
   Widget build(BuildContext context) {
     String? jsonString = context.read<AuthCubit>().state.dataCookies;
@@ -113,17 +115,64 @@ class _WidgetHistoriqueCotisationState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom: 5.h),
-                        child: Text(
-                          "${widget.nom} ${widget.prenom}",
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.blackBlue,
+                      Row(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 5.h),
+                                child: Text(
+                                  "${widget.nom} ${widget.prenom}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppColors.blackBlue,
+                                  ),
+                                ),
+                              ),
+                              if (widget.versement_status == "2")
+                                Container(
+                                  margin:
+                                      EdgeInsets.only(bottom: 5.h, left: 0.w),
+                                  child: Text(
+                                    "payé".tr(),
+                                    style: TextStyle(
+                                      fontSize: 10.sp,
+                                      color: AppColors.green,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                        ),
+                          // Container(
+                          //   padding: EdgeInsets.all(3.r),
+                          //   margin: EdgeInsets.only(left: 5.w),
+                          //   decoration: BoxDecoration(
+                          //     borderRadius: BorderRadius.circular(50.r),
+                          //     color: widget.versement_status == "0"
+                          //         ? Color.fromARGB(40, 175, 76, 76)
+                          //         : widget.versement_status == "1"
+                          //             ? Color.fromARGB(40, 175, 139, 76)
+                          //             : Color.fromARGB(40, 83, 175, 76),
+                          //   ),
+                          //   child: Icon(
+                          //     widget.versement_status == "0"
+                          //         ? Icons.close
+                          //         : widget.versement_status == "1"
+                          //             ? Icons.close
+                          //             : Icons.done,
+                          //     color: widget.versement_status == "0"
+                          //         ? Colors.red
+                          //         : widget.versement_status == "1"
+                          //             ? Colors.orange
+                          //             : Colors.green,
+                          //     size: 14.sp,
+                          //   ),
+                          // ),
+                        ],
                       ),
 
                       Container(
@@ -185,63 +234,64 @@ class _WidgetHistoriqueCotisationState
             ),
           ),
           if (!context.read<AuthCubit>().state.detailUser!["isMember"])
-            widget.versement_status != "2"
-                ? InkWell(
-                    onTap: () {
-                      _showSimpleModalDialog(
-                        context,
-                        widget.nom,
-                        widget.resteAPayer,
-                        widget.codeCotisation,
-                        widget.codeMembre,
-                        hashId,
-                      );
-                      print("object");
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 32.r,
-                      height: 32.r,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.r,
-                        vertical: 8.r,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(15.r),
-                      ),
-                      child: SvgPicture.asset(
-                        "assets/images/walletPayIcon.svg",
-                        fit: BoxFit.scaleDown,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  )
-                : Container(
-                    padding: EdgeInsets.all(3.r),
-                    margin: EdgeInsets.only(left: 5.w),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.r),
-                      color: widget.versement_status == "0"
-                          ? Color.fromARGB(40, 175, 76, 76)
-                          : widget.versement_status == "1"
-                              ? Color.fromARGB(40, 175, 139, 76)
-                              : Color.fromARGB(40, 83, 175, 76),
-                    ),
-                    child: Icon(
-                      widget.versement_status == "0"
-                          ? Icons.close
-                          : widget.versement_status == "1"
-                              ? Icons.close
-                              : Icons.done,
-                      color: widget.versement_status == "0"
-                          ? Colors.red
-                          : widget.versement_status == "1"
-                              ? Colors.orange
-                              : Colors.green,
-                      size: 14.sp,
-                    ),
-                  ),
+            //   widget.versement_status != "2"
+            //       ?
+            InkWell(
+              onTap: () {
+                _showSimpleModalDialog(
+                  context,
+                  widget.nom,
+                  widget.resteAPayer,
+                  widget.codeCotisation,
+                  widget.codeMembre,
+                  hashId,
+                );
+                print("object");
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 32.r,
+                height: 32.r,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.r,
+                  vertical: 8.r,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.colorButton,
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: SvgPicture.asset(
+                  "assets/images/walletPayIcon.svg",
+                  fit: BoxFit.scaleDown,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          // : Container(
+          //     padding: EdgeInsets.all(3.r),
+          //     margin: EdgeInsets.only(left: 5.w),
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(50.r),
+          //       color: widget.versement_status == "0"
+          //           ? Color.fromARGB(40, 175, 76, 76)
+          //           : widget.versement_status == "1"
+          //               ? Color.fromARGB(40, 175, 139, 76)
+          //               : Color.fromARGB(40, 83, 175, 76),
+          //     ),
+          //     child: Icon(
+          //       widget.versement_status == "0"
+          //           ? Icons.close
+          //           : widget.versement_status == "1"
+          //               ? Icons.close
+          //               : Icons.done,
+          //       color: widget.versement_status == "0"
+          //           ? Colors.red
+          //           : widget.versement_status == "1"
+          //               ? Colors.orange
+          //               : Colors.green,
+          //       size: 14.sp,
+          //     ),
+          //   ),
           if (context.read<AuthCubit>().state.detailUser!["isMember"])
             Container(
               child: Row(
@@ -370,6 +420,18 @@ class _paiementWidgetState extends State<paiementWidget> {
 
   late TextEditingController infoUserController;
 
+  Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
+    final allCotisationAss = await context
+        .read<CotisationCubit>()
+        .AllCotisationAssTournoiCubit(codeTournoi, codeMembre);
+
+    if (allCotisationAss != null) {
+      print("handleAllCotisationAss");
+    } else {
+      print("handleAllCotisationAss null");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -414,6 +476,7 @@ class _paiementWidgetState extends State<paiementWidget> {
             child: TextField(
               controller: infoUserController,
               autofocus: true,
+              keyboardType: TextInputType.number,
               style: TextStyle(fontSize: 20.sp),
               decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -435,48 +498,58 @@ class _paiementWidgetState extends State<paiementWidget> {
           ),
           InkWell(
             onTap: () async {
-              setState(() {
-                load = true;
-              });
+              // setState(() {
+              //   load = true;
+              // });
               print(load);
-              await CotisationRepository().PayOneCotisation(
-                  widget.codeCotisation,
-                  infoUserController.text,
-                  widget.codeMembre,
-                  AppCubitStorage().state.codeAssDefaul,
-                  widget.hashId,
-                  3);
-              context.read<CotisationCubit>().AllCotisationAssTournoiCubit(
-                  AppCubitStorage().state.codeTournois,
-                  AppCubitStorage().state.membreCode);
-              context
-                  .read<CotisationDetailCubit>()
-                  .detailCotisationCubit(widget.codeCotisation);
-              setState(() {
-                load = false;
-              });
+              CotisationRepository().PayOneCotisation(
+                widget.codeCotisation,
+                infoUserController.text,
+                widget.codeMembre,
+                AppCubitStorage().state.codeAssDefaul,
+                widget.hashId,
+                3,
+              );
+              context.read<CotisationDetailCubit>().updateStateAmountPay(
+                    widget.codeMembre,
+                    infoUserController.text,
+                  );
+                            await Future.delayed(Duration(seconds: 2));
+
+              handleAllCotisationAssTournoi(
+                AppCubitStorage().state.codeTournoisHist,
+                AppCubitStorage().state.membreCode,
+              );
+
+              // setState(() {
+              //   load = false;
+              // });
               print(load);
               Navigator.pop(context);
+              // Attendre 2 secondes avant d'exécuter handleAllCotisationAssTournoi
+
             },
-            child: load == true
-                ? CircularProgressIndicator(
-                    color: AppColors.green,
-                  )
-                : Container(
-                    height: 50.h,
-                    decoration: BoxDecoration(
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(10.r)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Confirmer",
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ),
+            child:
+                // load == true
+                // ? CircularProgressIndicator(
+                //     color: AppColors.green,
+                //   )
+                // :
+                Container(
+              height: 50.h,
+              decoration: BoxDecoration(
+                  color: AppColors.colorButton,
+                  borderRadius: BorderRadius.circular(10.r)),
+              alignment: Alignment.center,
+              child: Text(
+                "Confirmer",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
           )
         ],
       ),

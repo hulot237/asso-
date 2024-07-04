@@ -1,8 +1,5 @@
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
-import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_state.dart';
-import 'package:faroty_association_1/Association_And_Group/association_seance/data/association_seance_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class CotisationDetailCubit extends Cubit<CotisationDetailState> {
@@ -16,8 +13,6 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
         );
 
   Future<void> detailCotisationCubit(codeCotisation) async {
-      print("object detailCotisationCubit  ");
-
     emit(
       state.copyWith(
         isLoading: true,
@@ -26,11 +21,9 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
       ),
     );
 
-      print("object detailCotisationCubitdetailCotisationCubit  ");
-
     try {
-      final data = await CotisationRepository().DetailCotisation(codeCotisation);
-      print("detailCotisationCubitdetailCotisationCubitdetailCotisationCubit $codeCotisation");
+      final data =
+          await CotisationRepository().DetailCotisation(codeCotisation);
 
       emit(
         state.copyWith(
@@ -39,11 +32,7 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
           errorLoadDetailCotis: false,
         ),
       );
-      // print("object DetailCotisation ${state.detailCotisation} ");
     } catch (e) {
-      print("object erreurerreurerreurerreurerreurerreur  ");
-
-      // print("object erreur ${e}");
       emit(
         state.copyWith(
           errorLoadDetailCotis: true,
@@ -51,5 +40,40 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
         ),
       );
     }
+  }
+
+  void updateStateAmountPay(String codeMembre, String montant) {
+    final currentState = state.detailCotisation;
+
+    if (currentState == null || currentState["membres"] == null) {
+      return;
+    }
+
+    final List<Map<String, dynamic>> updatedMembers =
+        List.from(currentState["membres"]);
+
+    for (int i = 0; i < updatedMembers.length; i++) {
+      print("iijj2 ${updatedMembers[i]['code']}");
+      if (updatedMembers[i]['membre']['membre_code'] == codeMembre) {
+        double oldBalance = double.parse(updatedMembers[i]['balance']);
+        double newAmount = double.parse(montant);
+
+        double newBalance = oldBalance + newAmount;
+
+        updatedMembers[i]['balance'] = newBalance.toString();
+        print(updatedMembers[i]['balance']);
+      }
+    }
+
+    final updatedState = state.copyWith(
+      detailCotisation: {
+        ...currentState,
+        "membres": updatedMembers,
+      },
+      isLoading: false,
+      errorLoadDetailCotis: false,
+    );
+
+    emit(updatedState);
   }
 }

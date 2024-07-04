@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -27,6 +28,7 @@ class widgetDetailHistoriqueTontineCard extends StatefulWidget {
     required this.codeCotisation,
     required this.lienDePaiement,
     required this.nomTontine,
+    required this.motif,
     required this.isPayed,
   });
   String nomBeneficiaire;
@@ -38,6 +40,7 @@ class widgetDetailHistoriqueTontineCard extends StatefulWidget {
   String codeCotisation;
   String lienDePaiement;
   String nomTontine;
+  String motif;
   int isPayed;
 
   @override
@@ -53,7 +56,7 @@ class _widgetDetailHistoriqueTontineCardState
         .detailCotisationCubit(codeCotisation);
   }
 
-    Future<void> handleDetailContributionTontine(codeContribution) async {
+  Future<void> handleDetailContributionTontine(codeContribution) async {
     final detailCotisation = await context
         .read<DetailContributionCubit>()
         .detailContributionTontineCubit(codeContribution);
@@ -115,6 +118,18 @@ class _widgetDetailHistoriqueTontineCardState
                                         ),
                                       ),
                                     ),
+                                    if(widget.isPayed != 0)
+                                    Container(
+                                      margin: EdgeInsets.only(left: 5.w),
+                                      child: Text(
+                                        "payé".tr(),
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            color: AppColors.green,
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -122,37 +137,38 @@ class _widgetDetailHistoriqueTontineCardState
                           ),
                         ),
                       ),
-                      widget.isPayed == 0
-                          ? 
-                          // GestureDetector(
-                          //     onTap: () async {
-                          //        launchWeb(
-                          //         "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                          //       );
-                          //     },
-                          //     child: Container(
-                          //       alignment: Alignment.center,
-                          //       width: 72.w,
-                          //       padding: EdgeInsets.symmetric(
-                          //         horizontal: 8.w,
-                          //         vertical: 5.h,
-                          //       ),
-                          //       decoration: BoxDecoration(
-                          //         color: AppColors.colorButton,
-                          //         borderRadius: BorderRadius.circular(15.r),
-                          //       ),
-                          //       child: Container(
-                          //         child: Text(
-                          //           "Tontiner",
-                          //           style: TextStyle(
-                          //             fontWeight: FontWeight.bold,
-                          //             fontSize: 12.sp,
-                          //             color: AppColors.white,
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   )
+                      // widget.isPayed == 0
+                      //     ?
+
+                      // GestureDetector(
+                      //     onTap: () async {
+                      //        launchWeb(
+                      //         "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                      //       );
+                      //     },
+                      //     child: Container(
+                      //       alignment: Alignment.center,
+                      //       width: 72.w,
+                      //       padding: EdgeInsets.symmetric(
+                      //         horizontal: 8.w,
+                      //         vertical: 5.h,
+                      //       ),
+                      //       decoration: BoxDecoration(
+                      //         color: AppColors.colorButton,
+                      //         borderRadius: BorderRadius.circular(15.r),
+                      //       ),
+                      //       child: Container(
+                      //         child: Text(
+                      //           "Tontiner",
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: 12.sp,
+                      //             color: AppColors.white,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   )
 
                       PopupMenuButton(
                         elevation: 5,
@@ -259,14 +275,16 @@ class _widgetDetailHistoriqueTontineCardState
                         ],
                       )
 
-                          : Text(
-                              "payé".tr(),
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: AppColors.green,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.italic),
-                            ),
+                      // :
+
+                      // Text(
+                      //     "payé".tr(),
+                      //     style: TextStyle(
+                      //         fontSize: 14.sp,
+                      //         color: AppColors.green,
+                      //         fontWeight: FontWeight.w600,
+                      //         fontStyle: FontStyle.italic),
+                      //   ),
                     ],
                   ),
                 ),
@@ -405,7 +423,7 @@ class _widgetDetailHistoriqueTontineCardState
                                 updateTrackingData(
                                     "home.btnwithdrawnFundsContribution",
                                     "${DateTime.now()}", {});
-                                 launchWeb(
+                                launchWeb(
                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
                                 );
                               },
@@ -448,7 +466,7 @@ class _widgetDetailHistoriqueTontineCardState
                             onTap: () async {
                               updateTrackingData("home.btnAdministerTontine",
                                   "${DateTime.now()}", {});
-                               launchWeb(
+                              launchWeb(
                                 "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
                               );
                             },
@@ -482,25 +500,68 @@ class _widgetDetailHistoriqueTontineCardState
                       Expanded(
                         child: InkWell(
                           splashColor: AppColors.blackBlue,
-                          onTap: () {
+                          onTap: () async {
+                            await handleDetailContributionTontine(
+                              widget.codeCotisation,
+                            );
+
+                            List currentDetailCotisation = context
+                                .read<DetailContributionCubit>()
+                                .state
+                                .detailContributionTontine!["membres"];
+                            print("rrrtttzzz $currentDetailCotisation");
+
+                            partagerContributionTontine(
+                              context: context,
+                              nomGroupe:
+                                  '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name!.trimRight()}',
+                              // source:
+                              //     '${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}',
+                              nomBeneficiaire:
+                                  '${(widget.nomBeneficiaire.trimRight())}',
+                              dateCotisation: '${widget.dateClose}',
+                              montantCotisations: '${widget.montantTontine}',
+                              lienDePaiement: '${widget.lienDePaiement}',
+                              // type: '${widget.type}',
+                              listeOkayCotisation: currentDetailCotisation,
+                              nomTontine: '${widget.nomTontine.trimRight()}',
+                              motif: '${widget.motif.trimRight()}',
+                            );
+
                             print("object3");
-                            Share.share(context
-                                    .read<AuthCubit>()
-                                    .state
-                                    .detailUser!["isMember"]
-                                ? "Aide-moi à payer ma tontine *${widget.nomTontine}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-                                : "Nouvelle tontine créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant  *${(widget.nomBeneficiaire)}* .\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+                            // Share.share(context
+                            //         .read<AuthCubit>()
+                            //         .state
+                            //         .detailUser!["isMember"]
+                            //     ? "Aide-moi à payer ma tontine *${widget.nomTontine}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                            //     : "Nouvelle tontine créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant  *${(widget.nomBeneficiaire)}* .\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
                           },
                           child: Column(
                             children: [
-                              Container(
-                                height: 17.h,
-                                child: SvgPicture.asset(
-                                  "assets/images/shareSimpleIcon.svg",
-                                  fit: BoxFit.scaleDown,
-                                  color: AppColors.blackBlueAccent1,
-                                ),
-                              ),
+                              BlocBuilder<DetailContributionCubit,
+                                      ContributionState>(
+                                  builder: (DetailContributionContext,
+                                      DetailContributionState) {
+                                return DetailContributionState
+                                            .isLoadingContibutionTontine ==
+                                        true
+                                    ? Container(
+                                        width: 15.r,
+                                        height: 15.r,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1.w,
+                                          color: AppColors.blackBlueAccent1,
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 17.h,
+                                        child: SvgPicture.asset(
+                                          "assets/images/shareSimpleIcon.svg",
+                                          fit: BoxFit.scaleDown,
+                                          color: AppColors.blackBlueAccent1,
+                                        ),
+                                      );
+                              }),
                               SizedBox(
                                 height: 3.h,
                               ),
@@ -519,8 +580,6 @@ class _widgetDetailHistoriqueTontineCardState
                     ],
                   ),
                 )
-              
-              
               ],
             ),
           ),

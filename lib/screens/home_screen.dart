@@ -29,11 +29,14 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/network/session_activity/session_cubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
 import 'package:faroty_association_1/pages/updatePage.dart';
+import 'package:faroty_association_1/widget/floating_action_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:popover/popover.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 //@RoutePage()
@@ -164,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future refresh() async {
     handleRecentEvent(AppCubitStorage().state.membreCode);
+    handleTournoiDefault();
     handleAllSeanceAss(AppCubitStorage().state.codeAssDefaul);
   }
 
@@ -208,6 +212,10 @@ class _HomeScreenState extends State<HomeScreen>
           return Material(
             type: MaterialType.transparency,
             child: Scaffold(
+              // floatingActionButton:
+              //     !context.read<AuthCubit>().state.detailUser!["isMember"]
+              //         ? FloatingAction()
+              //         : null,
               // appBar: AppBar(
               //   systemOverlayStyle: SystemUiOverlayStyle(
               //     // Status bar color
@@ -289,23 +297,44 @@ class _HomeScreenState extends State<HomeScreen>
                                                               .spaceBetween,
                                                       children: [
                                                         Expanded(
-                                                          child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                              right: 13.w,
-                                                            ),
-                                                            child: Text(
-                                                              "${DetailAss!.user_group!.name}",
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                fontSize: 16.sp,
-                                                                color: AppColors
-                                                                    .white,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              updateTrackingData(
+                                                                  "home.textSwitch",
+                                                                  "${DateTime.now()}",
+                                                                  {});
+                                                              Modal()
+                                                                  .showBottomSheetListAss(
+                                                                context,
+                                                                context
+                                                                    .read<
+                                                                        UserGroupCubit>()
+                                                                    .state
+                                                                    .userGroup,
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                right: 13.w,
                                                               ),
-                                                              // textAlign: TextAlign.center,
-                                                              maxLines: 2,
+                                                              child: Text(
+                                                                "${DetailAss!.user_group!.name}",
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      16.sp,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                ),
+                                                                // textAlign: TextAlign.center,
+                                                                maxLines: 2,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -472,7 +501,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                                               "home.btnAdminister",
                                                                               "${DateTime.now()}",
                                                                               {});
-                                                                           launchWeb(
+                                                                          launchWeb(
                                                                             "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
                                                                           );
                                                                         },
@@ -615,7 +644,12 @@ class _HomeScreenState extends State<HomeScreen>
                                                   PretEpargneState>(
                                                 builder: (PretEpargnecontext,
                                                     PretEpargnestate) {
-                                                  if (PretEpargnestate.isLoadingEpargne == true && PretEpargnestate.epargne == null)
+                                                  if (PretEpargnestate
+                                                              .isLoadingEpargne ==
+                                                          true &&
+                                                      PretEpargnestate
+                                                              .epargne ==
+                                                          null)
                                                     return Container(
                                                       padding: EdgeInsets.only(
                                                           top: 15.h),
@@ -1603,10 +1637,68 @@ class _HomeScreenState extends State<HomeScreen>
                                                 ),
                                               ),
                                             Container(
+                                                           margin: EdgeInsets.only(
+                                                left: 8.w,
+                                                right: 8.w,
+                                                top: 20.h,
+                                                bottom: 20.h,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(
+                                                      vertical: 10.h,
+                                                      horizontal: 20.w,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                    ),
+                                                    child:  Text(
+                                                          "Vos rencontres".tr(),
+                                                          style: TextStyle(
+                                                            color: AppColors.blackBlue,
+                                                            fontSize: 16.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                          ),
+                                                        
+                                                    ),
+                                                  ),Container(
+                                                    padding: EdgeInsets.symmetric(
+                                                      vertical: 10.h,
+                                                      horizontal: 20.w,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                    ),
+                                                    child:  Text(
+                                                          "Vos cotisations".tr(),
+                                                          style: TextStyle(
+                                                            color: AppColors.blackBlue,
+                                                            fontSize: 16.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                          ),
+                                                        
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            Container(
                                               margin: EdgeInsets.only(
                                                 left: 8.w,
                                                 right: 8.w,
-                                                top: 7.h,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: AppColors.white,
@@ -1658,24 +1750,131 @@ class _HomeScreenState extends State<HomeScreen>
                                                             // ),
                                                           ),
                                                         ),
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                            right: 10.w,
-                                                          ),
-                                                          width: 10.r,
-                                                          height: 10.r,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: const Color
-                                                                .fromRGBO(
-                                                                244, 67, 54, 1),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100.r),
-                                                          ),
-                                                        ),
+                                                        BlocBuilder<
+                                                                DetailTournoiCourantCubit,
+                                                                DetailTournoiCourantState>(
+                                                            builder:
+                                                                (tournoisContext,
+                                                                    tournoisState) {
+                                                          if (tournoisState
+                                                                      .isLoading ==
+                                                                  true &&
+                                                              tournoisState
+                                                                      .detailtournoiCourant ==
+                                                                  null)
+                                                            return Container();
+                                                          final currentDetailtournoiCourant = context
+                                                              .read<
+                                                                  DetailTournoiCourantCubit>()
+                                                              .state
+                                                              .detailtournoiCourant;
+
+                                                          return currentDetailtournoiCourant![
+                                                                          "tournois"] !=
+                                                                      null &&
+                                                                  currentDetailtournoiCourant["tournois"]
+                                                                              [
+                                                                              "seance"]
+                                                                          .length >
+                                                                      0 &&
+                                                                  currentDetailtournoiCourant["tournois"]
+                                                                              ["seance"][0]
+                                                                          [
+                                                                          "status"] ==
+                                                                      1 &&
+                                                                  !hasPassed48Hours(
+                                                                      currentDetailtournoiCourant["tournois"]
+                                                                              ["seance"][0]
+                                                                          [
+                                                                          "date_seance"])
+                                                              ? GestureDetector(
+                                                                  onTap: () {
+                                                                    String
+                                                                        message;
+                                                                    message =
+                                                                        "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
+
+                                                                    message +=
+                                                                        "👉🏽 ${"recepteur".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["last_name"]} ${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["first_name"]}*\n";
+                                                                    message +=
+                                                                        "👉🏽 ${"lieu".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["localisation"]}*\n";
+                                                                    message +=
+                                                                        "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}*\n\n";
+
+                                                                    message +=
+                                                                        "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
+
+                                                                    message +=
+                                                                        "*by ASSO+*";
+
+                                                                    if (tournoisState.isLoading ==
+                                                                            true &&
+                                                                        tournoisState.detailtournoiCourant !=
+                                                                            null) {
+                                                                      null;
+                                                                    } else {
+                                                                      Share.share(
+                                                                          message);
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    // margin:
+                                                                    //     EdgeInsets.only(
+                                                                    //   right: 10.w,
+                                                                    // ),
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .symmetric(
+                                                                      vertical:
+                                                                          4.h,
+                                                                      horizontal:
+                                                                          10.w,
+                                                                    ),
+                                                                    // width: 10.r,
+                                                                    // height: 10.r,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: AppColors
+                                                                          .colorButton,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              100.r),
+                                                                    ),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          "Partager"
+                                                                              .tr(),
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                AppColors.white,
+                                                                            fontSize:
+                                                                                13.sp,
+                                                                            // fontWeight:
+                                                                            //     FontWeight
+                                                                            //         .bold,
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          height:
+                                                                              15.h,
+                                                                          child:
+                                                                              SvgPicture.asset(
+                                                                            "assets/images/shareSimpleIcon.svg",
+                                                                            fit:
+                                                                                BoxFit.scaleDown,
+                                                                            color:
+                                                                                AppColors.white,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : Container();
+                                                        }),
                                                       ],
                                                     ),
                                                   ),
@@ -1717,23 +1916,24 @@ class _HomeScreenState extends State<HomeScreen>
                                                               DetailTournoiCourantCubit>()
                                                           .state
                                                           .detailtournoiCourant;
-
+// print("object233333 ${currentDetailtournoiCourant!["tournois"]["seance"][0]["date_seance"]}");
                                                       return currentDetailtournoiCourant![
                                                                       "tournois"] !=
                                                                   null &&
-                                                              currentDetailtournoiCourant[
-                                                                              "tournois"]
-                                                                          [
-                                                                          "seance"]
+                                                              currentDetailtournoiCourant["tournois"]["seance"]
                                                                       .length >
                                                                   0 &&
                                                               currentDetailtournoiCourant[
                                                                               "tournois"]
-                                                                          [
-                                                                          "seance"][0]
+                                                                          ["seance"][0]
                                                                       [
                                                                       "status"] ==
-                                                                  1
+                                                                  1 &&
+                                                              !hasPassed48Hours(
+                                                                  currentDetailtournoiCourant[
+                                                                              "tournois"]
+                                                                          ["seance"][0]
+                                                                      ["date_seance"])
                                                           ? Stack(
                                                               children: [
                                                                 Container(
@@ -1747,7 +1947,10 @@ class _HomeScreenState extends State<HomeScreen>
                                                                   ),
                                                                   child:
                                                                       WidgetRencontreCard(
-                                                                        codeTournoi: AppCubitStorage().state.codeTournois!,
+                                                                    codeTournoi:
+                                                                        AppCubitStorage()
+                                                                            .state
+                                                                            .codeTournois!,
                                                                     rapportUrl: currentDetailtournoiCourant["tournois"]
                                                                             [
                                                                             "seance"][0]
@@ -1860,83 +2063,100 @@ class _HomeScreenState extends State<HomeScreen>
                                                                           .tr(),
                                                                       style:
                                                                           TextStyle(
-                                                                        color: Color
-                                                                            .fromRGBO(
-                                                                                20,
-                                                                                45,
-                                                                                99,
-                                                                                0.26),
+                                                                        color: Color.fromRGBO(
+                                                                            20,
+                                                                            45,
+                                                                            99,
+                                                                            0.26),
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w100,
+                                                                            FontWeight.w100,
                                                                         fontSize:
                                                                             20.sp,
                                                                       ),
                                                                     ),
-                                                                    
-
-
-                                                                     if (!context.read<AuthCubit>().state.detailUser!["isMember"])
-                                                                            InkWell(
-                                                                              onTap: () async {
-                                                                                updateTrackingData("transactions.btnAddMeeting", "${DateTime.now()}", {});
-                                                                                 launchWeb(
-                                                                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                                                                                );
-                                                                              },
-                                                                              child: Container(
-                                                                                height: 40.h,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: AppColors.pageBackground,
-                                                                                  border: Border.all(
-                                                                                    width: 2.w,
-                                                                                    color: AppColors.blackBlue.withOpacity(1),
-                                                                                  ),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    20.r,
-                                                                                  ),
-                                                                                ),
-                                                                                margin: EdgeInsets.only(
-                                                                                  top: 10.w,
-                                                                                ),
-                                                                                padding: EdgeInsets.symmetric(
-                                                                                  horizontal: 10.w,
-                                                                                  vertical: 7.h,
-                                                                                ),
-                                                                                width: MediaQuery.of(context).size.width / 1.5,
-                                                                                child: Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      "Ajouter une rencontre".tr(),
-                                                                                      style: TextStyle(
-                                                                                        color: AppColors.blackBlue.withOpacity(1),
-                                                                                        fontWeight: FontWeight.w900,
-                                                                                        fontSize: 18.sp,
-                                                                                        letterSpacing: 0.2.w,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Container(
-                                                                                      width: 20.w,
-                                                                                      height: 20.w,
-                                                                                      margin: EdgeInsets.only(left: 3.w),
-                                                                                      decoration: BoxDecoration(
-                                                                                        borderRadius: BorderRadius.circular(360),
-                                                                                        border: Border.all(
-                                                                                          width: 1.5.w,
-                                                                                          color: AppColors.blackBlue.withOpacity(1),
-                                                                                        ),
-                                                                                      ),
-                                                                                      child: SvgPicture.asset(
-                                                                                        "assets/images/addIcon.svg",
-                                                                                        fit: BoxFit.scaleDown,
-                                                                                        color: AppColors.blackBlue.withOpacity(1),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
+                                                                    if (!context
+                                                                        .read<
+                                                                            AuthCubit>()
+                                                                        .state
+                                                                        .detailUser!["isMember"])
+                                                                      InkWell(
+                                                                        onTap:
+                                                                            () async {
+                                                                          updateTrackingData(
+                                                                              "transactions.btnAddMeeting",
+                                                                              "${DateTime.now()}",
+                                                                              {});
+                                                                          launchWeb(
+                                                                            "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
+                                                                          );
+                                                                        },
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              40.h,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                AppColors.pageBackground,
+                                                                            border:
+                                                                                Border.all(
+                                                                              width: 2.w,
+                                                                              color: AppColors.blackBlue.withOpacity(1),
+                                                                            ),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(
+                                                                              20.r,
+                                                                            ),
+                                                                          ),
+                                                                          margin:
+                                                                              EdgeInsets.only(
+                                                                            top:
+                                                                                10.w,
+                                                                          ),
+                                                                          padding:
+                                                                              EdgeInsets.symmetric(
+                                                                            horizontal:
+                                                                                10.w,
+                                                                            vertical:
+                                                                                7.h,
+                                                                          ),
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width / 1.5,
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceAround,
+                                                                            children: [
+                                                                              Text(
+                                                                                "Ajouter une rencontre".tr(),
+                                                                                style: TextStyle(
+                                                                                  color: AppColors.blackBlue.withOpacity(1),
+                                                                                  fontWeight: FontWeight.w900,
+                                                                                  fontSize: 18.sp,
+                                                                                  letterSpacing: 0.2.w,
                                                                                 ),
                                                                               ),
-                                                                            ),
+                                                                              Container(
+                                                                                width: 20.w,
+                                                                                height: 20.w,
+                                                                                margin: EdgeInsets.only(left: 3.w),
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.circular(360),
+                                                                                  border: Border.all(
+                                                                                    width: 1.5.w,
+                                                                                    color: AppColors.blackBlue.withOpacity(1),
+                                                                                  ),
+                                                                                ),
+                                                                                child: SvgPicture.asset(
+                                                                                  "assets/images/addIcon.svg",
+                                                                                  fit: BoxFit.scaleDown,
+                                                                                  color: AppColors.blackBlue.withOpacity(1),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -1972,7 +2192,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                         .height /
                                                     7),
                                             child: EasyLoader(
-                                              backgroundColor: Color.fromARGB(0, 255, 16, 16),
+                                              backgroundColor: Color.fromARGB(
+                                                  0, 255, 16, 16),
                                               iconSize: 50.r,
                                               iconColor:
                                                   AppColors.blackBlueAccent1,
@@ -2001,6 +2222,7 @@ class _HomeScreenState extends State<HomeScreen>
 
                                       List<Widget> listWidgetTontine =
                                           listeTontine.map((monObjet) {
+                                        // print(object)
                                         return widgetRecentEventTontine(
                                           nomBeneficiaire: monObjet["membre"]
                                               ["first_name"],
@@ -2018,6 +2240,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           lienDePaiement:
                                               monObjet["tontine_pay_link"],
                                           nomTontine: monObjet["matricule"],
+                                          motif: monObjet["motif"],
                                         );
                                       }).toList();
 
@@ -2030,7 +2253,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                   null
                                               ? ""
                                               : '(${monObjet["ass_rubrique"]["name"]})',
-                                          dateOpen: monObjet["start_date"],
+                                          dateOpen: monObjet["end_date"],
                                           dateClose: monObjet["end_date"],
                                           montantCotisation: monObjet["amount"],
                                           montantCollecte:
@@ -2063,11 +2286,14 @@ class _HomeScreenState extends State<HomeScreen>
                                             .read<AuthCubit>()
                                             .state
                                             .detailUser;
-                                            print("${monObjet}");
+                                        print("${monObjet}");
                                         return widgetRecentEventSanction(
-                                          membreCode: AppCubitStorage().state.membreCode,
+                                          membreCode: AppCubitStorage()
+                                              .state
+                                              .membreCode,
                                           // "${monObjet["membre"]["membre_code"]}",
-                                          nomProprietaire: "${currentDetailUser!["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
+                                          nomProprietaire:
+                                              "${currentDetailUser!["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
                                           // "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"] ?? ""}",
                                           resteAPayer:
                                               monObjet["amount_remaining"],
@@ -2107,8 +2333,9 @@ class _HomeScreenState extends State<HomeScreen>
                                         ),
                                       ];
 
-                                      return listWidgetTontine.length > 0 || listWidgetCotisation.length > 0 || listWidgetSanction.length > 0
-
+                                      return listWidgetTontine.length > 0 ||
+                                              listWidgetCotisation.length > 0 ||
+                                              listWidgetSanction.length > 0
                                           ? SliverList.builder(
                                               itemCount:
                                                   listeWidgetFinale.length,
@@ -2147,71 +2374,117 @@ class _HomeScreenState extends State<HomeScreen>
                                                           fontSize: 20.sp,
                                                         ),
                                                       ),
-                                                       if (!context.read<AuthCubit>().state.detailUser!["isMember"])
-                                                                            InkWell(
-                                                                              onTap:
-                                                                          () async {
-                                                                        updateTrackingData(
-                                                                            "transactions.btnAddContribution",
-                                                                            "${DateTime.now()}",
-                                                                            {});
-                                                                         launchWeb(
-                                                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
-                                                                        );
-                                                                      },
-                                                                              child: Container(
-                                                                                height: 40.h,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: AppColors.pageBackground,
-                                                                                  border: Border.all(
-                                                                                    width: 2.w,
-                                                                                    color: AppColors.blackBlue.withOpacity(1),
-                                                                                  ),
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    20.r,
-                                                                                  ),
-                                                                                ),
-                                                                                margin: EdgeInsets.only(
-                                                                                  top: 10.w,
-                                                                                ),
-                                                                                padding: EdgeInsets.symmetric(
-                                                                                  horizontal: 10.w,
-                                                                                  vertical: 7.h,
-                                                                                ),
-                                                                                width: MediaQuery.of(context).size.width / 1.5,
-                                                                                child: Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      "Ajouter une cotisation".tr(),
-                                                                                      style: TextStyle(
-                                                                                        color: AppColors.blackBlue.withOpacity(1),
-                                                                                        fontWeight: FontWeight.w900,
-                                                                                        fontSize: 18.sp,
-                                                                                        letterSpacing: 0.2.w,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Container(
-                                                                                      width: 20.w,
-                                                                                      height: 20.w,
-                                                                                      margin: EdgeInsets.only(left: 3.w),
-                                                                                      decoration: BoxDecoration(
-                                                                                        borderRadius: BorderRadius.circular(360),
-                                                                                        border: Border.all(
-                                                                                          width: 1.5.w,
-                                                                                          color: AppColors.blackBlue.withOpacity(1),
-                                                                                        ),
-                                                                                      ),
-                                                                                      child: SvgPicture.asset(
-                                                                                        "assets/images/addIcon.svg",
-                                                                                        fit: BoxFit.scaleDown,
-                                                                                        color: AppColors.blackBlue.withOpacity(1),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
+                                                      if (!context
+                                                              .read<AuthCubit>()
+                                                              .state
+                                                              .detailUser![
+                                                          "isMember"])
+                                                        InkWell(
+                                                          onTap: () async {
+                                                            updateTrackingData(
+                                                                "transactions.btnAddContribution",
+                                                                "${DateTime.now()}",
+                                                                {});
+                                                            launchWeb(
+                                                              "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            height: 40.h,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: AppColors
+                                                                  .pageBackground,
+                                                              border:
+                                                                  Border.all(
+                                                                width: 2.w,
+                                                                color: AppColors
+                                                                    .blackBlue
+                                                                    .withOpacity(
+                                                                        1),
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                20.r,
+                                                              ),
+                                                            ),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                              top: 10.w,
+                                                            ),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                              horizontal: 10.w,
+                                                              vertical: 7.h,
+                                                            ),
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                1.5,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                Text(
+                                                                  "Ajouter une cotisation"
+                                                                      .tr(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: AppColors
+                                                                        .blackBlue
+                                                                        .withOpacity(
+                                                                            1),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900,
+                                                                    fontSize:
+                                                                        18.sp,
+                                                                    letterSpacing:
+                                                                        0.2.w,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  width: 20.w,
+                                                                  height: 20.w,
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              3.w),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            360),
+                                                                    border:
+                                                                        Border
+                                                                            .all(
+                                                                      width:
+                                                                          1.5.w,
+                                                                      color: AppColors
+                                                                          .blackBlue
+                                                                          .withOpacity(
+                                                                              1),
+                                                                    ),
+                                                                  ),
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    "assets/images/addIcon.svg",
+                                                                    fit: BoxFit
+                                                                        .scaleDown,
+                                                                    color: AppColors
+                                                                        .blackBlue
+                                                                        .withOpacity(
+                                                                            1),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
                                                     ],
                                                   ),
                                                 ),

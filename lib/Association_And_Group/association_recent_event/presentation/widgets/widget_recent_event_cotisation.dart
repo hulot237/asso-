@@ -242,10 +242,10 @@ class _widgetRecentEventCotisationState
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: 75.w,
+                          // width: 75.w,
                           padding: EdgeInsets.symmetric(
-                            horizontal: 5.w,
-                            vertical: 5.h,
+                            horizontal: 10.w,
+                            vertical: 4.h,
                           ),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton,
@@ -602,24 +602,61 @@ class _widgetRecentEventCotisationState
                         Expanded(
                           child: InkWell(
                             splashColor: AppColors.blackBlue,
-                            onTap: () {
+                            onTap: () async{
+                               await handleDetailCotisation(
+                                    widget.codeCotisation);
+
+                                final currentDetailCotisation = context
+                                    .read<CotisationDetailCubit>()
+                                    .state
+                                    .detailCotisation;
+
+                                List listeOkayCotisation =
+                                    currentDetailCotisation!["membres"];
+
+                                partagerCotisation(
+                                  nomGroupe:
+                                      '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'.trimRight(),
+                                  source:
+                                      '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}',
+                                  nomBeneficiaire:
+                                      '${(widget.nomBeneficiaire.trimRight())}',
+                                  dateCotisation: '${widget.dateClose}',
+                                  montantCotisations:
+                                      '${widget.montantCotisation}',
+                                  lienDePaiement: '${widget.lienDePaiement}',
+                                  type: '${widget.type}',
+                                  listeOkayCotisation: listeOkayCotisation,
+                                  context: context,
+                                );
                               print("object3");
-                              Share.share(context
-                                      .read<AuthCubit>()
-                                      .state
-                                      .detailUser!["isMember"]
-                                  ? "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${ widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantCotisation.toString() ))} FCFA"} * .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-                                  : "Nouvelle cotisation créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+                              // Share.share(context
+                              //         .read<AuthCubit>()
+                              //         .state
+                              //         .detailUser!["isMember"]
+                              //     ? "Aide-moi à payer ma cotisation *${widget.motif}*.\nMontant: *${ widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantCotisation.toString() ))} FCFA"} * .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                              //     : "Nouvelle cotisation créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
                             },
                             child: Column(
                               children: [
-                                Container(
-                                  height: 17.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/shareSimpleIcon.svg",
-                                    fit: BoxFit.scaleDown,
-                                    color: AppColors.blackBlueAccent1,
-                                  ),
+                                BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                                      builder: (CotisationDetailcontext, CotisationDetailstate) {
+                                    return CotisationDetailstate.isLoading == true ? Container(
+                                      width: 15.r,
+                                      height: 15.r,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 1.w,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
+                                    ): Container(
+                                      height: 17.h,
+                                      child: SvgPicture.asset(
+                                        "assets/images/shareSimpleIcon.svg",
+                                        fit: BoxFit.scaleDown,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
+                                    );
+                                  }
                                 ),
                                 SizedBox(
                                   height: 3.h,

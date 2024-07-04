@@ -32,6 +32,7 @@ class widgetRecentEventTontine extends StatefulWidget {
     required this.codeCotisation,
     required this.lienDePaiement,
     required this.nomTontine,
+    required this.motif,
   });
   String nomBeneficiaire;
   String dateClose;
@@ -42,6 +43,7 @@ class widgetRecentEventTontine extends StatefulWidget {
   String codeCotisation;
   String lienDePaiement;
   String nomTontine;
+  String motif;
 
   @override
   State<widgetRecentEventTontine> createState() =>
@@ -538,24 +540,73 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                         Expanded(
                           child: InkWell(
                             splashColor: AppColors.blackBlue,
-                            onTap: () {
+                            onTap: () async {
                               print("object3");
-                              Share.share(context
-                                      .read<AuthCubit>()
-                                      .state
-                                      .detailUser!["isMember"]
-                                  ? "Aide-moi à payer ma tontine *${widget.nomTontine}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-                                  : "Nouvelle tontine créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant  *${(widget.nomBeneficiaire)}* .\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+                              // updateTrackingData(
+                              //     "${widget.screenSource}.btnShareContribution",
+                              //     "${DateTime.now()}", {});
+
+                              await handleDetailContributionTontine(
+                                widget.codeCotisation,
+                              );
+
+                              List currentDetailCotisation = context
+                                  .read<DetailContributionCubit>()
+                                  .state
+                                  .detailContributionTontine!["membres"];
+                                  print("rrrtttzzz $currentDetailCotisation");
+
+                              partagerContributionTontine(
+                                context: context,
+                                nomGroupe:
+                                    '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name!.trimRight()}',
+                                // source:
+                                //     '${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}',
+                                nomBeneficiaire: '${(widget.nomBeneficiaire.trimRight())}',
+                                dateCotisation: '${widget.dateClose}',
+                                montantCotisations: '${widget.montantTontine}',
+                                lienDePaiement: '${widget.lienDePaiement}',
+                                // type: '${widget.type}',
+                                listeOkayCotisation: currentDetailCotisation,
+                                nomTontine: '${widget.nomTontine.trimRight()}',
+                                motif: '${widget.motif.trimRight()}',
+                              );
+
+                              // Share.share(context
+                              //         .read<AuthCubit>()
+                              //         .state
+                              //         .detailUser!["isMember"]
+                              //     ? "Aide-moi à payer ma tontine *${widget.nomTontine}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                              //     : "Nouvelle tontine créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant  *${(widget.nomBeneficiaire)}* .\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
                             },
                             child: Column(
                               children: [
-                                Container(
-                                  height: 17.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/shareSimpleIcon.svg",
-                                    fit: BoxFit.scaleDown,
-                                    color: AppColors.blackBlueAccent1,
-                                  ),
+                                BlocBuilder<DetailContributionCubit,
+                                        ContributionState>(
+                                    builder: (DetailContributionContext,
+                                        DetailContributionState) {
+                                  return DetailContributionState
+                                              .isLoadingContibutionTontine ==
+                                          true
+                                      ? Container(
+                                          width: 15.r,
+                                          height: 15.r,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 1.w,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 17.h,
+                                          child: SvgPicture.asset(
+                                            "assets/images/shareSimpleIcon.svg",
+                                            fit: BoxFit.scaleDown,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        );
+                                }),
+                                SizedBox(
+                                  height: 3.h,
                                 ),
                                 SizedBox(
                                   height: 3.h,

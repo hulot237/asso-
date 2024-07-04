@@ -2502,6 +2502,7 @@ class _UpdateInfoUserWidgetState extends State<UpdateInfoUserWidget> {
               ),
               child: TextField(
                 controller: widget.infoUserController,
+                keyboardType: TextInputType.number,
                 autofocus: true,
                 style: TextStyle(fontSize: 15.sp),
                 decoration: InputDecoration(

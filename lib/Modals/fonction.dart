@@ -4,7 +4,11 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/app_storage_model_tracking.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/network/token_interceptor.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 String formatMontantFrancais(double montant) {
@@ -273,24 +277,24 @@ checkAdminStatus(bool isAdmin) {
   // }
 }
 
-isPasseDate(dateRencontreAPI) {
-  // Date récupérée de l'API (sous forme de String)
-  String apiDateString = dateRencontreAPI;
+// isPasseDate(dateRencontreAPI) {
+//   // Date récupérée de l'API (sous forme de String)
+//   String apiDateString = dateRencontreAPI;
 
-  // Conversion de la chaîne en un objet DateTime
-  DateTime apiDate = DateTime.parse(apiDateString);
+//   // Conversion de la chaîne en un objet DateTime
+//   DateTime apiDate = DateTime.parse(apiDateString);
 
-  // Date actuelle
-  DateTime now = DateTime.now();
+//   // Date actuelle
+//   DateTime now = DateTime.now();
 
-  // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
-  if (apiDate.isBefore(now)) {
-    print('La date de l\'API est passée par rapport à la date actuelle.');
-    return true;
-  } else {
-    return false;
-  }
-}
+//   // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
+//   if (apiDate.isBefore(now)) {
+//     print('La date de l\'API est passée par rapport à la date actuelle.');
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
 
 String formatDateTimeintegral(String lang, String dateTimeStr) {
   // Conversion de la chaîne de date en objet DateTime
@@ -353,11 +357,184 @@ updateTrackingData(String code, String date, Map<String, dynamic> data) async {
   }
 }
 
-
-  Future<void> launchWeb(webUrl) async {
-    final url = webUrl;
-    var uri = Uri.parse(url);
-    if (!await launchUrl(uri)) {
-      throw 'Could not launch';
-    }
+Future<void> launchWeb(webUrl) async {
+  final url = webUrl;
+  var uri = Uri.parse(url);
+  if (!await launchUrl(uri)) {
+    throw 'Could not launch';
   }
+}
+
+partagerCotisation({
+  required String nomGroupe,
+  required String source,
+  required String nomBeneficiaire,
+  required String montantCotisations,
+  required String dateCotisation,
+  required String lienDePaiement,
+  required String type,
+  required List<dynamic> listeOkayCotisation,
+  required BuildContext context,
+  // required BuildContext context,
+}) {
+  String message = "";
+
+  message +=
+      "🟢🟢 Nouvelle cotisation en cours dans le groupe *${nomGroupe}* concernant ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n\n ";
+
+  message +=
+      "👉🏽 ${(source == '' ? "MEMBRE CONCERNÉ" : "SEANCE CONCERNÉE")} : ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n";
+  message +=
+      "👉🏽 MONTANT : ${type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
+  message += "👉🏽 DATE DE FIN : *${(formatDateLiteral(dateCotisation))}*\n\n";
+
+  // message += "Soyez le premier à contribuer ici :  https://$lienDePaiement\n\n";
+  message += !context.read<AuthCubit>().state.detailUser!["isMember"]
+      ? "Soyez le premier à contribuer ici :  https://$lienDePaiement\n\n"
+      : "Aide-moi à payer ma cotisation en suivant le lien https://$lienDePaiement?code=${AppCubitStorage().state.membreCode}\n\n";
+
+  message += "*Récapitulatif :*\n";
+  // Calcul du total et ajout des détails par membre
+  double totalCotisations = 0;
+  for (var element in listeOkayCotisation) {
+    String firstName = element["membre"]["first_name"];
+    String lastName = element["membre"]["last_name"];
+    double balance =
+        double.parse(element["balance"]); // Conversion de la balance en nombre
+
+    // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
+    // String formattedBalance =
+    //     NumberFormat.decimalPattern().format(balance.toInt());
+
+    message +=
+        "- ${firstName} ${lastName} -> ${formatMontantFrancais(balance)} F ${element["statut"] == "2" ? "✅" : "❌"}\n";
+    totalCotisations += balance;
+  }
+
+  // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
+  // String formattedTotal =
+  //     NumberFormat.decimalPattern().format(totalCotisations.toInt());
+
+  message += "\n*TOTAL -> ${formatMontantFrancais(totalCotisations)} F*\n\n";
+
+  message += "*by ASSO+*";
+
+  // Partager le message en utilisant Flutter Share
+  Share.share(
+    message,
+  );
+}
+
+partagerContributionTontine({
+  required String nomGroupe,
+  required String nomBeneficiaire,
+  required String montantCotisations,
+  required String dateCotisation,
+  required String lienDePaiement,
+  required String nomTontine,
+  required String motif,
+  required List<dynamic> listeOkayCotisation,
+  required BuildContext context,
+}) {
+  print("nomGroupe $nomGroupe");
+  print("nomBeneficiaire $nomBeneficiaire");
+  print("montantCotisations $montantCotisations");
+  print("dateCotisation $dateCotisation");
+  print("lienDePaiement $lienDePaiement");
+  print("nomTontine $nomTontine");
+  print("motif $motif");
+  print("membreCode ${AppCubitStorage().state.membreCode}");
+
+  String message = "";
+
+  message +=
+      "🟢🟢 Nouvelle session de la tontine *${nomTontine}* en cours dans le groupe *${nomGroupe}* concernant *${nomBeneficiaire}*\n\n";
+
+  print("message 1 $message");
+
+  message += "👉🏽 MEMBRE CONCERNÉ : *${nomBeneficiaire}*\n";
+  message += "👉🏽 MOTIF : *${motif}*\n";
+  message +=
+      "👉🏽 MONTANT : ${"*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
+  message += "👉🏽 DATE DE FIN : *${(formatDateLiteral(dateCotisation))}*\n\n";
+
+  print("message 2 $message");
+
+  message += !context.read<AuthCubit>().state.detailUser!["isMember"]
+      ? "Soyez le premier à contribuer ici :  https://$lienDePaiement\n\n"
+      : "Aide-moi à payer ma tontine en suivant le lien https://$lienDePaiement?code=${AppCubitStorage().state.membreCode}\n\n";
+
+  print("message 3 $message");
+
+  message += "*Récapitulatif :*\n";
+  // Calcul du total et ajout des détails par membre
+  double totalCotisations = 0;
+
+  print("message 4 $message");
+  for (var element in listeOkayCotisation) {
+    String firstName = element["membre"]["first_name"];
+    String lastName = element["membre"]["last_name"] ?? " ";
+    double balance =
+        double.parse(element["balance"]); // Conversion de la balance en nombre
+
+    // // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
+    // String formattedBalance =
+    //     NumberFormat.decimalPatternDigits().format(balance.toInt());
+
+    message +=
+        "- ${firstName.trimRight()}  ${lastName.trimRight()} -> ${formatMontantFrancais(balance)} F ${element["statut"] == "2" ? "✅" : "❌"}\n";
+    totalCotisations += balance;
+
+    print("message 4 $message");
+  }
+
+  // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
+  // String formattedTotal =
+  //     NumberFormat.decimalPattern().format(totalCotisations.toInt());
+
+  message += "\n*TOTAL -> ${formatMontantFrancais(totalCotisations)} F*\n\n";
+
+  print("message 5 $message");
+  message += "*by ASSO+*";
+
+  // Partager le message en utilisant Flutter Share
+  Share.share(
+    message,
+  );
+}
+
+bool hasPassed48Hours(String dateString) {
+  // Convertir la chaîne en objet DateTime
+  DateTime givenDate = DateTime.parse(dateString);
+
+  // Date actuelle
+  DateTime now = DateTime.now();
+
+  // Calculer la différence en heures entre maintenant et la date donnée
+  Duration difference = now.difference(givenDate);
+
+  // Nombre d'heures dans 48 heures
+  Duration fortyEightHours = Duration(hours: 48);
+
+  // Vérifier si la différence est d'au moins 48 heures
+  return difference >= fortyEightHours;
+}
+
+bool isPasseDate(dateRencontreAPI) {
+  // Date récupérée de l'API (sous forme de String)
+  String apiDateString = dateRencontreAPI;
+
+  // Conversion de la chaîne en un objet DateTime
+  DateTime apiDate = DateTime.parse(apiDateString);
+
+  // Date actuelle
+  DateTime now = DateTime.now();
+
+  // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
+  if (apiDate.isBefore(now)) {
+    print('La date de l\'API est passée par rapport à la date actuelle..');
+    return true;
+  } else {
+    return false;
+  }
+}

@@ -59,6 +59,7 @@ Widget PageScaffold({
     backgroundColor: AppColors.white,
     bottomNavigationBar: childBottomNavBar,
     body: child[indexPage],
+    // floatingActionButton: FloatingActionButton(onPressed: null),
   );
 }
 

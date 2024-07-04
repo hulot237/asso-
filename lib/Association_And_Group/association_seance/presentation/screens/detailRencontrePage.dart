@@ -197,8 +197,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
-                  padding: EdgeInsets.only(top: 15.h, bottom: 15.h),
+                  margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                  padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
                   color: Color.fromARGB(120, 226, 226, 226),
                   alignment: Alignment.center,
                   child: TabBar(
@@ -399,6 +399,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                   nomTontine:
                                                       ItemDetailCotisation[
                                                           "matricule"],
+                                                          motif: ItemDetailCotisation["motif"],
                                                 ),
                                               ),
                                             );
@@ -482,17 +483,17 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                   ItemDetailCotisation["name"],
                                               dateCotisation:
                                                   ItemDetailCotisation[
-                                                      "start_date"],
+                                                      "end_date"],
                                               heureCotisation: AppCubitStorage()
                                                           .state
                                                           .Language ==
                                                       "fr"
                                                   ? formatTimeToFrench(
                                                       ItemDetailCotisation[
-                                                          "start_date"])
+                                                          "end_date"])
                                                   : formatTimeToEnglish(
                                                       ItemDetailCotisation[
-                                                          "start_date"]),
+                                                          "end_date"]),
                                               soldeCotisation:
                                                   ItemDetailCotisation[
                                                       "total_cotise"],

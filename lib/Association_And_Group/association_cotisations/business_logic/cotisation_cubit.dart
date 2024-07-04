@@ -13,6 +13,7 @@ class CotisationCubit extends Cubit<CotisationState> {
           ),
         );
   Future<bool> AllCotisationAssTournoiCubit(codeTournoi, codeMembre) async {
+    print('objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject');
     emit(state.copyWith(isloading: true, allcotisationAss: state.allCotisationAss));
     try {
       final data =

@@ -72,7 +72,7 @@ dependencies:
   telephony: ^0.2.0
   device_info_plus: ^9.1.2
   syncfusion_flutter_pdfviewer: ^25.2.4
-  popover: ^0.3.0+1
+  popover: ^0.2.8+2
   flutter_file_downloader: ^1.2.1
   image_cropper: ^6.0.0
   # super_context_menu: ^0.8.3

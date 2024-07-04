@@ -40,6 +40,19 @@ class _checkInternetConnectionPageState
       }
     }
 
+    Future<void> handleTournoiDefaultHist(codeTournoi) async {
+      final detailTournoiCourant = await context
+          .read<DetailTournoiCourantCubit>()
+          .detailTournoiCourantCubitHist(codeTournoi);
+
+      if (detailTournoiCourant != null) {
+        print(
+            "objectdddddddddddddddddddddddddddddddddd  ${detailTournoiCourant}");
+      } else {
+        print("userGroupDefault null");
+      }
+    }
+
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -76,6 +89,8 @@ class _checkInternetConnectionPageState
                   print("${AppCubitStorage().state.codeTournois}");
                   print("${AppCubitStorage().state.codeAssDefaul}");
                   handleTournoiDefault(AppCubitStorage().state.codeTournois);
+                  handleTournoiDefaultHist(
+                      AppCubitStorage().state.codeTournoisHist);
                   // context
                   //                             .read<DetailTournoiCourantCubit>()
                   //                             .state

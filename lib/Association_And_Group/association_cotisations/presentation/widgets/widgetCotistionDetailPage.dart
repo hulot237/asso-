@@ -113,20 +113,37 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 if (widget.rubrique != "")
-                                  Container(
-                                    margin: EdgeInsets.only(bottom: 5.h),
-                                    child: Text(
-                                      '${widget.rubrique}'.toUpperCase(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlueAccent1,
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 13.sp,
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 5.h),
+                                        child: Text(
+                                          '${widget.rubrique}'.toUpperCase(),
+                                          style: TextStyle(
+                                            color: AppColors.blackBlueAccent1,
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 13.sp,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      if (widget.isPayed != 0)
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 5.h, left: 5.w),
+                                          child: Text(
+                                            "payé".tr(),
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: AppColors.green,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       margin: EdgeInsets.only(bottom: 4.h),
@@ -158,153 +175,146 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                             ),
                           ),
                         ),
-                        widget.isPayed == 0
-                            ? Column(
-                                children: [
-                                  PopupMenuButton(
-                                      elevation: 5,
-                                      shadowColor: AppColors.barrierColorModal,
-                                      onSelected: (value) async {
-                                        if (value == "mySelf") {
-                                          print("value");
-                                          launchWeb(
-                                            "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                          );
-                                        } else if (value == "anotherPerson") {
-                                          handleDetailCotisation(
-                                              widget.codeCotisation);
+                        // widget.isPayed == 0
+                        //     ?
+                        Column(
+                          children: [
+                            PopupMenuButton(
+                              elevation: 5,
+                              shadowColor: AppColors.barrierColorModal,
+                              onSelected: (value) async {
+                                if (value == "mySelf") {
+                                  print("value");
+                                  launchWeb(
+                                    "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                                  );
+                                } else if (value == "anotherPerson") {
+                                  handleDetailCotisation(widget.codeCotisation);
 
-                                         Modal().showModalPayForAnotherPersonCotisation(
-                                            context,
-                                            widget.codeCotisation,
-                                            widget.lienDePaiement,
-                                            widget.motifCotisations,
-                                            widget.montantCotisations,
-                                            widget.type == "1" ? true:false,
-                                          );
-                                        }
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: 72.w,
-                                        margin: EdgeInsets.only(bottom: 2.h),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 5.w,
-                                          vertical: 4.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.colorButton,
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                        ),
-                                        child: Container(
-                                          child: Text(
-                                            "cotiser".tr(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12.sp,
-                                              color: AppColors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      itemBuilder: (BuildContext context) =>
-                                          <PopupMenuEntry>[
-                                        PopupMenuItem(
-                                          value: "mySelf",
-                                          child: Row(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(right: 8.0),
-                                                child: Container(
-                                                  height: 22.h,
-                                                  width: 22.w,
-                                                  child: SvgPicture.asset(
-                                                    "assets/images/person.svg",
-                                                    fit: BoxFit.cover,
-                                                    color: AppColors
-                                                        .blackBlueAccent1,
-                                                  ),
-                                                ),
-                                              ),
-                                              Text(
-                                                'Payer pour moi'.tr(),
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: AppColors.blackBlue,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        PopupMenuItem(
-                                          value: "anotherPerson",
-                                          // onTap: () {
-                                          //   _showSimpleModalDialog(context);
-                                          // },
-                                          child: Row(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(right: 8.0),
-                                                child: Container(
-                                                  height: 22.h,
-                                                  width: 22.w,
-                                                  child: SvgPicture.asset(
-                                                    "assets/images/friendsTalking.svg",
-                                                    fit: BoxFit.cover,
-                                                    color: AppColors
-                                                        .blackBlueAccent1,
-                                                  ),
-                                                ),
-                                              ),
-                                              Text(
-                                                "Payer pour quelqu'un".tr(),
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: AppColors.blackBlue,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                  Modal()
+                                      .showModalPayForAnotherPersonCotisation(
+                                    context,
+                                    widget.codeCotisation,
+                                    widget.lienDePaiement,
+                                    widget.motifCotisations,
+                                    widget.montantCotisations,
+                                    widget.type == "1" ? true : false,
+                                  );
+                                }
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 72.w,
+                                margin: EdgeInsets.only(bottom: 2.h),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 5.w,
+                                  vertical: 4.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.colorButton,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                ),
+                                child: Container(
+                                  child: Text(
+                                    "cotiser".tr(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.sp,
+                                      color: AppColors.white,
                                     ),
-                                    
-                                 
-                                 
-                                  if (widget.is_passed == 1)
-                                    Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(7.r),
-                                      ),
-                                      child: Container(
-                                        child: Text(
-                                          "expiré".tr(),
-                                          style: TextStyle(
-                                            // fontWeight: FontWeight.bold,
-                                            fontSize: 10.sp,
-                                            color: AppColors.red,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              )
-                            : Text(
-                                "payé".tr(),
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: AppColors.green,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.italic,
+                                  ),
                                 ),
                               ),
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry>[
+                                PopupMenuItem(
+                                  value: "mySelf",
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 8.0),
+                                        child: Container(
+                                          height: 22.h,
+                                          width: 22.w,
+                                          child: SvgPicture.asset(
+                                            "assets/images/person.svg",
+                                            fit: BoxFit.cover,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Payer pour moi'.tr(),
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: AppColors.blackBlue,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  value: "anotherPerson",
+                                  // onTap: () {
+                                  //   _showSimpleModalDialog(context);
+                                  // },
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 8.0),
+                                        child: Container(
+                                          height: 22.h,
+                                          width: 22.w,
+                                          child: SvgPicture.asset(
+                                            "assets/images/friendsTalking.svg",
+                                            fit: BoxFit.cover,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        "Payer pour quelqu'un".tr(),
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: AppColors.blackBlue,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (widget.is_passed == 1)
+                              Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7.r),
+                                ),
+                                child: Container(
+                                  child: Text(
+                                    "expiré".tr(),
+                                    style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 10.sp,
+                                      color: AppColors.red,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        )
+                        // :
+                        // Text(
+                        //     "payé".tr(),
+                        //     style: TextStyle(
+                        //       fontSize: 14.sp,
+                        //       color: AppColors.green,
+                        //       fontWeight: FontWeight.w600,
+                        //       fontStyle: FontStyle.italic,
+                        //     ),
+                        //   ),
                       ],
                     ),
                   ),
@@ -356,19 +366,19 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                               // ),
 
                               Container(
-                              child: Text(
-                                widget.type == "1"
-                                    ? "volontaire".tr()
-                                    :
-                                    // : "type_fixe".tr(),
-                                    "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.w600,
+                                child: Text(
+                                  widget.type == "1"
+                                      ? "volontaire".tr()
+                                      :
+                                      // : "type_fixe".tr(),
+                                      "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA",
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                            ),
                             ],
                           ),
                         )
@@ -382,10 +392,7 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                           .changeAssData!
                           .user_group!
                           .configs,
-                      context
-                          .read<AuthCubit>()
-                          .state
-                          .detailUser!["isMember"]))
+                      context.read<AuthCubit>().state.detailUser!["isMember"]))
                     Container(
                       // margin: EdgeInsets.only(bottom: 5),
                       // width: MediaQuery.of(context).size.width / 1.1,
@@ -429,8 +436,7 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                       ),
                     ),
                   BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                    builder:
-                        (CotisationDetailContext, CotisationDetailState) {
+                    builder: (CotisationDetailContext, CotisationDetailState) {
                       if (CotisationDetailState.isLoading == true ||
                           CotisationDetailState.detailCotisation == null)
                         return GestureDetector(
@@ -468,11 +474,11 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                             ),
                           ),
                         );
-      
-                      final currentDetailCotisation = CotisationDetailContext
-                              .read<CotisationDetailCubit>()
-                          .state
-                          .detailCotisation;
+
+                      final currentDetailCotisation =
+                          CotisationDetailContext.read<CotisationDetailCubit>()
+                              .state
+                              .detailCotisation;
                       print(
                           "currentDetailCotisationcurrentDetailCotisationcurrentDetailCotisation ${currentDetailCotisation}");
                       return currentDetailCotisation != null
@@ -579,11 +585,11 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                           if (widget.nomBeneficiaire != "")
                             Expanded(
                               child: InkWell(
-                                onTap: () async{
+                                onTap: () async {
                                   updateTrackingData(
                                       "${widget.screenSource}.btnwithdrawnFundsContribution",
                                       "${DateTime.now()}", {});
-                                   launchWeb(
+                                  launchWeb(
                                     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
                                   );
                                 },
@@ -626,7 +632,7 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                               onTap: () async {
                                 updateTrackingData("home.btnAdminister",
                                     "${DateTime.now()}", {});
-                                 launchWeb(
+                                launchWeb(
                                   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
                                 );
                               },
@@ -642,17 +648,17 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                       color: AppColors.blackBlueAccent1,
                                     ),
                                   ),
-                                   SizedBox(
-                                      height: 3.h,
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Text(
+                                    "Gerer".tr(),
+                                    style: TextStyle(
+                                      color: AppColors.blackBlueAccent1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11.sp,
                                     ),
-                                    Text(
-                                      "Gerer".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlueAccent1,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11.sp,
-                                      ),
-                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -661,13 +667,78 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                           child: InkWell(
                             splashColor: AppColors.blackBlue,
                             onTap: () {
-                              print("object3");
-                              Share.share(context
-                                      .read<AuthCubit>()
-                                      .state
-                                      .detailUser!["isMember"]
-                                  ? "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${ widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantCotisations.toString() ))} FCFA"} *.\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-                                  : "Nouvelle cotisation créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+                              final currentDetailCotisation = context
+                                  .read<CotisationDetailCubit>()
+                                  .state
+                                  .detailCotisation;
+
+                              List listeOkayCotisation =
+                                  currentDetailCotisation!["membres"];
+
+                              partagerCotisation(
+                                nomGroupe:
+                                    '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
+                                        .trimRight(),
+                                source:
+                                    '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
+                                        .trimRight(),
+                                nomBeneficiaire:
+                                    '${(widget.nomBeneficiaire)}'.trimRight(),
+                                dateCotisation: '${widget.dateCotisation}',
+                                montantCotisations:
+                                    '${widget.montantCotisations}',
+                                lienDePaiement: '${widget.lienDePaiement}',
+                                type: '${widget.type}',
+                                listeOkayCotisation: listeOkayCotisation,
+                                context: context,
+                              );
+
+                              // String message;
+
+                              // message =
+                              //     "🟢🟢 Nouvelle cotisation en cours dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}\n\n";
+
+                              // message +=
+                              //     "👉🏽 ${(widget.source == '' ? "MEMBRE CONCERNÉ" : "SEANCE CONCERNEE")} : ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : '*${(widget.source)}*'}\n";
+                              // message +=
+                              //     "👉🏽 MONTANT : ${widget.type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA*"}\n";
+                              // message +=
+                              //     "👉🏽 DATE DE FIN : *${(formatDateLiteral(widget.dateCotisation))}*\n\n";
+
+                              // message +=
+                              //     "Soyez le premier à contribuer ici :  https://${widget.lienDePaiement}\n\n";
+
+                              // message += "*Récapitulatif :*\n";
+                              // // Calcul du total et ajout des détails par membre
+                              // double totalCotisations = 0;
+                              // for (var element in listeOkayCotisation) {
+                              //   String firstName =
+                              //       element["membre"]["first_name"];
+                              //   String lastName =
+                              //       element["membre"]["last_name"];
+                              //   double balance = double.parse(element[
+                              //       "balance"]); // Conversion de la balance en nombre
+
+                              //   // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
+                              //   String formattedBalance =
+                              //       NumberFormat.decimalPattern()
+                              //           .format(balance.toInt());
+
+                              //   message +=
+                              //       "- $firstName $lastName -> $formattedBalance F ${element["statut"] == "2" ? "✅" : "❌"}\n";
+                              //   totalCotisations += balance;
+                              // }
+
+                              // // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
+                              // String formattedTotal =
+                              //     NumberFormat.decimalPattern()
+                              //         .format(totalCotisations.toInt());
+
+                              // message += "\n*TOTAL -> $formattedTotal F*\n\n";
+
+                              // message += "*by ASSO+*";
+
+                              // Share.share(message);
                             },
                             child: Column(
                               children: [
@@ -679,17 +750,17 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                     color: AppColors.blackBlueAccent1,
                                   ),
                                 ),
-                                 SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Text(
-                                      "Partager".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlueAccent1,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11.sp,
-                                      ),
-                                    ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Text(
+                                  "Partager".tr(),
+                                  style: TextStyle(
+                                    color: AppColors.blackBlueAccent1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11.sp,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

@@ -6,6 +6,7 @@ import 'package:faroty_association_1/localStorage/localCubit.dart';
 class CotisationRepository {
   final dio = Dio();
   Future<Map<String, dynamic>> DetailCotisation(codeCotisation) async {
+    print(codeCotisation);
     final response = await dio.get(
       '${Variables.LienAIP}/api/v1/cotisation/$codeCotisation/show',
     );

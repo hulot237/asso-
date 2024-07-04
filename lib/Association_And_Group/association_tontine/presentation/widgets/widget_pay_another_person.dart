@@ -158,7 +158,7 @@ class _widgetPayAnotherPersonState extends State<widgetPayAnotherPerson> {
                 onTap: () {
                   Navigator.pop(context);
                   Share.share(
-                  "Aide-moi à payer ma cotisation *${widget.nomTontine}*.\nMontant: *${ widget.isVolontaire ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantTontine.toString() ))} FCFA"}* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${widget.memberCode} pour valider",);
+                  "Aide-moi à payer ma cotisation *${widget.nomTontine}*.\n\nMontant: *${ widget.isVolontaire ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantTontine.toString() ))} FCFA"}* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${widget.memberCode} pour valider",);
                 },
                 child: Container(
                   width: 15.w,
@@ -296,6 +296,7 @@ class _paiementWidgetTontineState extends State<paiementWidgetTontine> {
             height: 60.h,
             child: TextField(
               controller: infoUserController,
+              keyboardType: TextInputType.number,
               autofocus: true,
               style: TextStyle(fontSize: 20.sp),
               decoration: InputDecoration(

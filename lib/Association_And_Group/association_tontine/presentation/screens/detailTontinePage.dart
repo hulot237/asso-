@@ -308,6 +308,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                           itemCount: currentDetailTontineCard!.length,
                           itemBuilder: (context, index) {
                             final itemTontine = currentDetailTontineCard[index];
+                            print("itemTontineitemTontineitemTontine $itemTontine");
 
                             return GestureDetector(
                               onTap: () {
@@ -353,6 +354,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                           ? ""
                                           : itemTontine["membre"]["last_name"],
                                   codeCotisation: itemTontine["code"],
+                                  motif: itemTontine["motif"],
                                 ),
                               ),
                             );
