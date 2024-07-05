@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/network/localisation_phone/business_logic/localisation_phone_cubit.dart';
 import 'package:faroty_association_1/network/session_activity/session_cubit.dart';
 import 'package:faroty_association_1/pages/home_centrale_screen.dart';
 import 'package:faroty_association_1/pages/pre_login_screen.dart';
@@ -80,6 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    context.read<LocalisationPhoneCubit>().showLocalisationPhone();
     if (AppCubitStorage().state.codeAssDefaul != null &&
         AppCubitStorage().state.codeTournois != null &&
         AppCubitStorage().state.membreCode != null &&
@@ -214,8 +216,8 @@ class _ImageAnimatedState extends State<ImageAnimated>
   late final AnimationController _controller =
       AnimationController(vsync: this, duration: Duration(seconds: 1))
         ..repeat(reverse: true);
-  late Animation<double> _animation =
-      CurvedAnimation(parent: _controller, curve: Curves.fastEaseInToSlowEaseOut);
+  late Animation<double> _animation = CurvedAnimation(
+      parent: _controller, curve: Curves.fastEaseInToSlowEaseOut);
 
   @override
   void dispose() {
@@ -230,20 +232,18 @@ class _ImageAnimatedState extends State<ImageAnimated>
         begin: 1,
         end: 1,
       ).animate(_animation),
- 
-        child: FadeTransition(
-          opacity: Tween<double>(
-            begin: 0.4,
-            end: 1,
-          ).animate(_animation),
-          child: Container(
-            child: Image.asset(
-              "assets/images/AssoplusFinalSquare.png",
-              width: 180.w,
-            ),
+      child: FadeTransition(
+        opacity: Tween<double>(
+          begin: 0.4,
+          end: 1,
+        ).animate(_animation),
+        child: Container(
+          child: Image.asset(
+            "assets/images/AssoplusFinalSquare.png",
+            width: 180.w,
           ),
         ),
-      
+      ),
     );
     // ScaleTransition(
     //   scale: Tween<double>(

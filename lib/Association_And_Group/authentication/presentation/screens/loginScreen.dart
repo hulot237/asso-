@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
@@ -10,6 +11,7 @@ import 'package:faroty_association_1/Association_And_Group/user_group/data/user_
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/network/localisation_phone/business_logic/localisation_phone_cubit.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,24 +54,26 @@ class _LoginPageState extends State<LoginPage> {
   String countryCodeController = '237';
   final telephony = Telephony.instance;
 
-  String retirerPlus(String indice) {
-    if (indice.startsWith('+')) {
+  String retirerPlus(String? indice) {
+    print("countryCodeController1 $indice");
+    if (indice!.startsWith('+')) {
       return indice.substring(1);
     }
+    print("countryCodeController2 $indice");
     return indice;
   }
 
   Future handleLogin() async {
     final allCotisationAss = await context
         .read<AuthCubit>()
-        .loginFirstCubit(numeroPhoneController, countryCodeController);
+        .loginFirstCubit(countrycode.text, countryCodeController);
 
     if (context.read<AuthCubit>().state.isTrueNomber == false) {
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => VerificationPage(
-                numeroPhone: numeroPhoneController,
+                numeroPhone: countrycode.text,
                 countryCode: countryCodeController)),
       );
     }
@@ -178,79 +182,177 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
+
                                   SizedBox(height: 50.h),
                                   SizedBox(
-                                    height: 82.h,
-                                    child: IntlPhoneField(
-                                      autofocus: true,
-                                      cursorColor: AppColors.blackBlue,
+                                    // height: 50.h,
+                                    child: TextField(
+                                      keyboardType: TextInputType.phone,
+                                      controller: countrycode,
+
                                       style: TextStyle(
                                         color: AppColors.blackBlue,
                                         fontSize: 18.sp,
-                                        letterSpacing: 3.w,
+                                        letterSpacing: 2.w,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      dropdownIcon: Icon(
-                                        Icons.arrow_drop_down_rounded,
-                                        color: AppColors.colorButton,
-                                      ),
-                                      dropdownTextStyle: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontSize: 18.sp,
-                                        letterSpacing: 1.w,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      flagsButtonPadding:
-                                          EdgeInsets.only(left: 8.r),
-                                      dropdownIconPosition:
-                                          IconPosition.trailing,
+                                      cursorColor: AppColors.blackBlue,
                                       decoration: InputDecoration(
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: AppColors.colorButton,
-                                              width: 2.w),
-                                          borderRadius:
-                                              BorderRadius.circular(7.r),
-                                        ),
-                                        contentPadding: EdgeInsets.all(8.r),
                                         hintText: "677654321",
                                         hintStyle: TextStyle(
-                                            letterSpacing: 1.w,
+                                            letterSpacing: 2.w,
+                                            fontSize: 18.sp,
                                             fontWeight: FontWeight.bold,
                                             color: AppColors.blackBlue
                                                 .withOpacity(.3)),
                                         labelStyle: TextStyle(
                                           color: AppColors.blackBlueAccent1,
                                         ),
-                                        border: OutlineInputBorder(
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: AppColors.colorButton,
+                                            width: 2.w,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(7.r),
-                                          borderSide: BorderSide(width: 3.w),
                                         ),
-                                        counterStyle: TextStyle(
-                                          color: AppColors.blackBlue,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: AppColors.colorButton,
+                                            width: 2.w,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(7.r),
+                                        ),
+                                        prefixIcon: Container(
+                                          margin: EdgeInsets.only(left: 10.w),
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                              // color: AppColors.blackBlue.withOpacity(.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r)),
+                                          child: CountryCodePicker(
+                                            onInit: (value) {
+                                              // This is called once during initialization
+                                              var code = value!.dialCode;
+                                              // Update countryCodeController without calling setState
+                                              countryCodeController = retirerPlus(code);
+                                              print(
+                                                  "countryCodeController initialized with $countryCodeController");
+                                            },
+                                            flagWidth: 25.sp,
+                                            showDropDownButton: true,
+                                            textStyle: TextStyle(
+                                              color: AppColors.blackBlue,
+                                              fontSize: 16.sp,
+                                              letterSpacing: 2.w,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            padding: EdgeInsets.all(0),
+                                            onChanged: (value) {
+                                              var code = value!.dialCode;
+                                              setState(() {
+                                                countryCodeController =
+                                                    retirerPlus(code);
+                                                print(
+                                                    "countryCodeController§ $countryCodeController");
+                                              });
+                                            },
+                                            initialSelection: context
+                                                        .read<
+                                                            LocalisationPhoneCubit>()
+                                                        .state
+                                                        .localisationPhone ==
+                                                    null
+                                                ? '+237'
+                                                : context
+                                                    .read<
+                                                        LocalisationPhoneCubit>()
+                                                    .state
+                                                    .localisationPhone!
+                                                    .countryCallingCode,
+                                            favorite: const ['+237', 'FR'],
+                                            showFlagDialog: true,
+                                          ),
                                         ),
                                       ),
-                                      controller: countrycode,
-                                      initialCountryCode: 'CM',
-                                      onCountryChanged: (Country) {
-                                        setState(() {
-                                          countryCodeController =
-                                              retirerPlus(Country.dialCode);
-                                        });
-                                        print(Country.dialCode);
-                                      },
-                                      onChanged: (phone) {
-                                        setState(() {
-                                          numeroPhoneController = phone.number;
-                                          countryCodeController =
-                                              retirerPlus(phone.countryCode);
-                                        });
-                                        print(numeroPhoneController);
-                                        print(countryCodeController);
-                                      },
+                                      autofocus: true,
                                     ),
                                   ),
+
+                                  SizedBox(
+                                      // height: 50.h,
+
+                                      // child: IntlPhoneField(
+                                      //   autofocus: true,
+                                      //   cursorColor: AppColors.blackBlue,
+                                      //   style: TextStyle(
+                                      //     color: AppColors.blackBlue,
+                                      //     fontSize: 18.sp,
+                                      //     letterSpacing: 3.w,
+                                      //     fontWeight: FontWeight.bold,
+                                      //   ),
+                                      //   dropdownIcon: Icon(
+                                      //     Icons.arrow_drop_down_rounded,
+                                      //     color: AppColors.colorButton,
+                                      //   ),
+                                      //   dropdownTextStyle: TextStyle(
+                                      //     color: AppColors.blackBlue,
+                                      //     fontSize: 18.sp,
+                                      //     letterSpacing: 1.w,
+                                      //     fontWeight: FontWeight.bold,
+                                      //   ),
+                                      //   flagsButtonPadding:
+                                      //       EdgeInsets.only(left: 8.r),
+                                      //   dropdownIconPosition:
+                                      //       IconPosition.trailing,
+                                      //   decoration: InputDecoration(
+                                      //     focusedBorder: OutlineInputBorder(
+                                      //       borderSide: BorderSide(
+                                      //           color: AppColors.colorButton,
+                                      //           width: 2.w),
+                                      //       borderRadius:
+                                      //           BorderRadius.circular(7.r),
+                                      //     ),
+                                      //     contentPadding: EdgeInsets.all(8.r),
+                                      //     hintText: "677654321",
+                                      //     hintStyle: TextStyle(
+                                      //         letterSpacing: 1.w,
+                                      //         fontWeight: FontWeight.bold,
+                                      //         color: AppColors.blackBlue
+                                      //             .withOpacity(.3)),
+                                      //     labelStyle: TextStyle(
+                                      //       color: AppColors.blackBlueAccent1,
+                                      //     ),
+                                      //     border: OutlineInputBorder(
+                                      //       borderRadius:
+                                      //           BorderRadius.circular(7.r),
+                                      //       borderSide: BorderSide(width: 3.w),
+                                      //     ),
+                                      //     counterStyle: TextStyle(
+                                      //       color: AppColors.blackBlue,
+                                      //     ),
+                                      //   ),
+                                      //   controller: countrycode,
+                                      //   initialCountryCode: 'CM',
+                                      //   onCountryChanged: (Country) {
+                                      //     setState(() {
+                                      //       countryCodeController =
+                                      //           retirerPlus(Country.dialCode);
+                                      //     });
+                                      //     print(Country.dialCode);
+                                      //   },
+                                      //   onChanged: (phone) {
+                                      //     setState(() {
+                                      //       numeroPhoneController = phone.number;
+                                      //       countryCodeController =
+                                      //           retirerPlus(phone.countryCode);
+                                      //     });
+                                      //     print(numeroPhoneController);
+                                      //     print(countryCodeController);
+                                      //   },
+                                      // ),
+                                      ),
                                   BlocBuilder<AuthCubit, AuthState>(
                                     builder: (context, Authstate) {
                                       if (Authstate.isTrueNomber == true &&
@@ -317,7 +419,8 @@ class _LoginPageState extends State<LoginPage> {
                                                           width: 200.w,
                                                           height: 30.h,
                                                           child: ElevatedButton(
-                                                            onPressed: () async {
+                                                            onPressed:
+                                                                () async {
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(

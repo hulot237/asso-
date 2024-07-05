@@ -121,24 +121,7 @@ class _widgetRecentEventCotisationState
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(
-            //     builder: (context) => DetailCotisationPage(
-            //       codeCotisation: widget.codeCotisation,
-            //       lienDePaiement: widget.lienDePaiement,
-            //       dateCotisation: widget.dateOpen,
-            //       heureCotisation: widget.dateOpen,
-            //       montantCotisations: widget.montantCotisation,
-            //       motifCotisations: widget.motif,
-            //       soldeCotisation: widget.montantCollecte,
-            //       type: widget.type,
-            //       isPassed: widget.isPassed,
-            //       isPayed: 0,
-            //       rapportUrl: widget.rapportUrl,
-            //       is_passed: widget.isPassed,
-            //       source: widget.source,
-            //       is_tontine: widget.is_tontine,
-            //       nomBeneficiaire: widget.nomBeneficiaire,
-            //       rubrique: widget.rublique,
-            //     ),
+            //     builder: (context) => ListMeetingScreen(),
             //   ),
             // );
           } else {

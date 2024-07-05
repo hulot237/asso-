@@ -13,6 +13,7 @@ import 'package:faroty_association_1/Association_And_Group/association_recent_ev
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/presentation/widgets/widget_recent_event_sanction.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/presentation/widgets/widget_recent_event_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/list_meeting_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetRencontreCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
@@ -212,10 +213,10 @@ class _HomeScreenState extends State<HomeScreen>
           return Material(
             type: MaterialType.transparency,
             child: Scaffold(
-              // floatingActionButton:
-              //     !context.read<AuthCubit>().state.detailUser!["isMember"]
-              //         ? FloatingAction()
-              //         : null,
+              floatingActionButton:
+                  !context.read<AuthCubit>().state.detailUser!["isMember"]
+                      ? FloatingAction()
+                      : null,
               // appBar: AppBar(
               //   systemOverlayStyle: SystemUiOverlayStyle(
               //     // Status bar color
@@ -603,42 +604,80 @@ class _HomeScreenState extends State<HomeScreen>
                                       children: [
                                         Column(
                                           children: [
-                                            // Container(
-                                            //   decoration: BoxDecoration(
-                                            //     color: AppColors.white,
-                                            //     borderRadius:
-                                            //         BorderRadius.circular(30.r),
-                                            //   ),
-                                            //   padding: EdgeInsets.all(12),
-                                            //   margin: EdgeInsets.only(
-                                            //     top: 7.h,
-                                            //     left: 8.w,
-                                            //     right: 8.w,
-                                            //   ),
-                                            //   // width: MediaQuery.of(context).size.width /
-                                            //   //     1.4,
-                                            //   child: Row(
-                                            //     mainAxisAlignment:
-                                            //         MainAxisAlignment.spaceEvenly,
-                                            //     children: [
-                                            //       Container(
-                                            //         width: 40.w,
-                                            //         child: Image.asset(
-                                            //           "assets/images/Groupe_ou_Asso.png",
-                                            //           // scale: 4,
-                                            //         ),
-                                            //       ),
-                                            //       Text(
-                                            //         "Administrer le groupe",
-                                            //         style: TextStyle(
-                                            //           fontWeight: FontWeight.w600,
-                                            //           color: AppColors.blackBlue,
-                                            //           fontSize: 20.sp,
-                                            //         ),
-                                            //       )
-                                            //     ],
-                                            //   ),
-                                            // ),
+                                              Container(
+                                              margin: EdgeInsets.only(
+                                                left: 8.w,
+                                                right: 8.w,
+                                                top: 20.h,
+                                                bottom: 20.h,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ListMeetingScreen(),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: 10.h,
+                                                        horizontal: 20.w,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    100.r),
+                                                      ),
+                                                      child: Text(
+                                                        "Vos rencontres".tr(),
+                                                        style: TextStyle(
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                          fontSize: 16.sp,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      vertical: 10.h,
+                                                      horizontal: 20.w,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                    ),
+                                                    child: Text(
+                                                      "Vos cotisations".tr(),
+                                                      style: TextStyle(
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
                                             if (currentDetailUser!["is_saver"])
                                               BlocBuilder<PretEpargneCubit,
                                                   PretEpargneState>(
@@ -1020,6 +1059,9 @@ class _HomeScreenState extends State<HomeScreen>
                                                   );
                                                 },
                                               ),
+
+
+
                                             if (currentDetailUser!["is_owe"])
                                               BlocBuilder<PretEpargneCubit,
                                                       PretEpargneState>(
@@ -1405,6 +1447,11 @@ class _HomeScreenState extends State<HomeScreen>
                                                   ),
                                                 );
                                               }),
+
+
+
+
+
                                             if (currentDetailUser![
                                                     "is_inscription_payed"] ==
                                                 0)
@@ -1636,65 +1683,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                   ],
                                                 ),
                                               ),
-                                            Container(
-                                                           margin: EdgeInsets.only(
-                                                left: 8.w,
-                                                right: 8.w,
-                                                top: 20.h,
-                                                bottom: 20.h,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  Container(
-                                                    padding: EdgeInsets.symmetric(
-                                                      vertical: 10.h,
-                                                      horizontal: 20.w,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100.r),
-                                                    ),
-                                                    child:  Text(
-                                                          "Vos rencontres".tr(),
-                                                          style: TextStyle(
-                                                            color: AppColors.blackBlue,
-                                                            fontSize: 16.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                          ),
-                                                        
-                                                    ),
-                                                  ),Container(
-                                                    padding: EdgeInsets.symmetric(
-                                                      vertical: 10.h,
-                                                      horizontal: 20.w,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100.r),
-                                                    ),
-                                                    child:  Text(
-                                                          "Vos cotisations".tr(),
-                                                          style: TextStyle(
-                                                            color: AppColors.blackBlue,
-                                                            fontSize: 16.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                          ),
-                                                        
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-
+                                          
                                             Container(
                                               margin: EdgeInsets.only(
                                                 left: 8.w,

@@ -1063,6 +1063,9 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                         ],
                       ),
                     ),
+                   
+                   
+                   
                     // Container(
                     //   margin: EdgeInsets.only(
                     //     top: 8.h,

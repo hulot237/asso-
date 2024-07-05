@@ -21,6 +21,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/presen
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/firebase_options.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/network/localisation_phone/business_logic/localisation_phone_cubit.dart';
 import 'package:faroty_association_1/network/session_activity/session_cubit.dart';
 import 'package:faroty_association_1/pages/splash_screen.dart';
 import 'package:faroty_association_1/pages/subscribe_form_screen.dart';
@@ -93,7 +94,6 @@ Future<void> main() async {
   );
 }
 
-
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final _appRouter = AppRouter();
@@ -157,12 +157,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => SanctionCubit(),
         ),
+        BlocProvider(
+          create: (context) => LocalisationPhoneCubit(),
+        )
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),
         child: MaterialApp
-        // .router
-        (
+            // .router
+            (
           theme: ThemeData(
             useMaterial3: false,
             fontFamily: GoogleFonts.roboto().fontFamily,

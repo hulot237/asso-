@@ -695,22 +695,12 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                               ),
                                             ),
                                           ),
-                                          if (currentInfoAllTournoiAssCourant!
-                                                  .user_group!
-                                                  .tournois!
-                                                  .length >
-                                              1)
-                                            BlocBuilder<
-                                                    DetailTournoiCourantCubit,
-                                                    DetailTournoiCourantState>(
-                                                builder: (DetailTournoiContext,
-                                                    DetailTournoiState) {
-                                              if (DetailTournoiState
-                                                          .isLoading ==
-                                                      true &&
-                                                  DetailTournoiState
-                                                          .detailtournoiCourantHist ==
-                                                      null)
+
+
+                                          if (currentInfoAllTournoiAssCourant! .user_group!.tournois!.length > 1)
+                                            BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
+                                                builder: (DetailTournoiContext, DetailTournoiState) {
+                                              if (DetailTournoiState.isLoading == true && DetailTournoiState.detailtournoiCourantHist == null)
                                                 return Container(
                                                     // child: Expanded(
                                                     //   child: EasyLoader(
@@ -997,17 +987,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                             
                                             
                                             
-                                            }),
-                                          BlocBuilder<DetailTournoiCourantCubit,
-                                              DetailTournoiCourantState>(
-                                            builder: (DetailTournoiContext,
-                                                DetailTournoiState) {
-                                              if (DetailTournoiState
-                                                          .isLoadingHist ==
-                                                      true &&
-                                                  DetailTournoiState
-                                                          .detailtournoiCourantHist ==
-                                                      null)
+                                            },
+                                          ),
+                                          BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
+                                            builder: (DetailTournoiContext, DetailTournoiState) {
+                                              if (DetailTournoiState.isLoadingHist == true && DetailTournoiState.detailtournoiCourantHist == null)
                                                 return Container(
                                                   child: Expanded(
                                                     child: EasyLoader(
@@ -1023,25 +1007,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     ),
                                                   ),
                                                 );
-                                              // if (DetailTournoiState
-                                              //             .isLoading ==
-                                              //         true &&
-                                              //     DetailTournoiState
-                                              //             .detailtournoiCourantHist ==
-                                              //         null)
-                                              //   return Container(
-                                              //     child: Center(
-                                              //       child:
-                                              //           CircularProgressIndicator(
-                                              //         color: const Color.fromARGB(255, 191, 53, 53),
-                                              //       ),
-                                              //     ),
-                                              //   );
-                                              final currentDetailtournoiCourant =
-                                                  DetailTournoiContext.read<
-                                                          DetailTournoiCourantCubit>()
-                                                      .state
-                                                      .detailtournoiCourantHist;
+                                              final currentDetailtournoiCourant = DetailTournoiContext.read<DetailTournoiCourantCubit>().state.detailtournoiCourantHist;
                                               return currentDetailtournoiCourant![
                                                                   "tournois"]
                                                               ["seance"]!
@@ -1302,6 +1268,9 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     );
                                             },
                                           ),
+                                        
+                                        
+                                        
                                         ],
                                       ),
                                     ),

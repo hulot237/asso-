@@ -17,8 +17,8 @@ class FloatingAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 40.r,
-      height: 40.r,
+      width: 50.r,
+      height: 50.r,
       child: FloatingActionButton(
         elevation: 2,
         backgroundColor: AppColors.colorButton,

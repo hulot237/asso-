@@ -15,6 +15,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/updatePage.dart';
+import 'package:faroty_association_1/screens/historique_two_screen.dart';
 import 'package:faroty_association_1/screens/home_screen.dart';
 import 'package:faroty_association_1/screens/settingsScreen.dart';
 import 'package:faroty_association_1/screens/historique_screen.dart';
@@ -68,7 +69,8 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
   final screens = [
     HomeScreen(),
     HistoriqueScreen(),
-    SettingScreen(),
+    // SettingScreen(),
+    HistoriqueTwoScreen(),
   ];
 
   // final itemListAndroid = [
@@ -103,7 +105,7 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.article_rounded),
-      label: 'Historiques'.tr(),
+      label: 'Historique'.tr(),
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.person_2_rounded),
@@ -234,7 +236,7 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
                             : AppColors.blackBlue,
                       ),
                     ),
-                    label: 'Historiques'.tr(),
+                    label: 'Historique'.tr(),
                   ),
                   BottomNavigationBarItem(
                     icon: Container(
