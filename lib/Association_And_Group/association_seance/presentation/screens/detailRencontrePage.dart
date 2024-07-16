@@ -339,7 +339,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                       .showBottomSheetHistTontine(
                                                           context,
                                                           ItemDetailCotisation[
-                                                              "code"]);
+                                                              "code"],  ItemDetailCotisation[
+                                                          "amount"]);
                                                 }
                                               },
                                               child: Container(

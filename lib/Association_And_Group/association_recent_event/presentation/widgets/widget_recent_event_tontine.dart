@@ -4,6 +4,7 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/screens/detailContributionPage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetHistoriqueTontineCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widget_pay_another_person.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
@@ -76,11 +77,35 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                   .user_group!
                   .configs,
               context.read<AuthCubit>().state.detailUser!["isMember"])) {
-            handleDetailContributionTontine(
-              widget.codeCotisation,
-            );
+            // handleDetailContributionTontine(
+            //   widget.codeCotisation,
+            // );
 
-            Modal().showBottomSheetHistTontine(context, widget.codeCotisation);
+// onTap: () {
+            handleDetailContributionTontine(widget.codeCotisation);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailContributionPage(
+                    montantCotisations: widget.montantTontine,
+                    motifCotisations: widget.motif,
+                    dateCotisation: widget.dateClose,
+                    heureCotisation: widget.dateClose,
+                    soldeCotisation: widget.montantCollecte,
+                    isPassed: 0,
+                    type: "0",
+                    lienDePaiement: widget.lienDePaiement,
+                    codeCotisation: widget.codeCotisation,
+                    isPayed: 0,
+                    // rapportUrl: widget.x,
+                    is_passed: 0,
+                    is_tontine: 1,
+                    source: '',
+                    nomBeneficiaire: widget.nomBeneficiaire,
+                    rubrique: 'Tontine : ${widget.nomTontine}'),
+              ),
+            );
+            // },
           }
         },
         child: Column(
@@ -154,27 +179,87 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                             );
                           }
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 72.w,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 5.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.colorButton,
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          child: Container(
-                            child: Text(
-                              "Tontiner",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.sp,
-                                color: AppColors.white,
+                        // DetailContributionPage
+                        child: Row(
+                          children: [
+                            if (checkTransparenceStatus(
+                                context
+                                    .read<UserGroupCubit>()
+                                    .state
+                                    .changeAssData!
+                                    .user_group!
+                                    .configs,
+                                context
+                                    .read<AuthCubit>()
+                                    .state
+                                    .detailUser!["isMember"]))
+                              GestureDetector(
+                                onTap: () {
+                                  handleDetailContributionTontine(
+                                      widget.codeCotisation);
+                                  Modal().showBottomSheetHistTontine(
+                                      context, widget.codeCotisation, widget.montantTontine);
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         DetailContributionPage(
+                                  //       montantCotisations: widget.montantTontine,
+                                  //       motifCotisations: widget.motif,
+                                  //       dateCotisation: widget.dateClose,
+                                  //       heureCotisation: widget.dateClose,
+                                  //       soldeCotisation: widget.montantCollecte,
+                                  //       isPassed: 0,
+                                  //       type: "0",
+                                  //       lienDePaiement: widget.lienDePaiement,
+                                  //       codeCotisation: widget.codeCotisation,
+                                  //       isPayed: 0,
+                                  //       // rapportUrl: widget.x,
+                                  //       is_passed: 0,
+                                  //       is_tontine: 1,
+                                  //       source: '',
+                                  //       nomBeneficiaire: widget.nomBeneficiaire,
+                                  //       rubrique:'Tontine : ${widget.nomTontine}'
+                                  //     ),
+                                  //   ),
+                                  // );
+                                },
+                                child: Container(
+                                  width: 25.w,
+                                  height: 25.w,
+                                  // color: AppColors.colorButton,
+                                  margin: EdgeInsets.only(right: 15.w),
+                                  // padding: EdgeInsets.only(right: 10.w),
+                                  child: SvgPicture.asset(
+                                    "assets/images/friendsTalking.svg",
+                                    fit: BoxFit.cover,
+                                    color: AppColors.blackBlue,
+                                  ),
+                                ),
+                              ),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 72.w,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 5.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.colorButton,
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              child: Container(
+                                child: Text(
+                                  "Tontiner",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12.sp,
+                                    color: AppColors.white,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                           PopupMenuItem(
@@ -420,15 +505,28 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                               ),
                             ],
                           ),
-                        Container(
-                          child: Text(
-                            "${formatCompareDateReturnWellValue(widget.dateClose)}",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.blackBlueAccent1,
+                        Row(
+                          children: [
+                            Text(
+                                "${"Date limite".tr()} : ",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                            Container(
+                              child: Text(
+                                "${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr",widget.dateClose, )}",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
                             ),
-                          ),
+
+                          ],
                         ),
                       ],
                     ),
@@ -554,7 +652,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                                   .read<DetailContributionCubit>()
                                   .state
                                   .detailContributionTontine!["membres"];
-                                  print("rrrtttzzz $currentDetailCotisation");
+                              print("rrrtttzzz $currentDetailCotisation");
 
                               partagerContributionTontine(
                                 context: context,
@@ -562,7 +660,8 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                                     '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name!.trimRight()}',
                                 // source:
                                 //     '${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}',
-                                nomBeneficiaire: '${(widget.nomBeneficiaire.trimRight())}',
+                                nomBeneficiaire:
+                                    '${(widget.nomBeneficiaire.trimRight())}',
                                 dateCotisation: '${widget.dateClose}',
                                 montantCotisations: '${widget.montantTontine}',
                                 lienDePaiement: '${widget.lienDePaiement}',

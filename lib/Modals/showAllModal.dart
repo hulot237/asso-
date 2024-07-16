@@ -525,7 +525,8 @@ class Modal {
     );
   }
 
-  void showBottomSheetHistTontine(BuildContext context, codeContribution,
+  void showBottomSheetHistTontine(
+      BuildContext context, codeContribution, montantTotal,
       {var codeTontine}) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
@@ -546,6 +547,7 @@ class Modal {
           child: TontineHistoriqueWidget(
             codeContribution: codeContribution,
             codeTontine: codeTontine,
+            montantTotal: "${montantTotal}",
           ),
         );
       },
@@ -1563,13 +1565,8 @@ class Modal {
     );
   }
 
-
-
-
-
-
-  showModalPayForAnotherPersonTontine(BuildContext context, codeContribution, lienDePaiement,
-      nomTontine, montantTontine,
+  showModalPayForAnotherPersonTontine(BuildContext context, codeContribution,
+      lienDePaiement, nomTontine, montantTontine,
       {codeTontine}) {
     showDialog(
       context: context,
@@ -1592,7 +1589,6 @@ class Modal {
                     ),
                     padding: EdgeInsets.only(top: 15.h),
                   ),
-
                   BlocBuilder<DetailContributionCubit, ContributionState>(
                     builder: (context, state) {
                       if (state.isLoadingContibutionTontine == null ||
@@ -1662,7 +1658,6 @@ class Modal {
                       );
                     },
                   ),
-
                 ],
               ),
             ),
@@ -1672,14 +1667,13 @@ class Modal {
     );
   }
 
-
-
-
-
-
-
-    void showModalPayForAnotherPersonCotisation(BuildContext context, codeContribution, lienDePaiement,
-      nomTontine, montantTontine, isVolontaire,
+  void showModalPayForAnotherPersonCotisation(
+      BuildContext context,
+      codeContribution,
+      lienDePaiement,
+      nomTontine,
+      montantTontine,
+      isVolontaire,
       {codeTontine}) {
     showDialog(
       context: context,
@@ -1784,16 +1778,6 @@ class Modal {
       },
     );
   }
-
-
-
-
-
-
-
-
-
-
 
   void showBottomSheetEditProfilPhoto(BuildContext context, key, _pickImage) {
     TextEditingController infoUserController = TextEditingController();
@@ -2705,72 +2689,66 @@ class _CotisationHistoriqueWidgetState
                       )
                     ],
                   ),
-
-
-
                   BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                      builder:
-                          (detailCotisationContext, detailCotisationState) {
-                    if (detailCotisationState.detailCotisation == null ||
-                        detailCotisationState.isLoading == true)
-                      return Container(
-                        padding: EdgeInsets.all(10.r),
-                        width: 10.w,
-                        height: 10.w,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.green,
-                            strokeWidth: 0.3,
-                          ),
-                        ),
-                      );
-                    return GestureDetector(
-                        onTap: () {
-                          handleDetailCotisation(widget.codeCotisation);
-
-                          Navigator.pop(context);
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailCotisationPage(
-                                rapportUrl: widget.rapportUrl,
-                                codeCotisation: widget.codeCotisation,
-                                lienDePaiement: widget.lienDePaiement,
-                                dateCotisation: widget.dateCotisation,
-                                heureCotisation: widget.heureCotisation,
-                                montantCotisations: widget.montantCotisations,
-                                motifCotisations: widget.motifCotisations,
-                                soldeCotisation: widget.soldeCotisation,
-                                type: widget.type,
-                                isPassed: widget.is_passed,
-                                isPayed: widget.isPayed,
-                                is_passed: widget.is_passed,
-                                is_tontine: widget.is_tontine,
-                                source: widget.source,
-                                nomBeneficiaire: widget.nomBeneficiaire,
-                                rubrique: widget.rubrique,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
+                    builder: (detailCotisationContext, detailCotisationState) {
+                      if (detailCotisationState.detailCotisation == null ||
+                          detailCotisationState.isLoading == true)
+                        return Container(
                           padding: EdgeInsets.all(10.r),
-                          child: Icon(
-                            Icons.info_outline,
-                            color: AppColors.blackBlue,
-                            size: 18.sp,
+                          width: 10.w,
+                          height: 10.w,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.green,
+                              strokeWidth: 0.3,
+                            ),
                           ),
-                        ));
-                  },),
+                        );
+                      return GestureDetector(
+                          onTap: () {
+                            handleDetailCotisation(widget.codeCotisation);
+
+                            Navigator.pop(context);
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailCotisationPage(
+                                  rapportUrl: widget.rapportUrl,
+                                  codeCotisation: widget.codeCotisation,
+                                  lienDePaiement: widget.lienDePaiement,
+                                  dateCotisation: widget.dateCotisation,
+                                  heureCotisation: widget.heureCotisation,
+                                  montantCotisations: widget.montantCotisations,
+                                  motifCotisations: widget.motifCotisations,
+                                  soldeCotisation: widget.soldeCotisation,
+                                  type: widget.type,
+                                  isPassed: widget.is_passed,
+                                  isPayed: widget.isPayed,
+                                  is_passed: widget.is_passed,
+                                  is_tontine: widget.is_tontine,
+                                  source: widget.source,
+                                  nomBeneficiaire: widget.nomBeneficiaire,
+                                  rubrique: widget.rubrique,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10.r),
+                            child: Icon(
+                              Icons.info_outline,
+                              color: AppColors.blackBlue,
+                              size: 18.sp,
+                            ),
+                          ));
+                    },
+                  ),
                 ],
               ),
             ),
           ],
         ),
-
-
-
         BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
           builder: (CotisationDetailcontext, CotisationDetailstate) {
             if (CotisationDetailstate.isLoading == null ||
@@ -2820,7 +2798,7 @@ class _CotisationHistoriqueWidgetState
                   bottom: 5.h,
                 ),
                 child: widgetHistoriqueTontineCard(
-                  date: formatDateLiteral(monObjet["updated_at"]),
+                  montantTotal: "${widget.montantCotisations}",
                   imageProfil: monObjet["membre"]["photo_profil"] == null
                       ? ""
                       : monObjet["membre"]["photo_profil"],
@@ -2871,10 +2849,12 @@ class _CotisationHistoriqueWidgetState
 class TontineHistoriqueWidget extends StatefulWidget {
   TontineHistoriqueWidget({
     required this.codeContribution,
+    required this.montantTotal,
     super.key,
     this.codeTontine,
   });
   String codeContribution;
+  String montantTotal;
   String? codeTontine;
 
   @override
@@ -2980,7 +2960,7 @@ class _TontineHistoriqueWidgetState extends State<TontineHistoriqueWidget> {
         ),
         BlocBuilder<DetailContributionCubit, ContributionState>(
             builder: (DetailContributionContext, DetailContributionState) {
-          if (DetailContributionState.isLoadingContibutionTontine == null ||
+          if (DetailContributionState.detailContributionTontine == null &&
               DetailContributionState.isLoadingContibutionTontine == true)
             return Expanded(
               child: Center(
@@ -3014,7 +2994,7 @@ class _TontineHistoriqueWidgetState extends State<TontineHistoriqueWidget> {
                 bottom: 5.h,
               ),
               child: widgetHistoriqueTontineCard(
-                date: formatDateLiteral(monObjet["updated_at"]),
+                montantTotal: widget.montantTotal,
                 imageProfil: monObjet["membre"]["photo_profil"] == null
                     ? ""
                     : monObjet["membre"]["photo_profil"],
@@ -3045,10 +3025,28 @@ class _TontineHistoriqueWidgetState extends State<TontineHistoriqueWidget> {
           ];
 
           return Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: listeFinale,
-              ),
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: listeFinale,
+                  ),
+                ),
+                // if (DetailContributionState.detailContributionTontine != null &&
+                //     DetailContributionState.isLoadingContibutionTontine == true)
+                //   Center(
+                //     child: Container(
+                //       child: EasyLoader(
+                //         backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                //         iconSize: 50.r,
+                //         iconColor: AppColors.blackBlueAccent1,
+                //         image: AssetImage(
+                //           "assets/images/AssoplusFinal.png",
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+              ],
             ),
           );
         })

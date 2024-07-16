@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/list_cotisation_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
@@ -214,9 +215,10 @@ class _HomeScreenState extends State<HomeScreen>
             type: MaterialType.transparency,
             child: Scaffold(
               floatingActionButton:
-                  !context.read<AuthCubit>().state.detailUser!["isMember"]
-                      ? FloatingAction()
-                      : null,
+                  // !Authcontext.read<AuthCubit>().state.detailUser!["isMember"]
+                  //     ? 
+                      FloatingAction(),
+                      // : null,
               // appBar: AppBar(
               //   systemOverlayStyle: SystemUiOverlayStyle(
               //     // Status bar color
@@ -604,17 +606,23 @@ class _HomeScreenState extends State<HomeScreen>
                                       children: [
                                         Column(
                                           children: [
-                                              Container(
+                                            Container(
+                                              // padding: EdgeInsets.all(7.r),
+                                              decoration: BoxDecoration(
+                                                // color: AppColors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(15.r),
+                                              ),
                                               margin: EdgeInsets.only(
                                                 left: 8.w,
                                                 right: 8.w,
-                                                top: 20.h,
-                                                bottom: 20.h,
+                                                top: 10.h,
+                                                bottom: 5.h,
                                               ),
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment
+                                                //         .spaceEvenly,
                                                 children: [
                                                   GestureDetector(
                                                     onTap: () {
@@ -629,55 +637,120 @@ class _HomeScreenState extends State<HomeScreen>
                                                     child: Container(
                                                       padding:
                                                           EdgeInsets.symmetric(
-                                                        vertical: 10.h,
-                                                        horizontal: 20.w,
+                                                        vertical: 5.h,
+                                                        horizontal: 10.w,
                                                       ),
                                                       decoration: BoxDecoration(
                                                         color: AppColors.white,
+                                                        border: Border.all(
+                                                          width: 1.w,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(
                                                                     100.r),
                                                       ),
-                                                      child: Text(
-                                                        "Vos rencontres".tr(),
-                                                        style: TextStyle(
-                                                          color: AppColors
-                                                              .blackBlue,
-                                                          fontSize: 16.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            // padding: EdgeInsets.all(10.r),
+                                                            // height: 50.h,
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              width: 15.h,
+                                                              "assets/images/meetingTransIcon.svg",
+                                                              fit: BoxFit.cover,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5.w,
+                                                          ),
+                                                          Text(
+                                                            "Vos rencontres"
+                                                                .tr(),
+                                                            style: TextStyle(
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                              fontSize: 12.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
-                                                  Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                      vertical: 10.h,
-                                                      horizontal: 20.w,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100.r),
-                                                    ),
-                                                    child: Text(
-                                                      "Vos cotisations".tr(),
-                                                      style: TextStyle(
-                                                        color:
-                                                            AppColors.blackBlue,
-                                                        fontSize: 16.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                  SizedBox(
+                                                    width: 5.w,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ListCotisationScreen(),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: 5.h,
+                                                        horizontal: 10.w,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.white,
+                                                        border: Border.all(
+                                                            width: 1.w,
+                                                            color: AppColors
+                                                                .blackBlue),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    100.r),
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            // padding: EdgeInsets.all(10.r),
+                                                            // height: 50.h,
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              width: 15.h,
+                                                              "assets/images/contributionTransIcon1.svg",
+                                                              fit: BoxFit.cover,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5.w,
+                                                          ),
+                                                          Text(
+                                                            "Vos cotisations"
+                                                                .tr(),
+                                                            style: TextStyle(
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                              fontSize: 12.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-
                                             if (currentDetailUser!["is_saver"])
                                               BlocBuilder<PretEpargneCubit,
                                                   PretEpargneState>(
@@ -713,7 +786,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                     margin: EdgeInsets.only(
                                                       left: 8.w,
                                                       right: 8.w,
-                                                      top: 7.h,
+                                                      top: 5.h,
+                                                      bottom: 5.h,
                                                     ),
                                                     decoration: BoxDecoration(
                                                       color: AppColors.white,
@@ -1059,9 +1133,6 @@ class _HomeScreenState extends State<HomeScreen>
                                                   );
                                                 },
                                               ),
-
-
-
                                             if (currentDetailUser!["is_owe"])
                                               BlocBuilder<PretEpargneCubit,
                                                       PretEpargneState>(
@@ -1112,7 +1183,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                     margin: EdgeInsets.only(
                                                       left: 8.w,
                                                       right: 8.w,
-                                                      top: 7.h,
+                                                      top: 5.h,
+                                                      bottom: 5.h,
                                                     ),
                                                     decoration: BoxDecoration(
                                                       color: AppColors.white,
@@ -1447,11 +1519,6 @@ class _HomeScreenState extends State<HomeScreen>
                                                   ),
                                                 );
                                               }),
-
-
-
-
-
                                             if (currentDetailUser![
                                                     "is_inscription_payed"] ==
                                                 0)
@@ -1459,7 +1526,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                 margin: EdgeInsets.only(
                                                   left: 8.w,
                                                   right: 8.w,
-                                                  top: 7.h,
+                                                  top: 5.h,
+                                                  bottom: 5.h,
                                                 ),
                                                 decoration: BoxDecoration(
                                                   color: AppColors.white,
@@ -1683,11 +1751,12 @@ class _HomeScreenState extends State<HomeScreen>
                                                   ],
                                                 ),
                                               ),
-                                          
                                             Container(
                                               margin: EdgeInsets.only(
                                                 left: 8.w,
                                                 right: 8.w,
+                                                top: 5.h,
+                                                bottom: 5.h,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: AppColors.white,
@@ -2514,7 +2583,7 @@ class SliverTabBar extends SliverPersistentHeaderDelegate {
       children: [
         Container(
           padding: EdgeInsets.only(left: 10.w, right: 10.w),
-          margin: EdgeInsets.only(top: 10.h),
+          margin: EdgeInsets.only(top: 5.h),
           color: AppColors.whiteAccent,
           alignment: Alignment.centerLeft,
           child: BlocBuilder<RecentEventCubit, RecentEventState>(

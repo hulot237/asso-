@@ -17,6 +17,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
             passwordKey: null,
             isLoading: false,
             trakingData: null,
+            dataCookies: null,
           ),
         );
 
@@ -35,6 +36,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       passwordKey: json["passwordKey"],
       isLoading: json["isLoading"],
       trakingData: json["trakingData"],
+      dataCookies: json["dataCookies"],
     );
   }
 
@@ -52,7 +54,8 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       'passwordKey': state.passwordKey,
       'isLoading': state.isLoading,
       "trakingData": state.trakingData,
-      'codeTournoisHist': state.codeTournoisHist
+      'codeTournoisHist': state.codeTournoisHist,
+      'dataCookies': state.dataCookies,
     };
   }
 
@@ -246,6 +249,26 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     );
   }
 
+
+    Future<void> updateDataCookies(String newValue) async {
+    bool donneesChargees = false;
+    emit(state.copyWith(isLoading: true));
+
+    do {
+      await Future.delayed(Duration(seconds: 1));
+      if (newValue != null) {
+        donneesChargees = true;
+      }
+    } while (!donneesChargees);
+
+    emit(
+      state.copyWith(
+        dataCookies: newValue,
+        isLoading: false,
+      ),
+    );
+  }
+
   // Future<void> updateTrakingData(String code, String date, Map<String, dynamic> data) async {
   //   UserAction oneAction = UserAction(code: code, date: date, data: data);
 
@@ -333,4 +356,5 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
   //         'Erreur lors de l\'envoi des données à l\'API: ${response.statusCode}');
   //   }
   // }
+  
 }

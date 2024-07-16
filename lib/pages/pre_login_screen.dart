@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginCreateGroupeScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
+import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administrationPage.dart';
@@ -57,7 +59,7 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                       children: [
                         Container(
                           width: 170.w,
-                          padding: EdgeInsets.all(2.w),
+                          padding: EdgeInsets.all(10.w),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(20.r),
@@ -195,8 +197,9 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginPage(),
+                                                builder: (context) => LoginPage(
+                                                  isForCreate: false,
+                                                ),
                                               ),
                                             );
                                           },
@@ -245,17 +248,30 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AdministrationPageWebview(
-                              forAdmin: false,
-                              urlPage: 'https://business.faroty.com/groups',
-                              // urlPage: 'https://business.rush.faroty.com/',
-                              forFirstPage: true,
+                        if (AppCubitStorage().state.dataCookies == null) {
+                          Navigator.push(
+                            context,
+                            // MaterialPageRoute(
+                            //   builder: (context) => AdministrationPageWebview(
+                            //     forAdmin: false,
+                            //     urlPage: 'https://business.faroty.com/groups',
+                            //     // urlPage: 'https://business.rush.faroty.com/',
+                            //     forFirstPage: true,
+                            //   ),
+                            // ),
+                            MaterialPageRoute(
+                              builder: (context) => LoginCreateGroupeScreen(
+                                isForCreate: true,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                           print("datacoo ${AppCubitStorage().state.dataCookies}");
+                           print("userNameKey ${AppCubitStorage().state.userNameKey}");
+                           print("passwordKey ${AppCubitStorage().state.passwordKey}");
+                          launchWeb(
+                              "https://auth.faroty.com/hello.html?user_data=${AppCubitStorage().state.dataCookies}&callback=https://business.faroty.com/groups&app_mode=mobile");
+                        }
                       },
                       child: Container(
                         child: Row(
@@ -270,7 +286,9 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                                 color: AppColors.backgroundAppBAr,
                               ),
                             ),
-                            SizedBox(width: 12,),
+                            SizedBox(
+                              width: 12,
+                            ),
                             Text(
                               "Créer un groupe ASSO+".tr().toUpperCase(),
                               style: TextStyle(

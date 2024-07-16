@@ -695,68 +695,234 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                               ),
                                             ),
                                           ),
+                                          if (currentInfoAllTournoiAssCourant!
+                                                  .user_group!
+                                                  .tournois!
+                                                  .length >
+                                              1)
+                                            BlocBuilder<
+                                                DetailTournoiCourantCubit,
+                                                DetailTournoiCourantState>(
+                                              builder: (DetailTournoiContext,
+                                                  DetailTournoiState) {
+                                                if (DetailTournoiState
+                                                            .isLoading ==
+                                                        true &&
+                                                    DetailTournoiState
+                                                            .detailtournoiCourantHist ==
+                                                        null)
+                                                  return Container(
+                                                      // child: Expanded(
+                                                      //   child: EasyLoader(
+                                                      //     backgroundColor:
+                                                      //         Color.fromARGB(
+                                                      //             0, 255, 255, 255),
+                                                      //     iconSize: 50.r,
+                                                      //     iconColor: AppColors
+                                                      //         .blackBlueAccent1,
+                                                      //     image: AssetImage(
+                                                      //       "assets/images/AssoplusFinal.png",
+                                                      //     ),
+                                                      //   ),
+                                                      // ),
+                                                      );
 
-
-                                          if (currentInfoAllTournoiAssCourant! .user_group!.tournois!.length > 1)
-                                            BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
-                                                builder: (DetailTournoiContext, DetailTournoiState) {
-                                              if (DetailTournoiState.isLoading == true && DetailTournoiState.detailtournoiCourantHist == null)
-                                                return Container(
-                                                    // child: Expanded(
-                                                    //   child: EasyLoader(
-                                                    //     backgroundColor:
-                                                    //         Color.fromARGB(
-                                                    //             0, 255, 255, 255),
-                                                    //     iconSize: 50.r,
-                                                    //     iconColor: AppColors
-                                                    //         .blackBlueAccent1,
-                                                    //     image: AssetImage(
-                                                    //       "assets/images/AssoplusFinal.png",
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    );
-
-                                              return PopupMenuButton(
-                                                elevation: 5,
-                                                shadowColor:
-                                                    AppColors.barrierColorModal,
-                                                child: Column(
-                                                  children: [
+                                                return PopupMenuButton(
+                                                  elevation: 5,
+                                                  shadowColor: AppColors
+                                                      .barrierColorModal,
+                                                  child: Column(
+                                                    children: [
+                                                      for (var item
+                                                          in currentInfoAllTournoiAssCourant!
+                                                              .user_group!
+                                                              .tournois!)
+                                                        if (item.tournois_code ==
+                                                            AppCubitStorage()
+                                                                .state
+                                                                .codeTournoisHist)
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                              right: 10.w,
+                                                              left: 10.w,
+                                                              bottom: 10.h,
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border:
+                                                                  Border.all(
+                                                                width: 1.w,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                20.r,
+                                                              ),
+                                                            ),
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                              top: 7.h,
+                                                              bottom: 7.h,
+                                                              left: 20.w,
+                                                              right: 15.w,
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        'Tournoi #${item.matricule}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              14.sp,
+                                                                          color:
+                                                                              AppColors.blackBlue,
+                                                                          fontWeight:
+                                                                              FontWeight.w900,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                if (DetailTournoiState
+                                                                        .isLoading ==
+                                                                    true)
+                                                                  Center(
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          15.h,
+                                                                      width:
+                                                                          50.h,
+                                                                      child:
+                                                                          CircularProgressIndicator(
+                                                                        strokeWidth:
+                                                                            2.w,
+                                                                        color: AppColors
+                                                                            .greenAssociation,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                Row(
+                                                                  children: [
+                                                                    if (item.is_default ==
+                                                                        0)
+                                                                      Row(
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.dangerous,
+                                                                            size:
+                                                                                12.sp,
+                                                                            color:
+                                                                                AppColors.red,
+                                                                          ),
+                                                                          // Text(
+                                                                          //   "Inactif"
+                                                                          //       .tr(),
+                                                                          //   style:
+                                                                          //       TextStyle(
+                                                                          //     color: AppColors
+                                                                          //         .red,
+                                                                          //     fontWeight:
+                                                                          //         FontWeight
+                                                                          //             .bold,
+                                                                          //     fontSize:
+                                                                          //         12.sp,
+                                                                          //   ),
+                                                                          // ),
+                                                                        ],
+                                                                      ),
+                                                                    Icon(
+                                                                      Icons
+                                                                          .arrow_drop_down,
+                                                                      color: AppColors
+                                                                          .blackBlue,
+                                                                      size:
+                                                                          20.sp,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                    ],
+                                                  ),
+                                                  // onSelected: (value) async {
+                                                  //   if (value == "tournoi") {
+                                                  //     print(value);
+                                                  //     await AppCubitStorage().updateCodeTournoisDefault(item.matricule);
+                                                  //     // await launchWeb(
+                                                  //     //   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=1&app_mode=mobile",
+                                                  //     //   mode: LaunchMode.platformDefault,
+                                                  //     // );
+                                                  //   }
+                                                  //  },
+                                                  itemBuilder:
+                                                      (BuildContext context) =>
+                                                          <PopupMenuEntry>[
                                                     for (var item
                                                         in currentInfoAllTournoiAssCourant!
                                                             .user_group!
                                                             .tournois!)
-                                                      if (item.tournois_code ==
-                                                          AppCubitStorage()
-                                                              .state
-                                                              .codeTournoisHist)
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                            right: 10.w,
-                                                            left: 10.w,
-                                                            bottom: 10.h,
-                                                          ),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                              width: 1.w,
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              20.r,
-                                                            ),
-                                                          ),
+                                                      PopupMenuItem(
+                                                        padding:
+                                                            EdgeInsets.all(0),
+                                                        value: "tournoi",
+                                                        onTap: () async {
+                                                          print(
+                                                              " before ${item.tournois_code}");
+                                                          await AppCubitStorage()
+                                                              .updateCodeTournoisHist(
+                                                                  item.tournois_code!);
+                                                          print(
+                                                              " after ${AppCubitStorage().state.codeTournoisHist}");
+
+                                                          await handleTournoiDefault(
+                                                              AppCubitStorage()
+                                                                  .state
+                                                                  .codeTournoisHist);
+                                                          handleAllCotisationAssTournoi(
+                                                              AppCubitStorage()
+                                                                  .state
+                                                                  .codeTournoisHist,
+                                                              AppCubitStorage()
+                                                                  .state
+                                                                  .membreCode);
+                                                          context
+                                                              .read<
+                                                                  SanctionCubit>()
+                                                              .getAllSanctions(
+                                                                  AppCubitStorage()
+                                                                      .state
+                                                                      .codeTournoisHist);
+                                                        },
+                                                        child: Container(
+                                                          color: item.tournois_code! ==
+                                                                  AppCubitStorage()
+                                                                      .state
+                                                                      .codeTournoisHist
+                                                              ? AppColors
+                                                                  .blackBlue
+                                                                  .withOpacity(
+                                                                      .05)
+                                                              : null,
                                                           padding:
                                                               EdgeInsets.only(
-                                                            top: 7.h,
-                                                            bottom: 7.h,
-                                                            left: 20.w,
-                                                            right: 15.w,
+                                                            top: 15.h,
+                                                            bottom: 15.h,
+                                                            left: 10.w,
+                                                            right: 10.w,
                                                           ),
                                                           child: Row(
                                                             mainAxisAlignment:
@@ -765,12 +931,14 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                             children: [
                                                               Container(
                                                                 child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
                                                                   children: [
+                                                                    SizedBox(
+                                                                      width:
+                                                                          7.w,
+                                                                    ),
                                                                     Text(
-                                                                      'Tournoi #${item.matricule}',
+                                                                      '${"tournoi".tr()} #${item.matricule}'
+                                                                          .tr(),
                                                                       style:
                                                                           TextStyle(
                                                                         fontSize:
@@ -778,220 +946,68 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                         color: AppColors
                                                                             .blackBlue,
                                                                         fontWeight:
-                                                                            FontWeight.w900,
+                                                                            FontWeight.bold,
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 ),
                                                               ),
-                                                              if (DetailTournoiState
-                                                                      .isLoading ==
-                                                                  true)
-                                                                Center(
-                                                                  child:
-                                                                      Container(
-                                                                    height:
-                                                                        15.h,
-                                                                    width: 50.h,
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      strokeWidth:
-                                                                          2.w,
-                                                                      color: AppColors
-                                                                          .greenAssociation,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              Row(
-                                                                children: [
-                                                                  if (item.is_default ==
-                                                                      0)
-                                                                    Row(
-                                                                      children: [
-                                                                        Icon(
-                                                                          Icons
-                                                                              .dangerous,
-                                                                          size:
-                                                                              12.sp,
-                                                                          color:
-                                                                              AppColors.red,
-                                                                        ),
-                                                                        // Text(
-                                                                        //   "Inactif"
-                                                                        //       .tr(),
-                                                                        //   style:
-                                                                        //       TextStyle(
-                                                                        //     color: AppColors
-                                                                        //         .red,
-                                                                        //     fontWeight:
-                                                                        //         FontWeight
-                                                                        //             .bold,
-                                                                        //     fontSize:
-                                                                        //         12.sp,
-                                                                        //   ),
-                                                                        // ),
-                                                                      ],
-                                                                    ),
-                                                                  Icon(
-                                                                    Icons
-                                                                        .arrow_drop_down,
-                                                                    color: AppColors
-                                                                        .blackBlue,
-                                                                    size: 20.sp,
-                                                                  ),
-                                                                ],
+                                                              Container(
+                                                                width: 70.w,
                                                               ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                  ],
-                                                ),
-                                                // onSelected: (value) async {
-                                                //   if (value == "tournoi") {
-                                                //     print(value);
-                                                //     await AppCubitStorage().updateCodeTournoisDefault(item.matricule);
-                                                //     // await launchWeb(
-                                                //     //   "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=1&app_mode=mobile",
-                                                //     //   mode: LaunchMode.platformDefault,
-                                                //     // );
-                                                //   }
-                                                //  },
-                                                itemBuilder:
-                                                    (BuildContext context) =>
-                                                        <PopupMenuEntry>[
-                                                  for (var item
-                                                      in currentInfoAllTournoiAssCourant!
-                                                          .user_group!
-                                                          .tournois!)
-                                                    PopupMenuItem(
-                                                      padding:
-                                                          EdgeInsets.all(0),
-                                                      value: "tournoi",
-                                                      onTap: () async {
-                                                        print(
-                                                            " before ${item.tournois_code}");
-                                                        await AppCubitStorage()
-                                                            .updateCodeTournoisHist(
-                                                                item.tournois_code!);
-                                                        print(
-                                                            " after ${AppCubitStorage().state.codeTournoisHist}");
-
-                                                        await handleTournoiDefault(
-                                                            AppCubitStorage()
-                                                                .state
-                                                                .codeTournoisHist);
-                                                        handleAllCotisationAssTournoi(
-                                                            AppCubitStorage()
-                                                                .state
-                                                                .codeTournoisHist,
-                                                            AppCubitStorage()
-                                                                .state
-                                                                .membreCode);
-                                                        context
-                                                            .read<
-                                                                SanctionCubit>()
-                                                            .getAllSanctions(
-                                                                AppCubitStorage()
-                                                                    .state
-                                                                    .codeTournoisHist);
-                                                      },
-                                                      child: Container(
-                                                        color: item.tournois_code! ==
-                                                                AppCubitStorage()
-                                                                    .state
-                                                                    .codeTournoisHist
-                                                            ? AppColors
-                                                                .blackBlue
-                                                                .withOpacity(
-                                                                    .05)
-                                                            : null,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                          top: 15.h,
-                                                          bottom: 15.h,
-                                                          left: 10.w,
-                                                          right: 10.w,
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Container(
-                                                              child: Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 7.w,
+                                                              if (item.is_default ==
+                                                                  1)
+                                                                Container(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: AppColors
+                                                                        .green
+                                                                        .withOpacity(
+                                                                            .1),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            20.r),
                                                                   ),
-                                                                  Text(
-                                                                    '${"tournoi".tr()} #${item.matricule}'
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .only(
+                                                                    left: 10.w,
+                                                                    right: 10.w,
+                                                                    top: 3.h,
+                                                                    bottom: 3.h,
+                                                                  ),
+                                                                  child: Text(
+                                                                    'Actif'
                                                                         .tr(),
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
-                                                                          14.sp,
+                                                                          12.sp,
                                                                       color: AppColors
-                                                                          .blackBlue,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
+                                                                          .green,
+                                                                      // fontWeight:
+                                                                      //     FontWeight.bold,
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              width: 70.w,
-                                                            ),
-                                                            if (item.is_default ==
-                                                                1)
-                                                              Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: AppColors
-                                                                      .green
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20.r),
                                                                 ),
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  left: 10.w,
-                                                                  right: 10.w,
-                                                                  top: 3.h,
-                                                                  bottom: 3.h,
-                                                                ),
-                                                                child: Text(
-                                                                  'Actif'.tr(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                    color: AppColors
-                                                                        .green,
-                                                                    // fontWeight:
-                                                                    //     FontWeight.bold,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                ],
-                                              );
-                                            
-                                            
-                                            
-                                            },
-                                          ),
-                                          BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
-                                            builder: (DetailTournoiContext, DetailTournoiState) {
-                                              if (DetailTournoiState.isLoadingHist == true && DetailTournoiState.detailtournoiCourantHist == null)
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          BlocBuilder<DetailTournoiCourantCubit,
+                                              DetailTournoiCourantState>(
+                                            builder: (DetailTournoiContext,
+                                                DetailTournoiState) {
+                                              if (DetailTournoiState
+                                                          .isLoadingHist ==
+                                                      true &&
+                                                  DetailTournoiState
+                                                          .detailtournoiCourantHist ==
+                                                      null)
                                                 return Container(
                                                   child: Expanded(
                                                     child: EasyLoader(
@@ -1007,7 +1023,11 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     ),
                                                   ),
                                                 );
-                                              final currentDetailtournoiCourant = DetailTournoiContext.read<DetailTournoiCourantCubit>().state.detailtournoiCourantHist;
+                                              final currentDetailtournoiCourant =
+                                                  DetailTournoiContext.read<
+                                                          DetailTournoiCourantCubit>()
+                                                      .state
+                                                      .detailtournoiCourantHist;
                                               return currentDetailtournoiCourant![
                                                                   "tournois"]
                                                               ["seance"]!
@@ -1268,9 +1288,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                     );
                                             },
                                           ),
-                                        
-                                        
-                                        
                                         ],
                                       ),
                                     ),
@@ -1712,6 +1729,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                               7.h),
                                                                       child:
                                                                           widgetTontineHistoriqueCard(
+                                                                         listMembre:    itemTontine["membres"],
                                                                         isActive:
                                                                             itemTontine["is_active"],
                                                                         dateCreaTontine:

@@ -9,6 +9,8 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/nonPaye_widget.dart';
+import 'package:faroty_association_1/widget/paye_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -118,18 +120,21 @@ class _widgetDetailHistoriqueTontineCardState
                                         ),
                                       ),
                                     ),
-                                    if(widget.isPayed != 0)
-                                    Container(
-                                      margin: EdgeInsets.only(left: 5.w),
-                                      child: Text(
-                                        "payé".tr(),
-                                        style: TextStyle(
-                                            fontSize: 11.sp,
-                                            color: AppColors.green,
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle: FontStyle.italic),
-                                      ),
-                                    ),
+                                    if (widget.isPayed == 1) PayeWidget(),
+                              if (widget.isPayed == 0)
+                                NonpayeWidget(),
+                                    // if(widget.isPayed != 0)
+                                    // Container(
+                                    //   margin: EdgeInsets.only(left: 5.w),
+                                    //   child: Text(
+                                    //     "payé".tr(),
+                                    //     style: TextStyle(
+                                    //         fontSize: 11.sp,
+                                    //         color: AppColors.green,
+                                    //         fontWeight: FontWeight.w600,
+                                    //         fontStyle: FontStyle.italic),
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ),

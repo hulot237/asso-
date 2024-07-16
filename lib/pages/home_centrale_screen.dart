@@ -68,9 +68,9 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
   int _pageIndex = 0;
   final screens = [
     HomeScreen(),
-    HistoriqueScreen(),
-    // SettingScreen(),
     HistoriqueTwoScreen(),
+    // HistoriqueScreen(),
+    SettingScreen(),
   ];
 
   // final itemListAndroid = [

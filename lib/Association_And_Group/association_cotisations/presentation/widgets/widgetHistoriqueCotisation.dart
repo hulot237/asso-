@@ -4,6 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/association_cotisations_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/association_recent_event/business_logic/recent_event_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
@@ -11,6 +14,8 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/nonPaye_widget.dart';
+import 'package:faroty_association_1/widget/paye_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +27,10 @@ class WidgetHistoriqueCotisation extends StatefulWidget {
   var codeCotisation;
 
   var codeMembre;
+
+  var isCotisation;
+  var codeUserContribution;
+  var codeTontine;
 
   WidgetHistoriqueCotisation({
     super.key,
@@ -35,6 +44,9 @@ class WidgetHistoriqueCotisation extends StatefulWidget {
     required this.resteAPayer,
     required this.codeCotisation,
     required this.codeMembre,
+    required this.isCotisation,
+    this.codeUserContribution,
+    this.codeTontine,
   });
   String matricule;
 
@@ -109,19 +121,28 @@ class _WidgetHistoriqueCotisationState
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w),
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w),
+                      // color: const Color.fromARGB(43, 20, 45, 99),
+                      // constraints: BoxConstraints(
+                      //   maxWidth: MediaQuery.of(context).size.width / 1.9,
+                      // ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               Container(
                                 margin: EdgeInsets.only(bottom: 5.h),
+                                // width: MediaQuery.of(context).size.width / 1.8,
+                                constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width / 1.9,
+                                ),
                                 child: Text(
+                                  // "KENGNE DJOUSSE Hulot Alain Vergees",
                                   "${widget.nom} ${widget.prenom}",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -131,20 +152,23 @@ class _WidgetHistoriqueCotisationState
                                   ),
                                 ),
                               ),
-                              if (widget.versement_status == "2")
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(bottom: 5.h, left: 0.w),
-                                  child: Text(
-                                    "payé".tr(),
-                                    style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color: AppColors.green,
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ),
+                              if (widget.versement_status == "2") PayeWidget(),
+                              if (widget.versement_status != "2")
+                                NonpayeWidget(),
+                              // if (widget.versement_status == "2")
+                              //   Container(
+                              //     margin:
+                              //         EdgeInsets.only(bottom: 5.h, left: 0.w),
+                              //     child: Text(
+                              //       "payé".tr(),
+                              //       style: TextStyle(
+                              //         fontSize: 10.sp,
+                              //         color: AppColors.green,
+                              //         fontWeight: FontWeight.w600,
+                              //         fontStyle: FontStyle.italic,
+                              //       ),
+                              //     ),
+                              //   ),
                             ],
                           ),
                           // Container(
@@ -172,63 +196,64 @@ class _WidgetHistoriqueCotisationState
                           //     size: 14.sp,
                           //   ),
                           // ),
+
+                          Container(
+                            child: Row(
+                              children: [
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        // margin: EdgeInsets.only(bottom: 15),
+                                        child: Text(
+                                          "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${formatMontantFrancais(double.parse("${widget.montantTotalAVerser}"))} FCFA",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: widget.versement_status ==
+                                                    "0"
+                                                ? Colors.red
+                                                : widget.versement_status == "1"
+                                                    ? Colors.orange
+                                                    : Colors.green,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Container(
+                                //   padding: EdgeInsets.all(1.r),
+                                //   margin: EdgeInsets.only(left: 5.w),
+                                //   decoration: BoxDecoration(
+                                //     borderRadius: BorderRadius.circular(50.r),
+                                //     color: widget.versement_status=="0"? Color.fromARGB(40, 175, 76, 76) : widget.versement_status=="1"? Color.fromARGB(40, 175, 139, 76): Color.fromARGB(40, 83, 175, 76),
+                                //   ),
+                                //   child: Icon(
+                                //    widget.versement_status=="0" ? Icons.close : widget.versement_status=="1" ? Icons.close : Icons.done,
+                                //     color: widget.versement_status=="0"? Colors.red : widget.versement_status=="1"? Colors.orange :  Colors.green,
+                                //     size: 10.sp,
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          ),
+                          // Container(
+                          //   child: Text(
+                          //     "${widget.matricule}",
+                          //     style: TextStyle(
+                          //       fontSize: 10.sp,
+                          //       fontWeight: FontWeight.w800,
+                          //       color: Color.fromRGBO(20, 45, 99, 0.349),
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
-
-                      Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    // margin: EdgeInsets.only(bottom: 15),
-                                    child: Text(
-                                      "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA",
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w800,
-                                        color: widget.versement_status == "0"
-                                            ? Colors.red
-                                            : widget.versement_status == "1"
-                                                ? Colors.orange
-                                                : Colors.green,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // Container(
-                            //   padding: EdgeInsets.all(1.r),
-                            //   margin: EdgeInsets.only(left: 5.w),
-                            //   decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(50.r),
-                            //     color: widget.versement_status=="0"? Color.fromARGB(40, 175, 76, 76) : widget.versement_status=="1"? Color.fromARGB(40, 175, 139, 76): Color.fromARGB(40, 83, 175, 76),
-                            //   ),
-                            //   child: Icon(
-                            //    widget.versement_status=="0" ? Icons.close : widget.versement_status=="1" ? Icons.close : Icons.done,
-                            //     color: widget.versement_status=="0"? Colors.red : widget.versement_status=="1"? Colors.orange :  Colors.green,
-                            //     size: 10.sp,
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-
-                      // Container(
-                      //   child: Text(
-                      //     "${widget.matricule}",
-                      //     style: TextStyle(
-                      //       fontSize: 10.sp,
-                      //       fontWeight: FontWeight.w800,
-                      //       color: Color.fromRGBO(20, 45, 99, 0.349),
-                      //     ),
-                      //   ),
-                      // )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -245,6 +270,9 @@ class _WidgetHistoriqueCotisationState
                   widget.codeCotisation,
                   widget.codeMembre,
                   hashId,
+                  widget.isCotisation,
+                  codeUserContribution: widget.codeUserContribution,
+                  codeTontine: widget.codeTontine,
                 );
                 print("object");
               },
@@ -358,7 +386,10 @@ class _WidgetHistoriqueCotisationState
     codeCotisation,
     codeMembre,
     hashId,
-  ) {
+    isCotisation, {
+    codeUserContribution,
+    codeTontine,
+  }) {
     showDialog(
       context: context,
       barrierColor: AppColors.barrierColorModal,
@@ -378,11 +409,14 @@ class _WidgetHistoriqueCotisationState
           child: Container(
             constraints: BoxConstraints(maxHeight: 250.h),
             child: paiementWidget(
+              isCotisation: isCotisation,
               nom: nom,
               codeCotisation: codeCotisation,
               codeMembre: codeMembre,
               hashId: hashId,
               resteAPayer: resteAPayer,
+              codeUserContribution: codeUserContribution,
+              codeTontine: codeTontine,
             ),
           ),
         );
@@ -393,13 +427,13 @@ class _WidgetHistoriqueCotisationState
 
 class paiementWidget extends StatefulWidget {
   var nom;
-
   var codeCotisation;
-
   var codeMembre;
-
   var hashId;
   var resteAPayer;
+  var isCotisation;
+  var codeUserContribution;
+  var codeTontine;
 
   paiementWidget({
     super.key,
@@ -409,6 +443,9 @@ class paiementWidget extends StatefulWidget {
     required this.codeMembre,
     required this.hashId,
     required this.resteAPayer,
+    required this.isCotisation, // Paramètre optionnel avec valeur par défaut null
+    this.codeUserContribution, // Paramètre optionnel avec valeur par défaut null
+    this.codeTontine,
   });
 
   @override
@@ -498,44 +535,88 @@ class _paiementWidgetState extends State<paiementWidget> {
           ),
           InkWell(
             onTap: () async {
-              // setState(() {
-              //   load = true;
-              // });
-              print(load);
-              CotisationRepository().PayOneCotisation(
-                widget.codeCotisation,
-                infoUserController.text,
-                widget.codeMembre,
-                AppCubitStorage().state.codeAssDefaul,
-                widget.hashId,
-                3,
-              );
-              context.read<CotisationDetailCubit>().updateStateAmountPay(
-                    widget.codeMembre,
-                    infoUserController.text,
-                  );
-                            await Future.delayed(Duration(seconds: 2));
+              if (widget.isCotisation) {
+                print(load);
+                CotisationRepository().PayOneCotisation(
+                  widget.codeCotisation,
+                  infoUserController.text,
+                  widget.codeMembre,
+                  AppCubitStorage().state.codeAssDefaul,
+                  widget.hashId,
+                  3,
+                );
+                context
+                    .read<CotisationDetailCubit>()
+                    .updateStateAmountPayCotisation(
+                      widget.codeMembre,
+                      infoUserController.text,
+                    );
+                await Future.delayed(Duration(milliseconds: 1000));
 
-              handleAllCotisationAssTournoi(
-                AppCubitStorage().state.codeTournoisHist,
-                AppCubitStorage().state.membreCode,
-              );
+                handleAllCotisationAssTournoi(
+                  AppCubitStorage().state.codeTournoisHist,
+                  AppCubitStorage().state.membreCode,
+                );
 
-              // setState(() {
-              //   load = false;
-              // });
-              print(load);
-              Navigator.pop(context);
-              // Attendre 2 secondes avant d'exécuter handleAllCotisationAssTournoi
+                print(load);
+                Navigator.pop(context);
+              } else {
+                // onTap: () async {
+                // setState(() {
+                //   load = true;
+                // });
+                print(load);
+                CotisationRepository().PayOneCotisation(
+                  widget.codeCotisation,
+                  infoUserController.text,
+                  widget.codeMembre,
+                  AppCubitStorage().state.codeAssDefaul,
+                  widget.hashId,
+                  widget.codeUserContribution == "" ? 3 : 8,
+                  // 8,
+                  contribution_code: widget.codeUserContribution,
+                );
+                context
+                    .read<DetailContributionCubit>()
+                    .updateStateAmountPayTontine(
+                      widget.codeUserContribution,
+                      infoUserController.text,
+                    );
 
+                await Future.delayed(
+                  Duration(
+                    milliseconds: 1000,
+                  ),
+                );
+
+                context
+                    .read<DetailContributionCubit>()
+                    .detailContributionTontineCubit(
+                      widget.codeCotisation,
+                    );
+
+                if (widget.codeTontine != null) {
+                  context.read<TontineCubit>().detailTontineCubit(
+                        AppCubitStorage().state.codeTournois,
+                        widget.codeTontine,
+                      );
+                }
+                context.read<RecentEventCubit>().AllRecentEventCubit(
+                      AppCubitStorage().state.membreCode,
+                    );
+
+                context.read<CotisationDetailCubit>().detailCotisationCubit(
+                      widget.codeCotisation,
+                    );
+                // setState(() {
+                //   load = false;
+                // });
+                print(load);
+                Navigator.pop(context);
+                // }
+              }
             },
-            child:
-                // load == true
-                // ? CircularProgressIndicator(
-                //     color: AppColors.green,
-                //   )
-                // :
-                Container(
+            child: Container(
               height: 50.h,
               decoration: BoxDecoration(
                   color: AppColors.colorButton,

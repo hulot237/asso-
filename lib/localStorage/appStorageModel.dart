@@ -10,6 +10,7 @@ class AppStorageModel {
   String? passwordKey;
   String? tokenUser;
   String? userNameKey;
+  String? dataCookies;
   final bool isLoading;
   List<UserAction>? trakingData;
 
@@ -26,6 +27,7 @@ class AppStorageModel {
     this.passwordKey,
     this.isLoading = false,
     this.userNameKey,
+    this.dataCookies,
     this.trakingData,
   });
 
@@ -40,6 +42,7 @@ class AppStorageModel {
     String? passwordKey,
     String? tokenUser,
     String? userNameKey,
+    String? dataCookies,
     bool? isLoading,
     List<UserAction>? trakingData,
   }) {
@@ -54,6 +57,7 @@ class AppStorageModel {
       passwordKey: passwordKey ?? this.passwordKey,
       tokenUser: tokenUser ?? this.tokenUser,
       userNameKey: userNameKey ?? this.userNameKey,
+      dataCookies: dataCookies ?? this.dataCookies,
       isLoading: isLoading ?? this.isLoading,
       trakingData: trakingData ?? this.trakingData,
     );

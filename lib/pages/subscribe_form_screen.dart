@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -274,74 +273,74 @@ class _SubscribeFormScreenState extends State<SubscribeFormScreen> {
                                     height: 5.h,
                                   ),
       
-                                  SizedBox(
-                                    height: 75.h,
-                                    child: IntlPhoneField(
-                                      key: _formNumberKey,
-                                      validator: (value) {
-                                        if (value!.number.isEmpty) {
-                                          return "vide";
-                                        } else
-                                          return null;
-                                      },
-                                      cursorColor: AppColors.blackBlue,
-                                      cursorWidth: 1,
-                                      style: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16.sp,
-                                      ),
-                                      dropdownTextStyle: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15.sp,
-                                      ),
-                                      flagsButtonPadding: EdgeInsets.all(15.r),
-                                      dropdownIconPosition: IconPosition.trailing,
-                                      decoration: InputDecoration(
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                          borderSide: BorderSide(
-                                            color: AppColors.colorButton,
-                                            width: 1.w,
-                                          ),
-                                        ),
-                                        contentPadding: EdgeInsets.all(15.r),
-                                        // labelText: 'numero_de_téléphone'.tr(),
-                                        labelStyle: TextStyle(
-                                          color: AppColors.blackBlueAccent1,
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: AppColors.blackBlue,
-                                              width: 2.w),
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                        counterStyle:
-                                            TextStyle(color: AppColors.blackBlue),
-                                      ),
-                                      controller: countrycode,
-                                      initialCountryCode: 'CM',
-                                      onCountryChanged: (Country) {
-                                        setState(() {
-                                          countryCodeController =
-                                              retirerPlus(Country.dialCode);
-                                        });
-                                        print(Country.dialCode);
-                                      },
-                                      onChanged: (phone) {
-                                        setState(() {
-                                          numeroPhoneController = phone.number;
-                                          countryCodeController =
-                                              retirerPlus(phone.countryCode);
-                                        });
-                                        print(numeroPhoneController);
-                                        print(countryCodeController);
-                                      },
-                                    ),
-                                  ),
+                                  // SizedBox(
+                                  //   height: 75.h,
+                                  //   child: IntlPhoneField(
+                                  //     key: _formNumberKey,
+                                  //     validator: (value) {
+                                  //       if (value!.number.isEmpty) {
+                                  //         return "vide";
+                                  //       } else
+                                  //         return null;
+                                  //     },
+                                  //     cursorColor: AppColors.blackBlue,
+                                  //     cursorWidth: 1,
+                                  //     style: TextStyle(
+                                  //       color: AppColors.blackBlue,
+                                  //       fontWeight: FontWeight.w400,
+                                  //       fontSize: 16.sp,
+                                  //     ),
+                                  //     dropdownTextStyle: TextStyle(
+                                  //       color: AppColors.blackBlue,
+                                  //       fontWeight: FontWeight.w400,
+                                  //       fontSize: 15.sp,
+                                  //     ),
+                                  //     flagsButtonPadding: EdgeInsets.all(15.r),
+                                  //     dropdownIconPosition: IconPosition.trailing,
+                                  //     decoration: InputDecoration(
+                                  //       focusedBorder: OutlineInputBorder(
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(10.r),
+                                  //         borderSide: BorderSide(
+                                  //           color: AppColors.colorButton,
+                                  //           width: 1.w,
+                                  //         ),
+                                  //       ),
+                                  //       contentPadding: EdgeInsets.all(15.r),
+                                  //       // labelText: 'numero_de_téléphone'.tr(),
+                                  //       labelStyle: TextStyle(
+                                  //         color: AppColors.blackBlueAccent1,
+                                  //       ),
+                                  //       border: OutlineInputBorder(
+                                  //         borderSide: BorderSide(
+                                  //             color: AppColors.blackBlue,
+                                  //             width: 2.w),
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(10.r),
+                                  //       ),
+                                  //       counterStyle:
+                                  //           TextStyle(color: AppColors.blackBlue),
+                                  //     ),
+                                  //     controller: countrycode,
+                                  //     initialCountryCode: 'CM',
+                                  //     onCountryChanged: (Country) {
+                                  //       setState(() {
+                                  //         countryCodeController =
+                                  //             retirerPlus(Country.dialCode);
+                                  //       });
+                                  //       print(Country.dialCode);
+                                  //     },
+                                  //     onChanged: (phone) {
+                                  //       setState(() {
+                                  //         numeroPhoneController = phone.number;
+                                  //         countryCodeController =
+                                  //             retirerPlus(phone.countryCode);
+                                  //       });
+                                  //       print(numeroPhoneController);
+                                  //       print(countryCodeController);
+                                  //     },
+                                  //   ),
+                                  // ),
       
                                   SizedBox(
                                     height: 40.h,

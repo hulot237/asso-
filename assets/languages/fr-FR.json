@@ -256,7 +256,12 @@
     "la tontine":"a tontine",
     "Générer le":"Générer le",
     "rapport PDF":"rapport PDF",
-    "Confirmer la clôture de la ":"Confirmer la clôture de la "
+    "Confirmer la clôture de la ":"Confirmer la clôture de la ",
+    "non payé":"Non payé",
+        "Date limite":"Date limit",
+        "qui a debuté le":"qui a debuté le",
+        "compte a la date du":"compte a la date du",
+        "beneficiaire sur":"bénéficiaires sur"
 
 
 

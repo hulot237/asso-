@@ -86,72 +86,103 @@ class _widgetRecentEventCotisationState
         );
       return GestureDetector(
         onTap: () {
-          updateTrackingData("home.contribution", "${DateTime.now()}", {
-            "type": 'contribution',
-            "contribution_id": "${widget.codeCotisation}"
-          });
-          if (checkTransparenceStatus(
-              context
-                  .read<UserGroupCubit>()
-                  .state
-                  .changeAssData!
-                  .user_group!
-                  .configs,
-              context.read<AuthCubit>().state.detailUser!["isMember"])) {
-            handleDetailCotisation(widget.codeCotisation);
+          handleDetailCotisation(widget.codeCotisation);
 
-            Modal().showBottomSheetHistCotisation(
-              context,
-              widget.codeCotisation,
-              widget.lienDePaiement,
-              widget.dateOpen,
-              widget.dateOpen,
-              widget.montantCotisation,
-              widget.motif,
-              widget.montantCollecte,
-              widget.type,
-              widget.isPassed,
-              widget.rapportUrl,
-              0,
-              widget.source,
-              widget.nomBeneficiaire,
-              widget.rublique,
-              widget.is_tontine,
-            );
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => ListMeetingScreen(),
-            //   ),
-            // );
-          } else {
-            handleDetailCotisation(widget.codeCotisation);
+          // Navigator.pop(context);
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailCotisationPage(
-                  codeCotisation: widget.codeCotisation,
-                  lienDePaiement: widget.lienDePaiement,
-                  dateCotisation: widget.dateOpen,
-                  heureCotisation: widget.dateOpen,
-                  montantCotisations: widget.montantCotisation,
-                  motifCotisations: widget.motif,
-                  soldeCotisation: widget.montantCollecte,
-                  type: widget.type,
-                  isPassed: widget.isPassed,
-                  isPayed: 0,
-                  rapportUrl: widget.rapportUrl,
-                  is_passed: widget.isPassed,
-                  source: widget.source,
-                  is_tontine: widget.is_tontine,
-                  nomBeneficiaire: widget.nomBeneficiaire,
-                  rubrique: widget.rublique,
-                ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailCotisationPage(
+                rapportUrl: widget.rapportUrl,
+                codeCotisation: widget.codeCotisation,
+                lienDePaiement: widget.lienDePaiement,
+                dateCotisation: widget.dateClose,
+                heureCotisation: widget.dateClose,
+                montantCotisations: widget.montantCotisation,
+                motifCotisations: widget.motif,
+                soldeCotisation: widget.montantCollecte,
+                type: widget.type,
+                isPassed: widget.isPassed,
+                isPayed: 0,
+                is_passed: widget.isPassed,
+                is_tontine: widget.is_tontine,
+                source: widget.source,
+                nomBeneficiaire: widget.nomBeneficiaire,
+                rubrique: widget.rublique,
               ),
-            );
-          }
+            ),
+          );
         },
+
+        // onTap: () {
+        //   updateTrackingData("home.contribution", "${DateTime.now()}", {
+        //     "type": 'contribution',
+        //     "contribution_id": "${widget.codeCotisation}"
+        //   });
+        //   if (checkTransparenceStatus(
+        //       context
+        //           .read<UserGroupCubit>()
+        //           .state
+        //           .changeAssData!
+        //           .user_group!
+        //           .configs,
+        //       context.read<AuthCubit>().state.detailUser!["isMember"])) {
+        //     handleDetailCotisation(widget.codeCotisation);
+
+        //     Modal().showBottomSheetHistCotisation(
+        //       context,
+        //       widget.codeCotisation,
+        //       widget.lienDePaiement,
+        //       widget.dateOpen,
+        //       widget.dateOpen,
+        //       widget.montantCotisation,
+        //       widget.motif,
+        //       widget.montantCollecte,
+        //       widget.type,
+        //       widget.isPassed,
+        //       widget.rapportUrl,
+        //       0,
+        //       widget.source,
+        //       widget.nomBeneficiaire,
+        //       widget.rublique,
+        //       widget.is_tontine,
+        //     );
+        //     // Navigator.push(
+        //     //   context,
+        //     //   MaterialPageRoute(
+        //     //     builder: (context) => ListMeetingScreen(),
+        //     //   ),
+        //     // );
+        //   } else {
+        //     handleDetailCotisation(widget.codeCotisation);
+
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => DetailCotisationPage(
+        //           codeCotisation: widget.codeCotisation,
+        //           lienDePaiement: widget.lienDePaiement,
+        //           dateCotisation: widget.dateOpen,
+        //           heureCotisation: widget.dateOpen,
+        //           montantCotisations: widget.montantCotisation,
+        //           motifCotisations: widget.motif,
+        //           soldeCotisation: widget.montantCollecte,
+        //           type: widget.type,
+        //           isPassed: widget.isPassed,
+        //           isPayed: 0,
+        //           rapportUrl: widget.rapportUrl,
+        //           is_passed: widget.isPassed,
+        //           source: widget.source,
+        //           is_tontine: widget.is_tontine,
+        //           nomBeneficiaire: widget.nomBeneficiaire,
+        //           rubrique: widget.rublique,
+        //         ),
+        //       ),
+        //     );
+        //   }
+        // },
+
         child: Column(
           children: [
             Container(
@@ -201,7 +232,6 @@ class _widgetRecentEventCotisationState
                           ),
                         ],
                       ),
-
                       PopupMenuButton(
                         elevation: 5,
                         shadowColor: AppColors.barrierColorModal,
@@ -219,31 +249,122 @@ class _widgetRecentEventCotisationState
                               widget.lienDePaiement,
                               widget.motif,
                               widget.montantCotisation,
-                              widget.type == "1" ? true:false,
+                              widget.type == "1" ? true : false,
                             );
                           }
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          // width: 75.w,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 4.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.colorButton,
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          child: Container(
-                            child: Text(
-                              "cotiser".tr(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.sp,
-                                color: AppColors.white,
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                updateTrackingData(
+                                    "home.contribution", "${DateTime.now()}", {
+                                  "type": 'contribution',
+                                  "contribution_id": "${widget.codeCotisation}"
+                                });
+                                if (checkTransparenceStatus(
+                                    context
+                                        .read<UserGroupCubit>()
+                                        .state
+                                        .changeAssData!
+                                        .user_group!
+                                        .configs,
+                                    context
+                                        .read<AuthCubit>()
+                                        .state
+                                        .detailUser!["isMember"])) {
+                                  handleDetailCotisation(widget.codeCotisation);
+
+                                  Modal().showBottomSheetHistCotisation(
+                                    context,
+                                    widget.codeCotisation,
+                                    widget.lienDePaiement,
+                                    widget.dateOpen,
+                                    widget.dateOpen,
+                                    widget.montantCotisation,
+                                    widget.motif,
+                                    widget.montantCollecte,
+                                    widget.type,
+                                    widget.isPassed,
+                                    widget.rapportUrl,
+                                    0,
+                                    widget.source,
+                                    widget.nomBeneficiaire,
+                                    widget.rublique,
+                                    widget.is_tontine,
+                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => ListMeetingScreen(),
+                                  //   ),
+                                  // );
+                                } else {
+                                  handleDetailCotisation(widget.codeCotisation);
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailCotisationPage(
+                                        codeCotisation: widget.codeCotisation,
+                                        lienDePaiement: widget.lienDePaiement,
+                                        dateCotisation: widget.dateOpen,
+                                        heureCotisation: widget.dateOpen,
+                                        montantCotisations:
+                                            widget.montantCotisation,
+                                        motifCotisations: widget.motif,
+                                        soldeCotisation: widget.montantCollecte,
+                                        type: widget.type,
+                                        isPassed: widget.isPassed,
+                                        isPayed: 0,
+                                        rapportUrl: widget.rapportUrl,
+                                        is_passed: widget.isPassed,
+                                        source: widget.source,
+                                        is_tontine: widget.is_tontine,
+                                        nomBeneficiaire: widget.nomBeneficiaire,
+                                        rubrique: widget.rublique,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                width: 25.w,
+                                height: 25.w,
+                                // color: AppColors.colorButton,
+                                margin: EdgeInsets.only(right: 15.w),
+                                // padding: EdgeInsets.only(right: 10.w),
+                                child: SvgPicture.asset(
+                                  "assets/images/friendsTalking.svg",
+                                  fit: BoxFit.cover,
+                                  color: AppColors.blackBlue,
+                                ),
                               ),
                             ),
-                          ),
+                            Container(
+                              alignment: Alignment.center,
+                              // width: 75.w,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10.w,
+                                vertical: 4.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.colorButton,
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              child: Container(
+                                child: Text(
+                                  "cotiser".tr(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12.sp,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                           PopupMenuItem(
@@ -305,8 +426,6 @@ class _widgetRecentEventCotisationState
                           ),
                         ],
                       ),
-                    
-                    
                     ],
                   ),
                   Container(
@@ -362,20 +481,29 @@ class _widgetRecentEventCotisationState
                                 .read<AuthCubit>()
                                 .state
                                 .detailUser!["isMember"]))
-                          Container(
-                            margin: EdgeInsetsDirectional.only(
-                              top: 5.h,
-                            ),
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              "${formatCompareDateReturnWellValue(widget.dateClose)}",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.blackBlueAccent1,
+                         Row(
+                          children: [
+                            Text(
+                                "${"Date limite".tr()} : ",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                            Container(
+                              child: Text(
+                                "${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr",widget.dateClose, )}",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
                               ),
                             ),
-                          ),
+
+                          ],
+                        ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -466,18 +594,29 @@ class _widgetRecentEventCotisationState
                           .user_group!
                           .configs,
                       context.read<AuthCubit>().state.detailUser!["isMember"]))
-                    Container(
-                      margin: EdgeInsetsDirectional.only(top: 7.h),
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        "${formatCompareDateReturnWellValue(widget.dateClose)}",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.blackBlueAccent1,
+                    Row(
+                          children: [
+                            Text(
+                                "${"Date limite".tr()} : ",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                            Container(
+                              child: Text(
+                                "${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr",widget.dateClose, )}",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.blackBlueAccent1,
+                                ),
+                              ),
+                            ),
+
+                          ],
                         ),
-                      ),
-                    ),
                   Container(
                     margin: EdgeInsets.only(
                       top: 8.h,
@@ -585,33 +724,34 @@ class _widgetRecentEventCotisationState
                         Expanded(
                           child: InkWell(
                             splashColor: AppColors.blackBlue,
-                            onTap: () async{
-                               await handleDetailCotisation(
-                                    widget.codeCotisation);
+                            onTap: () async {
+                              await handleDetailCotisation(
+                                  widget.codeCotisation);
 
-                                final currentDetailCotisation = context
-                                    .read<CotisationDetailCubit>()
-                                    .state
-                                    .detailCotisation;
+                              final currentDetailCotisation = context
+                                  .read<CotisationDetailCubit>()
+                                  .state
+                                  .detailCotisation;
 
-                                List listeOkayCotisation =
-                                    currentDetailCotisation!["membres"];
+                              List listeOkayCotisation =
+                                  currentDetailCotisation!["membres"];
 
-                                partagerCotisation(
-                                  nomGroupe:
-                                      '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'.trimRight(),
-                                  source:
-                                      '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}',
-                                  nomBeneficiaire:
-                                      '${(widget.nomBeneficiaire.trimRight())}',
-                                  dateCotisation: '${widget.dateClose}',
-                                  montantCotisations:
-                                      '${widget.montantCotisation}',
-                                  lienDePaiement: '${widget.lienDePaiement}',
-                                  type: '${widget.type}',
-                                  listeOkayCotisation: listeOkayCotisation,
-                                  context: context,
-                                );
+                              partagerCotisation(
+                                nomGroupe:
+                                    '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
+                                        .trimRight(),
+                                source:
+                                    '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}',
+                                nomBeneficiaire:
+                                    '${(widget.nomBeneficiaire.trimRight())}',
+                                dateCotisation: '${widget.dateClose}',
+                                montantCotisations:
+                                    '${widget.montantCotisation}',
+                                lienDePaiement: '${widget.lienDePaiement}',
+                                type: '${widget.type}',
+                                listeOkayCotisation: listeOkayCotisation,
+                                context: context,
+                              );
                               print("object3");
                               // Share.share(context
                               //         .read<AuthCubit>()
@@ -622,25 +762,28 @@ class _widgetRecentEventCotisationState
                             },
                             child: Column(
                               children: [
-                                BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
-                                      builder: (CotisationDetailcontext, CotisationDetailstate) {
-                                    return CotisationDetailstate.isLoading == true ? Container(
-                                      width: 15.r,
-                                      height: 15.r,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 1.w,
-                                        color: AppColors.blackBlueAccent1,
-                                      ),
-                                    ): Container(
-                                      height: 17.h,
-                                      child: SvgPicture.asset(
-                                        "assets/images/shareSimpleIcon.svg",
-                                        fit: BoxFit.scaleDown,
-                                        color: AppColors.blackBlueAccent1,
-                                      ),
-                                    );
-                                  }
-                                ),
+                                BlocBuilder<CotisationDetailCubit,
+                                        CotisationDetailState>(
+                                    builder: (CotisationDetailcontext,
+                                        CotisationDetailstate) {
+                                  return CotisationDetailstate.isLoading == true
+                                      ? Container(
+                                          width: 15.r,
+                                          height: 15.r,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 1.w,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 17.h,
+                                          child: SvgPicture.asset(
+                                            "assets/images/shareSimpleIcon.svg",
+                                            fit: BoxFit.scaleDown,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        );
+                                }),
                                 SizedBox(
                                   height: 3.h,
                                 ),
@@ -668,7 +811,4 @@ class _widgetRecentEventCotisationState
       );
     });
   }
-
-
-
 }

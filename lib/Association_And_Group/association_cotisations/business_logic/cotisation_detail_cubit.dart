@@ -42,7 +42,7 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
     }
   }
 
-  void updateStateAmountPay(String codeMembre, String montant) {
+  void updateStateAmountPayCotisation(String codeMembre, String montant) {
     final currentState = state.detailCotisation;
 
     if (currentState == null || currentState["membres"] == null) {

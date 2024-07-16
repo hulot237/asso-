@@ -6,30 +6,31 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/Theming/color.dart';
+import 'package:faroty_association_1/widget/encours_widget.dart';
+import 'package:faroty_association_1/widget/termine_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WidgetRencontreCard extends StatefulWidget {
-  WidgetRencontreCard({
-    super.key,
-    required this.prenomRecepteurRencontre,
-    required this.identifiantRencontre,
-    required this.isActiveRencontre,
-    required this.descriptionRencontre,
-    required this.lieuRencontre,
-    required this.dateRencontre,
-    required this.heureRencontre,
-    required this.nomRecepteurRencontre,
-    required this.photoProfilRecepteur,
-    required this.codeSeance,
-    required this.dateRencontreAPI,
-    required this.maskElt,
-    required this.typeRencontre,
-    required this.screenSource,
-    required this.rapportUrl,
-    required this.codeTournoi
-  });
+  WidgetRencontreCard(
+      {super.key,
+      required this.prenomRecepteurRencontre,
+      required this.identifiantRencontre,
+      required this.isActiveRencontre,
+      required this.descriptionRencontre,
+      required this.lieuRencontre,
+      required this.dateRencontre,
+      required this.heureRencontre,
+      required this.nomRecepteurRencontre,
+      required this.photoProfilRecepteur,
+      required this.codeSeance,
+      required this.dateRencontreAPI,
+      required this.maskElt,
+      required this.typeRencontre,
+      required this.screenSource,
+      required this.rapportUrl,
+      required this.codeTournoi});
 
   String prenomRecepteurRencontre;
   String nomRecepteurRencontre;
@@ -56,10 +57,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
   Future<void> handleDefaultSeance(codeSeance) async {
     final detailSeance =
         await context.read<SeanceCubit>().detailSeanceCubit(codeSeance);
-        
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +86,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                 prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
                 photoProfilRecepteur: widget.photoProfilRecepteur,
                 dateRencontreAPI: widget.dateRencontreAPI,
-                rapportUrl:widget.rapportUrl,
+                rapportUrl: widget.rapportUrl,
               ),
             ),
           );
@@ -224,61 +222,82 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                             ),
                           if (widget.isActiveRencontre == 0)
                             Container(
-                              padding: EdgeInsets.only(top: 5.h),
+                              decoration: BoxDecoration(
+                                  color: AppColors.blackBlue,
+                                  borderRadius: BorderRadius.circular(3.r)),
+                              margin: EdgeInsets.only(bottom: 5.h, left: 5.w),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 1.h, horizontal: 2.w),
+                              child: Text(
+                                "Archivé".tr(),
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                  // fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                          // Container(
+                          //   padding: EdgeInsets.only(top: 5.h),
 
-                              // decoration: BoxDecoration(
-                              // color: Color.fromARGB(24, 212, 0, 0),
-                              // borderRadius: BorderRadius.circular(7)),
-                              child: Container(
-                                padding: EdgeInsets.all(1.r),
-                                child: Text(
-                                  "Archivé".tr(),
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    // fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          if (widget.isActiveRencontre == 1 && isPasseDate(widget.dateRencontreAPI))
-                            Container(
-                              padding: EdgeInsets.only(
-                                top: 5.h,
-                              ),
-                              // decoration: BoxDecoration(
-                              //     color: Color.fromARGB(24, 212, 0, 0),
-                              //     borderRadius: BorderRadius.circular(7)),
-                              child: Container(
-                                padding: EdgeInsets.all(1.r),
-                                child: Text(
-                                  "terminé".tr(),
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    // fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          if (!isPasseDate(widget.dateRencontreAPI) && widget.isActiveRencontre == 1)
-                            Container(
-                              padding: EdgeInsets.only(top: 5.h),
-                              // decoration: BoxDecoration(
-                              //     color: Color.fromARGB(43, 0, 212, 7),
-                              //     borderRadius: BorderRadius.circular(7)),
-                              child: Container(
-                                padding: EdgeInsets.all(1.r),
-                                child: Text(
-                                  "en_cours".tr(),
-                                  style: TextStyle(
-                                    color: AppColors.green,
-                                    // fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  ),
-                                ),
-                              ),
-                            )
+                          //   // decoration: BoxDecoration(
+                          //   // color: Color.fromARGB(24, 212, 0, 0),
+                          //   // borderRadius: BorderRadius.circular(7)),
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(1.r),
+                          //     child: Text(
+                          //       "Archivé".tr(),
+                          //       style: TextStyle(
+                          //         color: Colors.red,
+                          //         // fontWeight: FontWeight.bold,
+                          //         fontSize: 12.sp,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          if (widget.isActiveRencontre == 1 &&
+                              isPasseDate(widget.dateRencontreAPI))
+                            TermineWidget(),
+                          // Container(
+                          //   padding: EdgeInsets.only(
+                          //     top: 5.h,
+                          //   ),
+                          //   // decoration: BoxDecoration(
+                          //   //     color: Color.fromARGB(24, 212, 0, 0),
+                          //   //     borderRadius: BorderRadius.circular(7)),
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(1.r),
+                          //     child: Text(
+                          //       "terminé".tr(),
+                          //       style: TextStyle(
+                          //         color: Colors.red,
+                          //         // fontWeight: FontWeight.bold,
+                          //         fontSize: 12.sp,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          if (!isPasseDate(widget.dateRencontreAPI) &&
+                              widget.isActiveRencontre == 1)
+                            EncoursWidget()
+                          // Container(
+                          //   padding: EdgeInsets.only(top: 5.h),
+                          //   // decoration: BoxDecoration(
+                          //   //     color: Color.fromARGB(43, 0, 212, 7),
+                          //   //     borderRadius: BorderRadius.circular(7)),
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(1.r),
+                          //     child: Text(
+                          //       "en_cours".tr(),
+                          //       style: TextStyle(
+                          //         color: AppColors.green,
+                          //         // fontWeight: FontWeight.bold,
+                          //         fontSize: 12.sp,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),

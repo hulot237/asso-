@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/push_notification.dart';
 import 'package:faroty_association_1/Association_And_Group/association_webview/administration_webview.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/data/auth_repository.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginCreateGroupeScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/verificationPage.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -17,12 +20,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:toastification/toastification.dart';
 import 'package:telephony/telephony.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key, required this.isForCreate});
+  var isForCreate;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -49,8 +52,7 @@ Widget PageScaffold({
 
 class _LoginPageState extends State<LoginPage> {
   // TextEditingController countrycode = TextEditingController();
-  final countrycode = TextEditingController();
-  String numeroPhoneController = '';
+  final numeroPhoneController = TextEditingController();
   String countryCodeController = '237';
   final telephony = Telephony.instance;
 
@@ -66,15 +68,17 @@ class _LoginPageState extends State<LoginPage> {
   Future handleLogin() async {
     final allCotisationAss = await context
         .read<AuthCubit>()
-        .loginFirstCubit(countrycode.text, countryCodeController);
+        .loginFirstCubit(numeroPhoneController.text, countryCodeController);
 
     if (context.read<AuthCubit>().state.isTrueNomber == false) {
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => VerificationPage(
-                numeroPhone: countrycode.text,
-                countryCode: countryCodeController)),
+                isForCreate: widget.isForCreate,
+                numeroPhone: numeroPhoneController.text,
+                countryCode: countryCodeController, 
+                ),),
       );
     }
   }
@@ -188,8 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                                     // height: 50.h,
                                     child: TextField(
                                       keyboardType: TextInputType.phone,
-                                      controller: countrycode,
-
+                                      controller: numeroPhoneController,
                                       style: TextStyle(
                                         color: AppColors.blackBlue,
                                         fontSize: 18.sp,
@@ -236,7 +239,8 @@ class _LoginPageState extends State<LoginPage> {
                                               // This is called once during initialization
                                               var code = value!.dialCode;
                                               // Update countryCodeController without calling setState
-                                              countryCodeController = retirerPlus(code);
+                                              countryCodeController =
+                                                  retirerPlus(code);
                                               print(
                                                   "countryCodeController initialized with $countryCodeController");
                                             },
@@ -424,17 +428,10 @@ class _LoginPageState extends State<LoginPage> {
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          AdministrationPageWebview(
-                                                                    forAdmin:
-                                                                        false,
-                                                                    urlPage:
-                                                                        'https://business.faroty.com/groups',
-                                                                    forFirstPage:
-                                                                        true,
-                                                                  ),
-                                                                ),
+                                                                    builder: (context) =>
+                                                                        LoginCreateGroupeScreen(
+                                                                            isForCreate:
+                                                                                true)),
                                                               );
 
                                                               // print("object");
@@ -620,10 +617,9 @@ class _LoginPageState extends State<LoginPage> {
                                       return ElevatedButton(
                                         onPressed: () async {
                                           print("object");
-                                          // await PushNotifications()
-                                          //     .getTokenNotification();
+
                                           handleLogin();
-                                          print(numeroPhoneController);
+                                          print(numeroPhoneController.text);
                                           print(countryCodeController);
                                         },
                                         child: Text(
@@ -698,37 +694,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
-
-_showSimpleModalDialog(context) {
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          child: Container(
-            constraints: BoxConstraints(maxHeight: 350),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    textAlign: TextAlign.justify,
-                    text: TextSpan(
-                        text:
-                            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.black,
-                            wordSpacing: 1)),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      });
 }

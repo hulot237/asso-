@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/data/auth_repository.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -95,9 +96,72 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> loginInfoConnectToWebViewFirst(apiToken, apiPassword) async {
+//
+  Future<void> loginInfoConnectToWebViewFirst() async {
     emit(
       state.copyWith(
+        errorLoading: false,
+        successLoading: false,
+        loginInfo: state.loginInfo,
+      ),
+    );
+    try {
+      // final dataUID =
+      //     await AuthRepository().ConfirmationForCreateRepository(confirmCode);
+      final data =
+          await AuthRepository().loginInfoConnectToWebViewFirstRepository(
+        AppCubitStorage().state.userNameKey,
+        AppCubitStorage().state.passwordKey,
+      );
+      // final dataCookies = await dataForCookies(dataUID);
+
+      emit(
+        state.copyWith(
+          loginInfo: data,
+          // dataCookies: dataCookies,
+          errorLoading: false,
+          successLoading: true,
+        ),
+      );
+      print("loginInfo ${state.loginInfo}");
+    } catch (e) {
+      emit(
+        state.copyWith(
+            errorLoading: true, message: e.toString(), successLoading: false),
+      );
+    }
+  }
+
+
+
+    String userDataFromWebView2 = 'null';
+
+  String dataForCookies2(getUid) {
+    if (getUid == null) return '';
+
+    Map<String, dynamic> data =
+        json.decode(userDataFromWebView2) ?? json.decode(getUid!);
+
+    return json.encode(
+      {
+        "user": {
+          "is_confirm": data['user']['is_confirm'],
+          "is_wallet_confirm": data['user']['is_wallet_confirm'],
+          "hash_id": data['user']['hash_id'],
+          "api_token": data['user']['api_token'],
+          "api_password": data['api_password'],
+        },
+        "api_token": data['user']['api_token'],
+        "api_password": data['api_password']
+      },
+    );
+  }
+
+
+  Future<void> ConfirmationForCreateRepository(confirmCode) async {
+    emit(
+      state.copyWith(
+        dataCookies: state.dataCookies,
         isLoading: true,
         isLoadingDetailUser: false,
         errorLoading: false,
@@ -105,21 +169,25 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
     try {
-      final data =
-          await AuthRepository().loginInfoConnectToWebViewFirstRepository(
-        apiToken,
-        apiPassword,
-      );
+      final dataUID = await AuthRepository().ConfirmationForCreateRepository(confirmCode);
+      print("dataUIDE $dataUID");
+      final dataCookies = await dataForCookies2(dataUID);
+      print("dataUIDdataCookies $dataCookies");
+
+
+      await AppCubitStorage().updateDataCookies(dataCookies);
 
       emit(
         state.copyWith(
-          loginInfo: data,
+          // loginInfo: data,
           isLoading: false,
+          dataCookies: dataCookies,
           isLoadingDetailUser: false,
           errorLoading: false,
           successLoading: true,
         ),
       );
+      print("dataCookies ${state.dataCookies}");
     } catch (e) {
       emit(
         state.copyWith(

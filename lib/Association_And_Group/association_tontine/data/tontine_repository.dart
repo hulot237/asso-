@@ -19,6 +19,8 @@ class TontineRepository {
   }
 
   Future<Map<dynamic, dynamic>> DetailContributionTontine(codeContribution) async {
+      log("response DetailContributionTontine $codeContribution");
+
     try {
       log("response DetailContributionTontine");
       final response = await dio.get(

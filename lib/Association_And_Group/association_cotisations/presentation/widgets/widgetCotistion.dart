@@ -11,6 +11,9 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/encours_widget.dart';
+import 'package:faroty_association_1/widget/nonPaye_widget.dart';
+import 'package:faroty_association_1/widget/paye_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -103,19 +106,20 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
           );
         },
         child: Container(
-          decoration: widget.is_passed == 0
-              ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  color: AppColors.white,
-                )
-              : BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  color: AppColors.whiteAccent,
-                  border: Border.all(
-                    width: 1.r,
-                    color: AppColors.white,
-                  ),
-                ),
+          // decoration: widget.is_passed == 0
+          //     ?
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.r),
+            color: AppColors.white,
+          ),
+          // : BoxDecoration(
+          //     borderRadius: BorderRadius.circular(15.r),
+          //     color: AppColors.whiteAccent,
+          //     border: Border.all(
+          //       width: 1.r,
+          //       color: AppColors.white,
+          //     ),
+          //   ),
           padding:
               EdgeInsets.only(left: 10.w, top: 5.h, bottom: 4.h, right: 10.w),
           width: MediaQuery.of(context).size.width,
@@ -131,6 +135,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                       width: MediaQuery.of(context).size.width / 1.1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: Container(
@@ -152,20 +157,49 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                             ),
                                           ),
                                         ),
-                                        if (widget.isPayed != 0)
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                bottom: 5.h, left: 5.w),
-                                            child: Text(
-                                              "payé".tr(),
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: AppColors.green,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle: FontStyle.italic,
-                                              ),
-                                            ),
-                                          ),
+                                         if (widget.isPayed == 1) PayeWidget(),
+                              if (widget.isPayed == 0)
+                                NonpayeWidget(),
+                                        // if (widget.isPayed == 1)
+                                        //   Container(
+                                        //     decoration: BoxDecoration(
+                                        //         color: AppColors.colorButton,
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(3.r)),
+                                        //     margin: EdgeInsets.only(
+                                        //         bottom: 5.h, left: 5.w),
+                                        //     padding: EdgeInsets.symmetric(
+                                        //         vertical: 1.h, horizontal: 2.w),
+                                        //     child: Text(
+                                        //       "payé".tr(),
+                                        //       style: TextStyle(
+                                        //         fontSize: 10.sp,
+                                        //         color: AppColors.white,
+                                        //         fontWeight: FontWeight.w600,
+                                        //         // fontStyle: FontStyle.italic,
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                        // if (widget.isPayed == 0)
+                                        //   Container(
+                                        //     decoration: BoxDecoration(
+                                        //         color: AppColors.red,
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(3.r)),
+                                        //     margin: EdgeInsets.only(
+                                        //         bottom: 5.h, left: 5.w),
+                                        //     padding: EdgeInsets.symmetric(
+                                        //         vertical: 1.h, horizontal: 2.w),
+                                        //     child: Text(
+                                        //       "non payé".tr(),
+                                        //       style: TextStyle(
+                                        //         fontSize: 10.sp,
+                                        //         color: AppColors.white,
+                                        //         fontWeight: FontWeight.w600,
+                                        //         // fontStyle: FontStyle.italic,
+                                        //       ),
+                                        //     ),
+                                        //   ),
                                       ],
                                     ),
                                   Column(
@@ -348,24 +382,6 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                   ),
                                 ],
                               ),
-
-                              if (widget.is_passed == 1)
-                                Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7.r),
-                                  ),
-                                  child: Container(
-                                    child: Text(
-                                      "expiré".tr(),
-                                      style: TextStyle(
-                                        // fontWeight: FontWeight.bold,
-                                        fontSize: 10.sp,
-                                        color: AppColors.red,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                             ],
                           )
                           // : Text(
@@ -448,51 +464,81 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             .read<AuthCubit>()
                             .state
                             .detailUser!["isMember"]))
-                      Container(
-                        // margin: EdgeInsets.only(bottom: 5),
-                        // width: MediaQuery.of(context).size.width / 1.1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    child: Icon(
-                                      Icons.wallet_rounded,
-                                      color: AppColors.blackBlue,
-                                      size: 18.sp,
-                                    ),
-                                    margin: EdgeInsets.only(right: 5.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            // margin: EdgeInsets.only(bottom: 5),
+                            // width: MediaQuery.of(context).size.width / 1.1,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        child: Icon(
+                                          Icons.wallet_rounded,
+                                          color: AppColors.blackBlue,
+                                          size: 18.sp,
+                                        ),
+                                        margin: EdgeInsets.only(right: 5.w),
+                                      ),
+                                      Container(
+                                          child: Text(
+                                        "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: AppColors.green),
+                                      ))
+                                    ],
                                   ),
-                                  Container(
+                                ),
+                                Column(
+                                  children: [
+                                    Container(
                                       child: Text(
-                                    "${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w800,
-                                        color: AppColors.green),
-                                  ))
-                                ],
-                              ),
+                                        formatDateLiteral(
+                                            widget.dateCotisation),
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
+                          ),
+                          if (widget.is_passed == 1)
                             Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.amberAccent,
+                                  borderRadius: BorderRadius.circular(3.r)),
+                              margin: EdgeInsets.only(bottom: 5.h, left: 5.w),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 1.h, horizontal: 2.w),
                               child: Text(
-                                formatDateLiteral(widget.dateCotisation),
-                                overflow: TextOverflow.clip,
+                                "expiré".tr(),
                                 style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: AppColors.blackBlueAccent1,
+                                  fontSize: 10.sp,
+                                  color: AppColors.blackBlue,
                                   fontWeight: FontWeight.w600,
+                                  // fontStyle: FontStyle.italic,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          if (widget.is_passed == 0)
+                            EncoursWidget()
+                        ],
                       ),
                     Container(
                       margin: EdgeInsets.only(
-                        top: 8.h,
+                        top: 2.h,
                       ),
                       padding: EdgeInsets.only(
                         top: 7.h,

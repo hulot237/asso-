@@ -196,7 +196,7 @@ class MyApp extends StatelessWidget {
             //     : HomeCentraleScreen(),
 
             // : true? UpdatePage() : HomePage(),
-            "/LoginPage": (context) => LoginPage(),
+            // "/LoginPage": (context) => LoginPage(),
             "/homepage": (context) => HomeCentraleScreen(),
             // "/": (context) => SubscribeForm(urlcodeAss: 'llle',),
           },
@@ -205,3 +205,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

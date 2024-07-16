@@ -4,6 +4,9 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_detail_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/screens/detailContributionPage.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
@@ -22,8 +25,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class WidgetCotistionDetailPage extends StatefulWidget {
-  WidgetCotistionDetailPage({
+class WidgetContributionDetailPage extends StatefulWidget {
+  WidgetContributionDetailPage({
     super.key,
     required this.montantCotisations,
     required this.motifCotisations,
@@ -60,11 +63,12 @@ class WidgetCotistionDetailPage extends StatefulWidget {
   // String? rapportUrl;
 
   @override
-  State<WidgetCotistionDetailPage> createState() =>
-      _WidgetCotistionDetailPageState();
+  State<WidgetContributionDetailPage> createState() =>
+      _WidgetContributionDetailPageState();
 }
 
-class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
+class _WidgetContributionDetailPageState
+    extends State<WidgetContributionDetailPage> {
   Future<void> handleDetailCotisation(codeCotisation) async {
     // final detailTournoiCourant = await context
     //     .read<DetailTournoiCourantCubit>()
@@ -76,8 +80,8 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CotisationCubit, CotisationState>(
-        builder: (CotisationContext, CotisationState) {
+    return BlocBuilder<DetailContributionCubit, ContributionState>(
+        builder: (DetailContributionContext, DetailContributionState) {
       return Container(
         decoration:
             //widget.is_passed == 0 ?
@@ -160,20 +164,21 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                         ),
                                       ),
                                     ),
-                                    if(widget.source != '' && widget.nomBeneficiaire != '')
-                                    Container(
-                                      // margin: EdgeInsets.only(bottom: 7),
-                                      child: Text(
-                                        widget.source == ''
-                                            ? "${(widget.nomBeneficiaire)}"
-                                            : "${(widget.source)}",
-                                        style: TextStyle(
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.blackBlueAccent1,
+                                    if (widget.source != '' &&
+                                        widget.nomBeneficiaire != '')
+                                      Container(
+                                        // margin: EdgeInsets.only(bottom: 7),
+                                        child: Text(
+                                          widget.source == ''
+                                              ? "${(widget.nomBeneficiaire)}"
+                                              : "${(widget.source)}",
+                                          style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ],
@@ -429,150 +434,148 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                   ],
                                 ),
                               ),
-                              BlocBuilder<CotisationDetailCubit,
-                                  CotisationDetailState>(
-                                builder: (CotisationDetailContext,
-                                    CotisationDetailState) {
-                                  if (CotisationDetailState.isLoading == true ||
-                                      CotisationDetailState.detailCotisation ==
-                                          null)
-                                    return GestureDetector(
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          top: 2.h,
-                                        ),
-                                        alignment: Alignment.centerLeft,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                "vous_avez_cotisé".tr(),
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors.blackBlue,
-                                                ),
-                                              ),
-                                              margin:
-                                                  EdgeInsets.only(right: 5.w),
-                                            ),
-                                            Container(
-                                              width: 12.w,
-                                              height: 12.h,
-                                              color: AppColors.white,
-                                              child: Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: AppColors.green,
-                                                  strokeWidth: 0.5,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    );
 
-                                  final currentDetailCotisation =
-                                      CotisationDetailContext.read<
-                                              CotisationDetailCubit>()
-                                          .state
-                                          .detailCotisation;
-                                  print(
-                                      "currentDetailCotisationcurrentDetailCotisationcurrentDetailCotisation ${currentDetailCotisation}");
-                                  return currentDetailCotisation != null
-                                      ? Column(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                // if (currentDetailCotisation!["versements"].length > 0)
-                                                for (var itemDetailCotisation
-                                                    in currentDetailCotisation[
-                                                        "membres"])
-                                                  if (itemDetailCotisation[
-                                                              "membre"]
-                                                          ["membre_code"] ==
-                                                      AppCubitStorage()
-                                                          .state
-                                                          .membreCode)
-                                                    Modal()
-                                                        .showModalTransactionByEvent(
-                                                      context,
-                                                      itemDetailCotisation[
-                                                          "payments"],
-                                                      '${widget.montantCotisations}',
-                                                      resteAPayer:
-                                                          itemDetailCotisation[
-                                                              "amount_remaining"],
-                                                      dejaPayer:
-                                                          itemDetailCotisation[
-                                                              "balance"],
-                                                    );
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                  top: 2.h,
-                                                ),
-                                                alignment: Alignment.centerLeft,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      child: Text(
-                                                        "vous_avez_cotisé".tr(),
-                                                        style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: AppColors
-                                                              .blackBlue,
-                                                        ),
-                                                      ),
-                                                      margin: EdgeInsets.only(
-                                                          right: 5.w),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 2.h,
-                                                    ),
-                                                    for (var itemDetailCotisation
-                                                        in currentDetailCotisation[
-                                                            "membres"])
-                                                      if (itemDetailCotisation[
-                                                                  "membre"]
-                                                              ["membre_code"] ==
-                                                          AppCubitStorage()
-                                                              .state
-                                                              .membreCode)
-                                                        Container(
-                                                          child: Text(
-                                                            "${formatMontantFrancais(double.parse("${itemDetailCotisation["balance"]}"))} FCFA",
-                                                            // "${itemDetailCotisation["membre"]["versement"].length}",
-                                                            style: TextStyle(
-                                                              fontSize: 13.sp,
-                                                              // fontWeight:
-                                                              //     FontWeight.w800,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                255,
-                                                                20,
-                                                                45,
-                                                                99,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Container();
-                                },
-                              ),
+                              // BlocBuilder<CotisationDetailCubit,
+                              //     CotisationDetailState>(
+                              //   builder: (CotisationDetailContext,
+                              //       CotisationDetailState) {
+                              //     if (CotisationDetailState.isLoading == true ||
+                              //         CotisationDetailState.detailCotisation ==
+                              //             null)
+                              //       return GestureDetector(
+                              //         child: Container(
+                              //           margin: EdgeInsets.only(
+                              //             top: 2.h,
+                              //           ),
+                              //           alignment: Alignment.centerLeft,
+                              //           child: Column(
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.center,
+                              //             children: [
+                              //               Container(
+                              //                 child: Text(
+                              //                   "vous_avez_cotisé".tr(),
+                              //                   style: TextStyle(
+                              //                     fontSize: 12.sp,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     color: AppColors.blackBlue,
+                              //                   ),
+                              //                 ),
+                              //                 margin:
+                              //                     EdgeInsets.only(right: 5.w),
+                              //               ),
+                              //               Container(
+                              //                 width: 12.w,
+                              //                 height: 12.h,
+                              //                 color: AppColors.white,
+                              //                 child: Center(
+                              //                   child:
+                              //                       CircularProgressIndicator(
+                              //                     color: AppColors.green,
+                              //                     strokeWidth: 0.5,
+                              //                   ),
+                              //                 ),
+                              //               )
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       );
+
+                              //     final currentDetailCotisation = CotisationDetailContext.read<DetailContributionCubit>().state.detailContributionTontine;
+
+                              //     print(
+                              //         "detailContributionTontinedetailContributionTontine ${currentDetailCotisation}");
+                              //     return currentDetailCotisation != null
+                              //         ? Column(
+                              //             children: [
+                              //               GestureDetector(
+                              //                 onTap: () {
+                              //                   // if (currentDetailCotisation!["versements"].length > 0)
+                              //                   for (var itemDetailCotisation
+                              //                       in currentDetailCotisation[
+                              //                           "membres"])
+                              //                     if (itemDetailCotisation[
+                              //                                 "membre"]
+                              //                             ["membre_code"] ==
+                              //                         AppCubitStorage()
+                              //                             .state
+                              //                             .membreCode)
+                              //                       Modal()
+                              //                           .showModalTransactionByEvent(
+                              //                         context,
+                              //                         itemDetailCotisation[
+                              //                             "payments"],
+                              //                         '${widget.montantCotisations}',
+                              //                         resteAPayer:
+                              //                             itemDetailCotisation[
+                              //                                 "amount_remaining"],
+                              //                         dejaPayer:
+                              //                             itemDetailCotisation[
+                              //                                 "balance"],
+                              //                       );
+                              //                 },
+                              //                 child: Container(
+                              //                   margin: EdgeInsets.only(
+                              //                     top: 2.h,
+                              //                   ),
+                              //                   alignment: Alignment.centerLeft,
+                              //                   child: Column(
+                              //                     crossAxisAlignment:
+                              //                         CrossAxisAlignment.start,
+                              //                     children: [
+                              //                       Container(
+                              //                         child: Text(
+                              //                           "vous_avez_cotisé".tr(),
+                              //                           style: TextStyle(
+                              //                             fontSize: 12.sp,
+                              //                             fontWeight:
+                              //                                 FontWeight.bold,
+                              //                             color: AppColors
+                              //                                 .blackBlue,
+                              //                           ),
+                              //                         ),
+                              //                         margin: EdgeInsets.only(
+                              //                             right: 5.w),
+                              //                       ),
+                              //                       SizedBox(
+                              //                         height: 2.h,
+                              //                       ),
+                              //                       for (var itemDetailCotisation
+                              //                           in currentDetailCotisation[
+                              //                               "membres"])
+                              //                         if (itemDetailCotisation[
+                              //                                     "membre"]
+                              //                                 ["membre_code"] ==
+                              //                             AppCubitStorage()
+                              //                                 .state
+                              //                                 .membreCode)
+                              //                           Container(
+                              //                             child: Text(
+                              //                               "${formatMontantFrancais(double.parse("${itemDetailCotisation["balance"]}"))} FCFA",
+                              //                               // "${itemDetailCotisation["membre"]["versement"].length}",
+                              //                               style: TextStyle(
+                              //                                 fontSize: 13.sp,
+                              //                                 // fontWeight:
+                              //                                 //     FontWeight.w800,
+                              //                                 color: Color
+                              //                                     .fromARGB(
+                              //                                   255,
+                              //                                   20,
+                              //                                   45,
+                              //                                   99,
+                              //                                 ),
+                              //                               ),
+                              //                             ),
+                              //                           ),
+                              //                     ],
+                              //                   ),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           )
+                              //         : Container();
+                              //   },
+                              // ),
                             ],
                           ),
                           Column(
@@ -642,10 +645,10 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                               child: InkWell(
                                 onTap: () async {
                                   updateTrackingData(
-                                      "${widget.screenSource}.btnwithdrawnFundsContribution",
+                                      "home.btnwithdrawnFundsContribution",
                                       "${DateTime.now()}", {});
                                   launchWeb(
-                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
                                   );
                                 },
                                 child: Column(
@@ -688,7 +691,7 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                 updateTrackingData("home.btnAdminister",
                                     "${DateTime.now()}", {});
                                 launchWeb(
-                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
+                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
                                 );
                               },
                               child: Column(
@@ -723,29 +726,38 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                             splashColor: AppColors.blackBlue,
                             onTap: () {
                               final currentDetailCotisation = context
-                                  .read<CotisationDetailCubit>()
+                                  .read<DetailContributionCubit>()
                                   .state
-                                  .detailCotisation;
+                                  .detailContributionTontine;
 
                               List listeOkayCotisation =
-                                  currentDetailCotisation!["membres"];
+                                  currentDetailCotisation![
+                                      "contribution_membres"];
 
-                              partagerCotisation(
+                              String originalString = widget.rubrique;
+
+                              String result =
+                                  originalString.replaceFirst("Tontine : ", "");
+                              print("oresult $result");
+
+                              partagerContributionTontine(
                                 nomGroupe:
                                     '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
                                         .trimRight(),
-                                source:
-                                    '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
-                                        .trimRight(),
+                                // source:
+                                //     '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
+                                //         .trimRight(),
                                 nomBeneficiaire:
                                     '${(widget.nomBeneficiaire)}'.trimRight(),
                                 dateCotisation: '${widget.dateCotisation}',
                                 montantCotisations:
                                     '${widget.montantCotisations}',
                                 lienDePaiement: '${widget.lienDePaiement}',
-                                type: '${widget.type}',
+                                // type: '${widget.type}',
                                 listeOkayCotisation: listeOkayCotisation,
                                 context: context,
+                                nomTontine: result.trimLeft(),
+                                motif: widget.motifCotisations,
                               );
 
                               // String message;

@@ -7,6 +7,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/data/auth_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -17,6 +18,7 @@ import 'package:faroty_association_1/routes/app_router.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:pinput/pinput.dart';
 // import 'package:integration_part_two/authentication/business_logic/auth_cubit.dart';
 // import 'package:integration_part_two/pages/homeCoursier.dart';
@@ -25,10 +27,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:telephony/telephony.dart';
 
 class VerificationPage extends StatefulWidget {
-  VerificationPage(
-      {super.key, required this.numeroPhone, required this.countryCode});
+  VerificationPage({
+    super.key,
+    required this.numeroPhone,
+    required this.countryCode,
+    this.nameUser, // rendre nameUser optionnel en le mettant entre crochets
+    required this.isForCreate,
+  });
+
   String numeroPhone;
   String countryCode;
+  String?
+      nameUser; // Utilisation de String? pour indiquer que nameUser peut être null
+  bool isForCreate;
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
@@ -53,11 +64,11 @@ Widget PageScaffold({
   );
 }
 
-class _VerificationPageState extends State<VerificationPage> {
+class _VerificationPageState extends State<VerificationPage>
+    with WidgetsBindingObserver {
   int _secondsLeft = 60;
   Timer? _timer;
   final telephony = Telephony.instance;
-  // late TextEditingController _pinController;
   final _pinController = TextEditingController();
 
   void startTimer() {
@@ -85,55 +96,10 @@ class _VerificationPageState extends State<VerificationPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     startTimer();
     // initPlatformState();
   }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  // Future<void> initPlatformState() async {
-  //   final bool? result = await telephony.requestPhoneAndSmsPermissions;
-
-  //   if (result != null && result) {
-  //     telephony.listenIncomingSms(
-  //       onNewMessage: _onMessage,
-  //       listenInBackground: false,
-  //     );
-  //   }
-
-  //   if (!mounted) return;
-  // }
-
-  // Future<void> _onMessage(SmsMessage message) async {
-  //   print("hhhhhhhhhhh ${message.toString()}");
-  //   if (message.address != "ASSO+") {
-  //     // setState(() {
-  //     //   codeController.text = message.body!;
-  //     // });
-  //     return;
-  //   } else {
-  //     String? otp;
-  //     setState(() {
-  //       List<String> words = message.body!.split(' ');
-  //       for (int i = words.length - 1; i >= 0; i--) {
-  //         String word = words[i];
-  //         if (word.length >= 5 &&
-  //             RegExp(r'^[0-9]+$').hasMatch(
-  //               word.substring(0, 5),
-  //             )) {
-  //           otp = word.substring(0, 5);
-  //           break;
-  //         }
-  //       }
-  //       print("$otp");
-  //       _pinController.text = otp!;
-  //     });
-  //   }
-  // }
 
   Future handleLogin() async {
     final numeroPhone = widget.numeroPhone;
@@ -142,7 +108,6 @@ class _VerificationPageState extends State<VerificationPage> {
     final allCotisationAss = await context
         .read<AuthCubit>()
         .loginFirstCubit(numeroPhone, countryCode);
-
   }
 
   // TextEditingController countrycode = TextEditingController();
@@ -150,9 +115,76 @@ class _VerificationPageState extends State<VerificationPage> {
   final codeController = TextEditingController();
 
   bool isLoading = false;
+  bool isLoadingTwo = false;
 
   Future<void> handleConfirmation() async {
-    context.read<AuthCubit>().confirmationCubit(_pinController.text);
+    await context.read<AuthCubit>().confirmationCubit(_pinController.text);
+  }
+
+  Future<void> handleConfirmationForCreate() async {
+    await context
+        .read<AuthCubit>()
+        .ConfirmationForCreateRepository(_pinController.text);
+  }
+
+  Future<void> loginInfoConnectToWebViewFirst() async {
+    print('loginInfoConnectToWebViewFirst');
+    await context.read<AuthCubit>().loginInfoConnectToWebViewFirst();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (widget.isForCreate) {
+      if (state == AppLifecycleState.resumed) {
+        isLoadingTwo = true;
+        isLoading = true;
+        // if (AppCubitStorage().state.codeAssDefaul == null &&
+        //     AppCubitStorage().state.codeTournois == null &&
+        //     AppCubitStorage().state.membreCode == null &&
+        //     AppCubitStorage().state.tokenUser == null) {
+        await loginInfoConnectToWebViewFirst();
+
+        var loginInfo = await context.read<AuthCubit>().state.loginInfo;
+        print("objectloginInfo ${context.read<AuthCubit>().state.loginInfo}");
+
+        if (loginInfo != null) {
+          await AppCubitStorage()
+              .updateCodeAssDefaul(loginInfo.userGroup!.first.urlcode!);
+          await AppCubitStorage().updateTokenUser(loginInfo.token!);
+          await AppCubitStorage()
+              .updatemembreCode(loginInfo.user!.membre_code!);
+          print("RETOUR1");
+          await AppCubitStorage()
+              .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
+          await AppCubitStorage()
+              .updateCodeTournoisHist(loginInfo.tournoi!.tournois_code!);
+          await AppCubitStorage().updateuserNameKey(loginInfo.username!);
+          await AppCubitStorage().updatepasswordKey(loginInfo.password!);
+          await context
+              .read<UserGroupCubit>()
+              .AllUserGroupOfUserCubit(loginInfo.token);
+
+          // Utilisation de SchedulerBinding pour attendre que la navigation soit prête
+          SchedulerBinding.instance!.addPostFrameCallback((_) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (BuildContext context) => HomeCentraleScreen(),
+              ),
+            );
+          });
+        }
+      }
+
+      print("RETOUR2");
+    }
   }
 
   @override
@@ -191,36 +223,65 @@ class _VerificationPageState extends State<VerificationPage> {
             ),
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) async {
-                if (state.successLoading) {
+                if (state.successLoading && isLoadingTwo == false) {
                   setState(() {
                     isLoading = true; // Démarre l'indicateur de chargement
                   });
-                  // print(
-                  //     "objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject ${loginInfo!.username!}");
-                  var loginInfo = context.read<AuthCubit>().state.loginInfo;
+                  // await loginInfoConnectToWebViewFirst();
+                  // var loginInfo =
+                  //     await context.read<AuthCubit>().state.loginInfo;
 
-                  await AppCubitStorage().updateCodeAssDefaul(
-                      loginInfo!.userGroup!.first.urlcode!);
-                  await AppCubitStorage().updateTokenUser(loginInfo.token!);
-                  await AppCubitStorage()
-                      .updatemembreCode(loginInfo.user!.membre_code!);
-                  await AppCubitStorage().updateCodeTournoisDefault(
-                      loginInfo.tournoi!.tournois_code!);
-                      await AppCubitStorage().updateCodeTournoisHist(loginInfo.tournoi!.tournois_code!);
-                  await AppCubitStorage()
-                      .updateuserNameKey(loginInfo.username!);
-                  await AppCubitStorage()
-                      .updatepasswordKey(loginInfo.password!);
-                  await context
-                      .read<UserGroupCubit>()
-                      .AllUserGroupOfUserCubit(loginInfo.token);
-                  Navigator.pop(context);
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => HomeCentraleScreen(),
-                ),
-                (route) => false,
-              );
+                  // await AppCubitStorage().updateCodeAssDefaul(
+                  //     loginInfo!.userGroup!.first.urlcode!);
+                  // await AppCubitStorage().updateTokenUser(loginInfo.token!);
+                  // await AppCubitStorage()
+                  //     .updatemembreCode(loginInfo.user!.membre_code!);
+                  // await AppCubitStorage().updateCodeTournoisDefault(
+                  //     loginInfo.tournoi!.tournois_code!);
+                  // await AppCubitStorage().updateCodeTournoisHist(
+                  //     loginInfo.tournoi!.tournois_code!);
+                  // await AppCubitStorage()
+                  //     .updateuserNameKey(loginInfo.username!);
+                  // await AppCubitStorage()
+                  //     .updatepasswordKey(loginInfo.password!);
+                  // await context
+                  //     .read<UserGroupCubit>()
+                  //     .AllUserGroupOfUserCubit(loginInfo.token);
+                  if (widget.isForCreate) {
+                    var dataCookies =
+                        await context.read<AuthCubit>().state.dataCookies;
+                    print("datacoo $dataCookies");
+
+                    launchWeb(
+                        "https://auth.faroty.com/hello.html?user_data=${dataCookies}&callback=https://business.faroty.com/groups&app_mode=mobile");
+                  } else {
+                    var loginInfo = context.read<AuthCubit>().state.loginInfo;
+
+                    await AppCubitStorage().updateCodeAssDefaul(
+                        loginInfo!.userGroup!.first.urlcode!);
+                    await AppCubitStorage().updateTokenUser(loginInfo.token!);
+                    await AppCubitStorage()
+                        .updatemembreCode(loginInfo.user!.membre_code!);
+                    await AppCubitStorage().updateCodeTournoisDefault(
+                        loginInfo.tournoi!.tournois_code!);
+                    await AppCubitStorage().updateCodeTournoisHist(
+                        loginInfo.tournoi!.tournois_code!);
+                    await AppCubitStorage()
+                        .updateuserNameKey(loginInfo.username!);
+                    await AppCubitStorage()
+                        .updatepasswordKey(loginInfo.password!);
+                    await context
+                        .read<UserGroupCubit>()
+                        .AllUserGroupOfUserCubit(loginInfo.token);
+
+                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => HomeCentraleScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  }
                   setState(() {
                     isLoading = false; // Arrête l'indicateur de chargement
                   });
@@ -289,56 +350,6 @@ class _VerificationPageState extends State<VerificationPage> {
                                   ),
                                 ),
                                 SizedBox(height: 20.h),
-                                // Container(
-                                //   child: Container(
-                                //     height: 55.h,
-                                //     // decoration: BoxDecoration(
-                                //     //   border: Border.all(
-                                //     //     width: 1.r,
-                                //     //     color: AppColors.blackBlue,
-                                //     //   ),
-                                //     //   borderRadius: BorderRadius.circular(
-                                //     //     10.r,
-                                //     //   ),
-                                //     // ),
-                                //     child: TextField(
-                                //       autofocus: true,
-                                //       textAlign: TextAlign.center,
-                                //       controller: codeController,
-                                //       keyboardType: TextInputType.number,
-                                //       cursorColor: AppColors.blackBlue,
-                                //       style: TextStyle(
-                                //         color: AppColors.blackBlue,
-                                //         fontSize: 18.sp,
-                                //         letterSpacing: 3.w,
-                                //         fontWeight: FontWeight.bold,
-                                //       ),
-                                //       decoration: InputDecoration(
-                                //         focusedBorder: OutlineInputBorder(
-                                //           borderSide: BorderSide(
-                                //             color: AppColors.colorButton,
-                                //             width: 2.w,
-                                //           ),
-                                //           borderRadius:
-                                //               BorderRadius.circular(7.r),
-                                //         ),
-                                //         border: OutlineInputBorder(
-                                //           borderSide: BorderSide(
-                                //             color: AppColors.blackBlue,
-                                //             width: 2.w,
-                                //           ),
-                                //           borderRadius:
-                                //               BorderRadius.circular(7.r),
-                                //         ),
-                                //         hintText: "code_à_5_chiffres".tr(),
-                                //         hintStyle: TextStyle(
-                                //           color: AppColors.blackBlueAccent1,
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
-
                                 Pinput(
                                   length: 5,
                                   autofocus: true,
@@ -356,10 +367,13 @@ class _VerificationPageState extends State<VerificationPage> {
                                                 BorderRadius.circular(10.r)),
                                   ),
                                   onCompleted: (pin) async {
-                                    await handleConfirmation();
+                                    if (widget.isForCreate) {
+                                      await handleConfirmationForCreate();
+                                    } else {
+                                      await handleConfirmation();
+                                    }
                                   },
                                 ),
-
                                 SizedBox(height: 25.h),
                                 SizedBox(
                                   width: double.infinity,
@@ -382,12 +396,16 @@ class _VerificationPageState extends State<VerificationPage> {
                                       return isLoading
                                           ? Center(
                                               child: CircularProgressIndicator(
-                                               color: AppColors.green,
+                                                color: AppColors.green,
                                               ),
                                             )
                                           : ElevatedButton(
                                               onPressed: () async {
-                                                await handleConfirmation();
+                                                if (widget.isForCreate) {
+                                                  await handleConfirmationForCreate();
+                                                } else {
+                                                  await handleConfirmation();
+                                                }
                                               },
                                               child: Text(
                                                 "Confirmer".tr(),
@@ -411,9 +429,22 @@ class _VerificationPageState extends State<VerificationPage> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
                                     resetTimer();
-                                    handleLogin();
+                                    if (widget.isForCreate == true) {
+                                      print("object2222");
+                                      await AuthRepository()
+                                          .LoginWebViewRepository(
+                                              widget.numeroPhone,
+                                              widget.nameUser,
+                                              widget.countryCode,
+                                              context,
+                                              widget.isForCreate,
+                                              false);
+                                    } else {
+                                      handleLogin();
+                                    }
+                                    // handleLogin();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

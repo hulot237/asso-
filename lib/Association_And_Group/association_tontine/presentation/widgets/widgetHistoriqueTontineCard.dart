@@ -28,11 +28,11 @@ class widgetHistoriqueTontineCard extends StatefulWidget {
     required this.is_versement_finished,
     required this.montantVersee,
     required this.amount_remaining,
-    required this.date,
+    required this.montantTotal,
     required this.memberCode,
     required this.codeContribution,
     required this.codeUserContribution,
-     this.codeTontine,
+    this.codeTontine,
   });
 
   String imageProfil;
@@ -40,7 +40,7 @@ class widgetHistoriqueTontineCard extends StatefulWidget {
   String prenom;
   int is_versement_finished;
   String montantVersee;
-  String date;
+  String montantTotal;
   String amount_remaining;
   String memberCode;
   String codeContribution;
@@ -128,7 +128,7 @@ class _widgetHistoriqueTontineCardState
                     Container(
                       margin: EdgeInsets.only(top: 2.h),
                       child: Text(
-                        "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA",
+                        "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${formatMontantFrancais(double.parse("${widget.montantTotal}"))} FCFA",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                             fontSize: 14.sp,
@@ -375,52 +375,86 @@ class _paiementWidgetTontineState extends State<paiementWidgetTontine> {
             height: 30.h,
           ),
           InkWell(
+            // async {
+            //   print(load);
+            //   CotisationRepository().PayOneCotisation(
+            //     widget.codeCotisation,
+            //     infoUserController.text,
+            //     widget.codeMembre,
+            //     AppCubitStorage().state.codeAssDefaul,
+            //     widget.hashId,
+            //     3,
+            //   );
+            //   context.read<CotisationDetailCubit>().updateStateAmountPayTontine(
+            //         widget.codeMembre,
+            //         infoUserController.text,
+            //       );
+            //   await Future.delayed(Duration(milliseconds: 1000));
+
+            //   handleAllCotisationAssTournoi(
+            //     AppCubitStorage().state.codeTournoisHist,
+            //     AppCubitStorage().state.membreCode,
+            //   );
+
+            //   print(load);
+            //   Navigator.pop(context);
+            // },
             onTap: () async {
-              setState(() {
-                load = true;
-              });
+              // setState(() {
+              //   load = true;
+              // });
               print(load);
-              await CotisationRepository().PayOneCotisation(
+              CotisationRepository().PayOneCotisation(
                 widget.codeCotisation,
                 infoUserController.text,
                 widget.codeMembre,
                 AppCubitStorage().state.codeAssDefaul,
                 widget.hashId,
-               widget.codeUserContribution==""? 3 : 8,
-              // 8,
+                widget.codeUserContribution == "" ? 3 : 8,
+                // 8,
                 contribution_code: widget.codeUserContribution,
               );
-              // await context
-              //     .read<DetailContributionCubit>()
-              //     .detailContributionTontineCubit(widget.codeCotisation);
-              await context
+              context
+                  .read<DetailContributionCubit>()
+                  .updateStateAmountPayTontine(
+                    widget.codeUserContribution,
+                    infoUserController.text,
+                  );
+
+              await Future.delayed(
+                Duration(
+                  milliseconds: 1000,
+                ),
+              );
+
+              context
                   .read<DetailContributionCubit>()
                   .detailContributionTontineCubit(
                     widget.codeCotisation,
                   );
-              if (widget.codeTontine != null) {
-                await context.read<TontineCubit>().detailTontineCubit(
-                    AppCubitStorage().state.codeTournois, widget.codeTontine);
-              }
-              await context
-                  .read<RecentEventCubit>()
-                  .AllRecentEventCubit(AppCubitStorage().state.membreCode);
 
-              // context.read<CotisationCubit>().AllCotisationAssTournoiCubit(
-              //     AppCubitStorage().state.codeTournois,
-              //     AppCubitStorage().state.membreCode);
-              context
-                  .read<CotisationDetailCubit>()
-                  .detailCotisationCubit(widget.codeCotisation);
-              setState(() {
-                load = false;
-              });
+              if (widget.codeTontine != null) {
+                context.read<TontineCubit>().detailTontineCubit(
+                      AppCubitStorage().state.codeTournois,
+                      widget.codeTontine,
+                    );
+              }
+              context.read<RecentEventCubit>().AllRecentEventCubit(
+                    AppCubitStorage().state.membreCode,
+                  );
+
+              context.read<CotisationDetailCubit>().detailCotisationCubit(
+                    widget.codeCotisation,
+                  );
+              // setState(() {
+              //   load = false;
+              // });
               print(load);
               Navigator.pop(context);
             },
             child: load == true
                 ? CircularProgressIndicator(
-                    color: AppColors.green,
+                    color: const Color.fromARGB(255, 191, 53, 83),
                   )
                 : Container(
                     height: 50.h,

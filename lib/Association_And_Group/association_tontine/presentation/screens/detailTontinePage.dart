@@ -139,6 +139,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                   positionBeneficiaire: widget.positionBeneficiaire,
                   nbrMembreTontine: widget.nbrMembreTontine,
                   isActive: widget.isActive,
+                  listMembre: widget.listMembre,
                 ),
               ),
               Container(
@@ -330,7 +331,9 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                   Modal().showBottomSheetHistTontine(
                                     tontineContext,
                                     itemTontine["code"],
+                                    widget.montantTontine,
                                    codeTontine:  widget.codeTontine
+
                                   );
                                   // widget.codeTontine;
                                 }
@@ -361,18 +364,18 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                           },
                         ),
                       ),
-                      if (tontineState.isLoading == true &&
-                          tontineState.detailTontine != null)
-                        Center(
-                          child: EasyLoader(
-                            backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                            iconSize: 50.r,
-                            iconColor: AppColors.blackBlueAccent1,
-                            image: AssetImage(
-                              "assets/images/AssoplusFinal.png",
-                            ),
-                          ),
-                        ),
+                      // if (tontineState.isLoading == true &&
+                      //     tontineState.detailTontine != null)
+                      //   Center(
+                      //     child: EasyLoader(
+                      //       backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      //       iconSize: 50.r,
+                      //       iconColor: AppColors.blackBlueAccent1,
+                      //       image: AssetImage(
+                      //         "assets/images/AssoplusFinal.png",
+                      //       ),
+                      //     ),
+                      //   ),
                     ],
                   ),
                 );

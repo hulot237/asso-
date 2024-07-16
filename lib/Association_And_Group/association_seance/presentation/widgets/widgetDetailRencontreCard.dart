@@ -11,6 +11,8 @@ import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/rapport_view_screen.dart';
 import 'package:faroty_association_1/widget/button_rapport_widget.dart';
+import 'package:faroty_association_1/widget/encours_widget.dart';
+import 'package:faroty_association_1/widget/termine_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -133,60 +135,28 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                           if (widget.isActiveRencontre == 0 &&
                               isPasseDate(widget.dateRencontreAPI))
                             Container(
-                              padding: EdgeInsets.all(7.r),
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(24, 212, 0, 0),
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.all(1.r),
-                                child: Text(
-                                  "Archivé".tr(),
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10.sp,
-                                  ),
+                                  color: AppColors.blackBlue,
+                                  borderRadius: BorderRadius.circular(3.r)),
+                              margin: EdgeInsets.only(bottom: 5.h, left: 5.w),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 1.h, horizontal: 2.w),
+                              child: Text(
+                                "Archivé".tr(),
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                  // fontStyle: FontStyle.italic,
                                 ),
                               ),
                             ),
                           if (widget.isActiveRencontre == 1 &&
                               isPasseDate(widget.dateRencontreAPI))
-                            Container(
-                              padding: EdgeInsets.all(7.r),
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(24, 212, 0, 0),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Container(
-                                padding: EdgeInsets.all(1.r),
-                                child: Text(
-                                  "terminé".tr(),
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10.sp,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            TermineWidget(),
                           if (!isPasseDate(widget.dateRencontreAPI))
-                            Container(
-                              padding: EdgeInsets.all(7.r),
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(43, 0, 212, 7),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Container(
-                                padding: EdgeInsets.all(1.r),
-                                child: Text(
-                                  "en_cours".tr(),
-                                  style: TextStyle(
-                                    color: AppColors.green,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10.sp,
-                                  ),
-                                ),
-                              ),
-                            )
+                          
+                            EncoursWidget()
                         ],
                       ),
                     ),
@@ -695,6 +665,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               ),
                             ),
                           ),
+                         
                           BlocBuilder<SeanceCubit, SeanceState>(
                             builder: (context, state) {
                               // Vérifiez d'abord si state.isLoading est true ou null

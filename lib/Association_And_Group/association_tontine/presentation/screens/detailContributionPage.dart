@@ -12,6 +12,9 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetDetailCotisationCard.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/widgets/widgetHistoriqueCotisation.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/detailRencontrePage.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/contribution_state.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/presentation/widgets/widgetContributionDetailPage.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
@@ -27,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DetailCotisationPage extends StatefulWidget {
+class DetailContributionPage extends StatefulWidget {
   var is_tontine;
 
   var source;
@@ -36,7 +39,7 @@ class DetailCotisationPage extends StatefulWidget {
 
   var rubrique;
 
-  DetailCotisationPage(
+  DetailContributionPage(
       {super.key,
       required this.montantCotisations,
       required this.motifCotisations,
@@ -48,7 +51,7 @@ class DetailCotisationPage extends StatefulWidget {
       required this.lienDePaiement,
       required this.codeCotisation,
       required this.isPayed,
-      required this.rapportUrl,
+      // required this.rapportUrl,
       required this.is_passed,
       required this.is_tontine,
       required this.source,
@@ -64,11 +67,11 @@ class DetailCotisationPage extends StatefulWidget {
   int isPassed;
   String codeCotisation;
   int isPayed;
-  String? rapportUrl;
+  // String? rapportUrl;
   var is_passed;
 
   @override
-  State<DetailCotisationPage> createState() => _DetailCotisationPageState();
+  State<DetailContributionPage> createState() => _DetailContributionPageState();
 }
 
 Widget PageScaffold({
@@ -125,7 +128,7 @@ Widget PageScaffold({
   );
 }
 
-class _DetailCotisationPageState extends State<DetailCotisationPage>
+class _DetailContributionPageState extends State<DetailContributionPage>
     with TickerProviderStateMixin {
   int _pageIndex = 0;
   var Tab = [true, false, false, true, false, true];
@@ -160,7 +163,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
       context: context,
       child: Material(
         type: MaterialType.transparency,
-        child: BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+        child: BlocBuilder<DetailContributionCubit, ContributionState>(
             builder: (CotiDetailcontext, CotiDetailstate) {
           if (CotiDetailstate.errorLoadDetailCotis == true)
             return checkInternetConnectionPage(
@@ -173,7 +176,7 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 10.h),
-                  child: WidgetCotistionDetailPage(
+                  child: WidgetContributionDetailPage(
                     // rapportUrl: widget.rapportUrl,
                     screenSource: "meeting",
                     isPayed: widget.isPayed,
@@ -236,10 +239,10 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                     ),
                   ),
                 ),
-                BlocBuilder<CotisationDetailCubit, CotisationDetailState>(
+                BlocBuilder<DetailContributionCubit, ContributionState>(
                   builder: (CotisationDetailcontext, CotisationDetailstate) {
-                    if (CotisationDetailstate.isLoading == true &&
-                        CotisationDetailstate.detailCotisation == null)
+                    if (CotisationDetailstate.isLoadingContibutionTontine == true &&
+                        CotisationDetailstate.detailContributionTontine == null)
                       return Expanded(
                         child: Center(
                           child: EasyLoader(
@@ -254,9 +257,9 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                       );
 
                     final currentDetailCotisation =
-                        CotisationDetailcontext.read<CotisationDetailCubit>()
+                        CotisationDetailcontext.read<DetailContributionCubit>()
                             .state
-                            .detailCotisation;
+                            .detailContributionTontine;
 
                     List listeOkayCotisation =
                         currentDetailCotisation!["membres"];
@@ -266,32 +269,30 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                         return Card(
                           child: InkWell(
                             onTap: () {
-                              print("${monObjet["membre"]["membre_code"]}");
+                              print("membre_codew ${monObjet["code"]}");
                             },
-                            child: BlocBuilder<CotisationDetailCubit,
-                                    CotisationDetailState>(
-                                builder: (CotiDetailcontext, CotiDetailstate) {
-                              return WidgetHistoriqueCotisation(
-                                isCotisation: true,
-                                codeMembre: monObjet["membre"]["membre_code"],
-                                versement_status: monObjet["statut"],
-                                matricule: monObjet["membre"]["matricule"],
-                                montantTotalAVerser: monObjet["amount_to_pay"],
-                                montantVersee: monObjet["balance"],
-                                resteAPayer: monObjet["amount_remaining"],
-                                codeCotisation: widget.codeCotisation,
-                                nom: monObjet["membre"]["first_name"] == null
-                                    ? ""
-                                    : monObjet["membre"]["first_name"],
-                                photoProfil:
-                                    monObjet["membre"]["photo_profil"] == null
-                                        ? ""
-                                        : monObjet["membre"]["photo_profil"],
-                                prenom: monObjet["membre"]["last_name"] == null
-                                    ? ""
-                                    : monObjet["membre"]["last_name"],
-                              );
-                            }),
+                            child: WidgetHistoriqueCotisation(
+                              isCotisation: false,
+                              // codeTontine: widget.codeTontine,
+                              codeUserContribution: monObjet["code"],
+                              codeMembre: monObjet["membre"]["membre_code"],
+                              versement_status: monObjet["statut"],
+                              matricule: monObjet["membre"]["matricule"],
+                              montantTotalAVerser: monObjet["amount_to_pay"],
+                              montantVersee: monObjet["balance"],
+                              resteAPayer: monObjet["amount_remaining"],
+                              codeCotisation: widget.codeCotisation,
+                              nom: monObjet["membre"]["first_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["first_name"],
+                              photoProfil:
+                                  monObjet["membre"]["photo_profil"] == null
+                                      ? ""
+                                      : monObjet["membre"]["photo_profil"],
+                              prenom: monObjet["membre"]["last_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["last_name"],
+                            ),
                           ),
                         );
                       },
@@ -364,8 +365,8 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                                     ],
                                   ),
                           ),
-                          if (CotisationDetailstate.isLoading == true &&
-                              CotisationDetailstate.detailCotisation != null)
+                          if (CotisationDetailstate.isLoadingContibutionTontine == true &&
+                              CotisationDetailstate.detailContributionTontine != null)
                             Center(
                               child: EasyLoader(
                                 backgroundColor:
