@@ -7,6 +7,7 @@ import 'package:faroty_association_1/Association_And_Group/association_seance/pr
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -27,7 +28,7 @@ class ListMeetingScreen extends StatefulWidget {
 
 class _ListMeetingScreenState extends State<ListMeetingScreen> {
   String selectedCategory =
-      "Toutes"; // État pour suivre la catégorie sélectionnée
+      "Toutes".tr(); // État pour suivre la catégorie sélectionnée
   bool showCategories =
       true; // État pour indiquer si les catégories doivent être affichées
   bool isLoading = false;
@@ -91,7 +92,7 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
         ),
         elevation: 0,
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -99,6 +100,150 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
             colorIcon: AppColors.white,
           ),
         ),
+
+        actions: [
+          BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
+              builder: (DetailTournoiContext, DetailTournoiState) {
+            final currentInfoAllTournoiAssCourant =
+                DetailTournoiContext.read<UserGroupCubit>().state.changeAssData;
+            return PopupMenuButton(
+              padding: EdgeInsets.all(0),
+              position: PopupMenuPosition.under,
+              child: Row(
+                children: [
+                  for (var item
+                      in currentInfoAllTournoiAssCourant!.user_group!.tournois!)
+                    if (item.tournois_code ==
+                        AppCubitStorage().state.codeTournoisHist)
+                      Center(
+                        child: Row(
+                          children: [
+                            Text(
+                              '${"tournoi".tr()} #${item.matricule}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                            if (item.is_default == 0)
+                              Icon(
+                                Icons.dangerous,
+                                size: 12.sp,
+                                color: AppColors.white,
+                              ),
+                          ],
+                        ),
+                      ),
+                  Icon(
+                    Icons.arrow_right_rounded,
+                    size: 15.sp,
+                  )
+                ],
+              ),
+              itemBuilder: (BuildContext context) => [
+                for (var item
+                    in currentInfoAllTournoiAssCourant!.user_group!.tournois!)
+                  PopupMenuItem(
+                    padding: EdgeInsets.all(0),
+                    value: "tournoi",
+                    onTap: () async {
+                      print(" before ${item.tournois_code}");
+                      await AppCubitStorage()
+                          .updateCodeTournoisHist(item.tournois_code!);
+                      print(
+                          " after ${AppCubitStorage().state.codeTournoisHist}");
+
+                      // await handleTournoiDefault(
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .codeTournoisHist);
+                      handleTournoiDefault(
+                          AppCubitStorage().state.codeTournoisHist);
+                      // handleAllCotisationAssTournoi(
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .codeTournoisHist,
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .membreCode);
+                      // context
+                      //     .read<
+                      //         SanctionCubit>()
+                      //     .getAllSanctions(
+                      //         AppCubitStorage()
+                      //             .state
+                      //             .codeTournoisHist);
+                    },
+                    child: Container(
+                      color: item.tournois_code! ==
+                              AppCubitStorage().state.codeTournoisHist
+                          ? AppColors.blackBlue.withOpacity(.05)
+                          : null,
+                      padding: EdgeInsets.only(
+                        top: 15.h,
+                        bottom: 15.h,
+                        left: 10.w,
+                        right: 10.w,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 7.w,
+                                ),
+                                Text(
+                                  '${"tournoi".tr()} #${item.matricule}'.tr(),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 70.w,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: item.is_default == 1
+                                  ? AppColors.backgroundAppBAr.withOpacity(.1)
+                                  : AppColors.red.withOpacity(.1),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                              right: 10.w,
+                              top: 3.h,
+                              bottom: 3.h,
+                            ),
+                            child: Text(
+                              item.is_default == 1 ? 'Actif'.tr() : "Inactif",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: item.is_default == 1
+                                    ? AppColors.backgroundAppBAr
+                                    : AppColors.red,
+                                // fontWeight:
+                                //     FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          })
+        ],
+      
+      
+      
       ),
       body: BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
         builder: (DetailTournoiContext, DetailTournoiState) {
@@ -124,18 +269,21 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 10.w),
+                          margin: EdgeInsets.only(left: 10.w,
+                          top: 10.h,),
                           child: AnimatedContainer(
                             duration: Duration(milliseconds: 300),
                             height: showCategories
-                                ? 40.h
+                                ? 30.h
                                 : 0, // Hauteur des boutons de catégorie
                             child: SingleChildScrollView(
                               child: Row(
                                 children: [
-                                  buildCategoryButton("Toutes"),
-                                  buildCategoryButton("En cours"),
-                                  buildCategoryButton("Terminé"),
+                                  buildCategoryButton("Toutes".tr()),
+                                  SizedBox(width: 5.w,),
+                                  buildCategoryButton("en_cours".tr()),
+                                  SizedBox(width: 5.w,),
+                                  buildCategoryButton("terminé".tr()),
                                 ],
                               ),
                             ),
@@ -160,14 +308,14 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
                                         ["seance"][index];
 
                                 // Filtrer les éléments en fonction de la catégorie sélectionnée
-                                if (selectedCategory == "Toutes" ||
-                                    (selectedCategory == "En cours" &&
+                                if (selectedCategory == "Toutes".tr() ||
+                                    (selectedCategory == "en_cours".tr() &&
                                         itemSeance["status"] == 1 &&
-                                        !isPasseDate(
+                                        !isPasseDateOneDay(
                                             itemSeance["date_seance"])) ||
-                                    (selectedCategory == "Terminé" &&
+                                    (selectedCategory == "terminé".tr() &&
                                         (itemSeance["status"] == 0 ||
-                                            isPasseDate(
+                                            isPasseDateOneDay(
                                                 itemSeance["date_seance"])))) {
                                   return Container(
                                     margin: EdgeInsets.symmetric(vertical: 10),
@@ -262,9 +410,9 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
                         itemCount: 1,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
-                        height:  MediaQuery.of(context).size.height,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            height: MediaQuery.of(context).size.height,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
                                   child: Text(
@@ -280,78 +428,80 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
                                     .read<AuthCubit>()
                                     .state
                                     .detailUser!["isMember"])
-                                  InkWell(
-                                    onTap: () async {
-                                      updateTrackingData(
-                                          "transactions.btnAddMeeting",
-                                          "${DateTime.now()}", {});
-                                      launchWeb(
-                                        "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.pageBackground,
-                                        border: Border.all(
-                                          width: 2.w,
-                                          color:
-                                              AppColors.blackBlue.withOpacity(1),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          20.r,
-                                        ),
-                                      ),
-                                      margin: EdgeInsets.only(
-                                        top: 8.w,
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10.w,
-                                        vertical: 7.h,
-                                      ),
-                                      width:
-                                          MediaQuery.of(context).size.width / 1.5,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                            "Ajouter une rencontre".tr(),
-                                            style: TextStyle(
-                                              color: AppColors.blackBlue
-                                                  .withOpacity(1),
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 18.sp,
-                                              letterSpacing: 0.2.w,
-                                            ),
+                                  Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        updateTrackingData(
+                                            "transactions.btnAddMeeting",
+                                            "${DateTime.now()}", {});
+                                        launchWeb(
+                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 2.w,
+                                            color: AppColors.blackBlue
+                                                .withOpacity(1),
                                           ),
-                                          Container(
-                                            width: 25.w,
-                                            height: 25.w,
-                                            margin: EdgeInsets.only(left: 3.w),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(360),
-                                              border: Border.all(
-                                                width: 2.w,
+                                          borderRadius: BorderRadius.circular(
+                                            20.r,
+                                          ),
+                                        ),
+                                        margin: EdgeInsets.only(
+                                          top: 8.w,
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w,
+                                          vertical: 7.h,
+                                        ),
+                                        width: MediaQuery.of(context).size.width /
+                                            1.5,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              "Ajouter une rencontre".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlue
+                                                    .withOpacity(1),
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 18.sp,
+                                                letterSpacing: 0.2.w,
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 25.w,
+                                              height: 25.w,
+                                              margin: EdgeInsets.only(left: 3.w),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(360),
+                                                border: Border.all(
+                                                  width: 2.w,
+                                                  color: AppColors.blackBlue
+                                                      .withOpacity(1),
+                                                ),
+                                              ),
+                                              child: SvgPicture.asset(
+                                                "assets/images/addIcon.svg",
+                                                fit: BoxFit.scaleDown,
                                                 color: AppColors.blackBlue
                                                     .withOpacity(1),
                                               ),
                                             ),
-                                            child: SvgPicture.asset(
-                                              "assets/images/addIcon.svg",
-                                              fit: BoxFit.scaleDown,
-                                              color: AppColors.blackBlue
-                                                  .withOpacity(1),
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                               ],
                             ),
-                        );
+                          );
                         }),
                   ],
                 );
@@ -362,7 +512,7 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
 
   // Méthode pour construire un bouton de catégorie
   Widget buildCategoryButton(String category) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         setState(() {
           selectedCategory = category;
@@ -376,11 +526,11 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-        margin: EdgeInsets.only(
-          top: 10.h,
-          bottom: 0,
-          left: 5.w,
-        ),
+        // margin: EdgeInsets.only(
+        //   top: 10.h,
+        //   bottom: 0,
+        //   left: 5.w,
+        // ),
         decoration: BoxDecoration(
           color: category == selectedCategory
               ? AppColors.colorButton.withOpacity(0.1)

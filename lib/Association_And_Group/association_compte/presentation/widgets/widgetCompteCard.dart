@@ -29,19 +29,17 @@ class _WidgetCompteCardState extends State<WidgetCompteCard> {
     return Container(
       width: MediaQuery.of(context).size.width / 2.15,
       padding: EdgeInsets.all(5.r),
-      margin: EdgeInsets.only(
-        top: 15.h,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(15.r),
-        // boxShadow: [
-        //   BoxShadow(
-        //       color: Color.fromARGB(120, 180, 180, 180),
-        //       spreadRadius: 1,
-        //       blurRadius: 1)
-        // ],
-      ),
+     
+      // decoration: BoxDecoration(
+      //   // color: AppColors.white,
+      //   borderRadius: BorderRadius.circular(15.r),
+      //   // boxShadow: [
+      //   //   BoxShadow(
+      //   //       color: Color.fromARGB(120, 180, 180, 180),
+      //   //       spreadRadius: 1,
+      //   //       blurRadius: 1)
+      //   // ],
+      // ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,

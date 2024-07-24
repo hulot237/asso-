@@ -209,62 +209,64 @@ class _widgetTontineHistoriqueCardState
                     ],
                   ),
                 ),
-                InkWell(
-                  splashColor: AppColors.blackBlue,
-                  onTap: () {
-                    String message;
-                    String text = "la tontine".tr();
-                    String capitalizedText =
-                        text.replaceFirst(text[0], text[0].toUpperCase());
-                    // 🟢🟢 La tontine *Staff* qui a debuté le *16 Feb 2024 at 11:00* dans le groupe *Dev Opps* compte a la date du now 3 beneficiaire sur 10
-                    message =
-                        "🟢🟢 ${"$capitalizedText"} *${widget.nomTontine}* ${"qui a debuté le".tr()} *${formatDateLiteral(widget.dateCreaTontine)}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* ${"compte a la date du".tr()} *${formatDateLiteral(DateTime.now().toString())}* *${widget.positionBeneficiaire}* ${"beneficiaire sur".tr()} *${widget.nbrMembreTontine}*\n\n";
-                    message += "*Récapitulatif :*\n";
-                    for (var element in widget.listMembre) {
-                      String firstName = element["membre"]["first_name"];
-                      String lastName = element["membre"]["last_name"] ?? "";
-
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      String message;
+                      String text = "la tontine".tr();
+                      String capitalizedText =
+                          text.replaceFirst(text[0], text[0].toUpperCase());
+                      // 🟢🟢 La tontine *Staff* qui a debuté le *16 Feb 2024 at 11:00* dans le groupe *Dev Opps* compte a la date du now 3 beneficiaire sur 10
+                      message =
+                          "🟢🟢 ${"$capitalizedText"} *${widget.nomTontine}* ${"qui a debuté le".tr()} *${formatDateLiteral(widget.dateCreaTontine)}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* ${"compte a la date du".tr()} *${formatDateLiteral(DateTime.now().toString())}* *${widget.positionBeneficiaire}* ${"beneficiaire sur".tr()} *${widget.nbrMembreTontine}*\n\n";
+                      message += "*Récapitulatif :*\n";
+                      for (var element in widget.listMembre) {
+                        String firstName = element["membre"]["first_name"];
+                        String lastName = element["membre"]["last_name"] ?? "";
+                  
+                        message +=
+                            "- ${firstName} ${lastName} ${element["is_passed"] == 0 ? "❌" : "✅"}\n";
+                      }
                       message +=
-                          "- ${firstName} ${lastName} ${element["is_passed"] == 0 ? "❌" : "✅"}\n";
-                    }
-                    message +=
-                        "\n${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
-
-                    message += "*by ASSO+*";
-
-                    Share.share(message);
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            top: BorderSide(
-                                width: 1.w,
-                                color: AppColors.blackBlueAccent2))),
-                    // color: AppColors.colorButton,
-                    padding: EdgeInsets.only(top: 5.h),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 17.h,
-                          child: SvgPicture.asset(
-                            "assets/images/shareSimpleIcon.svg",
-                            fit: BoxFit.scaleDown,
-                            color: AppColors.blackBlueAccent1,
+                          "\n${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
+                  
+                      message += "*by ASSO+*";
+                  
+                      Share.share(message);
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              top: BorderSide(
+                                  width: 1.w,
+                                  color: AppColors.blackBlueAccent2))),
+                      // color: AppColors.colorButton,
+                      padding: EdgeInsets.only(top: 5.h),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 17.h,
+                            child: SvgPicture.asset(
+                              "assets/images/shareSimpleIcon.svg",
+                              fit: BoxFit.scaleDown,
+                              color: AppColors.blackBlueAccent1,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        Text(
-                          "Partager".tr(),
-                          style: TextStyle(
-                            color: AppColors.blackBlueAccent1,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11.sp,
+                          SizedBox(
+                            height: 3.h,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Partager".tr(),
+                            style: TextStyle(
+                              color: AppColors.blackBlueAccent1,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

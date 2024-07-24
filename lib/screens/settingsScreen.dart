@@ -175,7 +175,7 @@ class _SettingScreenState extends State<SettingScreen>
                         backgroundColor: AppColors.backgroundAppBAr,
                         elevation: 0,
                         leading: Platform.isAndroid
-                            ? GestureDetector(
+                            ? InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
@@ -447,64 +447,67 @@ class _SettingScreenState extends State<SettingScreen>
                                 ),
                                 child: Column(
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        updateTrackingData(
-                                            "profile.profilePerson",
-                                            "${DateTime.now()}", {});
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProfilPersonnelPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        //height: 20,
-                                        color: AppColors.white,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(3.r),
-                                              decoration: BoxDecoration(
-                                                  color: AppColors.colorButton,
+                                    Material(
+                                      color: AppColors.white,
+                                      child: InkWell(
+                                        onTap: () {
+                                          updateTrackingData(
+                                              "profile.profilePerson",
+                                              "${DateTime.now()}", {});
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfilPersonnelPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          //height: 20,
+                                          
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                      
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(3.r),
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.colorButton,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100)),
+                                                child: ClipRRect(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          100)),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                child: Container(
-                                                  width: 80.w,
-                                                  height: 80.w,
-                                                  child: Image.network(
-                                                    "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
-                                                    fit: BoxFit.cover,
+                                                      BorderRadius.circular(100),
+                                                  child: Container(
+                                                    width: 80.w,
+                                                    height: 80.w,
+                                                    child: Image.network(
+                                                      "${Variables.LienAIP}${currentDetailUser!["photo_profil"] == null ? "" : currentDetailUser!["photo_profil"]}",
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 5.w,
-                                                  right: 5.w,
-                                                  top: 10.h,
-                                                  bottom: 10.h),
-                                              child: Text(
-                                                "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: AppColors.blackBlue,
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 5.w,
+                                                    right: 5.w,
+                                                    top: 10.h,
+                                                    bottom: 10.h),
+                                                child: Text(
+                                                  "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 18.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppColors.blackBlue,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -678,144 +681,146 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                 ),
                                               ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  updateTrackingData(
-                                                      "profile.copyMemberCode",
-                                                      "${DateTime.now()}", {});
-                                                  Clipboard.setData(
-                                                    ClipboardData(
-                                                      text:
-                                                          "${currentDetailUser["membre_code"]}",
-                                                      // "${AppCubitStorage().state.tokenUser}",
-                                                    ),
-                                                  ).then(
-                                                    (value) {
-                                                      return toastification
-                                                          .show(
-                                                        context: context,
-                                                        title: Text(
-                                                          "Copié".tr(),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                              fontSize: 16.sp,
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        autoCloseDuration:
-                                                            Duration(
-                                                                seconds: 2),
-                                                        type: ToastificationType
-                                                            .success,
-                                                        // borderSide: BorderSide(
-                                                        //   width: 2.w,
-                                                        //   color: AppColors.colorButton,
-                                                        // ),
-                                                        style:
-                                                            ToastificationStyle
-                                                                .minimal,
-                                                      );
-
-                                                      // ScaffoldMessenger.of(
-                                                      //         context)
-                                                      //     .showSnackBar(
-                                                      //   SnackBar(
-                                                      //     content: Center(
-                                                      //       child: Text(
-                                                      //         '${currentDetailUser["membre_code"]}',
-                                                      //         style: TextStyle(
-                                                      //             fontSize: 12.sp,
-                                                      //             fontWeight:
-                                                      //                 FontWeight
-                                                      //                     .w500),
-                                                      //       ),
-                                                      //     ),
-                                                      //     padding: EdgeInsets.only(
-                                                      //       left: 2.w,
-                                                      //       right: 2.w,
-                                                      //       top: 7.h,
-                                                      //       bottom: 7.h,
-                                                      //     ),
-                                                      //     backgroundColor:
-                                                      //         AppColors.colorButton,
-                                                      //     behavior: SnackBarBehavior
-                                                      //         .floating,
-                                                      //     width: 140.w,
-                                                      //     shape: StadiumBorder(),
-                                                      //     duration: Duration(
-                                                      //         milliseconds: 1000),
-                                                      //     elevation: 0,
-                                                      //   ),
-                                                      // );
-                                                    },
-                                                  );
-                                                },
-                                                child: Container(
-                                                  color: Colors.transparent,
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 10.h,
-                                                      horizontal: 15.w),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            5,
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          "${"Code pour paiement".tr()}",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                            fontSize: 16.sp,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: AppColors
-                                                                .blackBlue,
-                                                          ),
-                                                        ),
+                                              Material(
+                                                color: AppColors.white,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    updateTrackingData(
+                                                        "profile.copyMemberCode",
+                                                        "${DateTime.now()}", {});
+                                                    Clipboard.setData(
+                                                      ClipboardData(
+                                                        text:
+                                                            "${currentDetailUser["membre_code"]}",
+                                                        // "${AppCubitStorage().state.tokenUser}",
                                                       ),
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right: 5.w),
-                                                            child: Text(
-                                                              "${currentDetailUser["membre_code"]}",
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                fontSize: 14.sp,
+                                                    ).then(
+                                                      (value) {
+                                                        return toastification
+                                                            .show(
+                                                          context: context,
+                                                          title: Text(
+                                                            "Copié".tr(),
+                                                            textAlign:
+                                                                TextAlign.center,
+                                                            style: TextStyle(
+                                                                fontSize: 16.sp,
+                                                                color: AppColors
+                                                                    .blackBlue,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w600,
-                                                                color: AppColors
-                                                                    .blackBlueAccent1,
-                                                              ),
+                                                                        .bold),
+                                                          ),
+                                                          autoCloseDuration:
+                                                              Duration(
+                                                                  seconds: 2),
+                                                          type: ToastificationType
+                                                              .success,
+                                                          // borderSide: BorderSide(
+                                                          //   width: 2.w,
+                                                          //   color: AppColors.colorButton,
+                                                          // ),
+                                                          style:
+                                                              ToastificationStyle
+                                                                  .minimal,
+                                                        );
+                                                
+                                                        // ScaffoldMessenger.of(
+                                                        //         context)
+                                                        //     .showSnackBar(
+                                                        //   SnackBar(
+                                                        //     content: Center(
+                                                        //       child: Text(
+                                                        //         '${currentDetailUser["membre_code"]}',
+                                                        //         style: TextStyle(
+                                                        //             fontSize: 12.sp,
+                                                        //             fontWeight:
+                                                        //                 FontWeight
+                                                        //                     .w500),
+                                                        //       ),
+                                                        //     ),
+                                                        //     padding: EdgeInsets.only(
+                                                        //       left: 2.w,
+                                                        //       right: 2.w,
+                                                        //       top: 7.h,
+                                                        //       bottom: 7.h,
+                                                        //     ),
+                                                        //     backgroundColor:
+                                                        //         AppColors.colorButton,
+                                                        //     behavior: SnackBarBehavior
+                                                        //         .floating,
+                                                        //     width: 140.w,
+                                                        //     shape: StadiumBorder(),
+                                                        //     duration: Duration(
+                                                        //         milliseconds: 1000),
+                                                        //     elevation: 0,
+                                                        //   ),
+                                                        // );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(
+                                                        vertical: 10.h,
+                                                        horizontal: 15.w),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              5,
                                                             ),
                                                           ),
-                                                          Icon(
-                                                            Icons.content_copy,
-                                                            size: 14.sp,
-                                                            color: AppColors
-                                                                .blackBlueAccent1,
+                                                          child: Text(
+                                                            "${"Code pour paiement".tr()}",
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                            ),
                                                           ),
-                                                        ],
-                                                      )
-                                                    ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                      right: 5.w),
+                                                              child: Text(
+                                                                "${currentDetailUser["membre_code"]}",
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                  fontSize: 14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppColors
+                                                                      .blackBlueAccent1,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                              Icons.content_copy,
+                                                              size: 14.sp,
+                                                              color: AppColors
+                                                                  .blackBlueAccent1,
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -857,98 +862,20 @@ class _SettingScreenState extends State<SettingScreen>
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                updateTrackingData(
-                                                    "profile.memberCard",
-                                                    "${DateTime.now()}", {});
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AccountPage(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                  top: 20.h,
-                                                  left: 15.w,
-                                                  right: 15.w,
-                                                  bottom: 20.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide(
-                                                        width: 1.r,
-                                                        color: Color.fromARGB(
-                                                            12, 0, 0, 0)),
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            child: Icon(
-                                                              Icons
-                                                                  .phone_android_outlined,
-                                                              color: AppColors
-                                                                  .bleuLight,
-                                                              size: 18.sp,
-                                                            ),
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                              right: 10.w,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "votre_compte".tr(),
-                                                            style: TextStyle(
-                                                              fontSize: 18.sp,
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Icon(
-                                                      Icons.arrow_right,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      size: 18.sp,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            if (currentDetailUser[
-                                                    "is_withdrawal_approvers"] ==
-                                                1)
-                                              GestureDetector(
+                                            Material(
+                                              color: AppColors.white,
+                                              child: InkWell(
                                                 onTap: () {
                                                   updateTrackingData(
-                                                      "profile.withdrawal",
+                                                      "profile.memberCard",
                                                       "${DateTime.now()}", {});
-                                                  handleDetailUser(
-                                                      AppCubitStorage()
-                                                          .state
-                                                          .membreCode,
-                                                      AppCubitStorage()
-                                                          .state
-                                                          .codeTournois);
                                                   Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              RetraitPage()));
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AccountPage(),
+                                                    ),
+                                                  );
                                                 },
                                                 child: Container(
                                                   padding: EdgeInsets.only(
@@ -958,7 +885,6 @@ class _SettingScreenState extends State<SettingScreen>
                                                     bottom: 20.h,
                                                   ),
                                                   decoration: BoxDecoration(
-                                                    // color: Colors.black12,
                                                     border: Border(
                                                       bottom: BorderSide(
                                                           width: 1.r,
@@ -968,8 +894,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
+                                                        CrossAxisAlignment.center,
                                                     children: [
                                                       Expanded(
                                                         child: Row(
@@ -977,19 +902,18 @@ class _SettingScreenState extends State<SettingScreen>
                                                             Container(
                                                               child: Icon(
                                                                 Icons
-                                                                    .account_balance_wallet_outlined,
-                                                                color: Colors
-                                                                    .black,
+                                                                    .phone_android_outlined,
+                                                                color: AppColors
+                                                                    .bleuLight,
                                                                 size: 18.sp,
                                                               ),
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right:
-                                                                          10.w),
+                                                              margin:
+                                                                  EdgeInsets.only(
+                                                                right: 10.w,
+                                                              ),
                                                             ),
                                                             Text(
-                                                              "retrait_en_attente"
-                                                                  .tr(),
+                                                              "votre_compte".tr(),
                                                               style: TextStyle(
                                                                 fontSize: 18.sp,
                                                                 color: AppColors
@@ -1009,6 +933,93 @@ class _SettingScreenState extends State<SettingScreen>
                                                         size: 18.sp,
                                                       ),
                                                     ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            if (currentDetailUser[
+                                                    "is_withdrawal_approvers"] ==
+                                                1)
+                                              Material(
+                                                color: AppColors.white,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    updateTrackingData(
+                                                        "profile.withdrawal",
+                                                        "${DateTime.now()}", {});
+                                                    handleDetailUser(
+                                                        AppCubitStorage()
+                                                            .state
+                                                            .membreCode,
+                                                        AppCubitStorage()
+                                                            .state
+                                                            .codeTournois);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                RetraitPage()));
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(
+                                                      top: 20.h,
+                                                      left: 15.w,
+                                                      right: 15.w,
+                                                      bottom: 20.h,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      // color: Colors.black12,
+                                                      border: Border(
+                                                        bottom: BorderSide(
+                                                            width: 1.r,
+                                                            color: Color.fromARGB(
+                                                                12, 0, 0, 0)),
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Row(
+                                                            children: [
+                                                              Container(
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .account_balance_wallet_outlined,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  size: 18.sp,
+                                                                ),
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        right:
+                                                                            10.w),
+                                                              ),
+                                                              Text(
+                                                                "retrait_en_attente"
+                                                                    .tr(),
+                                                                style: TextStyle(
+                                                                  fontSize: 18.sp,
+                                                                  color: AppColors
+                                                                      .blackBlue,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Icon(
+                                                          Icons.arrow_right,
+                                                          color:
+                                                              AppColors.blackBlue,
+                                                          size: 18.sp,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -1169,89 +1180,92 @@ class _SettingScreenState extends State<SettingScreen>
                                             //   ),
                                             // ),
 
-                                            GestureDetector(
-                                              onTap: () {
-                                                updateTrackingData(
-                                                    "profile.detailGroup",
-                                                    "${DateTime.now()}", {});
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DetailUsergroupPage(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                  top: 20.h,
-                                                  left: 10.w,
-                                                  right: 15.w,
-                                                  bottom: 20.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  // color: Colors.black12,
-                                                  border: Border(
-                                                    bottom: BorderSide(
-                                                        width: 1.r,
-                                                        color: Color.fromARGB(
-                                                            12, 0, 0, 0)),
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            width: 28.w,
-                                                            child: Image.asset(
-                                                              "assets/images/AssoplusFinal.png",
-                                                              // scale: ,
-                                                            ),
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        10.w),
-                                                          ),
-                                                          Text(
-                                                            "${"Votre groupe".tr()} ASSO+"
-                                                                .tr(),
-                                                            style: TextStyle(
-                                                              fontSize: 18.sp,
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                            Material(
+                                                color: AppColors.white,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  updateTrackingData(
+                                                      "profile.detailGroup",
+                                                      "${DateTime.now()}", {});
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailUsergroupPage(),
                                                     ),
-                                                    Text(
-                                                      "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
-                                                      style: TextStyle(
-                                                        fontSize: 11.sp,
-                                                        color: Color.fromARGB(
-                                                          125,
-                                                          20,
-                                                          45,
-                                                          99,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                    top: 20.h,
+                                                    left: 10.w,
+                                                    right: 15.w,
+                                                    bottom: 20.h,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    // color: Colors.black12,
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                          width: 1.r,
+                                                          color: Color.fromARGB(
+                                                              12, 0, 0, 0)),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              width: 28.w,
+                                                              child: Image.asset(
+                                                                "assets/images/AssoplusFinal.png",
+                                                                // scale: ,
+                                                              ),
+                                                              margin:
+                                                                  EdgeInsets.only(
+                                                                      right:
+                                                                          10.w),
+                                                            ),
+                                                            Text(
+                                                              "${"Votre groupe".tr()} ASSO+"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                fontSize: 18.sp,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                        fontWeight:
-                                                            FontWeight.w500,
                                                       ),
-                                                    ),
-                                                    Icon(
-                                                      Icons.arrow_right,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      size: 18.sp,
-                                                    ),
-                                                  ],
+                                                      Text(
+                                                        "${context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.matricule}",
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          color: Color.fromARGB(
+                                                            125,
+                                                            20,
+                                                            45,
+                                                            99,
+                                                          ),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.arrow_right,
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                        size: 18.sp,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -1399,148 +1413,154 @@ class _SettingScreenState extends State<SettingScreen>
                                             //   ),
                                             // ),
 
-                                            GestureDetector(
-                                              onTap: () {
-                                                updateTrackingData(
-                                                    "profile.parameter",
-                                                    "${DateTime.now()}", {});
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ParamsAppPage(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                  top: 20.h,
-                                                  left: 15.w,
-                                                  right: 15.w,
-                                                  bottom: 20.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  // color: Colors.black12,
-                                                  border: Border(
-                                                    bottom: BorderSide(
-                                                      width: 1.r,
-                                                      color: Color.fromARGB(
-                                                          12, 0, 0, 0),
+                                            Material(
+                                                color: AppColors.white,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  updateTrackingData(
+                                                      "profile.parameter",
+                                                      "${DateTime.now()}", {});
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ParamsAppPage(),
                                                     ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                    top: 20.h,
+                                                    left: 15.w,
+                                                    right: 15.w,
+                                                    bottom: 20.h,
                                                   ),
-                                                ),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            child: Icon(
-                                                              Icons
-                                                                  .settings_outlined,
-                                                              color:
-                                                                  Colors.brown,
-                                                              size: 18.sp,
-                                                            ),
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        10.w),
-                                                          ),
-                                                          Text(
-                                                            "paramètres".tr(),
-                                                            style: TextStyle(
-                                                              fontSize: 18.sp,
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                  decoration: BoxDecoration(
+                                                    // color: Colors.black12,
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        width: 1.r,
+                                                        color: Color.fromARGB(
+                                                            12, 0, 0, 0),
                                                       ),
                                                     ),
-                                                    Icon(
-                                                      Icons.arrow_right,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      size: 18.sp,
-                                                    ),
-                                                  ],
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              child: Icon(
+                                                                Icons
+                                                                    .settings_outlined,
+                                                                color:
+                                                                    Colors.brown,
+                                                                size: 18.sp,
+                                                              ),
+                                                              margin:
+                                                                  EdgeInsets.only(
+                                                                      right:
+                                                                          10.w),
+                                                            ),
+                                                            Text(
+                                                              "paramètres".tr(),
+                                                              style: TextStyle(
+                                                                fontSize: 18.sp,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.arrow_right,
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                        size: 18.sp,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                updateTrackingData(
-                                                    "profile.shareApp",
-                                                    "${DateTime.now()}", {});
-                                                Share.share(
-                                                  """${'Gérez vos associations et groupes avec *ASSO+* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} : \nhttps://faroty.com/dl/groups \n${'et sur'.tr()} https://groups.faroty.com"""
-                                                      .tr(),
-                                                );
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                  top: 20.h,
-                                                  left: 15.w,
-                                                  right: 15.w,
-                                                  bottom: 20.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  // color: Colors.black12,
-                                                  border: Border(
-                                                    bottom: BorderSide(
-                                                        width: 1.r,
-                                                        color: Color.fromARGB(
-                                                            12, 0, 0, 0)),
+                                           Material(
+                                                color: AppColors.white,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  updateTrackingData(
+                                                      "profile.shareApp",
+                                                      "${DateTime.now()}", {});
+                                                  Share.share(
+                                                    """${'Gérez vos associations et groupes avec *ASSO+* et obtenez vos bilans instantanément.'.tr()}\n${'Disponible ici'.tr()} : \nhttps://faroty.com/dl/groups \n${'et sur'.tr()} https://groups.faroty.com"""
+                                                        .tr(),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                    top: 20.h,
+                                                    left: 15.w,
+                                                    right: 15.w,
+                                                    bottom: 20.h,
                                                   ),
-                                                ),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            child: Icon(
-                                                              Icons
-                                                                  .share_outlined,
-                                                              color: AppColors
-                                                                  .greenAssociation,
-                                                              size: 18.sp,
+                                                  decoration: BoxDecoration(
+                                                    // color: Colors.black12,
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                          width: 1.r,
+                                                          color: Color.fromARGB(
+                                                              12, 0, 0, 0)),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              child: Icon(
+                                                                Icons
+                                                                    .share_outlined,
+                                                                color: AppColors
+                                                                    .greenAssociation,
+                                                                size: 18.sp,
+                                                              ),
+                                                              margin:
+                                                                  EdgeInsets.only(
+                                                                right: 10.w,
+                                                              ),
                                                             ),
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                              right: 10.w,
+                                                            Text(
+                                                              "partager_l'application"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                fontSize: 18.sp,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Text(
-                                                            "partager_l'application"
-                                                                .tr(),
-                                                            style: TextStyle(
-                                                              fontSize: 18.sp,
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Icon(
-                                                      Icons.arrow_right,
-                                                      color:
-                                                          AppColors.blackBlue,
-                                                      size: 18.sp,
-                                                    ),
-                                                  ],
+                                                      Icon(
+                                                        Icons.arrow_right,
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                        size: 18.sp,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),

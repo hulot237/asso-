@@ -35,7 +35,7 @@ Widget PageScaffold({
           ),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
             onTap: () {
               Navigator.pop(context);
             },
@@ -58,7 +58,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -156,7 +156,6 @@ class _ContactUsPageState extends State<ContactUsPage>
                         ),
                       ),
                       child: InkWell(
-                        splashColor: AppColors.colorButton.withOpacity(.5),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -209,7 +208,6 @@ class _ContactUsPageState extends State<ContactUsPage>
                         ),
                       ),
                       child: InkWell(
-                        splashColor: AppColors.colorButton.withOpacity(.5),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -287,7 +285,6 @@ class _ContactUsPageState extends State<ContactUsPage>
                           // SizedBox(height: 20,),
 
                           InkWell(
-                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
                               updateTrackingData("contactUs.linkedin",
                                   "${DateTime.now()}", {});
@@ -335,7 +332,6 @@ class _ContactUsPageState extends State<ContactUsPage>
                           ),
 
                           InkWell(
-                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
                               updateTrackingData(
                                   "contactUs.x", "${DateTime.now()}", {});
@@ -383,7 +379,6 @@ class _ContactUsPageState extends State<ContactUsPage>
                           ),
 
                           InkWell(
-                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
                               updateTrackingData("contactUs.instagram",
                                   "${DateTime.now()}", {});
@@ -431,7 +426,6 @@ class _ContactUsPageState extends State<ContactUsPage>
                           ),
 
                           InkWell(
-                            splashColor: AppColors.colorButton.withOpacity(.5),
                             onTap: () {
                               updateTrackingData("contactUs.facebook",
                                   "${DateTime.now()}", {});

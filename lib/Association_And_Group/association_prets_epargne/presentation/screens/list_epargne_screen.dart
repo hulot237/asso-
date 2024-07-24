@@ -8,6 +8,7 @@ import 'package:faroty_association_1/Association_And_Group/association_prets_epa
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/business_logic/prets_epargne_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_prets_epargne/data/prets_epargne_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -26,17 +27,17 @@ class ListEpargneScreen extends StatefulWidget {
 }
 
 class _ListEpargneScreenState extends State<ListEpargneScreen> {
-  Future<void> handleAllEpargne() async {
+  Future<void> handleAllEpargne(codeTournoisHist) async {
     final allCotisationAss = await context
         .read<PretEpargneCubit>()
-        .getAllAssEpargnes(AppCubitStorage().state.codeTournoisHist);
+        .getAllAssEpargnes(codeTournoisHist);
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    handleAllEpargne();
+    handleAllEpargne(AppCubitStorage().state.codeTournoisHist);
   }
 
   @override
@@ -56,7 +57,7 @@ class _ListEpargneScreenState extends State<ListEpargneScreen> {
         ),
         elevation: 0,
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -64,6 +65,153 @@ class _ListEpargneScreenState extends State<ListEpargneScreen> {
             colorIcon: AppColors.white,
           ),
         ),
+
+
+        actions: [
+          BlocBuilder<PretEpargneCubit, PretEpargneState>(
+        builder: (PretEpargneContext, PretEpargneState) {
+            final currentInfoAllTournoiAssCourant =
+                PretEpargneContext.read<UserGroupCubit>()
+                    .state
+                    .changeAssData;
+            return PopupMenuButton(
+              padding: EdgeInsets.all(0),
+              position: PopupMenuPosition.under,
+              child: Row(
+                children: [
+                  for (var item in currentInfoAllTournoiAssCourant!
+                      .user_group!.tournois!)
+                    if (item.tournois_code ==
+                        AppCubitStorage().state.codeTournoisHist)
+                      Center(
+                        child: Row(
+                          children: [
+                            Text(
+                              '${"tournoi".tr()} #${item.matricule}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                            if (item.is_default == 0)
+                              Icon(
+                                Icons.dangerous,
+                                size: 12.sp,
+                                color: AppColors.white,
+                              ),
+                          ],
+                        ),
+                      ),
+                  Icon(
+                    Icons.arrow_right_rounded,
+                    size: 15.sp,
+                  )
+                ],
+              ),
+              itemBuilder: (BuildContext context) => [
+                for (var item in currentInfoAllTournoiAssCourant!
+                    .user_group!.tournois!)
+                  PopupMenuItem(
+                    padding: EdgeInsets.all(0),
+                    onTap: () async {
+                      print(" before ${item.tournois_code}");
+                      await AppCubitStorage()
+                          .updateCodeTournoisHist(item.tournois_code!);
+                      print(
+                          " after ${AppCubitStorage().state.codeTournoisHist}");
+                    
+                      // await handleTournoiDefault(
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .codeTournoisHist);
+                      handleAllEpargne(AppCubitStorage().state.codeTournoisHist);
+                      // handleAllCotisationAssTournoi(
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .codeTournoisHist,
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .membreCode);
+                      // context
+                      //     .read<
+                      //         SanctionCubit>()
+                      //     .getAllSanctions(
+                      //         AppCubitStorage()
+                      //             .state
+                      //             .codeTournoisHist);
+                    },
+                    child: Container(
+                      color: item.tournois_code! ==
+                              AppCubitStorage().state.codeTournoisHist
+                          ? AppColors.blackBlue.withOpacity(.05)
+                          : null,
+                      padding: EdgeInsets.only(
+                        top: 15.h,
+                        bottom: 15.h,
+                        left: 10.w,
+                        right: 10.w,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 7.w,
+                                ),
+                                Text(
+                                  '${"tournoi".tr()} #${item.matricule}'
+                                      .tr(),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 70.w,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: item.is_default == 1
+                                  ? AppColors.backgroundAppBAr
+                                      .withOpacity(.1)
+                                  : AppColors.red.withOpacity(.1),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                              right: 10.w,
+                              top: 3.h,
+                              bottom: 3.h,
+                            ),
+                            child: Text(
+                              item.is_default == 1
+                                  ? 'Actif'.tr()
+                                  : "Inactif",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: item.is_default == 1
+                                    ? AppColors.backgroundAppBAr
+                                    : AppColors.red,
+                                // fontWeight:
+                                //     FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          })
+        ],
+     
       ),
       body: BlocBuilder<PretEpargneCubit, PretEpargneState>(
         builder: (PretEpargneContext, PretEpargneState) {
@@ -307,50 +455,53 @@ class _ListEpargneScreenState extends State<ListEpargneScreen> {
                                             .detailUser!["isMember"])
                                           // if (widget.nomBeneficiaire != "")
                                           Expanded(
-                                            child: InkWell(
-                                              onTap: () async {
-                                                showModalPayEpargne(
-                                                  context,
-                                                  "${currentEpargne["membre"]["first_name"]} ${currentEpargne["membre"]["last_name"] ?? ""}",
-                                                  // "resteAPayer",
-                                                  "${currentEpargne["saving_code"]}",
-                                                  "${currentEpargne["membre"]["membre_code"]}",
-                                                  9,
-                                                );
-                                                //   updateTrackingData(
-                                                //       "${widget.screenSource}.btnwithdrawnFundsContribution",
-                                                //       "${DateTime.now()}", {});
-                                                //   await launchWeb(
-                                                //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                                //     mode: LaunchMode.platformDefault,
-                                                //   );
-                                                //   print("object1");
-                                              },
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    height: 17.h,
-                                                    child: SvgPicture.asset(
-                                                      "assets/images/walletPayIcon.svg",
-                                                      fit: BoxFit.scaleDown,
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  showModalPayEpargne(
+                                                    context,
+                                                    "${currentEpargne["membre"]["first_name"]} ${currentEpargne["membre"]["last_name"] ?? ""}",
+                                                    // "resteAPayer",
+                                                    "${currentEpargne["saving_code"]}",
+                                                    "${currentEpargne["membre"]["membre_code"]}",
+                                                    9,
+                                                  );
+                                                  //   updateTrackingData(
+                                                  //       "${widget.screenSource}.btnwithdrawnFundsContribution",
+                                                  //       "${DateTime.now()}", {});
+                                                  //   await launchWeb(
+                                                  //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                                  //     mode: LaunchMode.platformDefault,
+                                                  //   );
+                                                  //   print("object1");
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      height: 17.h,
+                                                      child: SvgPicture.asset(
+                                                        "assets/images/walletPayIcon.svg",
+                                                        fit: BoxFit.scaleDown,
+                                                        color: AppColors
+                                                            .blackBlueAccent1,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 3.h,
-                                                  ),
-                                                  Text(
-                                                    "Dépôt".tr(),
-                                                    style: TextStyle(
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 11.sp,
+                                                    SizedBox(
+                                                      height: 3.h,
                                                     ),
-                                                  ),
-                                                ],
+                                                    Text(
+                                                      "Dépôt".tr(),
+                                                      style: TextStyle(
+                                                        color: AppColors
+                                                            .blackBlueAccent1,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 11.sp,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -663,49 +814,52 @@ class _PayEpargneWidgetState extends State<PayEpargneWidget> {
           SizedBox(
             height: 20.h,
           ),
-          InkWell(
-            onTap: () async {
-              setState(() {
-                load = true;
-              });
-              print(load);
-              await CotisationRepository().PayOneCotisation(
-                widget.codeEpargne,
-                infoUserController.text,
-                widget.codeMembre,
-                AppCubitStorage().state.codeAssDefaul,
-                hashId,
-                9,
-              );
-              context
-                  .read<PretEpargneCubit>()
-                  .getAllAssEpargnes(AppCubitStorage().state.codeTournoisHist);
-              // context.read<RecentEventCubit>().AllRecentEventCubit(AppCubitStorage().state.membreCode);
-              setState(() {
-                load = false;
-              });
-              print(load);
-              Navigator.pop(context);
-            },
-            child: load == true
-                ? CircularProgressIndicator(
-                    color: AppColors.colorButton,
-                  )
-                : Container(
-                    height: 45.h,
-                    decoration: BoxDecoration(
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(10.r)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Confirmer",
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
+          Material(
+                          color: AppColors.colorButton,
+                          borderRadius: BorderRadius.circular(10.r),
+            child: InkWell(
+              onTap: () async {
+                setState(() {
+                  load = true;
+                });
+                print(load);
+                await CotisationRepository().PayOneCotisation(
+                  widget.codeEpargne,
+                  infoUserController.text,
+                  widget.codeMembre,
+                  AppCubitStorage().state.codeAssDefaul,
+                  hashId,
+                  9,
+                );
+                context
+                    .read<PretEpargneCubit>()
+                    .getAllAssEpargnes(AppCubitStorage().state.codeTournoisHist);
+                // context.read<RecentEventCubit>().AllRecentEventCubit(AppCubitStorage().state.membreCode);
+                setState(() {
+                  load = false;
+                });
+                print(load);
+                Navigator.pop(context);
+              },
+              child: load == true
+                  ? CircularProgressIndicator(
+                      color: AppColors.colorButton,
+                    )
+                  : Container(
+                      height: 45.h,
+                      // decoration: BoxDecoration(
+                      //     ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Confirmer",
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
-                  ),
+            ),
           )
         ],
       ),
@@ -729,90 +883,92 @@ class _buttonSuspendState extends State<buttonSuspend> {
   bool suspendLoaded = false;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: AppColors.blackBlue,
-      onTap: () async {
-        setState(() {
-          suspendLoaded = true;
-        });
-
-        if (widget.currentEpargne["is_active"] == 1) {
-          await PretEpargneRepository()
-              .suspendEpargne(widget.currentEpargne["saving_code"]);
-        } else {
-          await PretEpargneRepository()
-              .activeEpargne(widget.currentEpargne["saving_code"]);
-        }
-        await context
-            .read<PretEpargneCubit>()
-            .getAllAssEpargnes(AppCubitStorage().state.codeTournoisHist);
-
-        setState(() {
-          suspendLoaded = false;
-        });
-        //   print("object3");
-        //   updateTrackingData(
-        //       "${widget.screenSource}.btnShareContribution",
-        //       "${DateTime.now()}", {});
-
-        //   Share.share(context
-        //           .read<AuthCubit>()
-        //           .state
-        //           .detailUser!["isMember"]
-        //       ? "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-        //       : "Nouvelle cotisation créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
-        // },
-        // onTap: () async {
-        //   updateTrackingData("transactions.btnAddSharesaving", "${DateTime.now()}", {});
-        //     Share.share(
-        //        "Vous pouvez *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
-        //   await launchWeb(
-        //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/loan?query=1&app_mode=mobile",
-        //     mode: LaunchMode.platformDefault,
-        //   );
-      },
-      child: suspendLoaded
-          ? Center(
-              child: Container(
-                width: 20.r,
-                height: 20.r,
-                child: CircularProgressIndicator(
-                  color: AppColors.green,
-                  strokeWidth: 2.w,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () async {
+          setState(() {
+            suspendLoaded = true;
+          });
+      
+          if (widget.currentEpargne["is_active"] == 1) {
+            await PretEpargneRepository()
+                .suspendEpargne(widget.currentEpargne["saving_code"]);
+          } else {
+            await PretEpargneRepository()
+                .activeEpargne(widget.currentEpargne["saving_code"]);
+          }
+          await context
+              .read<PretEpargneCubit>()
+              .getAllAssEpargnes(AppCubitStorage().state.codeTournoisHist);
+      
+          setState(() {
+            suspendLoaded = false;
+          });
+          //   print("object3");
+          //   updateTrackingData(
+          //       "${widget.screenSource}.btnShareContribution",
+          //       "${DateTime.now()}", {});
+      
+          //   Share.share(context
+          //           .read<AuthCubit>()
+          //           .state
+          //           .detailUser!["isMember"]
+          //       ? "Aide-moi à payer ma cotisation *${widget.motifCotisations}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+          //       : "Nouvelle cotisation créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+          // },
+          // onTap: () async {
+          //   updateTrackingData("transactions.btnAddSharesaving", "${DateTime.now()}", {});
+          //     Share.share(
+          //        "Vous pouvez *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? "*${(widget.nomBeneficiaire)}*" : "*${(widget.source)}*"}.\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+          //   await launchWeb(
+          //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/loan?query=1&app_mode=mobile",
+          //     mode: LaunchMode.platformDefault,
+          //   );
+        },
+        child: suspendLoaded
+            ? Center(
+                child: Container(
+                  width: 20.r,
+                  height: 20.r,
+                  child: CircularProgressIndicator(
+                    color: AppColors.green,
+                    strokeWidth: 2.w,
+                  ),
                 ),
-              ),
-            )
-          : Column(
-              children: [
-                Container(
-                  height: 17.h,
-                  child: SvgPicture.asset(
+              )
+            : Column(
+                children: [
+                  Container(
+                    height: 17.h,
+                    child: SvgPicture.asset(
+                      widget.currentEpargne["is_active"] == 1
+                          ? "assets/images/suspendIcon.svg"
+                          : "assets/images/activeIcon.svg",
+                      fit: BoxFit.scaleDown,
+                      color: widget.currentEpargne["is_active"] == 1
+                          ? AppColors.red
+                          : AppColors.green,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 3.h,
+                  ),
+                  Text(
                     widget.currentEpargne["is_active"] == 1
-                        ? "assets/images/suspendIcon.svg"
-                        : "assets/images/activeIcon.svg",
-                    fit: BoxFit.scaleDown,
-                    color: widget.currentEpargne["is_active"] == 1
-                        ? AppColors.red
-                        : AppColors.green,
+                        ? "Suspendre".tr()
+                        : "Activer".tr(),
+                    style: TextStyle(
+                      color: widget.currentEpargne["is_active"] == 1
+                          ? AppColors.red
+                          : AppColors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11.sp,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 3.h,
-                ),
-                Text(
-                  widget.currentEpargne["is_active"] == 1
-                      ? "Suspendre".tr()
-                      : "Activer".tr(),
-                  style: TextStyle(
-                    color: widget.currentEpargne["is_active"] == 1
-                        ? AppColors.red
-                        : AppColors.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 11.sp,
-                  ),
-                ),
-              ],
-            ),
+                ],
+              ),
+      ),
     );
   }
 }

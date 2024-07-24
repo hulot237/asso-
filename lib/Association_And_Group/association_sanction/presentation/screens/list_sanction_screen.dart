@@ -6,8 +6,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_sanction/business_logic/sanction_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_sanction/business_logic/sanction_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_sanction/presentation/widgets/widgetSanction.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -27,7 +30,7 @@ class ListSanctionScreen extends StatefulWidget {
 }
 
 class _ListSanctionScreenState extends State<ListSanctionScreen> {
-  String selectedCategory = "Toutes";
+  String selectedCategory = "Toutes".tr();
   bool showCategories = true;
   bool isLoading = false;
   ScrollController _scrollController = ScrollController();
@@ -80,7 +83,9 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
         centerTitle: false,
         // toolbarHeight: 130.h,
         title: Text(
-          'Vos sanctions'.tr(),
+          context.read<AuthCubit>().state.detailUser!["isMember"]
+              ? "Vos sanctions".tr()
+              : "Liste des sanctions".tr(),
           // "historiques".tr(),
           style: TextStyle(
               fontSize: 16.sp,
@@ -89,7 +94,7 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
         ),
         elevation: 0,
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -97,6 +102,165 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
             colorIcon: AppColors.white,
           ),
         ),
+
+        actions: [
+          BlocBuilder<SanctionCubit, SanctionState>(
+              builder: (SanctionContext, SanctionState) {
+            return BlocBuilder<AuthCubit, AuthState>(
+                builder: (AuthContext, AuthState) {
+              return BlocBuilder<DetailTournoiCourantCubit,
+                      DetailTournoiCourantState>(
+                  builder: (DetailTournoiContext, DetailTournoiState) {
+                final currentInfoAllTournoiAssCourant =
+                    DetailTournoiContext.read<UserGroupCubit>()
+                        .state
+                        .changeAssData;
+                return PopupMenuButton(
+                  padding: EdgeInsets.all(0),
+                  position: PopupMenuPosition.under,
+                  child: Row(
+                    children: [
+                      for (var item in currentInfoAllTournoiAssCourant!
+                          .user_group!.tournois!)
+                        if (item.tournois_code ==
+                            AppCubitStorage().state.codeTournoisHist)
+                          Center(
+                            child: Row(
+                              children: [
+                                Text(
+                                  '${"tournoi".tr()} #${item.matricule}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.sp,
+                                  ),
+                                ),
+                                if (item.is_default == 0)
+                                  Icon(
+                                    Icons.dangerous,
+                                    size: 12.sp,
+                                    color: AppColors.white,
+                                  ),
+                              ],
+                            ),
+                          ),
+                      Icon(
+                        Icons.arrow_right_rounded,
+                        size: 15.sp,
+                      )
+                    ],
+                  ),
+                  itemBuilder: (BuildContext context) => [
+                    for (var item in currentInfoAllTournoiAssCourant!
+                        .user_group!.tournois!)
+                      PopupMenuItem(
+                        padding: EdgeInsets.all(0),
+                        onTap: () async {
+                          print(" before ${item.tournois_code}");
+                          await AppCubitStorage()
+                              .updateCodeTournoisHist(item.tournois_code!);
+                          print(
+                              " after ${AppCubitStorage().state.codeTournoisHist}");
+
+                          // await handleTournoiDefault(
+                          //     AppCubitStorage()
+                          //         .state
+                          //         .codeTournoisHist);
+                          context
+                                  .read<AuthCubit>()
+                                  .state
+                                  .detailUser!["isMember"]
+                              ? handleAllSanction()
+                              : handleDetailUser(
+                                  AppCubitStorage().state.membreCode,
+                                  AppCubitStorage().state.codeTournoisHist);
+                          // handleAllCotisationAssTournoi(
+                          //     AppCubitStorage()
+                          //         .state
+                          //         .codeTournoisHist,
+                          //     AppCubitStorage()
+                          //         .state
+                          //         .membreCode);
+                          // context
+                          //     .read<
+                          //         SanctionCubit>()
+                          //     .getAllSanctions(
+                          //         AppCubitStorage()
+                          //             .state
+                          //             .codeTournoisHist);
+                        },
+                        child: Container(
+                          color: item.tournois_code! ==
+                                  AppCubitStorage().state.codeTournoisHist
+                              ? AppColors.blackBlue.withOpacity(.05)
+                              : null,
+                          padding: EdgeInsets.only(
+                            top: 15.h,
+                            bottom: 15.h,
+                            left: 10.w,
+                            right: 10.w,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 7.w,
+                                    ),
+                                    Text(
+                                      '${"tournoi".tr()} #${item.matricule}'
+                                          .tr(),
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: AppColors.blackBlue,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 70.w,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: item.is_default == 1
+                                      ? AppColors.backgroundAppBAr
+                                          .withOpacity(.1)
+                                      : AppColors.red.withOpacity(.1),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                padding: EdgeInsets.only(
+                                  left: 10.w,
+                                  right: 10.w,
+                                  top: 3.h,
+                                  bottom: 3.h,
+                                ),
+                                child: Text(
+                                  item.is_default == 1
+                                      ? 'Actif'.tr()
+                                      : "Inactif",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: item.is_default == 1
+                                        ? AppColors.backgroundAppBAr
+                                        : AppColors.red,
+                                    // fontWeight:
+                                    //     FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              });
+            });
+          })
+        ],
       ),
       body:
           BlocBuilder<AuthCubit, AuthState>(builder: (AuthContext, AuthState) {
@@ -136,18 +300,27 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
                       Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(left: 10.w),
+                            margin: EdgeInsets.only(left: 10.w, top: 10.h),
                             child: AnimatedContainer(
                               duration: Duration(milliseconds: 300),
                               height: showCategories
-                                  ? 40.h
+                                  ? 30.h
                                   : 0, // Hauteur des boutons de catégorie
                               child: SingleChildScrollView(
                                 child: Row(
                                   children: [
-                                    buildCategoryButton("Toutes"),
-                                    buildCategoryButton("Payé"),
-                                    buildCategoryButton("Non payé"),
+SizedBox(
+                                            width: 10.w,
+                                          ),
+                                    buildCategoryButton("Toutes".tr()),
+                                    SizedBox(
+                                            width: 5.w,
+                                          ),
+                                    buildCategoryButton("payé".tr()),
+                                    SizedBox(
+                                            width: 5.w,
+                                          ),
+                                    buildCategoryButton("non_payé".tr()),
                                   ],
                                 ),
                               ),
@@ -171,11 +344,11 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   final currentSaction =
                                       currentDetailUser[index];
-                                  if (selectedCategory == "Toutes" ||
-                                      (selectedCategory == "Payé" &&
+                                  if (selectedCategory == "Toutes".tr() ||
+                                      (selectedCategory == "payé".tr() &&
                                           currentSaction["is_sanction_payed"] !=
                                               0) ||
-                                      (selectedCategory == "Non payé" &&
+                                      (selectedCategory == "non_payé".tr() &&
                                           currentSaction["is_sanction_payed"] ==
                                               0)) {
                                     return Container(
@@ -346,104 +519,106 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
                     ],
                   )
                 : Stack(
-                  children: [
-                    ListView.builder(
-                      itemCount: 1,
-                      itemBuilder: (BuildContext context, int index) {
-                       return Container(
-                        height:  MediaQuery.of(context).size.height,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "aucune_sanction".tr(),
-                                style: TextStyle(
-                                    color: AppColors.blackBlueAccent1,
-                                    fontWeight: FontWeight.w100,
-                                    fontSize: 20.sp),
-                              ),
-                              if (!context
-                                  .read<AuthCubit>()
-                                  .state
-                                  .detailUser!["isMember"])
-                                InkWell(
-                                  onTap: () async {
-                                    updateTrackingData(
-                                        "transactions.btnAddSanction",
-                                        "${DateTime.now()}", {});
-                                    launchWeb(
-                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanctions?query=1&app_mode=mobile",
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.pageBackground,
-                                      border: Border.all(
-                                        width: 2.w,
-                                        color:
-                                            AppColors.blackBlue.withOpacity(1),
-                                      ),
-                                      borderRadius: BorderRadius.circular(
-                                        20.r,
-                                      ),
-                                    ),
-                                    // alignment: Alignment
-                                    //     .bottomLeft,
-                                    margin: EdgeInsets.only(
-                                      top: 8.w,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w,
-                                      vertical: 7.h,
-                                    ),
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.5,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                          "Ajouter une sanction".tr(),
-                                          style: TextStyle(
+                    children: [
+                      ListView.builder(
+                        itemCount: 1,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "aucune_sanction".tr(),
+                                  style: TextStyle(
+                                      color: AppColors.blackBlueAccent1,
+                                      fontWeight: FontWeight.w100,
+                                      fontSize: 20.sp),
+                                ),
+                                if (!context
+                                    .read<AuthCubit>()
+                                    .state
+                                    .detailUser!["isMember"])
+                                 Material(
+                                color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        updateTrackingData(
+                                            "transactions.btnAddSanction",
+                                            "${DateTime.now()}", {});
+                                        launchWeb(
+                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanctions?query=1&app_mode=mobile",
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 2.w,
                                             color: AppColors.blackBlue
                                                 .withOpacity(1),
-                                            fontWeight: FontWeight.w900,
-                                            fontSize: 18.sp,
-                                            letterSpacing: 0.2.w,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            20.r,
                                           ),
                                         ),
-                                        Container(
-                                          width: 25.w,
-                                          height: 25.w,
-                                          margin: EdgeInsets.only(left: 3.w),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(360),
-                                            border: Border.all(
-                                              width: 2.w,
-                                              color: AppColors.blackBlue
-                                                  .withOpacity(1),
+                                        // alignment: Alignment
+                                        //     .bottomLeft,
+                                        margin: EdgeInsets.only(
+                                          top: 8.w,
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w,
+                                          vertical: 7.h,
+                                        ),
+                                        width: MediaQuery.of(context).size.width /
+                                            1.5,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              "Ajouter une sanction".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlue
+                                                    .withOpacity(1),
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 18.sp,
+                                                letterSpacing: 0.2.w,
+                                              ),
                                             ),
-                                          ),
-                                          child: SvgPicture.asset(
-                                            "assets/images/addIcon.svg",
-                                            fit: BoxFit.scaleDown,
-                                            color: AppColors.blackBlue
-                                                .withOpacity(1),
-                                          ),
+                                            Container(
+                                              width: 25.w,
+                                              height: 25.w,
+                                              margin: EdgeInsets.only(left: 3.w),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(360),
+                                                border: Border.all(
+                                                  width: 2.w,
+                                                  color: AppColors.blackBlue
+                                                      .withOpacity(1),
+                                                ),
+                                              ),
+                                              child: SvgPicture.asset(
+                                                "assets/images/addIcon.svg",
+                                                fit: BoxFit.scaleDown,
+                                                color: AppColors.blackBlue
+                                                    .withOpacity(1),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
           },
         );
       }),
@@ -452,7 +627,7 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
 
   // Méthode pour construire un bouton de catégorie
   Widget buildCategoryButton(String category) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         setState(() {
           isLoading = true;
@@ -466,11 +641,11 @@ class _ListSanctionScreenState extends State<ListSanctionScreen> {
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-        margin: EdgeInsets.only(
-          top: 10.h,
-          bottom: 0,
-          left: 5.w,
-        ),
+        // margin: EdgeInsets.only(
+        //   top: 10.h,
+        //   bottom: 0,
+        //   left: 5.w,
+        // ),
         decoration: BoxDecoration(
           color: category == selectedCategory
               ? AppColors.colorButton.withOpacity(0.1)

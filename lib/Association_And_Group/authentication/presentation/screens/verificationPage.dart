@@ -401,10 +401,14 @@ class _VerificationPageState extends State<VerificationPage>
                                             )
                                           : ElevatedButton(
                                               onPressed: () async {
-                                                if (widget.isForCreate) {
-                                                  await handleConfirmationForCreate();
-                                                } else {
-                                                  await handleConfirmation();
+                                                await handleConfirmationForCreate();
+                                                  print("_pinController ${_pinController.text}");
+                                                if (_pinController.text != "") {
+                                                  if (widget.isForCreate) {
+                                                    await handleConfirmationForCreate();
+                                                  } else {
+                                                    await handleConfirmation();
+                                                  }
                                                 }
                                               },
                                               child: Text(

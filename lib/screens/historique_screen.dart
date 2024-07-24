@@ -100,7 +100,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.red,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -1229,7 +1229,6 @@ class _HistoriqueScreenState extends State<HistoriqueScreen>
                                                                               child: Container(
                                                                                 height: 50,
                                                                                 decoration: BoxDecoration(
-                                                                                  color: AppColors.pageBackground,
                                                                                   border: Border.all(
                                                                                     width: 2.w,
                                                                                     color: AppColors.blackBlue.withOpacity(1),

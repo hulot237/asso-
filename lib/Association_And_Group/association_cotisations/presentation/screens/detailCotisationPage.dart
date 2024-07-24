@@ -87,7 +87,7 @@ Widget PageScaffold({
               color: AppColors.white,
               fontWeight: FontWeight.bold),
         ),
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -112,7 +112,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -264,35 +264,31 @@ class _DetailCotisationPageState extends State<DetailCotisationPage>
                     List<Widget> listWidgetCotis = listeOkayCotisation.map(
                       (monObjet) {
                         return Card(
-                          child: InkWell(
-                            onTap: () {
-                              print("${monObjet["membre"]["membre_code"]}");
-                            },
-                            child: BlocBuilder<CotisationDetailCubit,
-                                    CotisationDetailState>(
-                                builder: (CotiDetailcontext, CotiDetailstate) {
-                              return WidgetHistoriqueCotisation(
-                                isCotisation: true,
-                                codeMembre: monObjet["membre"]["membre_code"],
-                                versement_status: monObjet["statut"],
-                                matricule: monObjet["membre"]["matricule"],
-                                montantTotalAVerser: monObjet["amount_to_pay"],
-                                montantVersee: monObjet["balance"],
-                                resteAPayer: monObjet["amount_remaining"],
-                                codeCotisation: widget.codeCotisation,
-                                nom: monObjet["membre"]["first_name"] == null
-                                    ? ""
-                                    : monObjet["membre"]["first_name"],
-                                photoProfil:
-                                    monObjet["membre"]["photo_profil"] == null
-                                        ? ""
-                                        : monObjet["membre"]["photo_profil"],
-                                prenom: monObjet["membre"]["last_name"] == null
-                                    ? ""
-                                    : monObjet["membre"]["last_name"],
-                              );
-                            }),
-                          ),
+                          child: BlocBuilder<CotisationDetailCubit,
+                                  CotisationDetailState>(
+                              builder: (CotiDetailcontext, CotiDetailstate) {
+                            return WidgetHistoriqueCotisation(
+                              type : widget.type,
+                              isCotisation: true,
+                              codeMembre: monObjet["membre"]["membre_code"],
+                              versement_status: monObjet["statut"],
+                              matricule: monObjet["membre"]["matricule"],
+                              montantTotalAVerser: monObjet["amount_to_pay"],
+                              montantVersee: monObjet["balance"],
+                              resteAPayer: monObjet["amount_remaining"],
+                              codeCotisation: widget.codeCotisation,
+                              nom: monObjet["membre"]["first_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["first_name"],
+                              photoProfil:
+                                  monObjet["membre"]["photo_profil"] == null
+                                      ? ""
+                                      : monObjet["membre"]["photo_profil"],
+                              prenom: monObjet["membre"]["last_name"] == null
+                                  ? ""
+                                  : monObjet["membre"]["last_name"],
+                            );
+                          }),
                         );
                       },
                     ).toList();

@@ -132,8 +132,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               ),
                             ),
                           ),
-                          if (widget.isActiveRencontre == 0 &&
-                              isPasseDate(widget.dateRencontreAPI))
+                          if (widget.isActiveRencontre == 0 )
                             Container(
                               decoration: BoxDecoration(
                                   color: AppColors.blackBlue,
@@ -152,9 +151,9 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               ),
                             ),
                           if (widget.isActiveRencontre == 1 &&
-                              isPasseDate(widget.dateRencontreAPI))
+                              isPasseDateOneDay(widget.dateRencontreAPI))
                             TermineWidget(),
-                          if (!isPasseDate(widget.dateRencontreAPI))
+                          if (widget.isActiveRencontre == 1 && !isPasseDateOneDay(widget.dateRencontreAPI))
                           
                             EncoursWidget()
                         ],
@@ -290,72 +289,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 builder: (context, state) {
                               if (state.isLoading == null ||
                                   state.isLoading == true)
-                                return GestureDetector(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        right: BorderSide(
-                                          width: 2.5.r,
-                                          color: AppColors.white,
-                                        ),
-                                      ),
-                                      color: Colors.transparent,
-                                    ),
-                                    // alignment: Alignment.center,
-                                    padding: EdgeInsets.all(5.r),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            bottom: 3.h,
-                                          ),
-                                          child: Text(
-                                            "Sanctions",
-                                            style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w800,
-                                              color: Color.fromARGB(
-                                                  171, 20, 45, 99),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 16.w,
-                                          height: 16.w,
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              color: AppColors.green,
-                                              strokeWidth: 0.1,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              final currentDetailSeanceSanction = context
-                                  .read<SeanceCubit>()
-                                  .state
-                                  .detailSeance!["sanctions"];
-                              return GestureDetector(
-                                onTap: () {
-                                  if (checkTransparenceStatus(
-                                      context
-                                          .read<UserGroupCubit>()
-                                          .state
-                                          .changeAssData!
-                                          .user_group!
-                                          .configs,
-                                      context
-                                          .read<AuthCubit>()
-                                          .state
-                                          .detailUser!["isMember"]))
-                                    Modal().showModalPersonSanctionner(
-                                        context, currentDetailSeanceSanction);
-                                },
-                                child: Container(
+                                return Container(
                                   decoration: BoxDecoration(
                                     border: Border(
                                       right: BorderSide(
@@ -365,41 +299,107 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     ),
                                     color: Colors.transparent,
                                   ),
-                                  // // alignment: Alignment.center,
+                                  // alignment: Alignment.center,
                                   padding: EdgeInsets.all(5.r),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Container(
-                                        // margin: EdgeInsets.only(bottom: 3.h),
+                                        margin: EdgeInsets.only(
+                                          bottom: 3.h,
+                                        ),
                                         child: Text(
                                           "Sanctions",
                                           style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w800,
-                                            color: AppColors.blackBlueAccent1,
+                                            color: Color.fromARGB(
+                                                171, 20, 45, 99),
                                           ),
                                         ),
                                       ),
                                       Container(
-                                        child: Text(
-                                          "${currentDetailSeanceSanction.length}",
-                                          style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: AppColors.blackBlue,
+                                        width: 16.w,
+                                        height: 16.w,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.green,
+                                            strokeWidth: 0.1,
                                           ),
                                         ),
                                       ),
                                     ],
+                                  ),
+                                );
+                              final currentDetailSeanceSanction = context
+                                  .read<SeanceCubit>()
+                                  .state
+                                  .detailSeance!["sanctions"];
+                              return Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    if (checkTransparenceStatus(
+                                        context
+                                            .read<UserGroupCubit>()
+                                            .state
+                                            .changeAssData!
+                                            .user_group!
+                                            .configs,
+                                        context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .detailUser!["isMember"]))
+                                      Modal().showModalPersonSanctionner(
+                                          context, currentDetailSeanceSanction);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                          width: 2.5.r,
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                      
+                                    ),
+                                    // // alignment: Alignment.center,
+                                    padding: EdgeInsets.all(5.r),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Container(
+                                          // margin: EdgeInsets.only(bottom: 3.h),
+                                          child: Text(
+                                            "Sanctions",
+                                            style: TextStyle(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w800,
+                                              color: AppColors.blackBlueAccent1,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            "${currentDetailSeanceSanction.length}",
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w800,
+                                              color: AppColors.blackBlue,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
                             }),
                           ),
                           Expanded(
-                            child: GestureDetector(
+                            child: InkWell(
                               onTap: () {
                                 if (checkTransparenceStatus(
                                     context
@@ -525,66 +525,15 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            InkWell(
-                              onTap: () async {
-                                // updateTrackingData("home.btnAdminister",
-                                //     "${DateTime.now()}", {});
-                                launchWeb(
-                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}&app_mode=mobile",
-                                );
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 6,
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      // color: const Color.fromARGB(255, 0, 0, 0),
-                                      height: 17.h,
-                                      // width: 230,
-                                      child: SvgPicture.asset(
-                                        "assets/images/folderManageSimpleIcon.svg",
-                                        fit: BoxFit.scaleDown,
-                                        color: AppColors.blackBlueAccent1,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Text(
-                                      "Gerer".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlueAccent1,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11.sp,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          if (!context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 &&
-                                isPasseDate(widget.dateRencontreAPI))
-                              // if (widget.nomBeneficiaire != "")
-                              InkWell(
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
                                 onTap: () async {
-                                  _showSimpleModalDialog(
-                                    context,
-                                    widget.identifiantRencontre,
-                                    widget.codeSeance,
+                                  // updateTrackingData("home.btnAdminister",
+                                  //     "${DateTime.now()}", {});
+                                  launchWeb(
+                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}&app_mode=mobile",
                                   );
-                                  // updateTrackingData(
-                                  //       "home.btnwithdrawnFundsContribution",
-                                  //       "${DateTime.now()}", {});
-                                  // SeanceRepository().CloseSeance(widget.codeSeance);
-                                  //   await launchWeb(
-                                  //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                  //     mode: LaunchMode.platformDefault,
-                                  //   );
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width / 6,
@@ -592,9 +541,11 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                   child: Column(
                                     children: [
                                       Container(
+                                        // color: const Color.fromARGB(255, 0, 0, 0),
                                         height: 17.h,
+                                        // width: 230,
                                         child: SvgPicture.asset(
-                                          "assets/images/closeSeanceIcon.svg",
+                                          "assets/images/folderManageSimpleIcon.svg",
                                           fit: BoxFit.scaleDown,
                                           color: AppColors.blackBlueAccent1,
                                         ),
@@ -603,8 +554,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                         height: 3.h,
                                       ),
                                       Text(
-                                        "Cloturer".tr(),
-                                        // textAlign: TextAlign.center,
+                                        "Gerer".tr(),
                                         style: TextStyle(
                                           color: AppColors.blackBlueAccent1,
                                           fontWeight: FontWeight.bold,
@@ -615,53 +565,111 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                   ),
                                 ),
                               ),
-                          InkWell(
-                            splashColor: AppColors.blackBlue,
-                            onTap: () {
-                              String message;
-                              message =
-                                  "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(widget.dateRencontreAPI)}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
-
-                              message +=
-                                  "👉🏽 ${"recepteur".tr().toUpperCase()} : *${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}*\n";
-                              message +=
-                                  "👉🏽 ${"lieu".tr().toUpperCase()} : *${widget.lieuRencontre}*\n";
-                              message +=
-                                  "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(widget.dateRencontreAPI)}*\n\n";
-
-                              message +=
-                                  "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
-
-                              message += "*by ASSO+*";
-
-
-                              Share.share(message);
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 6,
-                              margin: EdgeInsets.only(top: 10.h),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 17.h,
-                                    child: SvgPicture.asset(
-                                      "assets/images/shareSimpleIcon.svg",
-                                      fit: BoxFit.scaleDown,
-                                      color: AppColors.blackBlueAccent1,
+                            ),
+                          if (!context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"])
+                            if (widget.isActiveRencontre == 1 )
+                              // if (widget.nomBeneficiaire != "")
+                              Material(
+                              color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {
+                                    _showSimpleModalDialog(
+                                      context,
+                                      widget.identifiantRencontre,
+                                      widget.codeSeance,
+                                    );
+                                    // updateTrackingData(
+                                    //       "home.btnwithdrawnFundsContribution",
+                                    //       "${DateTime.now()}", {});
+                                    // SeanceRepository().CloseSeance(widget.codeSeance);
+                                    //   await launchWeb(
+                                    //     "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                    //     mode: LaunchMode.platformDefault,
+                                    //   );
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width / 6,
+                                    margin: EdgeInsets.only(top: 10.h),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 17.h,
+                                          child: SvgPicture.asset(
+                                            "assets/images/closeSeanceIcon.svg",
+                                            fit: BoxFit.scaleDown,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 3.h,
+                                        ),
+                                        Text(
+                                          "Cloturer".tr(),
+                                          // textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: AppColors.blackBlueAccent1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11.sp,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Text(
-                                    "Partager".tr(),
-                                    style: TextStyle(
-                                      color: AppColors.blackBlueAccent1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11.sp,
+                                ),
+                              ),
+                          Material(
+                              color: Colors.transparent,
+                            child: InkWell(
+                              splashColor: AppColors.blackBlue,
+                              onTap: () {
+                                String message;
+                                message =
+                                    "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(widget.dateRencontreAPI)}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
+                            
+                                message +=
+                                    "👉🏽 ${"recepteur".tr().toUpperCase()} : *${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}*\n";
+                                message +=
+                                    "👉🏽 ${"lieu".tr().toUpperCase()} : *${widget.lieuRencontre}*\n";
+                                message +=
+                                    "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(widget.dateRencontreAPI)}*\n\n";
+                            
+                                message +=
+                                    "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
+                            
+                                message += "*by ASSO+*";
+                            
+                            
+                                Share.share(message);
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 6,
+                                margin: EdgeInsets.only(top: 10.h),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 17.h,
+                                      child: SvgPicture.asset(
+                                        "assets/images/shareSimpleIcon.svg",
+                                        fit: BoxFit.scaleDown,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      height: 3.h,
+                                    ),
+                                    Text(
+                                      "Partager".tr(),
+                                      style: TextStyle(
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -693,47 +701,50 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               }
 
                               // Sinon, retournez le InkWell avec son child
-                              return InkWell(
-                                onTap: () async {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RapportViewScreen(
-                                        src: currentDetailSeanceRapport,
-                                        nomElement:
-                                            "${"rencontre".tr()} ${widget.identifiantRencontre}",
+                              return Material(
+                              color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => RapportViewScreen(
+                                          src: currentDetailSeanceRapport,
+                                          nomElement:
+                                              "${"rencontre".tr()} ${widget.identifiantRencontre}",
+                                        ),
                                       ),
+                                    );
+                                  },
+                                  child: Container(
+                                    // color: AppColors.red,
+                                    width: MediaQuery.of(context).size.width / 6,
+                                    margin: EdgeInsets.only(top: 10.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 17.h,
+                                          child: SvgPicture.asset(
+                                            "assets/images/downPdf.svg",
+                                            fit: BoxFit.scaleDown,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 3.h,
+                                        ),
+                                        Text(
+                                          "Rapport PDF".tr(),
+                                          style: TextStyle(
+                                            color: AppColors.blackBlueAccent1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11.sp,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                },
-                                child: Container(
-                                  // color: AppColors.red,
-                                  width: MediaQuery.of(context).size.width / 6,
-                                  margin: EdgeInsets.only(top: 10.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 17.h,
-                                        child: SvgPicture.asset(
-                                          "assets/images/downPdf.svg",
-                                          fit: BoxFit.scaleDown,
-                                          color: AppColors.blackBlueAccent1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 3.h,
-                                      ),
-                                      Text(
-                                        "Rapport PDF".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlueAccent1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11.sp,
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ),
                               );
@@ -743,165 +754,173 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 &&
-                                isPasseDate(widget.dateRencontreAPI))
-                              InkWell(
-                                onTap: () async {
-                                  // updateTrackingData("home.btnAdminister",
-                                  //     "${DateTime.now()}", {});
-                                  launchWeb(
-                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=2&app_mode=mobile",
-                                  );
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width / 6,
-                                  margin: EdgeInsets.only(top: 10.h),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        // color: const Color.fromARGB(255, 0, 0, 0),
-                                        height: 17.h,
-                                        // width: 230,
-                                        child: SvgPicture.asset(
-                                          "assets/images/addSanction.svg",
-                                          fit: BoxFit.scaleDown,
-                                          color: AppColors.blackBlueAccent1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 3.h,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Créer une".tr(),
-                                            style: TextStyle(
-                                              color: AppColors.blackBlueAccent1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11.sp,
-                                            ),
-                                          ),
-                                          Text(
-                                            "sanction".tr(),
-                                            style: TextStyle(
-                                              color: AppColors.blackBlueAccent1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11.sp,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                          if (!context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 &&
-                                isPasseDate(widget.dateRencontreAPI))
-                              InkWell(
-                                onTap: () async {
-                                  // updateTrackingData("home.btnAdminister",
-                                  //     "${DateTime.now()}", {});
-                                  launchWeb(
-                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=1&app_mode=mobile",
-                                  );
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width / 6,
-                                  margin: EdgeInsets.only(top: 10.h),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        // color: const Color.fromARGB(255, 0, 0, 0),
-                                        height: 17.h,
-                                        // width: 230,
-                                        child: SvgPicture.asset(
-                                          "assets/images/addCotisation.svg",
-                                          fit: BoxFit.scaleDown,
-                                          color: AppColors.blackBlueAccent1,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 3.h,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Créer une".tr(),
-                                            style: TextStyle(
-                                              color: AppColors.blackBlueAccent1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11.sp,
-                                            ),
-                                          ),
-                                          Text(
-                                            "cotisation".tr(),
-                                            style: TextStyle(
-                                              color: AppColors.blackBlueAccent1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11.sp,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                          if (!context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"])
-                            InkWell(
-                              onTap: () async {
-                                // updateTrackingData("home.btnAdminister",
-                                //     "${DateTime.now()}", {});
-                                launchWeb(
-                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=3&app_mode=mobile",
-                                );
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 6,
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      // color: const Color.fromARGB(255, 0, 0, 0),
-                                      height: 17.h,
-                                      // width: 230,
-                                      child: SvgPicture.asset(
-                                        "assets/images/saisirRapport.svg",
-                                        fit: BoxFit.scaleDown,
-                                        color: AppColors.blackBlueAccent1,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Column(
+                            if (widget.isActiveRencontre == 1 )
+                              Material(
+                              color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {
+                                    // updateTrackingData("home.btnAdminister",
+                                    //     "${DateTime.now()}", {});
+                                    launchWeb(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=2&app_mode=mobile",
+                                    );
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width / 6,
+                                    margin: EdgeInsets.only(top: 10.h),
+                                    child: Column(
                                       children: [
-                                        Text(
-                                          "Saisir le".tr(),
-                                          style: TextStyle(
+                                        Container(
+                                          // color: const Color.fromARGB(255, 0, 0, 0),
+                                          height: 17.h,
+                                          // width: 230,
+                                          child: SvgPicture.asset(
+                                            "assets/images/addSanction.svg",
+                                            fit: BoxFit.scaleDown,
                                             color: AppColors.blackBlueAccent1,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11.sp,
                                           ),
                                         ),
-                                        Text(
-                                          "rapport".tr(),
-                                          style: TextStyle(
-                                            color: AppColors.blackBlueAccent1,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11.sp,
-                                          ),
+                                        SizedBox(
+                                          height: 3.h,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "Créer une".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlueAccent1,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11.sp,
+                                              ),
+                                            ),
+                                            Text(
+                                              "sanction".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlueAccent1,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11.sp,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
+                                ),
+                              ),
+                          if (!context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"])
+                            if (widget.isActiveRencontre == 1 )
+
+                              Material(
+                              color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {
+                                    // updateTrackingData("home.btnAdminister",
+                                    //     "${DateTime.now()}", {});
+                                    launchWeb(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=1&app_mode=mobile",
+                                    );
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width / 6,
+                                    margin: EdgeInsets.only(top: 10.h),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          // color: const Color.fromARGB(255, 0, 0, 0),
+                                          height: 17.h,
+                                          // width: 230,
+                                          child: SvgPicture.asset(
+                                            "assets/images/addCotisation.svg",
+                                            fit: BoxFit.scaleDown,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 3.h,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "Créer une".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlueAccent1,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11.sp,
+                                              ),
+                                            ),
+                                            Text(
+                                              "cotisation".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlueAccent1,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11.sp,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          if (!context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"])
+                           Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () async {
+                                  // updateTrackingData("home.btnAdminister",
+                                  //     "${DateTime.now()}", {});
+                                  launchWeb(
+                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=3&app_mode=mobile",
+                                  );
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 6,
+                                  margin: EdgeInsets.only(top: 10.h),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        // color: const Color.fromARGB(255, 0, 0, 0),
+                                        height: 17.h,
+                                        // width: 230,
+                                        child: SvgPicture.asset(
+                                          "assets/images/saisirRapport.svg",
+                                          fit: BoxFit.scaleDown,
+                                          color: AppColors.blackBlueAccent1,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 3.h,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "Saisir le".tr(),
+                                            style: TextStyle(
+                                              color: AppColors.blackBlueAccent1,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11.sp,
+                                            ),
+                                          ),
+                                          Text(
+                                            "rapport".tr(),
+                                            style: TextStyle(
+                                              color: AppColors.blackBlueAccent1,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11.sp,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -909,15 +928,89 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 &&
-                                isPasseDate(widget.dateRencontreAPI))
-                              InkWell(
+                            if (widget.isActiveRencontre == 1 )
+                              Material(
+                              color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {
+                                    // updateTrackingData("home.btnAdminister",
+                                    //     "${DateTime.now()}", {});
+                                    launchWeb(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=4&app_mode=mobile",
+                                    );
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width / 6,
+                                    margin: EdgeInsets.only(top: 10.h),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          // color: const Color.fromARGB(255, 0, 0, 0),
+                                          height: 17.h,
+                                          // width: 230,
+                                          child: SvgPicture.asset(
+                                            "assets/images/paramTontine.svg",
+                                            fit: BoxFit.scaleDown,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 3.h,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "ParamétrerTontine".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlueAccent1,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11.sp,
+                                              ),
+                                            ),
+                                            Text(
+                                              "la tontine".tr(),
+                                              style: TextStyle(
+                                                color: AppColors.blackBlueAccent1,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11.sp,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          if (!context
+                              .read<AuthCubit>()
+                              .state
+                              .detailUser!["isMember"])
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
                                 onTap: () async {
-                                  // updateTrackingData("home.btnAdminister",
-                                  //     "${DateTime.now()}", {});
-                                  launchWeb(
-                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/details-seances/${widget.codeSeance}?query=4&app_mode=mobile",
-                                  );
+                                  setState(() {
+                                    load = true;
+                                  });
+                                  await SeanceRepository()
+                                      .genereRapport(widget.codeSeance);
+                                  await Future.delayed(Duration(seconds: 10));
+                              
+                                  await context
+                                      .read<SeanceCubit>()
+                                      .detailSeanceCubit(widget.codeSeance);
+                                  print("${widget.codeSeance}");
+                                  context
+                                      .read<DetailTournoiCourantCubit>()
+                                      .detailTournoiCourantCubit(
+                                        AppCubitStorage().state.codeTournois,
+                                      );
+                                  // // context.read<RecentEventCubit>().AllRecentEventCubit(AppCubitStorage().state.membreCode);
+                                  setState(() {
+                                    load = false;
+                                  });
+                                  // Navigator.pop(context);
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width / 6,
@@ -929,7 +1022,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                         height: 17.h,
                                         // width: 230,
                                         child: SvgPicture.asset(
-                                          "assets/images/paramTontine.svg",
+                                          "assets/images/generatePDF.svg",
                                           fit: BoxFit.scaleDown,
                                           color: AppColors.blackBlueAccent1,
                                         ),
@@ -940,7 +1033,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                       Column(
                                         children: [
                                           Text(
-                                            "ParamétrerTontine".tr(),
+                                            "Générer le".tr(),
                                             style: TextStyle(
                                               color: AppColors.blackBlueAccent1,
                                               fontWeight: FontWeight.bold,
@@ -948,7 +1041,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                             ),
                                           ),
                                           Text(
-                                            "la tontine".tr(),
+                                            "rapport PDF".tr(),
                                             style: TextStyle(
                                               color: AppColors.blackBlueAccent1,
                                               fontWeight: FontWeight.bold,
@@ -959,75 +1052,6 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                          if (!context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["isMember"])
-                            InkWell(
-                              onTap: () async {
-                                setState(() {
-                                  load = true;
-                                });
-                                await SeanceRepository()
-                                    .genereRapport(widget.codeSeance);
-                                await Future.delayed(Duration(seconds: 10));
-
-                                await context
-                                    .read<SeanceCubit>()
-                                    .detailSeanceCubit(widget.codeSeance);
-                                print("${widget.codeSeance}");
-                                context
-                                    .read<DetailTournoiCourantCubit>()
-                                    .detailTournoiCourantCubit(
-                                      AppCubitStorage().state.codeTournois,
-                                    );
-                                // // context.read<RecentEventCubit>().AllRecentEventCubit(AppCubitStorage().state.membreCode);
-                                setState(() {
-                                  load = false;
-                                });
-                                // Navigator.pop(context);
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 6,
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      // color: const Color.fromARGB(255, 0, 0, 0),
-                                      height: 17.h,
-                                      // width: 230,
-                                      child: SvgPicture.asset(
-                                        "assets/images/generatePDF.svg",
-                                        fit: BoxFit.scaleDown,
-                                        color: AppColors.blackBlueAccent1,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Générer le".tr(),
-                                          style: TextStyle(
-                                            color: AppColors.blackBlueAccent1,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11.sp,
-                                          ),
-                                        ),
-                                        Text(
-                                          "rapport PDF".tr(),
-                                          style: TextStyle(
-                                            color: AppColors.blackBlueAccent1,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11.sp,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
                                 ),
                               ),
                             ),

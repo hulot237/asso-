@@ -41,7 +41,7 @@ Widget PageScaffold({
               color: AppColors.white,
               fontWeight: FontWeight.bold),
         ),
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -85,7 +85,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -100,8 +100,8 @@ Widget PageScaffold({
               );
             },
             child: Container(
-              margin: EdgeInsets.only(right: 10.w),
-              color: AppColors.backgroundAppBAr,
+              margin: EdgeInsets.only(right: 10.w, left: 10.w),
+              color: Colors.transparent,
               child: SvgPicture.asset(
                 "assets/images/addMemberIcon.svg",
                 fit: BoxFit.scaleDown,

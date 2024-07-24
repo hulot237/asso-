@@ -19,6 +19,7 @@ import 'package:faroty_association_1/Association_And_Group/authentication/busine
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/presentation/screens/loginScreen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
+import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/firebase_options.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/network/localisation_phone/business_logic/localisation_phone_cubit.dart';
@@ -168,6 +169,8 @@ class MyApp extends StatelessWidget {
             (
           theme: ThemeData(
             useMaterial3: false,
+            highlightColor: AppColors.greenAssociation.withOpacity(0.5) ,
+            splashColor: AppColors.bleuLight.withOpacity(0.5), 
             fontFamily: GoogleFonts.roboto().fontFamily,
           ),
           localizationsDelegates: context.localizationDelegates,
@@ -205,5 +208,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

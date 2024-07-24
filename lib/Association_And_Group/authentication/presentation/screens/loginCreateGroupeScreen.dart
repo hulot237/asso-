@@ -66,6 +66,8 @@ class _LoginCreateGroupeScreenState extends State<LoginCreateGroupeScreen> {
     return indice;
   }
 
+  bool loader = false;
+
   // Future handleLogin() async {
   //   final allCotisationAss = await context
   //       .read<AuthCubit>()
@@ -168,10 +170,9 @@ class _LoginCreateGroupeScreenState extends State<LoginCreateGroupeScreen> {
                                       scale: 1,
                                     ),
                                   ),
-
                                   SizedBox(height: 60.h),
                                   Text(
-                                    "Entrer votre numéro pour obtenir le code d'authentification"
+                                    "Indiquez votre nom, prénoms et N° de téléphone pour vous connecter."
                                         .tr(),
                                     style: TextStyle(
                                       fontSize: 16.sp,
@@ -180,9 +181,7 @@ class _LoginCreateGroupeScreenState extends State<LoginCreateGroupeScreen> {
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-
                                   SizedBox(height: 50.h),
-
                                   SizedBox(
                                     // height: 50.h,
                                     child: TextField(
@@ -196,7 +195,7 @@ class _LoginCreateGroupeScreenState extends State<LoginCreateGroupeScreen> {
                                       ),
                                       cursorColor: AppColors.blackBlue,
                                       decoration: InputDecoration(
-                                        hintText: "Nom et prenom",
+                                        hintText: "Nom et prénom".tr(),
                                         hintStyle: TextStyle(
                                             letterSpacing: 2.w,
                                             fontSize: 18.sp,
@@ -226,7 +225,6 @@ class _LoginCreateGroupeScreenState extends State<LoginCreateGroupeScreen> {
                                       autofocus: true,
                                     ),
                                   ),
-
                                   SizedBox(height: 10.h),
                                   SizedBox(
                                     // height: 50.h,
@@ -323,57 +321,64 @@ class _LoginCreateGroupeScreenState extends State<LoginCreateGroupeScreen> {
                                       autofocus: true,
                                     ),
                                   ),
-
                                   SizedBox(
                                     height: 20.h,
                                   ),
-
-
                                   SizedBox(
                                     width: double.infinity,
                                     height: 50.h,
-                                    child: BlocBuilder<AuthCubit, AuthState>(
-                                        builder: (Authcontext, Authstate) {
-                                      if (Authstate.isLoading == null ||
-                                          Authstate.isLoading == true)
-                                        return Container(
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              color: AppColors.green,
+                                    child: loader
+                                        ? Container(
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.green,
+                                              ),
+                                            ),
+                                          )
+                                        : ElevatedButton(
+                                            onPressed: () async {
+                                              print("numeroPhoneController ${numeroPhoneController.text}");
+                                              print("nameUserController ${nameUserController.text}");
+                                              if(numeroPhoneController.text!="" &&
+                                                nameUserController.text !=""){
+
+                                              print("object2222");
+                                              setState(() {
+                                                loader = true;
+                                              });
+                                              await AuthRepository()
+                                                  .LoginWebViewRepository(
+                                                numeroPhoneController.text,
+                                                nameUserController.text,
+                                                retirerPlus(
+                                                    countryCodeController),
+                                                context,
+                                                widget.isForCreate,
+                                                true,
+                                              );
+
+                                              print(numeroPhoneController.text);
+                                              print(countryCodeController);
+                                              setState(() {
+                                                loader = false;
+                                              });
+                                                }
+                                            },
+                                            child: Text(
+                                              "Connexion".tr(),
+                                              style: TextStyle(
+                                                  fontSize: 19.sp,
+                                                  color: AppColors.white),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  AppColors.greenAssociation,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.r),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      return ElevatedButton(
-                                        onPressed: () async {
-                                          print("object2222");
-                                          await AuthRepository()
-                                              .LoginWebViewRepository(
-                                            numeroPhoneController.text,
-                                            nameUserController.text,
-                                            retirerPlus(countryCodeController),
-                                            context,
-                                            widget.isForCreate,
-                                            true,
-                                          );
-                                          print(numeroPhoneController.text);
-                                          print(countryCodeController);
-                                        },
-                                        child: Text(
-                                          "Connexion".tr(),
-                                          style: TextStyle(
-                                              fontSize: 19.sp,
-                                              color: AppColors.white),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.greenAssociation,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.r),
-                                          ),
-                                        ),
-                                      );
-                                    }),
                                   ),
                                 ],
                               ),

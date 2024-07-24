@@ -107,7 +107,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.red,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -278,15 +278,27 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserGroupCubit, UserGroupState>(
-        builder: (UserGroupContext, UserGroupState) {
-          if(UserGroupState.errorLoadDetailChangeAss == true)
-                          return
-                       checkInternetConnectionPage(
-                          backToHome: true,
-                          functionToCall: () {},
-                        );
-                      
+    return BlocBuilder<AuthCubit, AuthState>(builder: (AuthContext, AuthState) {
+      if (AuthState.isLoading == true && AuthState.detailUser == null)
+        return Container(
+          child: EasyLoader(
+            backgroundColor: Color.fromARGB(0, 255, 255, 255),
+            iconSize: 50.r,
+            iconColor: AppColors.blackBlueAccent1,
+            image: AssetImage(
+              "assets/images/AssoplusFinal.png",
+            ),
+          ),
+        );
+      final currentDetailUser = AuthContext.read<AuthCubit>().state.detailUser;
+      return BlocBuilder<UserGroupCubit, UserGroupState>(
+          builder: (UserGroupContext, UserGroupState) {
+        if (UserGroupState.errorLoadDetailChangeAss == true)
+          return checkInternetConnectionPage(
+            backToHome: true,
+            functionToCall: () {},
+          );
+
         return Material(
           type: MaterialType.transparency,
           child: WillPopScope(
@@ -359,7 +371,7 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                                 //           {});
                                 //        launchWeb(
                                 //         "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-        
+
                                 //       );
                                 //     },
                                 //     child: Container(
@@ -422,7 +434,8 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(360.r),
+                                                    BorderRadius.circular(
+                                                        360.r),
                                               ),
                                               child: Image.network(
                                                 "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
@@ -436,9 +449,10 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                                           top: 2.h,
                                           child: Container(
                                             decoration: BoxDecoration(
-                                              color:
-                                                  Color.fromARGB(255, 255, 26, 9),
-                                              borderRadius: BorderRadius.circular(
+                                              color: Color.fromARGB(
+                                                  255, 255, 26, 9),
+                                              borderRadius:
+                                                  BorderRadius.circular(
                                                 50.r,
                                               ),
                                             ),
@@ -461,11 +475,12 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                     ],
                     elevation: 0,
                     backgroundColor: AppColors.backgroundAppBAr,
-                    leading: GestureDetector(
+                    leading: InkWell(
                       onTap: () {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: (BuildContext context) => HomeCentraleScreen(),
+                            builder: (BuildContext context) =>
+                                HomeCentraleScreen(),
                           ),
                           (route) => false,
                         );
@@ -479,316 +494,368 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
               body: Container(
                 // color: AppColors.barrierColorModal,
                 width: MediaQuery.of(context).size.width,
-        
+
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   // runAlignment: WrapAlignment.spaceAround,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListMeetingScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        
-                        width: MediaQuery.of(context).size.width / 2.15,
-                        margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-                        decoration: BoxDecoration(
+                    Container(
+                        margin: EdgeInsets.only(
+                          top: 10.h,
+                          right: 5.w,
+                          left: 5.w,
+                        ),
+                        child: Material(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(
                             10.r,
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10.r),
-                              // height: 50.h,
-                              child: SvgPicture.asset(
-                                width: 40.h,
-                                "assets/images/meetingTransIcon.svg",
-                                fit: BoxFit.cover,
-                                color: AppColors.blackBlue,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ListMeetingScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2.15,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                10.r,
                               ),
                             ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                bottom: 10.h,
-                              ),
-                              decoration: BoxDecoration(
-                                  // color: AppColors.blackBlue,
-                                  borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r),
-                              )),
-                              child: Text(
-                                "rencontres".tr(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp,
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10.r),
+                                  height: 60.h,
+                                  width: 60.h,
+                                  child: SvgPicture.asset(
+                                    "assets/images/meetingTransIcon.svg",
+                                    fit: BoxFit.cover,
+                                    color: AppColors.blackBlue,
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.only(
+                                    bottom: 10.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      // color: AppColors.blackBlue,
+                                      borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10.r),
+                                    bottomRight: Radius.circular(10.r),
+                                  )),
+                                  child: Text(
+                                    "rencontres".tr(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppColors.blackBlue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                    if (UserGroupState.changeAssData!
-                                                  .user_group!.is_tontine ==
-                                              true)
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListTontineScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.15,
-                        margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-                        decoration: BoxDecoration(
+                    if (UserGroupState.changeAssData!.user_group!.is_tontine ==
+                        true)
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 10.h,
+                          right: 5.w,
+                          left: 5.w,
+                        ),
+                        child: Material(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(
                             10.r,
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10.r),
-                              // height: 50.h,
-                              child: SvgPicture.asset(
-                                width: 40.h,
-                                "assets/images/tontineTransIcon.svg",
-                                fit: BoxFit.cover,
-                                color: AppColors.blackBlue,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                bottom: 10.h,
-                              ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ListTontineScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 2.15,
                               decoration: BoxDecoration(
-                                  // color: AppColors.blackBlue,
-                                  borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r),
-                              )),
-                              child: Text(
-                                "Tontines".tr(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp,
+                                borderRadius: BorderRadius.circular(
+                                  10.r,
                                 ),
                               ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(10.r),
+                                    height: 60.h,
+                                    width: 60.h,
+                                    child: SvgPicture.asset(
+                                      "assets/images/tontineTransIcon.svg",
+                                      fit: BoxFit.cover,
+                                      color: AppColors.blackBlue,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.only(
+                                      bottom: 10.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        // color: AppColors.blackBlue,
+                                        borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10.r),
+                                      bottomRight: Radius.circular(10.r),
+                                    )),
+                                    child: Text(
+                                      "Tontines".tr(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: AppColors.blackBlue,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListCotisationScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.15,
-                        margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-                        decoration: BoxDecoration(
+                    Container(
+                        margin: EdgeInsets.only(
+                          top: 10.h,
+                          right: 5.w,
+                          left: 5.w,
+                        ),
+                        child: Material(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(
                             10.r,
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10.r),
-                              // height: 50.h,
-                              child: SvgPicture.asset(
-                                width: 40.h,
-                                "assets/images/contributionTransIcon1.svg",
-                                fit: BoxFit.cover,
-                                color: AppColors.blackBlue,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ListCotisationScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2.15,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                10.r,
                               ),
                             ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                bottom: 10.h,
-                              ),
-                              decoration: BoxDecoration(
-                                  // color: AppColors.blackBlue,
-                                  borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r),
-                              )),
-                              child: Text(
-                                "cotisations".tr(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp,
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10.r),
+                                  // height: 50.h,
+                                  height: 60.h,
+                                  width: 60.h,
+                                  child: SvgPicture.asset(
+                                    "assets/images/contributionTransIcon1.svg",
+                                    fit: BoxFit.cover,
+                                    color: AppColors.blackBlue,
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.only(
+                                    bottom: 10.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      // color: AppColors.blackBlue,
+                                      borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10.r),
+                                    bottomRight: Radius.circular(10.r),
+                                  )),
+                                  child: Text(
+                                    "cotisations".tr(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppColors.blackBlue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListSanctionScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.15,
-                        margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-                        decoration: BoxDecoration(
+                    Container(
+                        margin: EdgeInsets.only(
+                          top: 10.h,
+                          right: 5.w,
+                          left: 5.w,
+                        ),
+                        child: Material(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(
                             10.r,
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10.r),
-                              // height: 50.h,
-                              child: SvgPicture.asset(
-                                width: 40.h,
-                                "assets/images/sanctionTransIcon.svg",
-                                fit: BoxFit.cover,
-                                color: AppColors.blackBlue,
-                              ),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListSanctionScreen(),
                             ),
-                            SizedBox(
-                              height: 3.h,
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2.15,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              10.r,
                             ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                bottom: 10.h,
-                              ),
-                              decoration: BoxDecoration(
-                                  // color: AppColors.blackBlue,
-                                  borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r),
-                              )),
-                              child: Text(
-                                "Vos sanctions".tr(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10.r),
+                                height: 60.h,
+                                width: 60.h,
+                                child: SvgPicture.asset(
+                                  "assets/images/sanctionTransIcon.svg",
+                                  fit: BoxFit.cover,
                                   color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp,
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 3.h,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.only(
+                                  bottom: 10.h,
+                                ),
+                                decoration: BoxDecoration(
+                                    // color: AppColors.blackBlue,
+                                    borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(10.r),
+                                  bottomRight: Radius.circular(10.r),
+                                )),
+                                child: Text(
+                                  "Vos sanctions".tr(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                     if (checkTransparenceLoans(
-                                          context
-                                              .read<UserGroupCubit>()
-                                              .state
-                                              .changeAssData!
-                                              .user_group!
-                                              .configs,
-                                          context
-                                              .read<AuthCubit>()
-                                              .state
-                                              .detailUser!["isMember"]))
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListEpargneScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.15,
-                        margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-                        decoration: BoxDecoration(
+                    ),),
+                    if (checkTransparenceLoans(
+                        context
+                            .read<UserGroupCubit>()
+                            .state
+                            .changeAssData!
+                            .user_group!
+                            .configs,
+                        AuthContext.read<AuthCubit>()
+                            .state
+                            .detailUser!["isMember"]))
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 10.h,
+                          right: 5.w,
+                          left: 5.w,
+                        ),
+                        child: Material(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(
                             10.r,
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10.r),
-                              // height: 50.h,
-                              child: SvgPicture.asset(
-                                width: 40.h,
-                                "assets/images/savingTransIcon.svg",
-                                fit: BoxFit.cover,
-                                color: AppColors.blackBlue,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ListEpargneScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2.15,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                10.r,
                               ),
                             ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                bottom: 10.h,
-                              ),
-                              decoration: BoxDecoration(
-                                  // color: AppColors.blackBlue,
-                                  borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r),
-                              )),
-                              child: Text(
-                                "Epargne".tr(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp,
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10.r),
+                                  height: 60.h,
+                                  width: 60.h,
+                                  child: SvgPicture.asset(
+                                    "assets/images/savingTransIcon.svg",
+                                    fit: BoxFit.cover,
+                                    color: AppColors.blackBlue,
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.only(
+                                    bottom: 10.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      // color: AppColors.blackBlue,
+                                      borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10.r),
+                                    bottomRight: Radius.circular(10.r),
+                                  )),
+                                  child: Text(
+                                    "Epargne".tr(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppColors.blackBlue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                      ),
                     // InkWell(
                     //   child: Container(
                     //     width: MediaQuery.of(context).size.width / 2.15,
@@ -840,74 +907,85 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                     //   ),
                     // ),
                     if (checkTransparenceStatus(
-                                          context
-                                              .read<UserGroupCubit>()
-                                              .state
-                                              .changeAssData!
-                                              .user_group!
-                                              .configs,
-                                          context
-                                              .read<AuthCubit>()
-                                              .state
-                                              .detailUser!["isMember"]))
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListCompteScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.15,
-                        margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-                        decoration: BoxDecoration(
+                        context
+                            .read<UserGroupCubit>()
+                            .state
+                            .changeAssData!
+                            .user_group!
+                            .configs,
+                        context
+                            .read<AuthCubit>()
+                            .state
+                            .detailUser!["isMember"]))
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 10.h,
+                          right: 5.w,
+                          left: 5.w,
+                        ),
+                        child: Material(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(
                             10.r,
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10.r),
-                              // height: 50.h,
-                              child: SvgPicture.asset(
-                                width: 40.h,
-                                "assets/images/compteTransIcon.svg",
-                                fit: BoxFit.cover,
-                                color: AppColors.blackBlue,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(
-                                bottom: 10.h,
-                              ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ListCompteScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 2.15,
                               decoration: BoxDecoration(
-                                  // color: AppColors.blackBlue,
-                                  borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r),
-                              )),
-                              child: Text(
-                                "Comptes".tr(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppColors.blackBlue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp,
+                                borderRadius: BorderRadius.circular(
+                                  10.r,
                                 ),
                               ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(10.r),
+                                    height: 60.h,
+                                    width: 60.h,
+                                    child: SvgPicture.asset(
+                                      "assets/images/compteTransIcon.svg",
+                                      fit: BoxFit.cover,
+                                      color: AppColors.blackBlue,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.only(
+                                      bottom: 10.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        // color: AppColors.blackBlue,
+                                        borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10.r),
+                                      bottomRight: Radius.circular(10.r),
+                                    )),
+                                    child: Text(
+                                      "comptes".tr(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: AppColors.blackBlue,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2.1,
                     )
@@ -917,7 +995,7 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
             ),
           ),
         );
-      }
-    );
+      });
+    });
   }
 }

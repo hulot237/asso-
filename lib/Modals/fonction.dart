@@ -380,25 +380,25 @@ partagerCotisation({
   String message = "";
 
   message +=
-      "🟢🟢 Nouvelle cotisation en cours dans le groupe *${nomGroupe}* concernant ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n\n ";
+      "🟢🟢 ${"Nouvelle cotisation en cours dans le groupe".tr()} *${nomGroupe}* ${"concernant".tr()} ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n\n ";
 
   message +=
-      "👉🏽 ${(source == '' ? "MEMBRE CONCERNÉ" : "SEANCE CONCERNÉE")} : ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n";
+      "👉🏽 ${(source == '' ? "${"MEMBRE CONCERNÉ".tr()}" : "${"SEANCE CONCERNÉE".tr()}")} : ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n";
   message +=
-      "👉🏽 MONTANT : ${type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
-  message += "👉🏽 DATE DE FIN : *${(formatDateLiteral(dateCotisation))}*\n\n";
+      "👉🏽 ${"montant".tr().toUpperCase()} : ${type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
+  message += "👉🏽 ${"Date limite".tr().toUpperCase()}: *${(formatDateLiteral(dateCotisation))}*\n\n";
 
   // message += "Soyez le premier à contribuer ici :  https://$lienDePaiement\n\n";
   message += !context.read<AuthCubit>().state.detailUser!["isMember"]
-      ? "Soyez le premier à contribuer ici :  https://$lienDePaiement\n\n"
-      : "Aide-moi à payer ma cotisation en suivant le lien https://$lienDePaiement?code=${AppCubitStorage().state.membreCode}\n\n";
+      ? "${"Soyez le premier à contribuer ici".tr()} :  https://$lienDePaiement\n\n"
+      : "${"Aide-moi à payer ma cotisation en suivant le lien".tr()} https://$lienDePaiement?code=${AppCubitStorage().state.membreCode}\n\n";
 
-  message += "*Récapitulatif :*\n";
+  message += "*${"Récapitulatif".tr()} :*\n";
   // Calcul du total et ajout des détails par membre
   double totalCotisations = 0;
   for (var element in listeOkayCotisation) {
     String firstName = element["membre"]["first_name"];
-    String lastName = element["membre"]["last_name"];
+    String lastName = element["membre"]["last_name"] ?? "";
     double balance =
         double.parse(element["balance"]); // Conversion de la balance en nombre
 
@@ -448,32 +448,27 @@ partagerContributionTontine({
   String message = "";
 
   message +=
-      "🟢🟢 Nouvelle session de la tontine *${nomTontine}* en cours dans le groupe *${nomGroupe}* concernant *${nomBeneficiaire}*\n\n";
+      "🟢🟢 ${"Nouvelle session de la tontine".tr()} *${nomTontine}* ${"en cours dans le groupe".tr()} *${nomGroupe}* ${"concernant".tr()} *${nomBeneficiaire}*\n\n";
 
-  print("message 1 $message");
 
-  message += "👉🏽 MEMBRE CONCERNÉ : *${nomBeneficiaire}*\n";
+  message += "👉🏽 ${"MEMBRE CONCERNÉ".tr()} : *${nomBeneficiaire}*\n";
   message += "👉🏽 MOTIF : *${motif}*\n";
   message +=
-      "👉🏽 MONTANT : ${"*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
-  message += "👉🏽 DATE DE FIN : *${(formatDateLiteral(dateCotisation))}*\n\n";
+      "👉🏽 ${"montant".tr().toUpperCase()} : ${"*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
+  message += "👉🏽 ${"Date limite".tr().toUpperCase()}: *${(formatDateLiteral(dateCotisation))}*\n\n";
 
-  print("message 2 $message");
 
   message += !context.read<AuthCubit>().state.detailUser!["isMember"]
-      ? "Soyez le premier à contribuer ici :  https://$lienDePaiement\n\n"
-      : "Aide-moi à payer ma tontine en suivant le lien https://$lienDePaiement?code=${AppCubitStorage().state.membreCode}\n\n";
+      ? "${"Soyez le premier à contribuer ici".tr()} :  https://$lienDePaiement\n\n"
+      : "${"Aide-moi à payer ma tontine en suivant le lien".tr()} https://$lienDePaiement?code=${AppCubitStorage().state.membreCode}\n\n";
 
-  print("message 3 $message");
-
-  message += "*Récapitulatif :*\n";
+  message += "*${"Récapitulatif".tr()} :*\n";
   // Calcul du total et ajout des détails par membre
   double totalCotisations = 0;
 
-  print("message 4 $message");
   for (var element in listeOkayCotisation) {
     String firstName = element["membre"]["first_name"];
-    String lastName = element["membre"]["last_name"] ?? " ";
+    String lastName = element["membre"]["last_name"] ?? "";
     double balance =
         double.parse(element["balance"]); // Conversion de la balance en nombre
 
@@ -485,7 +480,6 @@ partagerContributionTontine({
         "- ${firstName.trimRight()}  ${lastName.trimRight()} -> ${formatMontantFrancais(balance)} F ${element["statut"] == "2" ? "✅" : "❌"}\n";
     totalCotisations += balance;
 
-    print("message 4 $message");
   }
 
   // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
@@ -494,7 +488,6 @@ partagerContributionTontine({
 
   message += "\n*TOTAL -> ${formatMontantFrancais(totalCotisations)} F*\n\n";
 
-  print("message 5 $message");
   message += "*by ASSO+*";
 
   // Partager le message en utilisant Flutter Share
@@ -533,6 +526,31 @@ bool isPasseDate(dateRencontreAPI) {
   // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
   if (apiDate.isBefore(now)) {
     print('La date de l\'API est passée par rapport à la date actuelle..');
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool isPasseDateOneDay(String dateRencontreAPI) {
+  // Date récupérée de l'API (sous forme de String)
+  String apiDateString = dateRencontreAPI;
+
+  // Conversion de la chaîne en un objet DateTime
+  DateTime apiDate = DateTime.parse(apiDateString);
+
+  // Date actuelle
+  DateTime now = DateTime.now();
+
+  // Durée maximale de 24 heures
+  Duration seuil = Duration(hours: 24);
+
+  // Calcul de la différence entre maintenant et la date de l'API
+  Duration difference = now.difference(apiDate);
+
+  // Comparaison pour vérifier si la différence est supérieure à 24 heures
+  if (difference > seuil) {
+    print('La date de l\'API est passée de plus de 24 heures par rapport à la date actuelle.');
     return true;
   } else {
     return false;

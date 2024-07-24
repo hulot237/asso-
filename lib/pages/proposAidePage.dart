@@ -36,7 +36,7 @@ Widget PageScaffold({
           ),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
             onTap: () {
               Navigator.pop(context);
             },
@@ -59,7 +59,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },

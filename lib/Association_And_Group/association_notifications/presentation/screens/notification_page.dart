@@ -42,7 +42,7 @@ Widget PageScaffold({
           style: TextStyle(fontSize: 16.sp, color: AppColors.white),
         ),
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -62,7 +62,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -193,7 +193,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                 ),
                               ),
                               itemBuilder: (c, element) {
-                                return GestureDetector(
+                                return InkWell(
                                   onTap: () async {
                                     updateTrackingData("notification.openNotification","${DateTime.now()}", {});
                                     _showSimpleModalDialog(

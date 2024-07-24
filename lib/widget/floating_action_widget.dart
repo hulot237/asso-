@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
@@ -46,68 +47,75 @@ class FloatingAction extends StatelessWidget {
                   //   ),
                   // ),
       
-                  InkWell(
-                    onTap: () {
-                      launchWeb(
-                        "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                      );
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: 200.w,
-                      color: AppColors.white,
-                      padding: EdgeInsets.only(
-                          top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
-                      child: Text(
-                        "Créer une rencontre",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                          color: AppColors.blackBlue,
+                  Material(
+                    color: AppColors.white,
+                    child: InkWell(
+                      onTap: () {
+                        launchWeb(
+                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
+                        );
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 200.w,
+                        
+                        padding: EdgeInsets.only(
+                            top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
+                        child: Text(
+                          "Créer une rencontre".tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            color: AppColors.blackBlue,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      launchWeb(
-                        "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
-                      );
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: 200.w,
-                      color: AppColors.white,
-                      padding: EdgeInsets.only(
-                          top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
-                      child: Text(
-                        "Créer une cotisation",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                          color: AppColors.blackBlue,
+                  Material(
+                    color: AppColors.white,
+                    child: InkWell(
+                      onTap: () {
+                        launchWeb(
+                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
+                        );
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 200.w,
+                        padding: EdgeInsets.only(
+                            top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
+                        child: Text(
+                          "Créer une cotisation".tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            color: AppColors.blackBlue,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      launchWeb(
-                        "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanctions?query=1&app_mode=mobile",
-                      );
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: 200.w,
-                      color: AppColors.white,
-                      padding: EdgeInsets.only(
-                          top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
-                      child: Text(
-                        "Créer une sanction",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                          color: AppColors.blackBlue,
+                  Material(
+                    color: AppColors.white,
+                    child: InkWell(
+                      onTap: () {
+                        launchWeb(
+                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/sanctions?query=1&app_mode=mobile",
+                        );
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 200.w,
+                        padding: EdgeInsets.only(
+                            top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
+                        child: Text(
+                          "Créer une sanction".tr(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            color: AppColors.blackBlue,
+                          ),
                         ),
                       ),
                     ),
@@ -120,24 +128,27 @@ class FloatingAction extends StatelessWidget {
                           .user_group!
                           .configs,
                       context.read<AuthCubit>().state.detailUser!["isMember"]))
-                    InkWell(
-                      onTap: () {
-                        launchWeb(
-                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/loan?query=1&app_mode=mobile",
-                        );
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        width: 200.w,
-                        color: AppColors.white,
-                        padding: EdgeInsets.only(
-                            top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
-                        child: Text(
-                          "Créer un epargne",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
-                            color: AppColors.blackBlue,
+                    Material(
+                    color: AppColors.white,
+                      child: InkWell(
+                        onTap: () {
+                          launchWeb(
+                            "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/loan?query=1&app_mode=mobile",
+                          );
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          width: 200.w,
+                          // color: AppColors.white,
+                          padding: EdgeInsets.only(
+                              top: 10.h, bottom: 10.h, left: 10.w, right: 20.w),
+                          child: Text(
+                            "Créer un epargne".tr(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                              color: AppColors.blackBlue,
+                            ),
                           ),
                         ),
                       ),

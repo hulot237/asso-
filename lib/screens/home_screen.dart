@@ -214,22 +214,7 @@ class _HomeScreenState extends State<HomeScreen>
           return Material(
             type: MaterialType.transparency,
             child: Scaffold(
-              floatingActionButton:
-                  // !Authcontext.read<AuthCubit>().state.detailUser!["isMember"]
-                  //     ? 
-                      FloatingAction(),
-                      // : null,
-              // appBar: AppBar(
-              //   systemOverlayStyle: SystemUiOverlayStyle(
-              //     // Status bar color
-              //     statusBarColor: Colors.red,
-
-              //     // Status bar brightness (optional)
-              //     statusBarIconBrightness:
-              //         Brightness.dark, // For Android (dark icons)
-              //     statusBarBrightness: Brightness.light, // For iOS (dark icons)
-              //   ),
-              // ),
+              floatingActionButton: FloatingAction(),
               backgroundColor: AppColors.pageBackground,
               body:
                   (Authstate.errorLoadDetailAuth == true ||
@@ -300,8 +285,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                               .spaceBetween,
                                                       children: [
                                                         Expanded(
-                                                          child:
-                                                              GestureDetector(
+                                                          child: InkWell(
                                                             onTap: () {
                                                               updateTrackingData(
                                                                   "home.textSwitch",
@@ -624,127 +608,144 @@ class _HomeScreenState extends State<HomeScreen>
                                                 //     MainAxisAlignment
                                                 //         .spaceEvenly,
                                                 children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ListMeetingScreen(),
+                                                  Material(
+                                                    color: AppColors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                    ),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ListMeetingScreen(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                          vertical: 5.h,
+                                                          horizontal: 10.w,
                                                         ),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                        vertical: 5.h,
-                                                        horizontal: 10.w,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors.white,
-                                                        border: Border.all(
-                                                          width: 1.w,
-                                                          color: AppColors
-                                                              .blackBlue,
+                                                        decoration:
+
+                                                            BoxDecoration(
+                                                              borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                          border: Border.all(
+                                                              width: 0.5.w,
+                                                              color: AppColors
+                                                                  .blackBlueAccent1),
                                                         ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    100.r),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            // padding: EdgeInsets.all(10.r),
-                                                            // height: 50.h,
-                                                            child: SvgPicture
-                                                                .asset(
-                                                              width: 15.h,
-                                                              "assets/images/meetingTransIcon.svg",
-                                                              fit: BoxFit.cover,
-                                                              color: AppColors
-                                                                  .blackBlue,
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              // padding: EdgeInsets.all(10.r),
+                                                              // height: 50.h,
+                                                              child: SvgPicture
+                                                                  .asset(
+                                                                width: 15.h,
+                                                                "assets/images/meetingTransIcon.svg",
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5.w,
-                                                          ),
-                                                          Text(
-                                                            "Vos rencontres"
-                                                                .tr(),
-                                                            style: TextStyle(
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                              fontSize: 12.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                            SizedBox(
+                                                              width: 5.w,
                                                             ),
-                                                          ),
-                                                        ],
+                                                            Text(
+                                                              "Vos rencontres"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                   SizedBox(
                                                     width: 5.w,
                                                   ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ListCotisationScreen(),
+                                                  Material(
+                                                    color: AppColors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                    ),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ListCotisationScreen(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                          vertical: 5.h,
+                                                          horizontal: 10.w,
                                                         ),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                        vertical: 5.h,
-                                                        horizontal: 10.w,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors.white,
-                                                        border: Border.all(
-                                                            width: 1.w,
-                                                            color: AppColors
-                                                                .blackBlue),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    100.r),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            // padding: EdgeInsets.all(10.r),
-                                                            // height: 50.h,
-                                                            child: SvgPicture
-                                                                .asset(
-                                                              width: 15.h,
-                                                              "assets/images/contributionTransIcon1.svg",
-                                                              fit: BoxFit.cover,
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 0.5.w,
                                                               color: AppColors
-                                                                  .blackBlue,
+                                                                  .blackBlueAccent1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      100.r),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              // padding: EdgeInsets.all(10.r),
+                                                              // height: 50.h,
+                                                              child: SvgPicture
+                                                                  .asset(
+                                                                width: 15.h,
+                                                                "assets/images/contributionTransIcon1.svg",
+                                                                fit: BoxFit.cover,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5.w,
-                                                          ),
-                                                          Text(
-                                                            "Vos cotisations"
-                                                                .tr(),
-                                                            style: TextStyle(
-                                                              color: AppColors
-                                                                  .blackBlue,
-                                                              fontSize: 12.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                            SizedBox(
+                                                              width: 5.w,
                                                             ),
-                                                          ),
-                                                        ],
+                                                            Text(
+                                                              "Vos cotisations"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -2132,86 +2133,88 @@ class _HomeScreenState extends State<HomeScreen>
                                                                             20.sp,
                                                                       ),
                                                                     ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10.h,
+                                                                    ),
                                                                     if (!context
                                                                         .read<
                                                                             AuthCubit>()
                                                                         .state
                                                                         .detailUser!["isMember"])
-                                                                      InkWell(
-                                                                        onTap:
-                                                                            () async {
-                                                                          updateTrackingData(
-                                                                              "transactions.btnAddMeeting",
-                                                                              "${DateTime.now()}",
-                                                                              {});
-                                                                          launchWeb(
-                                                                            "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                                                                          );
-                                                                        },
+                                                                      Material(
                                                                         child:
-                                                                            Container(
-                                                                          height:
-                                                                              40.h,
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                AppColors.pageBackground,
-                                                                            border:
-                                                                                Border.all(
-                                                                              width: 2.w,
-                                                                              color: AppColors.blackBlue.withOpacity(1),
-                                                                            ),
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(
-                                                                              20.r,
-                                                                            ),
-                                                                          ),
-                                                                          margin:
-                                                                              EdgeInsets.only(
-                                                                            top:
-                                                                                10.w,
-                                                                          ),
-                                                                          padding:
-                                                                              EdgeInsets.symmetric(
-                                                                            horizontal:
-                                                                                10.w,
-                                                                            vertical:
-                                                                                7.h,
-                                                                          ),
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width / 1.5,
+                                                                            InkWell(
+                                                                          onTap:
+                                                                              () async {
+                                                                            updateTrackingData(
+                                                                                "transactions.btnAddMeeting",
+                                                                                "${DateTime.now()}",
+                                                                                {});
+                                                                            launchWeb(
+                                                                              "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
+                                                                            );
+                                                                          },
                                                                           child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceAround,
-                                                                            children: [
-                                                                              Text(
-                                                                                "Ajouter une rencontre".tr(),
-                                                                                style: TextStyle(
-                                                                                  color: AppColors.blackBlue.withOpacity(1),
-                                                                                  fontWeight: FontWeight.w900,
-                                                                                  fontSize: 18.sp,
-                                                                                  letterSpacing: 0.2.w,
-                                                                                ),
-                                                                              ),
                                                                               Container(
-                                                                                width: 20.w,
-                                                                                height: 20.w,
-                                                                                margin: EdgeInsets.only(left: 3.w),
-                                                                                decoration: BoxDecoration(
-                                                                                  borderRadius: BorderRadius.circular(360),
-                                                                                  border: Border.all(
-                                                                                    width: 1.5.w,
+                                                                            height:
+                                                                                40.h,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              // color:
+                                                                              //     AppColors.pageBackground,
+                                                                              border: Border.all(
+                                                                                width: 2.w,
+                                                                                color: AppColors.blackBlue.withOpacity(1),
+                                                                              ),
+                                                                              borderRadius: BorderRadius.circular(
+                                                                                20.r,
+                                                                              ),
+                                                                            ),
+                                                                            // margin:
+                                                                            //     EdgeInsets.only(
+                                                                            //   top:
+                                                                            //       10.w,
+                                                                            // ),
+                                                                            padding:
+                                                                                EdgeInsets.symmetric(
+                                                                              horizontal: 10.w,
+                                                                              vertical: 7.h,
+                                                                            ),
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width / 1.5,
+                                                                            child:
+                                                                                Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                              children: [
+                                                                                Text(
+                                                                                  "Ajouter une rencontre".tr(),
+                                                                                  style: TextStyle(
+                                                                                    color: AppColors.blackBlue.withOpacity(1),
+                                                                                    fontWeight: FontWeight.w900,
+                                                                                    fontSize: 18.sp,
+                                                                                    letterSpacing: 0.2.w,
+                                                                                  ),
+                                                                                ),
+                                                                                Container(
+                                                                                  width: 20.w,
+                                                                                  height: 20.w,
+                                                                                  margin: EdgeInsets.only(left: 3.w),
+                                                                                  decoration: BoxDecoration(
+                                                                                    borderRadius: BorderRadius.circular(360),
+                                                                                    border: Border.all(
+                                                                                      width: 1.5.w,
+                                                                                      color: AppColors.blackBlue.withOpacity(1),
+                                                                                    ),
+                                                                                  ),
+                                                                                  child: SvgPicture.asset(
+                                                                                    "assets/images/addIcon.svg",
+                                                                                    fit: BoxFit.scaleDown,
                                                                                     color: AppColors.blackBlue.withOpacity(1),
                                                                                   ),
                                                                                 ),
-                                                                                child: SvgPicture.asset(
-                                                                                  "assets/images/addIcon.svg",
-                                                                                  fit: BoxFit.scaleDown,
-                                                                                  color: AppColors.blackBlue.withOpacity(1),
-                                                                                ),
-                                                                              ),
-                                                                            ],
+                                                                              ],
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                       ),
@@ -2304,7 +2307,7 @@ class _HomeScreenState extends State<HomeScreen>
 
                                       List<Widget> listWidgetCotisation =
                                           listeCotisation.map((monObjet) {
-                                        print("$monObjet");
+                                        print("ddcc ${monObjet["seance"]}");
                                         return widgetRecentEventCotisation(
                                           rapportUrl: monObjet["rapport"],
                                           rublique: monObjet["ass_rubrique"] ==
@@ -2325,7 +2328,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           isPassed: monObjet["is_passed"],
                                           source: monObjet["seance"] == null
                                               ? ''
-                                              : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"]}',
+                                              : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"]} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"])}',
                                           nomBeneficiaire: monObjet["membre"] ==
                                                   null
                                               ? ''
@@ -2432,6 +2435,9 @@ class _HomeScreenState extends State<HomeScreen>
                                                           fontSize: 20.sp,
                                                         ),
                                                       ),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
                                                       if (!context
                                                               .read<AuthCubit>()
                                                               .state
@@ -2451,8 +2457,6 @@ class _HomeScreenState extends State<HomeScreen>
                                                             height: 40.h,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: AppColors
-                                                                  .pageBackground,
                                                               border:
                                                                   Border.all(
                                                                 width: 2.w,
@@ -2466,10 +2470,6 @@ class _HomeScreenState extends State<HomeScreen>
                                                                       .circular(
                                                                 20.r,
                                                               ),
-                                                            ),
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                              top: 10.w,
                                                             ),
                                                             padding: EdgeInsets
                                                                 .symmetric(

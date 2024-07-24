@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PaiementSanctionWidget extends StatefulWidget {
-
   PaiementSanctionWidget({
     super.key,
     // required this.infoUserController,
@@ -147,14 +146,16 @@ class _PaiementSanctionWidgetState extends State<PaiementSanctionWidget> {
               print(load);
               await CotisationRepository().PayOneCotisation(
                 widget.codeSanction,
-                widget.typeSanction == "1" ? infoUserController.text:100,
+                widget.typeSanction == "1" ? infoUserController.text : 100,
                 widget.codeMembre,
                 AppCubitStorage().state.codeAssDefaul,
                 hashId,
-               2,
+                2,
               );
               context.read<SanctionCubit>().getAllSanctions(widget.codeTournoi);
-              context.read<RecentEventCubit>().AllRecentEventCubit(AppCubitStorage().state.membreCode);
+              context
+                  .read<RecentEventCubit>()
+                  .AllRecentEventCubit(AppCubitStorage().state.membreCode);
               setState(() {
                 load = false;
               });
@@ -165,21 +166,26 @@ class _PaiementSanctionWidgetState extends State<PaiementSanctionWidget> {
                 ? CircularProgressIndicator(
                     color: AppColors.green,
                   )
-                : Container(
-                    height: 50.h,
-                    decoration: BoxDecoration(
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(10.r)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Confirmer",
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
+                : Material(
+            color: AppColors.colorButton,
+            borderRadius: BorderRadius.circular(10.r),
+                  child: Container(
+                      height: 50.h,
+                      // decoration: BoxDecoration(
+                      //   color: AppColors.colorButton,
+                      //   borderRadius: BorderRadius.circular(10.r),
+                      // ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Confirmer",
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
-                  ),
+                ),
           )
         ],
       ),

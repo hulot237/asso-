@@ -160,20 +160,21 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                         ),
                                       ),
                                     ),
-                                    if(widget.source != '' && widget.nomBeneficiaire != '')
-                                    Container(
-                                      // margin: EdgeInsets.only(bottom: 7),
-                                      child: Text(
-                                        widget.source == ''
-                                            ? "${(widget.nomBeneficiaire)}"
-                                            : "${(widget.source)}",
-                                        style: TextStyle(
-                                          fontSize: 11.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.blackBlueAccent1,
+                                    if (widget.source != '' ||
+                                        widget.nomBeneficiaire != '')
+                                      Container(
+                                        // margin: EdgeInsets.only(bottom: 7),
+                                        child: Text(
+                                          widget.source == ''
+                                              ? "${(widget.nomBeneficiaire)}"
+                                              : "${(widget.source)}",
+                                          style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ],
@@ -198,21 +199,23 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
 
                                   Modal()
                                       .showModalPayForAnotherPersonCotisation(
-                                    context,
-                                    widget.codeCotisation,
-                                    widget.lienDePaiement,
-                                    widget.motifCotisations,
-                                    widget.montantCotisations,
-                                    widget.type == "1" ? true : false,
-                                  );
+                                          context,
+                                          widget.codeCotisation,
+                                          widget.lienDePaiement,
+                                          widget.motifCotisations,
+                                          widget.montantCotisations,
+                                          widget.type == "1" ? true : false,
+                                          widget.nomBeneficiaire,
+                                          widget.source,
+                                          widget.dateCotisation);
                                 }
                               },
                               child: Container(
                                 alignment: Alignment.center,
-                                width: 72.w,
+                                // width: 72.w,
                                 margin: EdgeInsets.only(bottom: 2.h),
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: 5.w,
+                                  horizontal: 10.w,
                                   vertical: 4.h,
                                 ),
                                 decoration: BoxDecoration(
@@ -221,7 +224,9 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                 ),
                                 child: Container(
                                   child: Text(
-                                    "cotiser".tr(),
+                                    widget.isPayed == 0
+                                        ? "cotiser".tr()
+                                        : "Cotiser à nouveau".tr(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.sp,
@@ -436,42 +441,38 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                   if (CotisationDetailState.isLoading == true ||
                                       CotisationDetailState.detailCotisation ==
                                           null)
-                                    return GestureDetector(
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          top: 2.h,
-                                        ),
-                                        alignment: Alignment.centerLeft,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                "vous_avez_cotisé".tr(),
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors.blackBlue,
-                                                ),
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                        top: 2.h,
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              "vous_avez_cotisé".tr(),
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColors.blackBlue,
                                               ),
-                                              margin:
-                                                  EdgeInsets.only(right: 5.w),
                                             ),
-                                            Container(
-                                              width: 12.w,
-                                              height: 12.h,
-                                              color: AppColors.white,
-                                              child: Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: AppColors.green,
-                                                  strokeWidth: 0.5,
-                                                ),
+                                            margin: EdgeInsets.only(right: 5.w),
+                                          ),
+                                          Container(
+                                            width: 12.w,
+                                            height: 12.h,
+                                            color: AppColors.white,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.green,
+                                                strokeWidth: 0.5,
                                               ),
-                                            )
-                                          ],
-                                        ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     );
 
@@ -485,86 +486,92 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                   return currentDetailCotisation != null
                                       ? Column(
                                           children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                // if (currentDetailCotisation!["versements"].length > 0)
-                                                for (var itemDetailCotisation
-                                                    in currentDetailCotisation[
-                                                        "membres"])
-                                                  if (itemDetailCotisation[
-                                                              "membre"]
-                                                          ["membre_code"] ==
-                                                      AppCubitStorage()
-                                                          .state
-                                                          .membreCode)
-                                                    Modal()
-                                                        .showModalTransactionByEvent(
-                                                      context,
-                                                      itemDetailCotisation[
-                                                          "payments"],
-                                                      '${widget.montantCotisations}',
-                                                      resteAPayer:
-                                                          itemDetailCotisation[
-                                                              "amount_remaining"],
-                                                      dejaPayer:
-                                                          itemDetailCotisation[
-                                                              "balance"],
-                                                    );
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                  top: 2.h,
-                                                ),
-                                                alignment: Alignment.centerLeft,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      child: Text(
-                                                        "vous_avez_cotisé".tr(),
-                                                        style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: AppColors
-                                                              .blackBlue,
+                                            Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  // if (currentDetailCotisation!["versements"].length > 0)
+                                                  for (var itemDetailCotisation
+                                                      in currentDetailCotisation[
+                                                          "membres"])
+                                                    if (itemDetailCotisation[
+                                                                "membre"]
+                                                            ["membre_code"] ==
+                                                        AppCubitStorage()
+                                                            .state
+                                                            .membreCode)
+                                                      Modal()
+                                                          .showModalTransactionByEvent(
+                                                        context,
+                                                        itemDetailCotisation[
+                                                            "payments"],
+                                                        '${widget.montantCotisations}',
+                                                        resteAPayer:
+                                                            itemDetailCotisation[
+                                                                "amount_remaining"],
+                                                        dejaPayer:
+                                                            itemDetailCotisation[
+                                                                "balance"],
+                                                      );
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 2.h,
+                                                  ),
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        child: Text(
+                                                          "vous_avez_cotisé"
+                                                              .tr(),
+                                                          style: TextStyle(
+                                                            fontSize: 12.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
                                                         ),
+                                                        margin: EdgeInsets.only(
+                                                            right: 5.w),
                                                       ),
-                                                      margin: EdgeInsets.only(
-                                                          right: 5.w),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 2.h,
-                                                    ),
-                                                    for (var itemDetailCotisation
-                                                        in currentDetailCotisation[
-                                                            "membres"])
-                                                      if (itemDetailCotisation[
-                                                                  "membre"]
-                                                              ["membre_code"] ==
-                                                          AppCubitStorage()
-                                                              .state
-                                                              .membreCode)
-                                                        Container(
-                                                          child: Text(
-                                                            "${formatMontantFrancais(double.parse("${itemDetailCotisation["balance"]}"))} FCFA",
-                                                            // "${itemDetailCotisation["membre"]["versement"].length}",
-                                                            style: TextStyle(
-                                                              fontSize: 13.sp,
-                                                              // fontWeight:
-                                                              //     FontWeight.w800,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                255,
-                                                                20,
-                                                                45,
-                                                                99,
+                                                      SizedBox(
+                                                        height: 2.h,
+                                                      ),
+                                                      for (var itemDetailCotisation
+                                                          in currentDetailCotisation[
+                                                              "membres"])
+                                                        if (itemDetailCotisation[
+                                                                    "membre"][
+                                                                "membre_code"] ==
+                                                            AppCubitStorage()
+                                                                .state
+                                                                .membreCode)
+                                                          Container(
+                                                            child: Text(
+                                                              "${formatMontantFrancais(double.parse("${itemDetailCotisation["balance"]}"))} FCFA",
+                                                              // "${itemDetailCotisation["membre"]["versement"].length}",
+                                                              style: TextStyle(
+                                                                fontSize: 13.sp,
+                                                                // fontWeight:
+                                                                //     FontWeight.w800,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                  255,
+                                                                  20,
+                                                                  45,
+                                                                  99,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -639,37 +646,40 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                             .detailUser!["isMember"])
                           if (widget.nomBeneficiaire != "")
                             Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  updateTrackingData(
-                                      "${widget.screenSource}.btnwithdrawnFundsContribution",
-                                      "${DateTime.now()}", {});
-                                  launchWeb(
-                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 20.h,
-                                      child: SvgPicture.asset(
-                                        "assets/images/withdrawIcon.svg",
-                                        fit: BoxFit.scaleDown,
-                                        color: AppColors.blackBlueAccent1,
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {
+                                    updateTrackingData(
+                                        "${widget.screenSource}.btnwithdrawnFundsContribution",
+                                        "${DateTime.now()}", {});
+                                    launchWeb(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 20.h,
+                                        child: SvgPicture.asset(
+                                          "assets/images/withdrawIcon.svg",
+                                          fit: BoxFit.scaleDown,
+                                          color: AppColors.blackBlueAccent1,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Text(
-                                      "Retrait des fonds".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlueAccent1,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11.sp,
+                                      SizedBox(
+                                        height: 3.h,
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "Retrait des fonds".tr(),
+                                        style: TextStyle(
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -683,22 +693,82 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                             .state
                             .detailUser!["isMember"])
                           Expanded(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () async {
+                                  updateTrackingData("home.btnAdminister",
+                                      "${DateTime.now()}", {});
+                                  launchWeb(
+                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      // color: const Color.fromARGB(255, 0, 0, 0),
+                                      height: 20.h,
+                                      // width: 230,
+                                      child: SvgPicture.asset(
+                                        "assets/images/folderManageSimpleIcon.svg",
+                                        fit: BoxFit.scaleDown,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 3.h,
+                                    ),
+                                    Text(
+                                      "Gerer".tr(),
+                                      style: TextStyle(
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        Expanded(
+                          child: Material(
+                            color: Colors.transparent,
                             child: InkWell(
-                              onTap: () async {
-                                updateTrackingData("home.btnAdminister",
-                                    "${DateTime.now()}", {});
-                                launchWeb(
-                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
+                              splashColor: AppColors.blackBlue,
+                              onTap: () {
+                                final currentDetailCotisation = context
+                                    .read<CotisationDetailCubit>()
+                                    .state
+                                    .detailCotisation;
+
+                                List listeOkayCotisation =
+                                    currentDetailCotisation!["membres"];
+
+                                partagerCotisation(
+                                  nomGroupe:
+                                      '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
+                                          .trimRight(),
+                                  source:
+                                      '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
+                                          .trimRight(),
+                                  nomBeneficiaire:
+                                      '${(widget.nomBeneficiaire)}'.trimRight(),
+                                  dateCotisation: '${widget.dateCotisation}',
+                                  montantCotisations:
+                                      '${widget.montantCotisations}',
+                                  lienDePaiement: '${widget.lienDePaiement}',
+                                  type: '${widget.type}',
+                                  listeOkayCotisation: listeOkayCotisation,
+                                  context: context,
                                 );
                               },
                               child: Column(
                                 children: [
                                   Container(
-                                    // color: const Color.fromARGB(255, 0, 0, 0),
                                     height: 20.h,
-                                    // width: 230,
                                     child: SvgPicture.asset(
-                                      "assets/images/folderManageSimpleIcon.svg",
+                                      "assets/images/shareSimpleIcon.svg",
                                       fit: BoxFit.scaleDown,
                                       color: AppColors.blackBlueAccent1,
                                     ),
@@ -707,7 +777,7 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                     height: 3.h,
                                   ),
                                   Text(
-                                    "Gerer".tr(),
+                                    "Partager".tr(),
                                     style: TextStyle(
                                       color: AppColors.blackBlueAccent1,
                                       fontWeight: FontWeight.bold,
@@ -716,107 +786,6 @@ class _WidgetCotistionDetailPageState extends State<WidgetCotistionDetailPage> {
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                        Expanded(
-                          child: InkWell(
-                            splashColor: AppColors.blackBlue,
-                            onTap: () {
-                              final currentDetailCotisation = context
-                                  .read<CotisationDetailCubit>()
-                                  .state
-                                  .detailCotisation;
-
-                              List listeOkayCotisation =
-                                  currentDetailCotisation!["membres"];
-
-                              partagerCotisation(
-                                nomGroupe:
-                                    '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
-                                        .trimRight(),
-                                source:
-                                    '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
-                                        .trimRight(),
-                                nomBeneficiaire:
-                                    '${(widget.nomBeneficiaire)}'.trimRight(),
-                                dateCotisation: '${widget.dateCotisation}',
-                                montantCotisations:
-                                    '${widget.montantCotisations}',
-                                lienDePaiement: '${widget.lienDePaiement}',
-                                type: '${widget.type}',
-                                listeOkayCotisation: listeOkayCotisation,
-                                context: context,
-                              );
-
-                              // String message;
-
-                              // message =
-                              //     "🟢🟢 Nouvelle cotisation en cours dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}\n\n";
-
-                              // message +=
-                              //     "👉🏽 ${(widget.source == '' ? "MEMBRE CONCERNÉ" : "SEANCE CONCERNEE")} : ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : '*${(widget.source)}*'}\n";
-                              // message +=
-                              //     "👉🏽 MONTANT : ${widget.type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA*"}\n";
-                              // message +=
-                              //     "👉🏽 DATE DE FIN : *${(formatDateLiteral(widget.dateCotisation))}*\n\n";
-
-                              // message +=
-                              //     "Soyez le premier à contribuer ici :  https://${widget.lienDePaiement}\n\n";
-
-                              // message += "*Récapitulatif :*\n";
-                              // // Calcul du total et ajout des détails par membre
-                              // double totalCotisations = 0;
-                              // for (var element in listeOkayCotisation) {
-                              //   String firstName =
-                              //       element["membre"]["first_name"];
-                              //   String lastName =
-                              //       element["membre"]["last_name"];
-                              //   double balance = double.parse(element[
-                              //       "balance"]); // Conversion de la balance en nombre
-
-                              //   // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
-                              //   String formattedBalance =
-                              //       NumberFormat.decimalPattern()
-                              //           .format(balance.toInt());
-
-                              //   message +=
-                              //       "- $firstName $lastName -> $formattedBalance F ${element["statut"] == "2" ? "✅" : "❌"}\n";
-                              //   totalCotisations += balance;
-                              // }
-
-                              // // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
-                              // String formattedTotal =
-                              //     NumberFormat.decimalPattern()
-                              //         .format(totalCotisations.toInt());
-
-                              // message += "\n*TOTAL -> $formattedTotal F*\n\n";
-
-                              // message += "*by ASSO+*";
-
-                              // Share.share(message);
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 20.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/shareSimpleIcon.svg",
-                                    fit: BoxFit.scaleDown,
-                                    color: AppColors.blackBlueAccent1,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Text(
-                                  "Partager".tr(),
-                                  style: TextStyle(
-                                    color: AppColors.blackBlueAccent1,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11.sp,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                         ),

@@ -22,7 +22,7 @@ class ListCompteScreen extends StatefulWidget {
 }
 
 class _ListCompteScreenState extends State<ListCompteScreen> {
-    Future<void> handleAllCompteAss(codeAssociation) async {
+  Future<void> handleAllCompteAss(codeAssociation) async {
     final allCotisationAss =
         await context.read<CompteCubit>().AllCompteAssCubit(codeAssociation);
 
@@ -38,6 +38,7 @@ class _ListCompteScreenState extends State<ListCompteScreen> {
     super.initState();
     handleAllCompteAss(AppCubitStorage().state.codeAssDefaul);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,7 @@ class _ListCompteScreenState extends State<ListCompteScreen> {
         centerTitle: false,
         // toolbarHeight: 130.h,
         title: Text(
-          'Les comptes'.tr(),
+          'comptes'.tr(),
           // "historiques".tr(),
           style: TextStyle(
               fontSize: 16.sp,
@@ -55,7 +56,7 @@ class _ListCompteScreenState extends State<ListCompteScreen> {
         ),
         elevation: 0,
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -86,7 +87,7 @@ class _ListCompteScreenState extends State<ListCompteScreen> {
         //   "#96BF35", // Vert
         //   "#795548", // Jaune
         //   "#9C27B0", // Violet
-        // ];       
+        // ];
         List<String> listeDeCouleurs = [
           "tontineTransIcon", // Rouge
           "meetingTransIcon", // Rouge
@@ -99,33 +100,42 @@ class _ListCompteScreenState extends State<ListCompteScreen> {
 
         List<Widget> listWidgetCompte = currentCompteAss!.map((item) {
           i++;
-          return GestureDetector(
-            onTap: () async {
-              updateTrackingData(
-                  "transactions.account", "${DateTime.now()}", {});
-              context.read<CompteCubit>().getTransactionCompte(item.public_ref);
-
-              showModalBottomTransactionCompte(context);
-            },
-            child: WidgetCompteCard(
-              montantCompte:
-                  "${int.parse(item.balance!) + int.parse(item.faroti_balance!)}",
-              nomCompte: item.name!,
-              numeroCompte: item.public_ref!,
-              couleur: listeDeCouleurs[i],
+          return Container(
+               margin: EdgeInsets.only(
+                    top: 15.h,
+                  ),
+            child: Material(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(15.r),
+              child: InkWell(
+                onTap: () async {
+                  updateTrackingData(
+                      "transactions.account", "${DateTime.now()}", {});
+                  context.read<CompteCubit>().getTransactionCompte(item.public_ref);
+              
+                  showModalBottomTransactionCompte(context);
+                },
+                child: WidgetCompteCard(
+                  montantCompte:
+                      "${int.parse(item.balance!) + int.parse(item.faroti_balance!)}",
+                  nomCompte: item.name!,
+                  numeroCompte: item.public_ref!,
+                  couleur: listeDeCouleurs[i],
+                ),
+              ),
             ),
           );
         }).toList();
 
 // Ajouter un conteneur vide à la liste
         listWidgetCompte.add(
-          GestureDetector(
-            onTap: () {}, // Aucun gestionnaire d'événements défini
-            child: Container(
+           Container(
               width: MediaQuery.of(context).size.width / 2.15,
               padding: EdgeInsets.all(5.r),
-              margin: EdgeInsets.only(top: 10.h, ),
-            ),
+              margin: EdgeInsets.only(
+                top: 10.h,
+              ),
+            
           ),
         );
 
@@ -152,7 +162,8 @@ class _ListCompteScreenState extends State<ListCompteScreen> {
                 ),
               ),
             ),
-            if (compteState.isLoading == true && compteState.allCompteAss !=null)
+            if (compteState.isLoading == true &&
+                compteState.allCompteAss != null)
               EasyLoader(
                 backgroundColor: Color.fromARGB(0, 255, 255, 255),
                 iconSize: 50.r,

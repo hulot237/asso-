@@ -86,7 +86,7 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                         ),
                         backgroundColor: AppColors.backgroundAppBAr,
                         elevation: 0,
-                        leading: GestureDetector(
+                        leading: InkWell(
                                 onTap: () {
                                   Navigator.of(context).pop(context);
                                 },
@@ -669,59 +669,70 @@ class _DetailUsergroupPageState extends State<DetailUsergroupPage> {
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            InkWell(
-                              onTap: () async {
-                                updateTrackingData("detailGroup.btnAdminister",
-                                    "${DateTime.now()}", {});
-                                 launchWeb(
-                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.white,
-                                  borderRadius: BorderRadius.circular(360.r),
-                                  border: Border.all(
-                                    width: 1.w,
-                                    color: AppColors.colorButton,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromARGB(75, 150, 191, 53),
-                                      spreadRadius: 0.1,
-                                      blurRadius: 2,
-                                      offset: Offset(0, 2),
-                                    )
-                                  ],
-                                ),
-                                padding: EdgeInsets.all(12),
-                                margin: EdgeInsets.only(
-                                  top: 7.h,
-                                  left: 8.w,
-                                  right: 8.w,
-                                ),
-                                // width: MediaQuery.of(context).size.width /
-                                //     1.4,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      width: 40.w,
-                                      child: Image.asset(
-                                        "assets/images/Groupe_ou_Asso.png",
-                                        // scale: 4,
-                                      ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                      // top: 7.h,
+                                      left: 8.w,
+                                      right: 8.w,
                                     ),
-                                    Text(
-                                      "Administrer le groupe".tr(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.blackBlue,
-                                        fontSize: 20.sp,
+                              child: Material(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(360.r),
+                                child: InkWell(
+                                  onTap: () async {
+                                    updateTrackingData("detailGroup.btnAdminister",
+                                        "${DateTime.now()}", {});
+                                     launchWeb(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      // color: AppColors.white,
+                                      borderRadius: BorderRadius.circular(360.r),
+                                      border: Border.all(
+                                        width: 1.w,
+                                        color: AppColors.colorButton,
                                       ),
-                                    )
-                                  ],
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Color.fromARGB(75, 150, 191, 53),
+                                      //     spreadRadius: 0.1,
+                                      //     blurRadius: 2,
+                                      //     offset: Offset(0, 2),
+                                      //   )
+                                      // ],
+                                    ),
+                                    padding: EdgeInsets.all(12),
+                                    // margin: EdgeInsets.only(
+                                    //   top: 7.h,
+                                    //   left: 8.w,
+                                    //   right: 8.w,
+                                    // ),
+                                    // width: MediaQuery.of(context).size.width /
+                                    //     1.4,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                          width: 40.w,
+                                          child: Image.asset(
+                                            "assets/images/Groupe_ou_Asso.png",
+                                            // scale: 4,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Administrer le groupe".tr(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.blackBlue,
+                                            fontSize: 20.sp,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

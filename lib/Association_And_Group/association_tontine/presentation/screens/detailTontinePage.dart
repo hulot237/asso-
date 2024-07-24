@@ -64,7 +64,7 @@ Widget PageScaffold({
             fontWeight: FontWeight.bold,
           ),
         ),
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -86,7 +86,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -262,19 +262,17 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                   ],
                 ),
               ),
-              GestureDetector(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.only(
-                      top: 0, left: 5.w, right: 5.w, bottom: 5.h),
-                  padding: EdgeInsets.only(top: 15.h),
-                  child: Text(
-                    "Historique de la tontine".tr(),
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.blackBlue,
-                    ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(
+                    top: 0, left: 5.w, right: 5.w, bottom: 5.h),
+                padding: EdgeInsets.only(top: 15.h),
+                child: Text(
+                  "Historique de la tontine".tr(),
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blackBlue,
                   ),
                 ),
               ),

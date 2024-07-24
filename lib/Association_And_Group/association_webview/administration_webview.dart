@@ -51,7 +51,7 @@
 //             style: TextStyle(fontSize: 16.sp, color: AppColors.white),
 //           ),
 //           backgroundColor: AppColors.backgroundAppBAr,
-//           leading: GestureDetector(
+//           leading: InkWell(
 //             onTap: () async {
 //               if (context.read<AuthCubit>().state.loginInfo != null &&
 //                   forFirstPage == true) {
@@ -112,7 +112,7 @@
 //         ),
 //         backgroundColor: AppColors.backgroundAppBAr,
 //         elevation: 0,
-//         leading: GestureDetector(
+//         leading: InkWell(
 //           onTap: () async {
 //             if (context.read<AuthCubit>().state.loginInfo != null &&
 //                 forFirstPage == true) {

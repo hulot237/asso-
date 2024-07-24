@@ -1566,7 +1566,7 @@ class Modal {
   }
 
   showModalPayForAnotherPersonTontine(BuildContext context, codeContribution,
-      lienDePaiement, nomTontine, montantTontine,
+      lienDePaiement, nomTontine, montantTontine, date, nomBeneficiaire,
       {codeTontine}) {
     showDialog(
       context: context,
@@ -1620,7 +1620,8 @@ class Modal {
                           margin:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           child: widgetPayAnotherPerson(
-                            date: formatDateLiteral(monObjet["updated_at"]),
+                            isTontine: true,
+                            date: formatDateLiteral(date),
                             imageProfil:
                                 monObjet["membre"]["photo_profil"] == null
                                     ? ""
@@ -1642,6 +1643,7 @@ class Modal {
                             nomTontine: nomTontine,
                             montantTontine: montantTontine,
                             isVolontaire: false,
+                            nomBeneficiaire: nomBeneficiaire,
                           ),
                         );
                       }).toList();
@@ -1674,6 +1676,9 @@ class Modal {
       nomTontine,
       montantTontine,
       isVolontaire,
+      nomBeneficiaire,
+      source,
+      date,
       {codeTontine}) {
     showDialog(
       context: context,
@@ -1731,7 +1736,8 @@ class Modal {
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: widgetPayAnotherPerson(
-                              date: formatDateLiteral(monObjet["updated_at"]),
+                              isTontine: false,
+                              date: formatDateLiteral(date),
                               imageProfil:
                                   monObjet["membre"]["photo_profil"] == null
                                       ? ""
@@ -1752,6 +1758,8 @@ class Modal {
                               lienDePaiement: lienDePaiement,
                               nomTontine: nomTontine,
                               montantTontine: montantTontine,
+                              source: source,
+                              nomBeneficiaire: nomBeneficiaire,
                               isVolontaire: isVolontaire,
                             ),
                           );
@@ -2191,7 +2199,7 @@ class Modal {
             appBar: AppBar(
               backgroundColor: AppColors.white,
               // centerTitle: true,
-              leading: GestureDetector(
+              leading: InkWell(
                 onTap: () {
                   Navigator.of(context).pop(context);
                 },
@@ -2814,6 +2822,7 @@ class _CotisationHistoriqueWidgetState
                   memberCode: monObjet["membre"]["membre_code"],
                   codeContribution: widget.codeCotisation,
                   codeUserContribution: "",
+                  type: widget.type,
                 ),
               );
             }).toList();

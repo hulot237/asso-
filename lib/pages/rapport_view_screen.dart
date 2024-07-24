@@ -27,7 +27,7 @@ class _RapportViewScreenState extends State<RapportViewScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          leading: GestureDetector(
+          leading: InkWell(
             onTap: () {
               Navigator.pop(context);
             },

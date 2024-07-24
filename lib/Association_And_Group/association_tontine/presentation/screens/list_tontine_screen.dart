@@ -8,6 +8,7 @@ import 'package:faroty_association_1/Association_And_Group/association_tontine/p
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -58,7 +59,9 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
         centerTitle: false,
         // toolbarHeight: 130.h,
         title: Text(
-          'Vos tontines'.tr(),
+          context.read<AuthCubit>().state.detailUser!["isMember"]
+              ?
+          'Vos tontines'.tr():"Liste des tontines".tr(),
           // "historiques".tr(),
           style: TextStyle(
               fontSize: 16.sp,
@@ -67,7 +70,7 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
         ),
         elevation: 0,
         backgroundColor: AppColors.backgroundAppBAr,
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -75,6 +78,149 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
             colorIcon: AppColors.white,
           ),
         ),
+
+
+
+        actions: [
+          BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
+              builder: (DetailTournoiContext, DetailTournoiState) {
+            final currentInfoAllTournoiAssCourant =
+                DetailTournoiContext.read<UserGroupCubit>().state.changeAssData;
+            return PopupMenuButton(
+              padding: EdgeInsets.all(0),
+              position: PopupMenuPosition.under,
+              child: Row(
+                children: [
+                  for (var item
+                      in currentInfoAllTournoiAssCourant!.user_group!.tournois!)
+                    if (item.tournois_code ==
+                        AppCubitStorage().state.codeTournoisHist)
+                      Center(
+                        child: Row(
+                          children: [
+                            Text(
+                              '${"tournoi".tr()} #${item.matricule}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                            if (item.is_default == 0)
+                              Icon(
+                                Icons.dangerous,
+                                size: 12.sp,
+                                color: AppColors.white,
+                              ),
+                          ],
+                        ),
+                      ),
+                  Icon(
+                    Icons.arrow_right_rounded,
+                    size: 15.sp,
+                  )
+                ],
+              ),
+              itemBuilder: (BuildContext context) => [
+                for (var item
+                    in currentInfoAllTournoiAssCourant!.user_group!.tournois!)
+                  PopupMenuItem(
+                    padding: EdgeInsets.all(0),
+                    value: "tournoi",
+                    onTap: () async {
+                      print(" before ${item.tournois_code}");
+                      await AppCubitStorage()
+                          .updateCodeTournoisHist(item.tournois_code!);
+                      print(
+                          " after ${AppCubitStorage().state.codeTournoisHist}");
+
+                      // await handleTournoiDefault(
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .codeTournoisHist);
+                       handleTournoiDefault(AppCubitStorage().state.codeTournoisHist);
+                      // handleAllCotisationAssTournoi(
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .codeTournoisHist,
+                      //     AppCubitStorage()
+                      //         .state
+                      //         .membreCode);
+                      // context
+                      //     .read<
+                      //         SanctionCubit>()
+                      //     .getAllSanctions(
+                      //         AppCubitStorage()
+                      //             .state
+                      //             .codeTournoisHist);
+                    },
+                    child: Container(
+                      color: item.tournois_code! ==
+                              AppCubitStorage().state.codeTournoisHist
+                          ? AppColors.blackBlue.withOpacity(.05)
+                          : null,
+                      padding: EdgeInsets.only(
+                        top: 15.h,
+                        bottom: 15.h,
+                        left: 10.w,
+                        right: 10.w,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 7.w,
+                                ),
+                                Text(
+                                  '${"tournoi".tr()} #${item.matricule}'.tr(),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 70.w,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: item.is_default == 1
+                                  ? AppColors.backgroundAppBAr.withOpacity(.1)
+                                  : AppColors.red.withOpacity(.1),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                              right: 10.w,
+                              top: 3.h,
+                              bottom: 3.h,
+                            ),
+                            child: Text(
+                              item.is_default == 1 ? 'Actif'.tr() : "Inactif",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: item.is_default == 1
+                                    ? AppColors.backgroundAppBAr
+                                    : AppColors.red,
+                                // fontWeight:
+                                //     FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          })
+        ],
+      
       ),
       body: BlocBuilder<DetailTournoiCourantCubit, DetailTournoiCourantState>(
           builder: (DetailTournoiContext, DetailTournoiState) {
@@ -101,6 +247,7 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
 
         for (var tontine in listeTontines) {
           for (var item in tontine["membres"]) {
+            print("ztu${item["membre"]["membre_code"]}");
             if (item["membre"]["membre_code"] ==
                 AppCubitStorage().state.membreCode) {
               tontinesMembreConnect.add(tontine);

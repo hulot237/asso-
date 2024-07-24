@@ -194,23 +194,25 @@ class _widgetDetailHistoriqueTontineCardState
                               widget.lienDePaiement,
                               widget.nomTontine,
                               widget.montantTontine,
+                              widget.dateClose,
+                              widget.nomBeneficiaire
                             );
                           }
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: 72.w,
+                          // width: 72.w,
                           padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 5.h,
-                          ),
+                                    horizontal: 10.w,
+                                    vertical: 4.h,
+                                  ),
                           decoration: BoxDecoration(
                             color: AppColors.colorButton,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                           child: Container(
                             child: Text(
-                              "Tontiner",
+                             widget.isPayed == 0? "Tontiner":"Tontiner a nouveau".tr(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12.sp,
@@ -423,37 +425,40 @@ class _widgetDetailHistoriqueTontineCardState
                           .detailUser!["isMember"])
                         if (widget.nomBeneficiaire != "")
                           Expanded(
-                            child: InkWell(
-                              onTap: () async {
-                                updateTrackingData(
-                                    "home.btnwithdrawnFundsContribution",
-                                    "${DateTime.now()}", {});
-                                launchWeb(
-                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                );
-                              },
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 17.h,
-                                    child: SvgPicture.asset(
-                                      "assets/images/withdrawIcon.svg",
-                                      fit: BoxFit.scaleDown,
-                                      color: AppColors.blackBlueAccent1,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () async {
+                                  updateTrackingData(
+                                      "home.btnwithdrawnFundsContribution",
+                                      "${DateTime.now()}", {});
+                                  launchWeb(
+                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 17.h,
+                                      child: SvgPicture.asset(
+                                        "assets/images/withdrawIcon.svg",
+                                        fit: BoxFit.scaleDown,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Text(
-                                    "Retrait des fonds".tr(),
-                                    style: TextStyle(
-                                      color: AppColors.blackBlueAccent1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11.sp,
+                                    SizedBox(
+                                      height: 3.h,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      "Retrait des fonds".tr(),
+                                      style: TextStyle(
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -467,31 +472,115 @@ class _widgetDetailHistoriqueTontineCardState
                           .state
                           .detailUser!["isMember"])
                         Expanded(
+                          child: Material(
+                              color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {
+                                updateTrackingData("home.btnAdministerTontine",
+                                    "${DateTime.now()}", {});
+                                launchWeb(
+                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    // color: const Color.fromARGB(255, 0, 0, 0),
+                                    height: 17.h,
+                                    // width: 230,
+                                    child: SvgPicture.asset(
+                                      "assets/images/folderManageSimpleIcon.svg",
+                                      fit: BoxFit.scaleDown,
+                                      color: AppColors.blackBlueAccent1,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Text(
+                                    "Gerer".tr(),
+                                    style: TextStyle(
+                                      color: AppColors.blackBlueAccent1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      Expanded(
+                        child: Material(
+                              color: Colors.transparent,
                           child: InkWell(
                             onTap: () async {
-                              updateTrackingData("home.btnAdministerTontine",
-                                  "${DateTime.now()}", {});
-                              launchWeb(
-                                "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
+                              await handleDetailContributionTontine(
+                                widget.codeCotisation,
                               );
+                          
+                              List currentDetailCotisation = context
+                                  .read<DetailContributionCubit>()
+                                  .state
+                                  .detailContributionTontine!["membres"];
+                              print("rrrtttzzz $currentDetailCotisation");
+                          
+                              partagerContributionTontine(
+                                context: context,
+                                nomGroupe:
+                                    '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name!.trimRight()}',
+                                // source:
+                                //     '${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}',
+                                nomBeneficiaire:
+                                    '${(widget.nomBeneficiaire.trimRight())}',
+                                dateCotisation: '${widget.dateClose}',
+                                montantCotisations: '${widget.montantTontine}',
+                                lienDePaiement: '${widget.lienDePaiement}',
+                                // type: '${widget.type}',
+                                listeOkayCotisation: currentDetailCotisation,
+                                nomTontine: '${widget.nomTontine.trimRight()}',
+                                motif: '${widget.motif.trimRight()}',
+                              );
+                          
+                              print("object3");
+                              // Share.share(context
+                              //         .read<AuthCubit>()
+                              //         .state
+                              //         .detailUser!["isMember"]
+                              //     ? "Aide-moi à payer ma tontine *${widget.nomTontine}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                              //     : "Nouvelle tontine créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant  *${(widget.nomBeneficiaire)}* .\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
                             },
                             child: Column(
                               children: [
-                                Container(
-                                  // color: const Color.fromARGB(255, 0, 0, 0),
-                                  height: 17.h,
-                                  // width: 230,
-                                  child: SvgPicture.asset(
-                                    "assets/images/folderManageSimpleIcon.svg",
-                                    fit: BoxFit.scaleDown,
-                                    color: AppColors.blackBlueAccent1,
-                                  ),
-                                ),
+                                BlocBuilder<DetailContributionCubit,
+                                        ContributionState>(
+                                    builder: (DetailContributionContext,
+                                        DetailContributionState) {
+                                  return DetailContributionState
+                                              .isLoadingContibutionTontine ==
+                                          true
+                                      ? Container(
+                                          width: 15.r,
+                                          height: 15.r,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 1.w,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 17.h,
+                                          child: SvgPicture.asset(
+                                            "assets/images/shareSimpleIcon.svg",
+                                            fit: BoxFit.scaleDown,
+                                            color: AppColors.blackBlueAccent1,
+                                          ),
+                                        );
+                                }),
                                 SizedBox(
                                   height: 3.h,
                                 ),
                                 Text(
-                                  "Gerer".tr(),
+                                  "Partager".tr(),
                                   style: TextStyle(
                                     color: AppColors.blackBlueAccent1,
                                     fontWeight: FontWeight.bold,
@@ -500,85 +589,6 @@ class _widgetDetailHistoriqueTontineCardState
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                      Expanded(
-                        child: InkWell(
-                          splashColor: AppColors.blackBlue,
-                          onTap: () async {
-                            await handleDetailContributionTontine(
-                              widget.codeCotisation,
-                            );
-
-                            List currentDetailCotisation = context
-                                .read<DetailContributionCubit>()
-                                .state
-                                .detailContributionTontine!["membres"];
-                            print("rrrtttzzz $currentDetailCotisation");
-
-                            partagerContributionTontine(
-                              context: context,
-                              nomGroupe:
-                                  '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name!.trimRight()}',
-                              // source:
-                              //     '${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}',
-                              nomBeneficiaire:
-                                  '${(widget.nomBeneficiaire.trimRight())}',
-                              dateCotisation: '${widget.dateClose}',
-                              montantCotisations: '${widget.montantTontine}',
-                              lienDePaiement: '${widget.lienDePaiement}',
-                              // type: '${widget.type}',
-                              listeOkayCotisation: currentDetailCotisation,
-                              nomTontine: '${widget.nomTontine.trimRight()}',
-                              motif: '${widget.motif.trimRight()}',
-                            );
-
-                            print("object3");
-                            // Share.share(context
-                            //         .read<AuthCubit>()
-                            //         .state
-                            //         .detailUser!["isMember"]
-                            //     ? "Aide-moi à payer ma tontine *${widget.nomTontine}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-                            //     : "Nouvelle tontine créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant  *${(widget.nomBeneficiaire)}* .\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
-                          },
-                          child: Column(
-                            children: [
-                              BlocBuilder<DetailContributionCubit,
-                                      ContributionState>(
-                                  builder: (DetailContributionContext,
-                                      DetailContributionState) {
-                                return DetailContributionState
-                                            .isLoadingContibutionTontine ==
-                                        true
-                                    ? Container(
-                                        width: 15.r,
-                                        height: 15.r,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 1.w,
-                                          color: AppColors.blackBlueAccent1,
-                                        ),
-                                      )
-                                    : Container(
-                                        height: 17.h,
-                                        child: SvgPicture.asset(
-                                          "assets/images/shareSimpleIcon.svg",
-                                          fit: BoxFit.scaleDown,
-                                          color: AppColors.blackBlueAccent1,
-                                        ),
-                                      );
-                              }),
-                              SizedBox(
-                                height: 3.h,
-                              ),
-                              Text(
-                                "Partager".tr(),
-                                style: TextStyle(
-                                  color: AppColors.blackBlueAccent1,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 11.sp,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),

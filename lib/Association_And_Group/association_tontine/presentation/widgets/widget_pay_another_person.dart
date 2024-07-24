@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/association_recent_ev
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
@@ -38,6 +39,9 @@ class widgetPayAnotherPerson extends StatefulWidget {
     required this.montantTontine,
     required this.isVolontaire,
     this.codeTontine,
+    this.nomBeneficiaire,
+    this.source,
+    required this.isTontine,
   });
 
   String imageProfil;
@@ -52,6 +56,9 @@ class widgetPayAnotherPerson extends StatefulWidget {
   String codeUserContribution;
   String? codeTontine;
   String lienDePaiement;
+  var isTontine;
+  var nomBeneficiaire;
+  var source;
   var nomTontine;
   var montantTontine;
   var isVolontaire;
@@ -157,8 +164,49 @@ class _widgetPayAnotherPersonState extends State<widgetPayAnotherPerson> {
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
-                  Share.share(
-                  "Aide-moi à payer ma cotisation *${widget.nomTontine}*.\n\nMontant: *${ widget.isVolontaire ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantTontine.toString() ))} FCFA"}* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${widget.memberCode} pour valider",);
+                  if (widget.isTontine == false) {
+                    String message = "";
+
+                    message +=
+                        "🟢🟢 ${"Nouvelle cotisation en cours dans le groupe".tr()} *${"${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}".trimRight()}* ${"concernant".tr()} ${widget.source == '' ? '*${widget.nomBeneficiaire}*' : '*${widget.source}*'}\n\n ";
+
+                    message +=
+                        "👉🏽 ${(widget.source == '' ? "${"MEMBRE CONCERNÉ".tr()}" : "${"SEANCE CONCERNÉE".tr()}")} : ${widget.source == '' ? '*${widget.nomBeneficiaire}*' : '*${widget.source}*'}\n";
+                    message +=
+                        "👉🏽 ${"montant".tr().toUpperCase()} : ${widget.isVolontaire == true ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA*"}\n";
+                    message +=
+                        "👉🏽 ${"Date limite".tr().toUpperCase()} : *${(widget.date)}*\n\n";
+
+                    message +=
+                        "${"Aide-moi à payer ma cotisation en suivant le lien".tr()} https://${widget.lienDePaiement}?code=${widget.memberCode}\n\n";
+
+                    message += "*by ASSO+*";
+
+                    Share.share(
+                      message,
+                    );
+                  } else {
+                    String message = "";
+
+                    message +=
+                        "🟢🟢 ${"Nouvelle session de la tontine".tr()} *${widget.nomTontine}* ${"en cours dans le groupe".tr()} *${"${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}".trimRight()}* ${"concernant".tr()} *${widget.nomBeneficiaire}*\n\n";
+
+                    message +=
+                        "👉🏽 ${"MEMBRE CONCERNÉ".tr()} : *${widget.nomBeneficiaire}*\n";
+                    // message += "👉🏽 MOTIF : *${motif}*\n";
+                    message +=
+                        "👉🏽 ${"montant".tr().toUpperCase()} : ${"*${formatMontantFrancais(double.parse(widget.montantTontine.toString()))} FCFA*"}\n";
+                    message +=
+                        "👉🏽 ${"Date limite".tr().toUpperCase()} : *${widget.date}*\n\n";
+
+                    message += "${"Aide-moi à payer ma tontine en suivant le lien".tr()} https://${widget.lienDePaiement}?code=${widget.memberCode}\n\n";
+
+                    message += "*by ASSO+*";
+
+                    Share.share(
+                      message,
+                    );
+                  }
                 },
                 child: Container(
                   width: 15.w,

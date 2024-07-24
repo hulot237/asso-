@@ -47,7 +47,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -117,7 +117,7 @@ class _RetraitPageState extends State<RetraitPage> {
                     }
                   }
 
-                  return GestureDetector(
+                  return InkWell(
                     onTap: () {
                       handleApproveWithdraw(itemWithdrawals["id"],
                           AppCubitStorage().state.membreCode);

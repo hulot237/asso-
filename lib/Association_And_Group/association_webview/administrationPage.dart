@@ -48,7 +48,7 @@
 //               : "Créer un groupe ASSO+".tr(),
 //           style: TextStyle(fontSize: 16.sp, color: AppColors.white),
 //         ),
-//         leading: GestureDetector(
+//         leading: InkWell(
 //           onTap: () {
 //             Navigator.pop(context);
 //           },
@@ -89,7 +89,7 @@
 //       ),
 //       backgroundColor: AppColors.backgroundAppBAr,
 //       elevation: 0,
-//       leading: GestureDetector(
+//       leading: InkWell(
 //         onTap: () {
 //           Navigator.pop(context);
 //         },

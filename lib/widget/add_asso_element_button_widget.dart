@@ -22,7 +22,7 @@ class AddAssoElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 10.h,
+      bottom: 80.h,
       right: 8.w,
       child: !context.read<AuthCubit>().state.detailUser!["isMember"]
           ? GestureDetector(

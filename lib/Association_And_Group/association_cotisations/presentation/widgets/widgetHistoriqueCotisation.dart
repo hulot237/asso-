@@ -31,6 +31,7 @@ class WidgetHistoriqueCotisation extends StatefulWidget {
   var isCotisation;
   var codeUserContribution;
   var codeTontine;
+  var type;
 
   WidgetHistoriqueCotisation({
     super.key,
@@ -47,6 +48,7 @@ class WidgetHistoriqueCotisation extends StatefulWidget {
     required this.isCotisation,
     this.codeUserContribution,
     this.codeTontine,
+    this.type,
   });
   String matricule;
 
@@ -97,26 +99,29 @@ class _WidgetHistoriqueCotisationState
           Container(
             child: Row(
               children: [
-                InkWell(
-                  onTap: () {
-                    Modal().showFullPicture(
-                        context,
-                        widget.photoProfil == null
-                            ? "https://services.faroty.com/images/avatar/avatar.png"
-                            : "${Variables.LienAIP}${widget.photoProfil}",
-                        "${widget.nom} ${widget.prenom}");
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50.r),
-                    child: Container(
-                      height: 45.r,
-                      width: 45.r,
-                      decoration: BoxDecoration(
-                          color: Colors.lightBlue,
-                          borderRadius: BorderRadius.circular(50.r)),
-                      child: Image.network(
-                        "${Variables.LienAIP}${widget.photoProfil}",
-                        fit: BoxFit.cover,
+                Material(
+                                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      Modal().showFullPicture(
+                          context,
+                          widget.photoProfil == null
+                              ? "https://services.faroty.com/images/avatar/avatar.png"
+                              : "${Variables.LienAIP}${widget.photoProfil}",
+                          "${widget.nom} ${widget.prenom}");
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50.r),
+                      child: Container(
+                        height: 45.r,
+                        width: 45.r,
+                        decoration: BoxDecoration(
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(50.r)),
+                        child: Image.network(
+                          "${Variables.LienAIP}${widget.photoProfil}",
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -208,7 +213,7 @@ class _WidgetHistoriqueCotisationState
                                       Container(
                                         // margin: EdgeInsets.only(bottom: 15),
                                         child: Text(
-                                          "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${formatMontantFrancais(double.parse("${widget.montantTotalAVerser}"))} FCFA",
+                                          "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${widget.type == "1" ? "volontaire".tr()  :  "${formatMontantFrancais(double.parse("${widget.montantTotalAVerser}"))} FCFA"}",
                                           style: TextStyle(
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w800,
@@ -261,37 +266,44 @@ class _WidgetHistoriqueCotisationState
           if (!context.read<AuthCubit>().state.detailUser!["isMember"])
             //   widget.versement_status != "2"
             //       ?
-            InkWell(
-              onTap: () {
-                _showSimpleModalDialog(
-                  context,
-                  widget.nom,
-                  widget.resteAPayer,
-                  widget.codeCotisation,
-                  widget.codeMembre,
-                  hashId,
-                  widget.isCotisation,
-                  codeUserContribution: widget.codeUserContribution,
-                  codeTontine: widget.codeTontine,
-                );
-                print("object");
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: 32.r,
-                height: 32.r,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.r,
-                  vertical: 8.r,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.colorButton,
-                  borderRadius: BorderRadius.circular(15.r),
-                ),
-                child: SvgPicture.asset(
-                  "assets/images/walletPayIcon.svg",
-                  fit: BoxFit.scaleDown,
-                  color: AppColors.white,
+            Tooltip(
+            message: "effectuer le paiement du membre".tr(),
+              child: Material(
+                color: AppColors.colorButton,
+                      borderRadius: BorderRadius.circular(15.r),
+                child: InkWell(
+                  onTap: () {
+                    _showSimpleModalDialog(
+                      context,
+                      widget.nom,
+                      widget.resteAPayer,
+                      widget.codeCotisation,
+                      widget.codeMembre,
+                      hashId,
+                      widget.isCotisation,
+                      codeUserContribution: widget.codeUserContribution,
+                      codeTontine: widget.codeTontine,
+                    );
+                    print("object");
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 32.r,
+                    height: 32.r,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.r,
+                      vertical: 8.r,
+                    ),
+                    // decoration: BoxDecoration(
+                    //   color: AppColors.colorButton,
+                    //   borderRadius: BorderRadius.circular(15.r),
+                    // ),
+                    child: SvgPicture.asset(
+                      "assets/images/walletPayIcon.svg",
+                      fit: BoxFit.scaleDown,
+                      color: AppColors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -533,101 +545,102 @@ class _paiementWidgetState extends State<paiementWidget> {
           SizedBox(
             height: 30.h,
           ),
-          InkWell(
-            onTap: () async {
-              if (widget.isCotisation) {
-                print(load);
-                CotisationRepository().PayOneCotisation(
-                  widget.codeCotisation,
-                  infoUserController.text,
-                  widget.codeMembre,
-                  AppCubitStorage().state.codeAssDefaul,
-                  widget.hashId,
-                  3,
-                );
-                context
-                    .read<CotisationDetailCubit>()
-                    .updateStateAmountPayCotisation(
-                      widget.codeMembre,
-                      infoUserController.text,
-                    );
-                await Future.delayed(Duration(milliseconds: 1000));
-
-                handleAllCotisationAssTournoi(
-                  AppCubitStorage().state.codeTournoisHist,
-                  AppCubitStorage().state.membreCode,
-                );
-
-                print(load);
-                Navigator.pop(context);
-              } else {
-                // onTap: () async {
-                // setState(() {
-                //   load = true;
-                // });
-                print(load);
-                CotisationRepository().PayOneCotisation(
-                  widget.codeCotisation,
-                  infoUserController.text,
-                  widget.codeMembre,
-                  AppCubitStorage().state.codeAssDefaul,
-                  widget.hashId,
-                  widget.codeUserContribution == "" ? 3 : 8,
-                  // 8,
-                  contribution_code: widget.codeUserContribution,
-                );
-                context
-                    .read<DetailContributionCubit>()
-                    .updateStateAmountPayTontine(
-                      widget.codeUserContribution,
-                      infoUserController.text,
-                    );
-
-                await Future.delayed(
-                  Duration(
-                    milliseconds: 1000,
-                  ),
-                );
-
-                context
-                    .read<DetailContributionCubit>()
-                    .detailContributionTontineCubit(
-                      widget.codeCotisation,
-                    );
-
-                if (widget.codeTontine != null) {
-                  context.read<TontineCubit>().detailTontineCubit(
-                        AppCubitStorage().state.codeTournois,
-                        widget.codeTontine,
+          Material(
+                    color: AppColors.colorButton,
+                    borderRadius: BorderRadius.circular(10.r),
+            child: InkWell(
+              onTap: () async {
+                if (widget.isCotisation) {
+                  print(load);
+                  CotisationRepository().PayOneCotisation(
+                    widget.codeCotisation,
+                    infoUserController.text,
+                    widget.codeMembre,
+                    AppCubitStorage().state.codeAssDefaul,
+                    widget.hashId,
+                    3,
+                  );
+                  context
+                      .read<CotisationDetailCubit>()
+                      .updateStateAmountPayCotisation(
+                        widget.codeMembre,
+                        infoUserController.text,
                       );
+                  await Future.delayed(Duration(milliseconds: 1000));
+            
+                  handleAllCotisationAssTournoi(
+                    AppCubitStorage().state.codeTournoisHist,
+                    AppCubitStorage().state.membreCode,
+                  );
+            
+                  print(load);
+                  Navigator.pop(context);
+                } else {
+                  // onTap: () async {
+                  // setState(() {
+                  //   load = true;
+                  // });
+                  print(load);
+                  CotisationRepository().PayOneCotisation(
+                    widget.codeCotisation,
+                    infoUserController.text,
+                    widget.codeMembre,
+                    AppCubitStorage().state.codeAssDefaul,
+                    widget.hashId,
+                    widget.codeUserContribution == "" ? 3 : 8,
+                    // 8,
+                    contribution_code: widget.codeUserContribution,
+                  );
+                  context
+                      .read<DetailContributionCubit>()
+                      .updateStateAmountPayTontine(
+                        widget.codeUserContribution,
+                        infoUserController.text,
+                      );
+            
+                  await Future.delayed(
+                    Duration(
+                      milliseconds: 1000,
+                    ),
+                  );
+            
+                  context
+                      .read<DetailContributionCubit>()
+                      .detailContributionTontineCubit(
+                        widget.codeCotisation,
+                      );
+            
+                  if (widget.codeTontine != null) {
+                    context.read<TontineCubit>().detailTontineCubit(
+                          AppCubitStorage().state.codeTournois,
+                          widget.codeTontine,
+                        );
+                  }
+                  context.read<RecentEventCubit>().AllRecentEventCubit(
+                        AppCubitStorage().state.membreCode,
+                      );
+            
+                  context.read<CotisationDetailCubit>().detailCotisationCubit(
+                        widget.codeCotisation,
+                      );
+                  // setState(() {
+                  //   load = false;
+                  // });
+                  print(load);
+                  Navigator.pop(context);
+                  // }
                 }
-                context.read<RecentEventCubit>().AllRecentEventCubit(
-                      AppCubitStorage().state.membreCode,
-                    );
-
-                context.read<CotisationDetailCubit>().detailCotisationCubit(
-                      widget.codeCotisation,
-                    );
-                // setState(() {
-                //   load = false;
-                // });
-                print(load);
-                Navigator.pop(context);
-                // }
-              }
-            },
-            child: Container(
-              height: 50.h,
-              decoration: BoxDecoration(
-                  color: AppColors.colorButton,
-                  borderRadius: BorderRadius.circular(10.r)),
-              alignment: Alignment.center,
-              child: Text(
-                "Confirmer",
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.white,
+              },
+              child: Container(
+                height: 50.h,
+                alignment: Alignment.center,
+                child: Text(
+                  "Confirmer",
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
                 ),
               ),
             ),

@@ -16,6 +16,7 @@ class AuthRepository {
       '${Variables.LienAIP}/api/v1/membre/$userCode/show?tournois_code=$codeTournoi&version_app=${Variables.version}&app_mode=${Platform.isAndroid ? "android" : "ios"}',
     );
     final Map<String, dynamic> dataJson = response.data["data"];
+    print("ttzzzuuu   ${dataJson}");
 
     return dataJson;
   }

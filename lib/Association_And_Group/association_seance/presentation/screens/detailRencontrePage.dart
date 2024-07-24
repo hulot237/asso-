@@ -78,7 +78,7 @@ Widget PageScaffold({
               color: AppColors.white,
               fontWeight: FontWeight.bold),
         ),
-        leading: GestureDetector(
+        leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -103,7 +103,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -517,7 +517,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                           "seance"] ==
                                                       null
                                                   ? ''
-                                                  : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]}',
+                                                  : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr",ItemDetailCotisation["seance"]["date_seance"] )  }',
                                               nomBeneficiaire: ItemDetailCotisation[
                                                           "membre"] ==
                                                       null

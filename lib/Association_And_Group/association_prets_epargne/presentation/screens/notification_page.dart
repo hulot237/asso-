@@ -54,7 +54,7 @@ Widget PageScaffold({
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
-      leading: GestureDetector(
+      leading: InkWell(
         onTap: () {
           Navigator.pop(context);
         },
@@ -143,7 +143,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     ),
                   ),
                   itemBuilder: (c, element) {
-                    return GestureDetector(
+                    return InkWell(
                       onTap: () async {
                         _showSimpleModalDialog(context, element.description);
           

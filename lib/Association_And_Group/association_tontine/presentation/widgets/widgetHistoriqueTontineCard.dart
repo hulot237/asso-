@@ -33,6 +33,7 @@ class widgetHistoriqueTontineCard extends StatefulWidget {
     required this.codeContribution,
     required this.codeUserContribution,
     this.codeTontine,
+    this.type,
   });
 
   String imageProfil;
@@ -46,6 +47,7 @@ class widgetHistoriqueTontineCard extends StatefulWidget {
   String codeContribution;
   String codeUserContribution;
   String? codeTontine;
+  String? type;
 
   @override
   State<widgetHistoriqueTontineCard> createState() =>
@@ -128,7 +130,8 @@ class _widgetHistoriqueTontineCardState
                     Container(
                       margin: EdgeInsets.only(top: 2.h),
                       child: Text(
-                        "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${formatMontantFrancais(double.parse("${widget.montantTotal}"))} FCFA",
+                        "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse("${widget.montantTotal}"))} FCFA"}",
+                        // "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${formatMontantFrancais(double.parse("${widget.montantTotal}"))} FCFA",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                             fontSize: 14.sp,
@@ -183,39 +186,43 @@ class _widgetHistoriqueTontineCardState
                   ?
                   // widget.versement_status != "2"
                   //     ?
-                  InkWell(
-                      onTap: () {
-                        _showSimpleModalDialog(
-                          context,
-                          widget.nom,
-                          widget.amount_remaining,
-                          widget.codeContribution,
-                          widget.memberCode,
-                          hashId,
-                          widget.codeUserContribution,
-                          widget.codeTontine,
-                        );
-                        print("object");
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 32.r,
-                        height: 32.r,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8.r,
-                          vertical: 8.r,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.colorButton,
-                          borderRadius: BorderRadius.circular(15.r),
-                        ),
-                        child: SvgPicture.asset(
-                          "assets/images/walletPayIcon.svg",
-                          fit: BoxFit.scaleDown,
-                          color: AppColors.white,
+                  Material(
+                              color: AppColors.colorButton,
+                            borderRadius: BorderRadius.circular(15.r),
+                    child: InkWell(
+                        onTap: () {
+                          _showSimpleModalDialog(
+                            context,
+                            widget.nom,
+                            widget.amount_remaining,
+                            widget.codeContribution,
+                            widget.memberCode,
+                            hashId,
+                            widget.codeUserContribution,
+                            widget.codeTontine,
+                          );
+                          print("object");
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 32.r,
+                          height: 32.r,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.r,
+                            vertical: 8.r,
+                          ),
+                          // decoration: BoxDecoration(
+                          //   color: AppColors.colorButton,
+                          //   borderRadius: BorderRadius.circular(15.r),
+                          // ),
+                          child: SvgPicture.asset(
+                            "assets/images/walletPayIcon.svg",
+                            fit: BoxFit.scaleDown,
+                            color: AppColors.white,
+                          ),
                         ),
                       ),
-                    )
+                  )
                   : Container(
                       padding: EdgeInsets.all(2.r),
                       decoration: BoxDecoration(
@@ -456,21 +463,24 @@ class _paiementWidgetTontineState extends State<paiementWidgetTontine> {
                 ? CircularProgressIndicator(
                     color: const Color.fromARGB(255, 191, 53, 83),
                   )
-                : Container(
-                    height: 50.h,
-                    decoration: BoxDecoration(
-                        color: AppColors.colorButton,
-                        borderRadius: BorderRadius.circular(10.r)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Confirmer",
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
+                : Material(
+                  color: AppColors.colorButton,
+                          borderRadius: BorderRadius.circular(10.r),
+                  child: Container(
+                      height: 50.h,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Confirmer",
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
-                  ),
+                ),
           )
         ],
       ),

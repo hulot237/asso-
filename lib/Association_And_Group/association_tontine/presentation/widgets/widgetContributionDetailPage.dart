@@ -209,15 +209,18 @@ class _WidgetContributionDetailPageState
                                     widget.motifCotisations,
                                     widget.montantCotisations,
                                     widget.type == "1" ? true : false,
+                                    widget.nomBeneficiaire,
+                                    widget.source,
+                                     widget.dateCotisation
                                   );
                                 }
                               },
                               child: Container(
                                 alignment: Alignment.center,
-                                width: 72.w,
+                                // width: 72.w,
                                 margin: EdgeInsets.only(bottom: 2.h),
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: 5.w,
+                                  horizontal: 10.w,
                                   vertical: 4.h,
                                 ),
                                 decoration: BoxDecoration(
@@ -226,7 +229,9 @@ class _WidgetContributionDetailPageState
                                 ),
                                 child: Container(
                                   child: Text(
-                                    "cotiser".tr(),
+                                    widget.isPayed == 0
+                                        ? "cotiser".tr()
+                                        : "Cotiser à nouveau".tr(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.sp,
@@ -642,37 +647,40 @@ class _WidgetContributionDetailPageState
                             .detailUser!["isMember"])
                           if (widget.nomBeneficiaire != "")
                             Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  updateTrackingData(
-                                      "home.btnwithdrawnFundsContribution",
-                                      "${DateTime.now()}", {});
-                                  launchWeb(
-                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 20.h,
-                                      child: SvgPicture.asset(
-                                        "assets/images/withdrawIcon.svg",
-                                        fit: BoxFit.scaleDown,
-                                        color: AppColors.blackBlueAccent1,
+                              child: Material(
+                              color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {
+                                    updateTrackingData(
+                                        "home.btnwithdrawnFundsContribution",
+                                        "${DateTime.now()}", {});
+                                    launchWeb(
+                                      "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}?query=1&app_mode=mobile",
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 20.h,
+                                        child: SvgPicture.asset(
+                                          "assets/images/withdrawIcon.svg",
+                                          fit: BoxFit.scaleDown,
+                                          color: AppColors.blackBlueAccent1,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                    Text(
-                                      "Retrait des fonds".tr(),
-                                      style: TextStyle(
-                                        color: AppColors.blackBlueAccent1,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11.sp,
+                                      SizedBox(
+                                        height: 3.h,
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "Retrait des fonds".tr(),
+                                        style: TextStyle(
+                                          color: AppColors.blackBlueAccent1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -686,22 +694,137 @@ class _WidgetContributionDetailPageState
                             .state
                             .detailUser!["isMember"])
                           Expanded(
+                            child:Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () async {
+                                  updateTrackingData("home.btnAdminister",
+                                      "${DateTime.now()}", {});
+                                  launchWeb(
+                                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      // color: const Color.fromARGB(255, 0, 0, 0),
+                                      height: 20.h,
+                                      // width: 230,
+                                      child: SvgPicture.asset(
+                                        "assets/images/folderManageSimpleIcon.svg",
+                                        fit: BoxFit.scaleDown,
+                                        color: AppColors.blackBlueAccent1,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 3.h,
+                                    ),
+                                    Text(
+                                      "Gerer".tr(),
+                                      style: TextStyle(
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        Expanded(
+                          child: Material(
+                              color: Colors.transparent,
                             child: InkWell(
-                              onTap: () async {
-                                updateTrackingData("home.btnAdminister",
-                                    "${DateTime.now()}", {});
-                                launchWeb(
-                                  "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/tontine-details/${widget.codeCotisation}&app_mode=mobile",
+                              onTap: () {
+                                final currentDetailCotisation = context
+                                    .read<DetailContributionCubit>()
+                                    .state
+                                    .detailContributionTontine;
+                            
+                                List listeOkayCotisation =
+                                    currentDetailCotisation![
+                                        "contribution_membres"];
+                            
+                                String originalString = widget.rubrique;
+                            
+                                String result =
+                                    originalString.replaceFirst("Tontine : ", "");
+                                print("oresult $result");
+                            
+                                partagerContributionTontine(
+                                  nomGroupe:
+                                      '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
+                                          .trimRight(),
+                                  // source:
+                                  //     '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
+                                  //         .trimRight(),
+                                  nomBeneficiaire:
+                                      '${(widget.nomBeneficiaire)}'.trimRight(),
+                                  dateCotisation: '${widget.dateCotisation}',
+                                  montantCotisations:
+                                      '${widget.montantCotisations}',
+                                  lienDePaiement: '${widget.lienDePaiement}',
+                                  // type: '${widget.type}',
+                                  listeOkayCotisation: listeOkayCotisation,
+                                  context: context,
+                                  nomTontine: result.trimLeft(),
+                                  motif: widget.motifCotisations,
                                 );
+                            
+                                // String message;
+                            
+                                // message =
+                                //     "🟢🟢 Nouvelle cotisation en cours dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}\n\n";
+                            
+                                // message +=
+                                //     "👉🏽 ${(widget.source == '' ? "MEMBRE CONCERNÉ" : "SEANCE CONCERNEE")} : ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : '*${(widget.source)}*'}\n";
+                                // message +=
+                                //     "👉🏽 MONTANT : ${widget.type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA*"}\n";
+                                // message +=
+                                //     "👉🏽 DATE DE FIN : *${(formatDateLiteral(widget.dateCotisation))}*\n\n";
+                            
+                                // message +=
+                                //     "Soyez le premier à contribuer ici :  https://${widget.lienDePaiement}\n\n";
+                            
+                                // message += "*Récapitulatif :*\n";
+                                // // Calcul du total et ajout des détails par membre
+                                // double totalCotisations = 0;
+                                // for (var element in listeOkayCotisation) {
+                                //   String firstName =
+                                //       element["membre"]["first_name"];
+                                //   String lastName =
+                                //       element["membre"]["last_name"];
+                                //   double balance = double.parse(element[
+                                //       "balance"]); // Conversion de la balance en nombre
+                            
+                                //   // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
+                                //   String formattedBalance =
+                                //       NumberFormat.decimalPattern()
+                                //           .format(balance.toInt());
+                            
+                                //   message +=
+                                //       "- $firstName $lastName -> $formattedBalance F ${element["statut"] == "2" ? "✅" : "❌"}\n";
+                                //   totalCotisations += balance;
+                                // }
+                            
+                                // // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
+                                // String formattedTotal =
+                                //     NumberFormat.decimalPattern()
+                                //         .format(totalCotisations.toInt());
+                            
+                                // message += "\n*TOTAL -> $formattedTotal F*\n\n";
+                            
+                                // message += "*by ASSO+*";
+                            
+                                // Share.share(message);
                               },
                               child: Column(
                                 children: [
                                   Container(
-                                    // color: const Color.fromARGB(255, 0, 0, 0),
                                     height: 20.h,
-                                    // width: 230,
                                     child: SvgPicture.asset(
-                                      "assets/images/folderManageSimpleIcon.svg",
+                                      "assets/images/shareSimpleIcon.svg",
                                       fit: BoxFit.scaleDown,
                                       color: AppColors.blackBlueAccent1,
                                     ),
@@ -710,7 +833,7 @@ class _WidgetContributionDetailPageState
                                     height: 3.h,
                                   ),
                                   Text(
-                                    "Gerer".tr(),
+                                    "Partager".tr(),
                                     style: TextStyle(
                                       color: AppColors.blackBlueAccent1,
                                       fontWeight: FontWeight.bold,
@@ -719,116 +842,6 @@ class _WidgetContributionDetailPageState
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                        Expanded(
-                          child: InkWell(
-                            splashColor: AppColors.blackBlue,
-                            onTap: () {
-                              final currentDetailCotisation = context
-                                  .read<DetailContributionCubit>()
-                                  .state
-                                  .detailContributionTontine;
-
-                              List listeOkayCotisation =
-                                  currentDetailCotisation![
-                                      "contribution_membres"];
-
-                              String originalString = widget.rubrique;
-
-                              String result =
-                                  originalString.replaceFirst("Tontine : ", "");
-                              print("oresult $result");
-
-                              partagerContributionTontine(
-                                nomGroupe:
-                                    '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
-                                        .trimRight(),
-                                // source:
-                                //     '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
-                                //         .trimRight(),
-                                nomBeneficiaire:
-                                    '${(widget.nomBeneficiaire)}'.trimRight(),
-                                dateCotisation: '${widget.dateCotisation}',
-                                montantCotisations:
-                                    '${widget.montantCotisations}',
-                                lienDePaiement: '${widget.lienDePaiement}',
-                                // type: '${widget.type}',
-                                listeOkayCotisation: listeOkayCotisation,
-                                context: context,
-                                nomTontine: result.trimLeft(),
-                                motif: widget.motifCotisations,
-                              );
-
-                              // String message;
-
-                              // message =
-                              //     "🟢🟢 Nouvelle cotisation en cours dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : "*${(widget.source)}*"}\n\n";
-
-                              // message +=
-                              //     "👉🏽 ${(widget.source == '' ? "MEMBRE CONCERNÉ" : "SEANCE CONCERNEE")} : ${widget.source == '' ? '*${(widget.nomBeneficiaire)}*' : '*${(widget.source)}*'}\n";
-                              // message +=
-                              //     "👉🏽 MONTANT : ${widget.type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA*"}\n";
-                              // message +=
-                              //     "👉🏽 DATE DE FIN : *${(formatDateLiteral(widget.dateCotisation))}*\n\n";
-
-                              // message +=
-                              //     "Soyez le premier à contribuer ici :  https://${widget.lienDePaiement}\n\n";
-
-                              // message += "*Récapitulatif :*\n";
-                              // // Calcul du total et ajout des détails par membre
-                              // double totalCotisations = 0;
-                              // for (var element in listeOkayCotisation) {
-                              //   String firstName =
-                              //       element["membre"]["first_name"];
-                              //   String lastName =
-                              //       element["membre"]["last_name"];
-                              //   double balance = double.parse(element[
-                              //       "balance"]); // Conversion de la balance en nombre
-
-                              //   // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
-                              //   String formattedBalance =
-                              //       NumberFormat.decimalPattern()
-                              //           .format(balance.toInt());
-
-                              //   message +=
-                              //       "- $firstName $lastName -> $formattedBalance F ${element["statut"] == "2" ? "✅" : "❌"}\n";
-                              //   totalCotisations += balance;
-                              // }
-
-                              // // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
-                              // String formattedTotal =
-                              //     NumberFormat.decimalPattern()
-                              //         .format(totalCotisations.toInt());
-
-                              // message += "\n*TOTAL -> $formattedTotal F*\n\n";
-
-                              // message += "*by ASSO+*";
-
-                              // Share.share(message);
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 20.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/shareSimpleIcon.svg",
-                                    fit: BoxFit.scaleDown,
-                                    color: AppColors.blackBlueAccent1,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Text(
-                                  "Partager".tr(),
-                                  style: TextStyle(
-                                    color: AppColors.blackBlueAccent1,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11.sp,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                         ),
