@@ -84,7 +84,7 @@ Widget PageScaffold({
       navigationBar: CupertinoNavigationBar(
         backgroundColor: AppColors.backgroundAppBAr,
         middle: Text(
-          "detail_de_la_cotisations".tr(),
+          "Detail de la tontine".tr(),
           style: TextStyle(
               fontSize: 16.sp,
               color: AppColors.white,
@@ -107,7 +107,7 @@ Widget PageScaffold({
     backgroundColor: AppColors.pageBackground,
     appBar: AppBar(
       title: Text(
-        "detail_de_la_cotisations".tr(),
+        "Detail de la tontine".tr(),
         style: TextStyle(
             fontSize: 16.sp,
             color: AppColors.white,
@@ -178,6 +178,7 @@ class _DetailContributionPageState extends State<DetailContributionPage>
                   margin: EdgeInsets.only(top: 10.h),
                   child: WidgetContributionDetailPage(
                     // rapportUrl: widget.rapportUrl,
+                    isCotisation: false,
                     screenSource: "meeting",
                     isPayed: widget.isPayed,
                     montantCotisations: widget.montantCotisations,
@@ -241,7 +242,8 @@ class _DetailContributionPageState extends State<DetailContributionPage>
                 ),
                 BlocBuilder<DetailContributionCubit, ContributionState>(
                   builder: (CotisationDetailcontext, CotisationDetailstate) {
-                    if (CotisationDetailstate.isLoadingContibutionTontine == true &&
+                    if (CotisationDetailstate.isLoadingContibutionTontine ==
+                            true &&
                         CotisationDetailstate.detailContributionTontine == null)
                       return Expanded(
                         child: Center(
@@ -365,8 +367,11 @@ class _DetailContributionPageState extends State<DetailContributionPage>
                                     ],
                                   ),
                           ),
-                          if (CotisationDetailstate.isLoadingContibutionTontine == true &&
-                              CotisationDetailstate.detailContributionTontine != null)
+                          if (CotisationDetailstate
+                                      .isLoadingContibutionTontine ==
+                                  true &&
+                              CotisationDetailstate.detailContributionTontine !=
+                                  null)
                             Center(
                               child: EasyLoader(
                                 backgroundColor:

@@ -43,6 +43,7 @@ class WidgetContributionDetailPage extends StatefulWidget {
     required this.rubrique,
     required this.isPayed,
     required this.screenSource,
+    required this.isCotisation,
     // required this.rapportUrl,
   });
   int montantCotisations;
@@ -60,6 +61,7 @@ class WidgetContributionDetailPage extends StatefulWidget {
   String rubrique;
   int isPayed;
   String screenSource;
+  bool isCotisation;
   // String? rapportUrl;
 
   @override
@@ -69,13 +71,10 @@ class WidgetContributionDetailPage extends StatefulWidget {
 
 class _WidgetContributionDetailPageState
     extends State<WidgetContributionDetailPage> {
-  Future<void> handleDetailCotisation(codeCotisation) async {
-    // final detailTournoiCourant = await context
-    //     .read<DetailTournoiCourantCubit>()
-    //     .detailTournoiCourantCubit();
+  Future<void> handleDetailContributionTontine(codeContribution) async {
     final detailCotisation = await context
-        .read<CotisationDetailCubit>()
-        .detailCotisationCubit(codeCotisation);
+        .read<DetailContributionCubit>()
+        .detailContributionTontineCubit(codeContribution);
   }
 
   @override
@@ -189,6 +188,46 @@ class _WidgetContributionDetailPageState
                         //     ?
                         Column(
                           children: [
+                             if (widget.isPayed == 1)
+                        InkWell(
+                          onTap: () {
+                            handleDetailContributionTontine(
+                                widget.codeCotisation,
+                              );
+                              Modal().showModalPayForAnotherPersonTontine(
+                                  context,
+                                  widget.codeCotisation,
+                                  widget.lienDePaiement,
+                                  widget.rubrique,
+                                  widget.montantCotisations,
+                                  widget.dateCotisation,
+                                  widget.nomBeneficiaire);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            // width: 72.w,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 4.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.colorButton,
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            child: Container(
+                              child: Text(
+                                "Tontiner un ami".tr(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      if (widget.isPayed == 0)
                             PopupMenuButton(
                               elevation: 5,
                               shadowColor: AppColors.barrierColorModal,
@@ -199,20 +238,37 @@ class _WidgetContributionDetailPageState
                                     "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
                                   );
                                 } else if (value == "anotherPerson") {
-                                  handleDetailCotisation(widget.codeCotisation);
 
-                                  Modal()
-                                      .showModalPayForAnotherPersonCotisation(
-                                    context,
-                                    widget.codeCotisation,
-                                    widget.lienDePaiement,
-                                    widget.motifCotisations,
-                                    widget.montantCotisations,
-                                    widget.type == "1" ? true : false,
-                                    widget.nomBeneficiaire,
-                                    widget.source,
-                                     widget.dateCotisation
-                                  );
+                                   handleDetailContributionTontine(
+                                widget.codeCotisation,
+                              );
+                              Modal().showModalPayForAnotherPersonTontine(
+                                  context,
+                                  widget.codeCotisation,
+                                  widget.lienDePaiement,
+                                  widget.rubrique,
+                                  widget.montantCotisations,
+                                  widget.dateCotisation,
+                                  widget.nomBeneficiaire);
+                                  
+
+
+
+
+                                  // handleDetailCotisation(widget.codeCotisation);
+
+                                  // Modal()
+                                  //     .showModalPayForAnotherPersonCotisation(
+                                  //   context,
+                                  //   widget.codeCotisation,
+                                  //   widget.lienDePaiement,
+                                  //   widget.motifCotisations,
+                                  //   widget.montantCotisations,
+                                  //   widget.type == "1" ? true : false,
+                                  //   widget.nomBeneficiaire,
+                                  //   widget.source,
+                                  //    widget.dateCotisation
+                                  // );
                                 }
                               },
                               child: Container(
@@ -228,10 +284,7 @@ class _WidgetContributionDetailPageState
                                   borderRadius: BorderRadius.circular(15.r),
                                 ),
                                 child: Container(
-                                  child: Text(
-                                    widget.isPayed == 0
-                                        ? "cotiser".tr()
-                                        : "Cotiser à nouveau".tr(),
+                                  child: Text("Tontiner".tr(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.sp,

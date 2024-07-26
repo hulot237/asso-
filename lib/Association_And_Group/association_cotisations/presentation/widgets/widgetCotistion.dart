@@ -83,7 +83,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                 "${widget.screenSource}.contribution", "${DateTime.now()}", {});
             handleDetailCotisation(widget.codeCotisation);
             print("${widget.codeCotisation}");
-        
+
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -150,11 +150,14 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                       Row(
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5.h),
+                                            margin:
+                                                EdgeInsets.only(bottom: 5.h),
                                             child: Text(
-                                              '${widget.rubrique}'.toUpperCase(),
+                                              '${widget.rubrique}'
+                                                  .toUpperCase(),
                                               style: TextStyle(
-                                                color: AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.w900,
                                                 fontSize: 13.sp,
                                               ),
@@ -243,166 +246,179 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             //     ?
                             Column(
                               children: [
-                                // GestureDetector(
-                                //   onTap: () async {
-                                //     launchWeb(
-                                //       "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                //     );
-                                //     updateTrackingData(
-                                //         "${widget.screenSource}.btnContribution",
-                                //         "${DateTime.now()}", {});
-                                //   },
-                                //   child: Container(
-                                //     alignment: Alignment.center,
-                                //     width: 72.w,
-                                //     margin: EdgeInsets.only(bottom: 2.h),
-                                //     padding: EdgeInsets.symmetric(
-                                //       horizontal: 5.w,
-                                //       vertical: 4.h,
-                                //     ),
-                                //     decoration: BoxDecoration(
-                                //       color: AppColors.colorButton,
-                                //       borderRadius:
-                                //           BorderRadius.circular(15.r),
-                                //     ),
-                                //     child: Container(
-                                //       child: Text(
-                                //         "cotiser".tr(),
-                                //         style: TextStyle(
-                                //           fontWeight: FontWeight.bold,
-                                //           fontSize: 12.sp,
-                                //           color: AppColors.white,
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
-                                PopupMenuButton(
-                                  elevation: 5,
-                                  shadowColor: AppColors.barrierColorModal,
-                                  onSelected: (value) async {
-                                    if (value == "mySelf") {
-                                      print("value");
-                                      launchWeb(
-                                        "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                      );
-                                    } else if (value == "anotherPerson") {
-                                      handleDetailCotisation(
-                                          widget.codeCotisation);
-        
-                                      Modal()
-                                          .showModalPayForAnotherPersonCotisation(
-                                        context,
-                                        widget.codeCotisation,
-                                        widget.lienDePaiement,
-                                        widget.motifCotisations,
-                                        widget.montantCotisations,
-                                        widget.type == "1" ? true : false,
-                                        widget.nomBeneficiaire,
-                                        widget.source,
-                                        widget.dateCotisation
-                                      );
-                                    }
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w,
-                                      vertical: 4.h,
-                                    ),
-                                    margin: EdgeInsets.only(bottom: 2.h),
-                                    // padding: EdgeInsets.symmetric(
-                                    //   horizontal: 5.w,
-                                    //   vertical: 4.h,
-                                    // ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.colorButton,
-                                      borderRadius: BorderRadius.circular(15.r),
-                                    ),
-                                    child: Container(
-                                      child: Text(
-                                      widget.isPayed == 0?  "cotiser".tr():
-                                        "Cotiser à nouveau".tr(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.sp,
-                                          color: AppColors.white,
+                                (widget.type == "0" && widget.isPayed == 1)
+                                    ? InkWell(
+                                        onTap: () {
+                                          handleDetailCotisation(
+                                              widget.codeCotisation);
+
+                                          Modal()
+                                              .showModalPayForAnotherPersonCotisation(
+                                            context,
+                                            widget.codeCotisation,
+                                            widget.lienDePaiement,
+                                            widget.motifCotisations,
+                                            widget.montantCotisations,
+                                            widget.type == "1" ? true : false,
+                                            widget.nomBeneficiaire,
+                                            widget.source,
+                                            widget.dateCotisation,
+                                          );
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w,
+                                            vertical: 4.h,
+                                          ),
+                                          margin: EdgeInsets.only(bottom: 2.h),
+                                          // padding: EdgeInsets.symmetric(
+                                          //   horizontal: 5.w,
+                                          //   vertical: 4.h,
+                                          // ),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.colorButton,
+                                            borderRadius:
+                                                BorderRadius.circular(15.r),
+                                          ),
+                                          child: Container(
+                                            child: Text(
+                                              "Cotiser un ami".tr(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12.sp,
+                                                color: AppColors.white,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry>[
-                                    PopupMenuItem(
-                                      value: "mySelf",
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 8.0),
-                                            child: Container(
-                                              height: 22.h,
-                                              width: 22.w,
-                                              child: SvgPicture.asset(
-                                                "assets/images/person.svg",
-                                                fit: BoxFit.cover,
-                                                color: AppColors.blackBlueAccent1,
+                                      )
+                                    : PopupMenuButton(
+                                        elevation: 5,
+                                        shadowColor:
+                                            AppColors.barrierColorModal,
+                                        onSelected: (value) async {
+                                          if (value == "mySelf") {
+                                            print("value");
+                                            launchWeb(
+                                              "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                                            );
+                                          } else if (value == "anotherPerson") {
+                                            handleDetailCotisation(
+                                                widget.codeCotisation);
+
+                                            Modal()
+                                                .showModalPayForAnotherPersonCotisation(
+                                                    context,
+                                                    widget.codeCotisation,
+                                                    widget.lienDePaiement,
+                                                    widget.motifCotisations,
+                                                    widget.montantCotisations,
+                                                    widget.type == "1"
+                                                        ? true
+                                                        : false,
+                                                    widget.nomBeneficiaire,
+                                                    widget.source,
+                                                    widget.dateCotisation);
+                                          }
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w,
+                                            vertical: 4.h,
+                                          ),
+                                          margin: EdgeInsets.only(bottom: 2.h),
+                                          // padding: EdgeInsets.symmetric(
+                                          //   horizontal: 5.w,
+                                          //   vertical: 4.h,
+                                          // ),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.colorButton,
+                                            borderRadius:
+                                                BorderRadius.circular(15.r),
+                                          ),
+                                          child: Container(
+                                            child: Text(
+                                              widget.isPayed == 1 &&
+                                                      widget.type == "1"
+                                                  ? "Cotiser à nouveau".tr()
+                                                  : "Cotiser".tr(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12.sp,
+                                                color: AppColors.white,
                                               ),
                                             ),
                                           ),
-                                          Text(
-                                            'Payer pour moi'.tr(),
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: AppColors.blackBlue,
-                                              fontWeight: FontWeight.bold,
+                                        ),
+                                        itemBuilder: (BuildContext context) =>
+                                            <PopupMenuEntry>[
+                                          PopupMenuItem(
+                                            value: "mySelf",
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 8.0),
+                                                  child: Container(
+                                                    height: 22.h,
+                                                    width: 22.w,
+                                                    child: SvgPicture.asset(
+                                                      "assets/images/person.svg",
+                                                      fit: BoxFit.cover,
+                                                      color: AppColors
+                                                          .blackBlueAccent1,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Payer pour moi'.tr(),
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color: AppColors.blackBlue,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          PopupMenuItem(
+                                            value: "anotherPerson",
+                                            // onTap: () {
+                                            //   _showSimpleModalDialog(context);
+                                            // },
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 8.0),
+                                                  child: Container(
+                                                    height: 22.h,
+                                                    width: 22.w,
+                                                    child: SvgPicture.asset(
+                                                      "assets/images/friendsTalking.svg",
+                                                      fit: BoxFit.cover,
+                                                      color: AppColors
+                                                          .blackBlueAccent1,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Payer pour quelqu'un".tr(),
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color: AppColors.blackBlue,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: "anotherPerson",
-                                      // onTap: () {
-                                      //   _showSimpleModalDialog(context);
-                                      // },
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 8.0),
-                                            child: Container(
-                                              height: 22.h,
-                                              width: 22.w,
-                                              child: SvgPicture.asset(
-                                                "assets/images/friendsTalking.svg",
-                                                fit: BoxFit.cover,
-                                                color: AppColors.blackBlueAccent1,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            "Payer pour quelqu'un".tr(),
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: AppColors.blackBlue,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ],
-                            )
-                            // : Text(
-                            //     "payé".tr(),
-                            //     style: TextStyle(
-                            //       fontSize: 14.sp,
-                            //       color: AppColors.green,
-                            //       fontWeight: FontWeight.w600,
-                            //       fontStyle: FontStyle.italic,
-                            //     ),
-                            //   ),
+                            ),
                           ],
                         ),
                       ),
@@ -481,7 +497,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               // margin: EdgeInsets.only(bottom: 5),
                               // width: MediaQuery.of(context).size.width / 1.1,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     child: Row(
@@ -619,7 +636,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                 .detailUser!["isMember"])
                               Expanded(
                                 child: Material(
-                                    color: Colors.transparent,
+                                  color: Colors.transparent,
                                   child: InkWell(
                                     onTap: () async {
                                       updateTrackingData(
@@ -657,7 +674,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                               ),
                             Expanded(
                               child: Material(
-                                    color: Colors.transparent,
+                                color: Colors.transparent,
                                 child: InkWell(
                                   splashColor: AppColors.blackBlue,
                                   onTap: () async {
@@ -665,18 +682,18 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                     updateTrackingData(
                                         "${widget.screenSource}.btnShareContribution",
                                         "${DateTime.now()}", {});
-                                
+
                                     await handleDetailCotisation(
                                         widget.codeCotisation);
-                                
+
                                     final currentDetailCotisation = context
                                         .read<CotisationDetailCubit>()
                                         .state
                                         .detailCotisation;
-                                
+
                                     List listeOkayCotisation =
                                         currentDetailCotisation!["membres"];
-                                
+
                                     partagerCotisation(
                                       nomGroupe:
                                           '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
@@ -685,16 +702,19 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                           '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
                                               .trimRight(),
                                       nomBeneficiaire:
-                                          '${(widget.nomBeneficiaire)}'.trimRight(),
-                                      dateCotisation: '${widget.dateCotisation}',
+                                          '${(widget.nomBeneficiaire)}'
+                                              .trimRight(),
+                                      dateCotisation:
+                                          '${widget.dateCotisation}',
                                       montantCotisations:
                                           '${widget.montantCotisations}',
-                                      lienDePaiement: '${widget.lienDePaiement}',
+                                      lienDePaiement:
+                                          '${widget.lienDePaiement}',
                                       type: '${widget.type}',
                                       listeOkayCotisation: listeOkayCotisation,
                                       context: context,
                                     );
-                                
+
                                     //         Container(
                                     //   child: Text(
                                     //     widget.type == "1" ? "volontaire".tr() :
@@ -707,7 +727,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                     //     ),
                                     //   ),
                                     // ),
-                                
+
                                     // Share.share(context
                                     //         .read<AuthCubit>()
                                     //         .state
@@ -721,14 +741,17 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                               CotisationDetailState>(
                                           builder: (CotisationDetailcontext,
                                               CotisationDetailstate) {
-                                        return CotisationDetailstate.isLoading ==
+                                        return CotisationDetailstate
+                                                    .isLoading ==
                                                 true
                                             ? Container(
                                                 width: 15.r,
                                                 height: 15.r,
-                                                child: CircularProgressIndicator(
+                                                child:
+                                                    CircularProgressIndicator(
                                                   strokeWidth: 1.w,
-                                                  color: AppColors.blackBlueAccent1,
+                                                  color: AppColors
+                                                      .blackBlueAccent1,
                                                 ),
                                               )
                                             : Container(
@@ -736,7 +759,8 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                                 child: SvgPicture.asset(
                                                   "assets/images/shareSimpleIcon.svg",
                                                   fit: BoxFit.scaleDown,
-                                                  color: AppColors.blackBlueAccent1,
+                                                  color: AppColors
+                                                      .blackBlueAccent1,
                                                 ),
                                               );
                                       }),

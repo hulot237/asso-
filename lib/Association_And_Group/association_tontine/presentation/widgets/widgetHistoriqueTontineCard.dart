@@ -32,6 +32,7 @@ class widgetHistoriqueTontineCard extends StatefulWidget {
     required this.memberCode,
     required this.codeContribution,
     required this.codeUserContribution,
+    required this.montantTotalAVerser,
     this.codeTontine,
     this.type,
   });
@@ -48,6 +49,7 @@ class widgetHistoriqueTontineCard extends StatefulWidget {
   String codeUserContribution;
   String? codeTontine;
   String? type;
+  var montantTotalAVerser;
 
   @override
   State<widgetHistoriqueTontineCard> createState() =>
@@ -130,7 +132,7 @@ class _widgetHistoriqueTontineCardState
                     Container(
                       margin: EdgeInsets.only(top: 2.h),
                       child: Text(
-                        "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse("${widget.montantTotal}"))} FCFA"}",
+                        "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse("${widget.montantTotalAVerser}"))} FCFA"}",
                         // "${formatMontantFrancais(double.parse("${widget.montantVersee}"))} FCFA / ${formatMontantFrancais(double.parse("${widget.montantTotal}"))} FCFA",
                         overflow: TextOverflow.clip,
                         style: TextStyle(

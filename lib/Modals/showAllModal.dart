@@ -2807,6 +2807,7 @@ class _CotisationHistoriqueWidgetState
                 ),
                 child: widgetHistoriqueTontineCard(
                   montantTotal: "${widget.montantCotisations}",
+                  montantTotalAVerser: monObjet["amount_to_pay"],
                   imageProfil: monObjet["membre"]["photo_profil"] == null
                       ? ""
                       : monObjet["membre"]["photo_profil"],
@@ -3009,6 +3010,7 @@ class _TontineHistoriqueWidgetState extends State<TontineHistoriqueWidget> {
                     : monObjet["membre"]["photo_profil"],
                 is_versement_finished: monObjet["is_payed"],
                 montantVersee: monObjet["balance"],
+                montantTotalAVerser: monObjet["amount_to_pay"],
                 nom: monObjet["membre"]["first_name"] == null
                     ? ""
                     : monObjet["membre"]["first_name"],

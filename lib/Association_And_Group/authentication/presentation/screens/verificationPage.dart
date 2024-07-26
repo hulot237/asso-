@@ -142,44 +142,41 @@ class _VerificationPageState extends State<VerificationPage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (widget.isForCreate) {
-      if (state == AppLifecycleState.resumed) {
-        isLoadingTwo = true;
-        isLoading = true;
-        // if (AppCubitStorage().state.codeAssDefaul == null &&
-        //     AppCubitStorage().state.codeTournois == null &&
-        //     AppCubitStorage().state.membreCode == null &&
-        //     AppCubitStorage().state.tokenUser == null) {
-        await loginInfoConnectToWebViewFirst();
+      if (_pinController.text != "" && _pinController.text.length == 5) {
+        if (state == AppLifecycleState.resumed) {
+          isLoadingTwo = true;
+          isLoading = true;
+          await loginInfoConnectToWebViewFirst();
 
-        var loginInfo = await context.read<AuthCubit>().state.loginInfo;
-        print("objectloginInfo ${context.read<AuthCubit>().state.loginInfo}");
+          var loginInfo = await context.read<AuthCubit>().state.loginInfo;
+          print("objectloginInfo ${context.read<AuthCubit>().state.loginInfo}");
 
-        if (loginInfo != null) {
-          await AppCubitStorage()
-              .updateCodeAssDefaul(loginInfo.userGroup!.first.urlcode!);
-          await AppCubitStorage().updateTokenUser(loginInfo.token!);
-          await AppCubitStorage()
-              .updatemembreCode(loginInfo.user!.membre_code!);
-          print("RETOUR1");
-          await AppCubitStorage()
-              .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
-          await AppCubitStorage()
-              .updateCodeTournoisHist(loginInfo.tournoi!.tournois_code!);
-          await AppCubitStorage().updateuserNameKey(loginInfo.username!);
-          await AppCubitStorage().updatepasswordKey(loginInfo.password!);
-          await context
-              .read<UserGroupCubit>()
-              .AllUserGroupOfUserCubit(loginInfo.token);
+          if (loginInfo != null) {
+            await AppCubitStorage()
+                .updateCodeAssDefaul(loginInfo.userGroup!.first.urlcode!);
+            await AppCubitStorage().updateTokenUser(loginInfo.token!);
+            await AppCubitStorage()
+                .updatemembreCode(loginInfo.user!.membre_code!);
+            print("RETOUR1");
+            await AppCubitStorage()
+                .updateCodeTournoisDefault(loginInfo.tournoi!.tournois_code!);
+            await AppCubitStorage()
+                .updateCodeTournoisHist(loginInfo.tournoi!.tournois_code!);
+            await AppCubitStorage().updateuserNameKey(loginInfo.username!);
+            await AppCubitStorage().updatepasswordKey(loginInfo.password!);
+            await context
+                .read<UserGroupCubit>()
+                .AllUserGroupOfUserCubit(loginInfo.token);
 
-          // Utilisation de SchedulerBinding pour attendre que la navigation soit prête
-          SchedulerBinding.instance!.addPostFrameCallback((_) {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (BuildContext context) => HomeCentraleScreen(),
-              ),
-            );
-          });
+            SchedulerBinding.instance!.addPostFrameCallback((_) {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => HomeCentraleScreen(),
+                ),
+              );
+            });
+          }
         }
       }
 
@@ -402,7 +399,8 @@ class _VerificationPageState extends State<VerificationPage>
                                           : ElevatedButton(
                                               onPressed: () async {
                                                 await handleConfirmationForCreate();
-                                                  print("_pinController ${_pinController.text}");
+                                                print(
+                                                    "_pinController ${_pinController.text}");
                                                 if (_pinController.text != "") {
                                                   if (widget.isForCreate) {
                                                     await handleConfirmationForCreate();

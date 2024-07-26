@@ -264,8 +264,8 @@ class _WidgetHistoriqueCotisationState
             ),
           ),
           if (!context.read<AuthCubit>().state.detailUser!["isMember"])
-            //   widget.versement_status != "2"
-            //       ?
+          // if (!widget.isCotisation)
+          // if(widget.versement_status != "2")
             Tooltip(
             message: "effectuer le paiement du membre".tr(),
               child: Material(
@@ -294,10 +294,6 @@ class _WidgetHistoriqueCotisationState
                       horizontal: 8.r,
                       vertical: 8.r,
                     ),
-                    // decoration: BoxDecoration(
-                    //   color: AppColors.colorButton,
-                    //   borderRadius: BorderRadius.circular(15.r),
-                    // ),
                     child: SvgPicture.asset(
                       "assets/images/walletPayIcon.svg",
                       fit: BoxFit.scaleDown,
