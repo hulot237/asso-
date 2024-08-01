@@ -224,6 +224,7 @@
     "Payer à partir du tableau de bord": "Payer à partir du tableau de bord",
     "Gerer": "Gérer",
     "Partager": "Partager",
+    "Votre espace ASSO+":  "Votre espace ASSO+",
     "Retrait des fonds": "Retrait des fonds",
     "Vous avez reçu un paiement de ": "Vous avez reçu un paiement de ",
     "Epargne": "Épargnes",
@@ -265,7 +266,7 @@
     "rapport PDF": "rapport PDF",
     "Confirmer la clôture de la ": "Confirmer la clôture de la ",
     "non payé": "Non payé",
-    "Date limite": "Date limit",
+    "Date limite": "Date limite",
     "qui a debuté le": "qui a debuté le",
     "compte a la date du": "compte a la date du",
     "beneficiaire sur": "bénéficiaires sur",
@@ -291,5 +292,11 @@
     ,"Créer une cotisation":"Créer une cotisation",
     "Créer une sanction":"Create a sanction",
     "Créer un epargne":"Créer un épargne",
-    "Tontiner un ami" : "Tontiner un ami"
+    "Tontiner un ami" : "Tontiner un ami",
+    "Tous les membres ont payé":"Tous les membres ont payés",
+    "Cotiser un ami":"Contribute a friend",
+         "Consulter" : "Consulter",
+         "Nouvelle sanction créée dans le groupe":"Nouvelle sanction créée dans le groupe",
+         "Merci de suivre le lien":"Merci de suivre le lien",
+         "pour payer":"pour payer"
 }

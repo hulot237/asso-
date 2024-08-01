@@ -14,6 +14,10 @@ import 'package:faroty_association_1/Modals/showAllModal.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/appStorageModel.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/widget/encours_widget.dart';
+import 'package:faroty_association_1/widget/nonPaye_widget.dart';
+import 'package:faroty_association_1/widget/paye_widget.dart';
+import 'package:faroty_association_1/widget/termine_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,6 +44,7 @@ class widgetRecentEventCotisation extends StatefulWidget {
     required this.rublique,
     required this.rapportUrl,
     required this.is_tontine,
+    required this.isPayed,
   });
   String dateClose;
   String dateOpen;
@@ -54,6 +59,7 @@ class widgetRecentEventCotisation extends StatefulWidget {
   String nomBeneficiaire;
   String rublique;
   String? rapportUrl;
+  int isPayed;
 
   @override
   State<widgetRecentEventCotisation> createState() =>
@@ -85,14 +91,11 @@ class _widgetRecentEventCotisationState
           ),
         );
       return Material(
-        color: widget.isPassed == 0
-            ? AppColors.white
-            : Color.fromARGB(255, 255, 247, 247),
-        // borderRadius: BorderRadius.circular(15),
+        color: AppColors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.r),
           side: BorderSide(
-            color: widget.isPassed == 0 ? AppColors.white : AppColors.red,
+            color: AppColors.white,
             width: 0.5.r,
           ),
         ),
@@ -116,7 +119,7 @@ class _widgetRecentEventCotisationState
                   soldeCotisation: widget.montantCollecte,
                   type: widget.type,
                   isPassed: widget.isPassed,
-                  isPayed: 0,
+                  isPayed: widget.isPayed,
                   is_passed: widget.isPassed,
                   is_tontine: widget.is_tontine,
                   source: widget.source,
@@ -244,211 +247,286 @@ class _widgetRecentEventCotisationState
                             ),
                           ],
                         ),
-                        PopupMenuButton(
-                          elevation: 5,
-                          shadowColor: AppColors.barrierColorModal,
-                          onSelected: (value) async {
-                            if (value == "mySelf") {
-                              print("value");
-                              launchWeb(
-                                "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                              );
-                            } else if (value == "anotherPerson") {
-                              handleDetailCotisation(widget.codeCotisation);
-                              Modal().showModalPayForAnotherPersonCotisation(
-                                  context,
-                                  widget.codeCotisation,
-                                  widget.lienDePaiement,
-                                  widget.motif,
-                                  widget.montantCotisation,
-                                  widget.type == "1" ? true : false,
-                                  widget.nomBeneficiaire,
-                                  widget.source,
-                                  widget.dateClose);
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Tooltip(
-                                message: "Voir la liste des membres".tr(),
-                                child: InkWell(
-                                  onTap: () {
-                                    updateTrackingData("home.contribution",
-                                        "${DateTime.now()}", {
-                                      "type": 'contribution',
-                                      "contribution_id":
-                                          "${widget.codeCotisation}"
-                                    });
-                                    if (checkTransparenceStatus(
-                                        context
-                                            .read<UserGroupCubit>()
-                                            .state
-                                            .changeAssData!
-                                            .user_group!
-                                            .configs,
-                                        context
-                                            .read<AuthCubit>()
-                                            .state
-                                            .detailUser!["isMember"])) {
-                                      handleDetailCotisation(
-                                          widget.codeCotisation);
+                        Row(
+                          children: [
+                            Tooltip(
+                              message: "Voir la liste des membres".tr(),
+                              child: InkWell(
+                                onTap: () {
+                                  updateTrackingData("home.contribution",
+                                      "${DateTime.now()}", {
+                                    "type": 'contribution',
+                                    "contribution_id":
+                                        "${widget.codeCotisation}"
+                                  });
+                                  if (checkTransparenceStatus(
+                                      context
+                                          .read<UserGroupCubit>()
+                                          .state
+                                          .changeAssData!
+                                          .user_group!
+                                          .configs,
+                                      context
+                                          .read<AuthCubit>()
+                                          .state
+                                          .detailUser!["isMember"])) {
+                                    handleDetailCotisation(
+                                        widget.codeCotisation);
 
-                                      Modal().showBottomSheetHistCotisation(
-                                        context,
-                                        widget.codeCotisation,
-                                        widget.lienDePaiement,
-                                        widget.dateOpen,
-                                        widget.dateOpen,
-                                        widget.montantCotisation,
-                                        widget.motif,
-                                        widget.montantCollecte,
-                                        widget.type,
-                                        widget.isPassed,
-                                        widget.rapportUrl,
-                                        0,
-                                        widget.source,
-                                        widget.nomBeneficiaire,
-                                        widget.rublique,
-                                        widget.is_tontine,
-                                      );
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => ListMeetingScreen(),
-                                      //   ),
-                                      // );
-                                    } else {
-                                      handleDetailCotisation(
-                                          widget.codeCotisation);
+                                    Modal().showBottomSheetHistCotisation(
+                                      context,
+                                      widget.codeCotisation,
+                                      widget.lienDePaiement,
+                                      widget.dateOpen,
+                                      widget.dateOpen,
+                                      widget.montantCotisation,
+                                      widget.motif,
+                                      widget.montantCollecte,
+                                      widget.type,
+                                      widget.isPassed,
+                                      widget.rapportUrl,
+                                      0,
+                                      widget.source,
+                                      widget.nomBeneficiaire,
+                                      widget.rublique,
+                                      widget.is_tontine,
+                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => ListMeetingScreen(),
+                                    //   ),
+                                    // );
+                                  } else {
+                                    handleDetailCotisation(
+                                        widget.codeCotisation);
 
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailCotisationPage(
-                                            codeCotisation:
-                                                widget.codeCotisation,
-                                            lienDePaiement:
-                                                widget.lienDePaiement,
-                                            dateCotisation: widget.dateOpen,
-                                            heureCotisation: widget.dateOpen,
-                                            montantCotisations:
-                                                widget.montantCotisation,
-                                            motifCotisations: widget.motif,
-                                            soldeCotisation:
-                                                widget.montantCollecte,
-                                            type: widget.type,
-                                            isPassed: widget.isPassed,
-                                            isPayed: 0,
-                                            rapportUrl: widget.rapportUrl,
-                                            is_passed: widget.isPassed,
-                                            source: widget.source,
-                                            is_tontine: widget.is_tontine,
-                                            nomBeneficiaire:
-                                                widget.nomBeneficiaire,
-                                            rubrique: widget.rublique,
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailCotisationPage(
+                                          codeCotisation: widget.codeCotisation,
+                                          lienDePaiement: widget.lienDePaiement,
+                                          dateCotisation: widget.dateOpen,
+                                          heureCotisation: widget.dateOpen,
+                                          montantCotisations:
+                                              widget.montantCotisation,
+                                          motifCotisations: widget.motif,
+                                          soldeCotisation:
+                                              widget.montantCollecte,
+                                          type: widget.type,
+                                          isPassed: widget.isPassed,
+                                          isPayed: 0,
+                                          rapportUrl: widget.rapportUrl,
+                                          is_passed: widget.isPassed,
+                                          source: widget.source,
+                                          is_tontine: widget.is_tontine,
+                                          nomBeneficiaire:
+                                              widget.nomBeneficiaire,
+                                          rubrique: widget.rublique,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  width: 25.w,
+                                  height: 25.w,
+                                  // color: AppColors.colorButton,
+                                  margin: EdgeInsets.only(right: 15.w),
+                                  // padding: EdgeInsets.only(right: 10.w),
+                                  child: SvgPicture.asset(
+                                    "assets/images/friendsTalking.svg",
+                                    fit: BoxFit.cover,
+                                    color: AppColors.blackBlue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // if (widget.isPassed == 1)
+                            //   Container(
+                            //     alignment: Alignment.center,
+                            //     padding: EdgeInsets.symmetric(
+                            //       horizontal: 10.w,
+                            //       vertical: 4.h,
+                            //     ),
+                            //     margin: EdgeInsets.only(bottom: 2.h),
+                            //     decoration: BoxDecoration(
+                            //       color: AppColors.colorButton.withOpacity(.2),
+                            //       borderRadius: BorderRadius.circular(15.r),
+                            //     ),
+                            //     child: Container(
+                            //       child: Text(
+                            //         "Cotiser".tr(),
+                            //         style: TextStyle(
+                            //           fontWeight: FontWeight.bold,
+                            //           fontSize: 12.sp,
+                            //           color: AppColors.white,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            if (widget.isPassed == 1)
+                              Row(
+                                children: [
+                                  if (widget.isPassed == 1)
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.amberAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(3.r)),
+                                      margin: EdgeInsets.only(
+                                          bottom: 5.h, left: 5.w, top: 2.h),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 1.h, horizontal: 2.w),
+                                      child: Text(
+                                        "expiré".tr(),
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: AppColors.blackBlue,
+                                          fontWeight: FontWeight.w600,
+                                          // fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                    ),
+                                  if (widget.isPassed == 1 &&
+                                      widget.isPayed == 0)
+                                    NonpayeWidget(),
+                                  if (widget.isPassed == 1 &&
+                                      widget.isPayed == 1)
+                                    PayeWidget(),
+                                ],
+                              ),
+
+                            if (widget.isPassed == 0 && widget.isPayed == 1)
+                              Row(
+                                children: [
+                                  EncoursWidget(),
+                                  PayeWidget(),
+                                ],
+                              ),
+
+                            if (widget.isPassed == 0 && widget.isPayed == 0)
+                              PopupMenuButton(
+                                elevation: 5,
+                                shadowColor: AppColors.barrierColorModal,
+                                onSelected: (value) async {
+                                  if (value == "mySelf") {
+                                     updateTrackingData(
+                                        "home.btnCotributionPayMySelf",
+                                        "${DateTime.now()}", {});
+                                    print("value");
+                                    launchWeb(
+                                      "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                                    );
+                                  } else if (value == "anotherPerson") {
+                                     updateTrackingData(
+                                        "home.btnCotributionPayAnotherPerson",
+                                        "${DateTime.now()}", {});
+                                    handleDetailCotisation(
+                                        widget.codeCotisation);
+                                    Modal()
+                                        .showModalPayForAnotherPersonCotisation(
+                                            context,
+                                            widget.codeCotisation,
+                                            widget.lienDePaiement,
+                                            widget.motif,
+                                            widget.montantCotisation,
+                                            widget.type == "1" ? true : false,
+                                            widget.nomBeneficiaire,
+                                            widget.source,
+                                            widget.dateClose);
+                                  }
+                                },
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      // width: 75.w,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 10.w,
+                                        vertical: 4.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.colorButton,
+                                        borderRadius:
+                                            BorderRadius.circular(15.r),
+                                      ),
+                                      child: Container(
+                                        child: Text(
+                                          "cotiser".tr(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.sp,
+                                            color: AppColors.white,
                                           ),
                                         ),
-                                      );
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 25.w,
-                                    height: 25.w,
-                                    // color: AppColors.colorButton,
-                                    margin: EdgeInsets.only(right: 15.w),
-                                    // padding: EdgeInsets.only(right: 10.w),
-                                    child: SvgPicture.asset(
-                                      "assets/images/friendsTalking.svg",
-                                      fit: BoxFit.cover,
-                                      color: AppColors.blackBlue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                // width: 75.w,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 4.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.colorButton,
-                                  borderRadius: BorderRadius.circular(15.r),
-                                ),
-                                child: Container(
-                                  child: Text(
-                                    "cotiser".tr(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.sp,
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry>[
-                            PopupMenuItem(
-                              value: "mySelf",
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Container(
-                                      height: 22.h,
-                                      width: 22.w,
-                                      child: SvgPicture.asset(
-                                        "assets/images/person.svg",
-                                        fit: BoxFit.cover,
-                                        color: AppColors.blackBlueAccent1,
                                       ),
                                     ),
+                                  ],
+                                ),
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry>[
+                                  PopupMenuItem(
+                                    value: "mySelf",
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 8.0),
+                                          child: Container(
+                                            height: 22.h,
+                                            width: 22.w,
+                                            child: SvgPicture.asset(
+                                              "assets/images/person.svg",
+                                              fit: BoxFit.cover,
+                                              color: AppColors.blackBlueAccent1,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          'Payer pour moi'.tr(),
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.blackBlue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    'Payer pour moi'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.bold,
+                                  PopupMenuItem(
+                                    value: "anotherPerson",
+                                    // onTap: () {
+                                    //   _showSimpleModalDialog(context);
+                                    // },
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 8.0),
+                                          child: Container(
+                                            height: 22.h,
+                                            width: 22.w,
+                                            child: SvgPicture.asset(
+                                              "assets/images/friendsTalking.svg",
+                                              fit: BoxFit.cover,
+                                              color: AppColors.blackBlueAccent1,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          "Payer pour quelqu'un".tr(),
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.blackBlue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            PopupMenuItem(
-                              value: "anotherPerson",
-                              // onTap: () {
-                              //   _showSimpleModalDialog(context);
-                              // },
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Container(
-                                      height: 22.h,
-                                      width: 22.w,
-                                      child: SvgPicture.asset(
-                                        "assets/images/friendsTalking.svg",
-                                        fit: BoxFit.cover,
-                                        color: AppColors.blackBlueAccent1,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "Payer pour quelqu'un".tr(),
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
                       ],
@@ -519,11 +597,11 @@ class _widgetRecentEventCotisationState
                                 Container(
                                   child: Text(
                                     "${formatDateTimeintegral(
-                                      context.locale.toString() == "en_US"
-                                          ? "en"
-                                          : "fr",
-                                      widget.dateClose,
-                                    )}",
+                                context.locale.toString() == "en_US"
+                                    ? "en"
+                                    : "fr",
+                                widget.dateClose,
+                              )} ${"à".tr()} ${formatHeurUnikLiteral(widget.dateClose)}",
                                     style: TextStyle(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w600,
@@ -643,7 +721,13 @@ class _widgetRecentEventCotisationState
                                     ? "en"
                                     : "fr",
                                 widget.dateClose,
-                              )}",
+                              )} ${"à".tr()} ${formatHeurUnikLiteral(widget.dateClose)}",
+                              // "${formatDateTimeintegral(
+                              //   context.locale.toString() == "en_US"
+                              //       ? "en"
+                              //       : "fr",
+                              //   widget.dateClose,
+                              // )} ${'à'.tr()} ",
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
@@ -729,7 +813,7 @@ class _widgetRecentEventCotisationState
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
-                                    updateTrackingData("home.btnAdminister",
+                                    updateTrackingData("home.btnAdministerContribution",
                                         "${DateTime.now()}", {});
                                     launchWeb(
                                       "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations-details/${widget.codeCotisation}&app_mode=mobile",
@@ -769,6 +853,9 @@ class _widgetRecentEventCotisationState
                               child: InkWell(
                                 splashColor: AppColors.blackBlue,
                                 onTap: () async {
+                                  updateTrackingData(
+                                          "home.btnShareContribution",
+                                          "${DateTime.now()}", {});
                                   await handleDetailCotisation(
                                       widget.codeCotisation);
 
@@ -784,10 +871,9 @@ class _widgetRecentEventCotisationState
                                     nomGroupe:
                                         '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
                                             .trimRight(),
-                                    source:
-                                        '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}',
+                                    source: '*${(widget.source.trimRight())}*',
                                     nomBeneficiaire:
-                                        '${(widget.nomBeneficiaire.trimRight())}',
+                                        '*${(widget.nomBeneficiaire.trimRight())}*',
                                     dateCotisation: '${widget.dateClose}',
                                     montantCotisations:
                                         '${widget.montantCotisation}',

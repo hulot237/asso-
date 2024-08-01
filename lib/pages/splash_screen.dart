@@ -186,7 +186,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Center(
                       child: Container(
                         child: Image.asset(
-                          "assets/images/FArotyPowered.png",
+                          "assets/images/FAroty_gris.png",
                           width: 80.w,
                         ),
                       ),

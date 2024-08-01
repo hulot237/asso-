@@ -500,18 +500,20 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                   // runAlignment: WrapAlignment.spaceAround,
                   children: [
                     Container(
-                        margin: EdgeInsets.only(
-                          top: 10.h,
-                          right: 5.w,
-                          left: 5.w,
+                      margin: EdgeInsets.only(
+                        top: 10.h,
+                        right: 5.w,
+                        left: 5.w,
+                      ),
+                      child: Material(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(
+                          10.r,
                         ),
-                        child: Material(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(
-                            10.r,
-                          ),
                         child: InkWell(
                           onTap: () {
+                            updateTrackingData("transactions.btnShowMeeting",
+                                "${DateTime.now()}", {});
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -583,6 +585,8 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                           ),
                           child: InkWell(
                             onTap: () {
+                              updateTrackingData("transactions.btnShowTontine",
+                                "${DateTime.now()}", {});
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -640,18 +644,20 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                         ),
                       ),
                     Container(
-                        margin: EdgeInsets.only(
-                          top: 10.h,
-                          right: 5.w,
-                          left: 5.w,
+                      margin: EdgeInsets.only(
+                        top: 10.h,
+                        right: 5.w,
+                        left: 5.w,
+                      ),
+                      child: Material(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(
+                          10.r,
                         ),
-                        child: Material(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(
-                            10.r,
-                          ),
                         child: InkWell(
                           onTap: () {
+                            updateTrackingData("transactions.btnShowContribution",
+                                "${DateTime.now()}", {});
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -710,73 +716,76 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                       ),
                     ),
                     Container(
-                        margin: EdgeInsets.only(
-                          top: 10.h,
-                          right: 5.w,
-                          left: 5.w,
+                      margin: EdgeInsets.only(
+                        top: 10.h,
+                        right: 5.w,
+                        left: 5.w,
+                      ),
+                      child: Material(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(
+                          10.r,
                         ),
-                        child: Material(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(
-                            10.r,
-                          ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ListSanctionScreen(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 2.15,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              10.r,
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10.r),
-                                height: 60.h,
-                                width: 60.h,
-                                child: SvgPicture.asset(
-                                  "assets/images/sanctionTransIcon.svg",
-                                  fit: BoxFit.cover,
-                                  color: AppColors.blackBlue,
-                                ),
+                        child: InkWell(
+                          onTap: () {
+                            updateTrackingData("transactions.btnShowSancton",
+                                "${DateTime.now()}", {});
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ListSanctionScreen(),
                               ),
-                              SizedBox(
-                                height: 3.h,
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2.15,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                10.r,
                               ),
-                              Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.only(
-                                  bottom: 10.h,
-                                ),
-                                decoration: BoxDecoration(
-                                    // color: AppColors.blackBlue,
-                                    borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10.r),
-                                  bottomRight: Radius.circular(10.r),
-                                )),
-                                child: Text(
-                                  "Vos sanctions".tr(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
+                            ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10.r),
+                                  height: 60.h,
+                                  width: 60.h,
+                                  child: SvgPicture.asset(
+                                    "assets/images/sanctionTransIcon.svg",
+                                    fit: BoxFit.cover,
                                     color: AppColors.blackBlue,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
                                   ),
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.only(
+                                    bottom: 10.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      // color: AppColors.blackBlue,
+                                      borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10.r),
+                                    bottomRight: Radius.circular(10.r),
+                                  )),
+                                  child: Text(
+                                    "Vos sanctions".tr(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppColors.blackBlue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),),
+                    ),
                     if (checkTransparenceLoans(
                         context
                             .read<UserGroupCubit>()
@@ -798,63 +807,65 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                           borderRadius: BorderRadius.circular(
                             10.r,
                           ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ListEpargneScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.15,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                10.r,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10.r),
-                                  height: 60.h,
-                                  width: 60.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/savingTransIcon.svg",
-                                    fit: BoxFit.cover,
-                                    color: AppColors.blackBlue,
-                                  ),
+                          child: InkWell(
+                            onTap: () {
+                              updateTrackingData("transactions.btnShowSaving",
+                                "${DateTime.now()}", {});
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ListEpargneScreen(),
                                 ),
-                                SizedBox(
-                                  height: 3.h,
+                              );
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 2.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  10.r,
                                 ),
-                                Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.only(
-                                    bottom: 10.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                      // color: AppColors.blackBlue,
-                                      borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10.r),
-                                    bottomRight: Radius.circular(10.r),
-                                  )),
-                                  child: Text(
-                                    "Epargne".tr(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(10.r),
+                                    height: 60.h,
+                                    width: 60.h,
+                                    child: SvgPicture.asset(
+                                      "assets/images/savingTransIcon.svg",
+                                      fit: BoxFit.cover,
                                       color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.only(
+                                      bottom: 10.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        // color: AppColors.blackBlue,
+                                        borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10.r),
+                                      bottomRight: Radius.circular(10.r),
+                                    )),
+                                    child: Text(
+                                      "Epargne".tr(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: AppColors.blackBlue,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       ),
                     // InkWell(
                     //   child: Container(
@@ -930,6 +941,8 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                           ),
                           child: InkWell(
                             onTap: () {
+                              updateTrackingData("transactions.btnShowAccount",
+                                "${DateTime.now()}", {});
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -339,6 +339,7 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                               child: Container(
                                 margin: EdgeInsets.all(10.r),
                                 child: widgetDetailHistoriqueTontineCard(
+                                  isPassed : itemTontine['is_passed'],
                                   isPayed: itemTontine['is_payed'],
                                   nomTontine: widget.nomTontine,
                                   lienDePaiement:

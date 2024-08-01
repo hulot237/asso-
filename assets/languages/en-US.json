@@ -233,6 +233,7 @@
     "Payer à partir du tableau de bord":"Pay from dashboard",
     "Gerer" : "Manage",
     "Partager" :"Share",
+    "Votre espace ASSO+":"Your ASS0+ space",
     "Retrait des fonds":"Withdrawal of funds",
     "Vous avez reçu un paiement de ":"You have received a payment of ",
     "Epargne":"Savings",
@@ -300,7 +301,13 @@
      "Créer une cotisation":"Create a contribution",
      "Créer une sanction":"Create a sanction",
      "Créer un epargne":"Create savings",
-     "Tontiner un ami" : "Tontine a friend"
+     "Tontiner un ami" : "Tontine a friend",
+     "Tous les membres ont payé":"All the members have paid",
+     "Cotiser un ami":"Contribute a friend",
+     "Consulter" : "Explore",
+     "Nouvelle sanction créée dans le groupe":"New sanction created in the group",
+     "Merci de suivre le lien":"Please follow the link",
+     "pour payer":"to pay"
 
 
 

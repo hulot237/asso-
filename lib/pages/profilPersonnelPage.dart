@@ -857,15 +857,6 @@ class _ProfilPersonnelPageState extends State<ProfilPersonnelPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "By",
-                          style: TextStyle(
-                              fontSize: 9.sp,
-                              color: Colors.grey[600],
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w900),
-                          textAlign: TextAlign.center,
-                        ),
                         Container(
                           width: 40.r,
                           child: Image.asset("assets/images/FAroty_gris.png"),

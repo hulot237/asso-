@@ -42,6 +42,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final currentDetailUser = context.read<AuthCubit>().state.detailUser;
+    
 
     return PageScaffold(
       context: context,

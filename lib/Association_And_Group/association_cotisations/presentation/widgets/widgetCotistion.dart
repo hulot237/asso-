@@ -246,177 +246,186 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                             //     ?
                             Column(
                               children: [
-                                (widget.type == "0" && widget.isPayed == 1)
-                                    ? InkWell(
-                                        onTap: () {
-                                          handleDetailCotisation(
-                                              widget.codeCotisation);
-
-                                          Modal()
-                                              .showModalPayForAnotherPersonCotisation(
-                                            context,
-                                            widget.codeCotisation,
-                                            widget.lienDePaiement,
-                                            widget.motifCotisations,
-                                            widget.montantCotisations,
-                                            widget.type == "1" ? true : false,
-                                            widget.nomBeneficiaire,
-                                            widget.source,
-                                            widget.dateCotisation,
-                                          );
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w,
-                                            vertical: 4.h,
-                                          ),
-                                          margin: EdgeInsets.only(bottom: 2.h),
-                                          // padding: EdgeInsets.symmetric(
-                                          //   horizontal: 5.w,
-                                          //   vertical: 4.h,
-                                          // ),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.colorButton,
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                          ),
-                                          child: Container(
-                                            child: Text(
-                                              "Cotiser un ami".tr(),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12.sp,
-                                                color: AppColors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : PopupMenuButton(
-                                        elevation: 5,
-                                        shadowColor:
-                                            AppColors.barrierColorModal,
-                                        onSelected: (value) async {
-                                          if (value == "mySelf") {
-                                            print("value");
-                                            launchWeb(
-                                              "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                            );
-                                          } else if (value == "anotherPerson") {
+                                if (widget.is_passed == 0)
+                                  (widget.type == "0" && widget.isPayed == 1)
+                                      ? InkWell(
+                                          onTap: () {
                                             handleDetailCotisation(
                                                 widget.codeCotisation);
 
                                             Modal()
                                                 .showModalPayForAnotherPersonCotisation(
-                                                    context,
-                                                    widget.codeCotisation,
-                                                    widget.lienDePaiement,
-                                                    widget.motifCotisations,
-                                                    widget.montantCotisations,
-                                                    widget.type == "1"
-                                                        ? true
-                                                        : false,
-                                                    widget.nomBeneficiaire,
-                                                    widget.source,
-                                                    widget.dateCotisation);
-                                          }
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w,
-                                            vertical: 4.h,
-                                          ),
-                                          margin: EdgeInsets.only(bottom: 2.h),
-                                          // padding: EdgeInsets.symmetric(
-                                          //   horizontal: 5.w,
-                                          //   vertical: 4.h,
-                                          // ),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.colorButton,
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                          ),
+                                              context,
+                                              widget.codeCotisation,
+                                              widget.lienDePaiement,
+                                              widget.motifCotisations,
+                                              widget.montantCotisations,
+                                              widget.type == "1" ? true : false,
+                                              widget.nomBeneficiaire,
+                                              widget.source,
+                                              widget.dateCotisation,
+                                            );
+                                          },
                                           child: Container(
-                                            child: Text(
-                                              widget.isPayed == 1 &&
-                                                      widget.type == "1"
-                                                  ? "Cotiser à nouveau".tr()
-                                                  : "Cotiser".tr(),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12.sp,
-                                                color: AppColors.white,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w,
+                                              vertical: 4.h,
+                                            ),
+                                            margin:
+                                                EdgeInsets.only(bottom: 2.h),
+                                            // padding: EdgeInsets.symmetric(
+                                            //   horizontal: 5.w,
+                                            //   vertical: 4.h,
+                                            // ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.colorButton,
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                            ),
+                                            child: Container(
+                                              child: Text(
+                                                "Cotiser un ami".tr(),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
+                                        )
+                                      : PopupMenuButton(
+                                          elevation: 5,
+                                          shadowColor:
+                                              AppColors.barrierColorModal,
+                                          onSelected: (value) async {
+                                            if (value == "mySelf") {
+                                              print("value");
+                                              launchWeb(
+                                                "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                                              );
+                                            } else if (value ==
+                                                "anotherPerson") {
+                                              handleDetailCotisation(
+                                                  widget.codeCotisation);
+
+                                              Modal()
+                                                  .showModalPayForAnotherPersonCotisation(
+                                                      context,
+                                                      widget.codeCotisation,
+                                                      widget.lienDePaiement,
+                                                      widget.motifCotisations,
+                                                      widget.montantCotisations,
+                                                      widget.type == "1"
+                                                          ? true
+                                                          : false,
+                                                      widget.nomBeneficiaire,
+                                                      widget.source,
+                                                      widget.dateCotisation);
+                                            }
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w,
+                                              vertical: 4.h,
+                                            ),
+                                            margin:
+                                                EdgeInsets.only(bottom: 2.h),
+                                            // padding: EdgeInsets.symmetric(
+                                            //   horizontal: 5.w,
+                                            //   vertical: 4.h,
+                                            // ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.colorButton,
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                            ),
+                                            child: Container(
+                                              child: Text(
+                                                widget.isPayed == 1 &&
+                                                        widget.type == "1"
+                                                    ? "Cotiser à nouveau".tr()
+                                                    : "cotiser".tr(),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          itemBuilder: (BuildContext context) =>
+                                              <PopupMenuEntry>[
+                                            PopupMenuItem(
+                                              value: "mySelf",
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        right: 8.0),
+                                                    child: Container(
+                                                      height: 22.h,
+                                                      width: 22.w,
+                                                      child: SvgPicture.asset(
+                                                        "assets/images/person.svg",
+                                                        fit: BoxFit.cover,
+                                                        color: AppColors
+                                                            .blackBlueAccent1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Payer pour moi'.tr(),
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color:
+                                                          AppColors.blackBlue,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value: "anotherPerson",
+                                              // onTap: () {
+                                              //   _showSimpleModalDialog(context);
+                                              // },
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        right: 8.0),
+                                                    child: Container(
+                                                      height: 22.h,
+                                                      width: 22.w,
+                                                      child: SvgPicture.asset(
+                                                        "assets/images/friendsTalking.svg",
+                                                        fit: BoxFit.cover,
+                                                        color: AppColors
+                                                            .blackBlueAccent1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Payer pour quelqu'un".tr(),
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color:
+                                                          AppColors.blackBlue,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        itemBuilder: (BuildContext context) =>
-                                            <PopupMenuEntry>[
-                                          PopupMenuItem(
-                                            value: "mySelf",
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 8.0),
-                                                  child: Container(
-                                                    height: 22.h,
-                                                    width: 22.w,
-                                                    child: SvgPicture.asset(
-                                                      "assets/images/person.svg",
-                                                      fit: BoxFit.cover,
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Payer pour moi'.tr(),
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: AppColors.blackBlue,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: "anotherPerson",
-                                            // onTap: () {
-                                            //   _showSimpleModalDialog(context);
-                                            // },
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 8.0),
-                                                  child: Container(
-                                                    height: 22.h,
-                                                    width: 22.w,
-                                                    child: SvgPicture.asset(
-                                                      "assets/images/friendsTalking.svg",
-                                                      fit: BoxFit.cover,
-                                                      color: AppColors
-                                                          .blackBlueAccent1,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Payer pour quelqu'un".tr(),
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: AppColors.blackBlue,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+
                               ],
                             ),
                           ],
@@ -699,11 +708,12 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                           '${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}'
                                               .trimRight(),
                                       source:
-                                          '${widget.source == '' ? '*${(widget.nomBeneficiaire.trimRight())}*' : "*${(widget.source.trimRight())}*"}'
+                                          '*${(widget.source.trimRight())}*'
                                               .trimRight(),
-                                      nomBeneficiaire:
-                                          '${(widget.nomBeneficiaire)}'
-                                              .trimRight(),
+                                      nomBeneficiaire: '*${(widget.nomBeneficiaire.trimRight())}*',
+                                          //     .trimRight(),
+                                          // '*${(widget.nomBeneficiaire)}*'
+                                          //     .trimRight(),
                                       dateCotisation:
                                           '${widget.dateCotisation}',
                                       montantCotisations:

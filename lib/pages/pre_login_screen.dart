@@ -28,6 +28,10 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
     super.initState();
   }
 
+
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -325,15 +329,6 @@ class _PreLoginScreenState extends State<PreLoginScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              "By",
-                              style: TextStyle(
-                                  fontSize: 9.sp,
-                                  color: Colors.grey[600],
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w900),
-                              textAlign: TextAlign.center,
-                            ),
                             Container(
                               width: 40.r,
                               child:

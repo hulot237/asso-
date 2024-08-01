@@ -353,6 +353,8 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                                                 child: widgetDetailTontine(
                                                   isPayed: ItemDetailCotisation[
                                                       "is_payed"],
+                                                      isPassed: ItemDetailCotisation[
+                                                      "is_passed"],
                                                   nomBeneficiaire:
                                                       ItemDetailCotisation[
                                                                       "membre"][

@@ -1614,8 +1614,9 @@ class Modal {
 
                       List listeOkayTontine = okayTontine;
 
-                      List<Widget> listWidgetOkayTontine =
-                          listeOkayTontine.map((monObjet) {
+                      List<Widget> listWidgetOkayTontine = listeOkayTontine
+                          .where((monObjet) => monObjet["is_payed"] == 0)
+                          .map((monObjet) {
                         return Card(
                           margin:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -1647,6 +1648,22 @@ class Modal {
                           ),
                         );
                       }).toList();
+
+                       if (listWidgetOkayTontine.isEmpty) {
+                          return Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                "Tous les membres ont payé".tr(),
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: AppColors.blackBlueAccent1,
+                                  fontStyle: FontStyle.italic
+                                ),
+                              ),
+                            ),
+                          );
+                        }
 
                       final listeFinale = [
                         ...listWidgetOkayTontine,
@@ -1726,12 +1743,12 @@ class Modal {
                             .read<CotisationDetailCubit>()
                             .state
                             .detailCotisation;
-
                         List listeOkayCotisation =
                             currentDetailCotisation!["membres"];
 
-                        List<Widget> listWidgetOkayCotis =
-                            listeOkayCotisation.map((monObjet) {
+                        List<Widget> listWidgetOkayCotis = listeOkayCotisation
+                            .where((monObjet) => monObjet["is_payed"] == 0)
+                            .map((monObjet) {
                           return Card(
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
@@ -1764,6 +1781,22 @@ class Modal {
                             ),
                           );
                         }).toList();
+
+                        if (listWidgetOkayCotis.isEmpty) {
+                          return Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                "Tous les membres ont payé".tr(),
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: AppColors.blackBlueAccent1,
+                                  fontStyle: FontStyle.italic
+                                ),
+                              ),
+                            ),
+                          );
+                        }
 
                         final listeFinale = [
                           ...listWidgetOkayCotis,

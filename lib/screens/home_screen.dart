@@ -216,115 +216,116 @@ class _HomeScreenState extends State<HomeScreen>
             child: Scaffold(
               floatingActionButton: FloatingAction(),
               backgroundColor: AppColors.pageBackground,
-              body:
-                  (Authstate.errorLoadDetailAuth == true ||
-                          UserGroupstate.errorLoadDetailChangeAss == true)
-                      ? checkInternetConnectionPage(
-                          backToHome: true,
-                          functionToCall: () {},
-                        )
-                      : !context
-                              .read<AuthCubit>()
-                              .state
-                              .detailUser!["is_app_updated"]
-                          ? UpdatePage()
-                          : RefreshIndicator(
-                              onRefresh: refresh,
-                              child: CustomScrollView(
-                                slivers: [
-                                  SliverAppBar.large(
-                                    systemOverlayStyle: SystemUiOverlayStyle(
-                                      // Status bar color
-                                      statusBarColor: Colors.transparent,
+              body: (Authstate.errorLoadDetailAuth == true ||
+                      UserGroupstate.errorLoadDetailChangeAss == true)
+                  ? checkInternetConnectionPage(
+                      backToHome: true,
+                      functionToCall: () {},
+                    )
+                  : !context
+                          .read<AuthCubit>()
+                          .state
+                          .detailUser!["is_app_updated"]
+                      ? UpdatePage()
+                      : RefreshIndicator(
+                          onRefresh: refresh,
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverAppBar.large(
+                                systemOverlayStyle: SystemUiOverlayStyle(
+                                  // Status bar color
+                                  statusBarColor: Colors.transparent,
 
-                                      // Status bar brightness (optional)
-                                      statusBarIconBrightness: Brightness
-                                          .dark, // For Android (dark icons)
-                                      statusBarBrightness: Brightness
-                                          .dark, // For iOS (dark icons)
-                                    ),
-                                    leading: Container(),
-                                    elevation: 0,
-                                    backgroundColor: AppColors.backgroundAppBAr,
-                                    flexibleSpace:
-                                        UserGroupstate.isLoadingChangeAss ==
-                                                    true &&
-                                                UserGroupstate.changeAssData ==
-                                                    null
-                                            // UserGroupstate.userGroup != null
-                                            ? EasyLoader(
-                                                backgroundColor: Color.fromARGB(
-                                                    0, 255, 255, 255),
-                                                iconSize: 50.r,
-                                                iconColor:
-                                                    AppColors.blackBlueAccent1,
-                                                image: AssetImage(
-                                                  "assets/images/AssoplusFinal.png",
-                                                ),
-                                              )
-                                            : FlexibleSpaceBar(
-                                                titlePadding: EdgeInsets.only(
-                                                  top: 10.h,
-                                                  bottom: 10.h,
-                                                  left: 10.w,
-                                                  right: 10.w,
-                                                ),
-                                                centerTitle: false,
-                                                title: Container(
-                                                  // Container(
-                                                  //   width: 120,
-                                                  //   height: 20,
-                                                  // ),
-                                                  child: Container(
-                                                    child: Row(
+                                  // Status bar brightness (optional)
+                                  statusBarIconBrightness: Brightness
+                                      .dark, // For Android (dark icons)
+                                  statusBarBrightness:
+                                      Brightness.dark, // For iOS (dark icons)
+                                ),
+                                leading: Container(),
+                                elevation: 0,
+                                backgroundColor: AppColors.backgroundAppBAr,
+                                flexibleSpace:
+                                    UserGroupstate.isLoadingChangeAss == true &&
+                                            UserGroupstate.changeAssData == null
+                                        // UserGroupstate.userGroup != null
+                                        ? EasyLoader(
+                                            backgroundColor: Color.fromARGB(
+                                                0, 255, 255, 255),
+                                            iconSize: 50.r,
+                                            iconColor:
+                                                AppColors.blackBlueAccent1,
+                                            image: AssetImage(
+                                              "assets/images/AssoplusFinal.png",
+                                            ),
+                                          )
+                                        : FlexibleSpaceBar(
+                                            titlePadding: EdgeInsets.only(
+                                              top: 10.h,
+                                              bottom: 10.h,
+                                              left: 10.w,
+                                              right: 10.w,
+                                            ),
+                                            centerTitle: false,
+                                            title: Container(
+                                              // Container(
+                                              //   width: 120,
+                                              //   height: 20,
+                                              // ),
+                                              child: Container(
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          updateTrackingData(
+                                                              "home.textSwitch",
+                                                              "${DateTime.now()}",
+                                                              {});
+                                                          Modal()
+                                                              .showBottomSheetListAss(
+                                                            context,
+                                                            context
+                                                                .read<
+                                                                    UserGroupCubit>()
+                                                                .state
+                                                                .userGroup,
+                                                          );
+                                                        },
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            right: 13.w,
+                                                          ),
+                                                          child: Text(
+                                                            "${DetailAss!.user_group!.name}",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              color: AppColors
+                                                                  .white,
+                                                            ),
+                                                            // textAlign: TextAlign.center,
+                                                            maxLines: 2,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .end,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
                                                       children: [
-                                                        Expanded(
-                                                          child: InkWell(
-                                                            onTap: () {
-                                                              updateTrackingData(
-                                                                  "home.textSwitch",
-                                                                  "${DateTime.now()}",
-                                                                  {});
-                                                              Modal()
-                                                                  .showBottomSheetListAss(
-                                                                context,
-                                                                context
-                                                                    .read<
-                                                                        UserGroupCubit>()
-                                                                    .state
-                                                                    .userGroup,
-                                                              );
-                                                            },
-                                                            child: Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                right: 13.w,
-                                                              ),
-                                                              child: Text(
-                                                                "${DetailAss!.user_group!.name}",
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  color:
-                                                                      AppColors
-                                                                          .white,
-                                                                ),
-                                                                // textAlign: TextAlign.center,
-                                                                maxLines: 2,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
+
                                                         Column(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -333,1197 +334,409 @@ class _HomeScreenState extends State<HomeScreen>
                                                               CrossAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            // GestureDetector(
-                                                            //   onTap: () {
-                                                            //     Navigator.push(
-                                                            //       context,
-                                                            //       MaterialPageRoute(
-                                                            //         builder: (context) =>
-                                                            //             AdministrationPageWebview(
-                                                            //           forAdmin: false,
-                                                            //           urlPage:
-                                                            //               'https://business.faroty.com/groups',
-                                                            //           // 'https://business.rush.faroty.com/group',
-                                                            //         ),
-                                                            //       ),
-                                                            //     );
-                                                            //   },
-                                                            //   child: Container(
-                                                            //     margin: EdgeInsets.only(
-                                                            //       right: 5.h,
-                                                            //     ),
-                                                            //     padding:
-                                                            //         EdgeInsets.all(1.r),
-                                                            //     decoration: BoxDecoration(
-                                                            //       border: Border.all(
-                                                            //         width: 1.r,
-                                                            //         color:
-                                                            //             AppColors.blackBlue,
-                                                            //       ),
-                                                            //       color: AppColors
-                                                            //           .blackBlueAccent2,
-                                                            //       borderRadius:
-                                                            //           BorderRadius.circular(
-                                                            //               50.r),
-                                                            //     ),
-                                                            //     height: 20.w,
-                                                            //     width: 20.w,
-                                                            //     child: Icon(
-                                                            //       Icons.add,
-                                                            //       size: 16.sp,
-                                                            //       color: AppColors.white,
-                                                            //     ),
-                                                            //   ),
-                                                            // ),
-
-                                                            Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Stack(
-                                                                  children: [
-                                                                    GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        updateTrackingData(
-                                                                            "home.btnSwitch",
-                                                                            "${DateTime.now()}",
-                                                                            {});
-                                                                        Modal()
-                                                                            .showBottomSheetListAss(
-                                                                          context,
-                                                                          context
-                                                                              .read<UserGroupCubit>()
-                                                                              .state
-                                                                              .userGroup,
-                                                                        );
-                                                                      },
-                                                                      child:
-                                                                          Container(
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          border:
-                                                                              Border.all(
-                                                                            color:
-                                                                                Color.fromARGB(
-                                                                              255,
-                                                                              255,
-                                                                              26,
-                                                                              9,
-                                                                            ),
-                                                                          ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(
-                                                                            50.r,
-                                                                          ),
-                                                                        ),
-                                                                        padding:
-                                                                            EdgeInsets.all(1.r),
-                                                                        child:
-                                                                            ClipRRect(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(50.r),
-                                                                          child:
-                                                                              Container(
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              borderRadius: BorderRadius.circular(50.r),
-                                                                            ),
-                                                                            height:
-                                                                                20.w,
-                                                                            width:
-                                                                                20.w,
-                                                                            child:
-                                                                                Image.network(
-                                                                              // "zz",
-                                                                              "${Variables.LienAIP}${DetailAss.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
-                                                                              fit: BoxFit.cover,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Positioned(
-                                                                      right:
-                                                                          2.w,
-                                                                      top: 2.h,
-                                                                      child:
-                                                                          Container(
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              255,
-                                                                              26,
-                                                                              9),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(
-                                                                            50.r,
-                                                                          ),
-                                                                        ),
-                                                                        width:
-                                                                            5.w,
-                                                                        height:
-                                                                            5.w,
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                if (!context
-                                                                        .read<
-                                                                            AuthCubit>()
-                                                                        .state
-                                                                        .detailUser![
-                                                                    "isMember"])
-                                                                  Row(
-                                                                    children: [
-                                                                      GestureDetector(
-                                                                        onTap:
-                                                                            () async {
-                                                                          updateTrackingData(
-                                                                              "home.btnAdminister",
-                                                                              "${DateTime.now()}",
-                                                                              {});
-                                                                          launchWeb(
-                                                                            "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
-                                                                          );
-                                                                        },
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Container(
-                                                                              margin: EdgeInsets.only(
-                                                                                top: 5.h,
-                                                                              ),
-                                                                              padding: EdgeInsets.all(
-                                                                                3.r,
-                                                                              ),
-                                                                              decoration: BoxDecoration(
-                                                                                border: Border.all(
-                                                                                  width: 1.r,
-                                                                                  color: AppColors.blackBlue,
-                                                                                ),
-                                                                                color: AppColors.whiteAccent1,
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                  50.r,
-                                                                                ),
-                                                                              ),
-                                                                              // height: 20.w,
-                                                                              // width: 20.w,
-                                                                              child: Row(
-                                                                                children: [
-                                                                                  Image.asset(
-                                                                                    "assets/images/Groupe_ou_Asso.png",
-                                                                                    width: 18.w,
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    width: 2.w,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    "Administrer".tr(),
-                                                                                    style: TextStyle(
-                                                                                      fontWeight: FontWeight.w600,
-                                                                                      color: AppColors.blackBlue,
-                                                                                      fontSize: 8.sp,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                background: Stack(children: [
-                                                  Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .height,
-                                                      child: Image.network(
-                                                        "${Variables.LienAIP}${DetailAss.user_group!.background_cover == null ? "" : DetailAss.user_group!.background_cover}",
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                                  Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomCenter,
-                                                        colors: [
-                                                          Colors.transparent,
-                                                          Colors.transparent,
-                                                          Colors.transparent,
-                                                          const Color.fromARGB(
-                                                              167, 150, 191, 53)
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ]),
-                                              ),
-                                  ),
-                                  SliverToBoxAdapter(
-                                    child: Stack(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Container(
-                                              // padding: EdgeInsets.all(7.r),
-                                              decoration: BoxDecoration(
-                                                // color: AppColors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(15.r),
-                                              ),
-                                              margin: EdgeInsets.only(
-                                                left: 8.w,
-                                                right: 8.w,
-                                                top: 10.h,
-                                                bottom: 5.h,
-                                              ),
-                                              child: Row(
-                                                // mainAxisAlignment:
-                                                //     MainAxisAlignment
-                                                //         .spaceEvenly,
-                                                children: [
-                                                  Material(
-                                                    color: AppColors.white,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100.r),
-                                                    ),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ListMeetingScreen(),
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                          vertical: 5.h,
-                                                          horizontal: 10.w,
-                                                        ),
-                                                        decoration:
-
-                                                            BoxDecoration(
-                                                              borderRadius:
-                                                          BorderRadius.circular(
-                                                              100.r),
-                                                          border: Border.all(
-                                                              width: 0.5.w,
-                                                              color: AppColors
-                                                                  .blackBlueAccent1),
-                                                        ),
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              // padding: EdgeInsets.all(10.r),
-                                                              // height: 50.h,
-                                                              child: SvgPicture
-                                                                  .asset(
-                                                                width: 15.h,
-                                                                "assets/images/meetingTransIcon.svg",
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                color: AppColors
-                                                                    .blackBlue,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5.w,
-                                                            ),
-                                                            Text(
-                                                              "Vos rencontres"
-                                                                  .tr(),
-                                                              style: TextStyle(
-                                                                color: AppColors
-                                                                    .blackBlue,
-                                                                fontSize: 12.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5.w,
-                                                  ),
-                                                  Material(
-                                                    color: AppColors.white,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100.r),
-                                                    ),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ListCotisationScreen(),
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
-                                                          vertical: 5.h,
-                                                          horizontal: 10.w,
-                                                        ),
-                                                        decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              width: 0.5.w,
-                                                              color: AppColors
-                                                                  .blackBlueAccent1),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      100.r),
-                                                        ),
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              // padding: EdgeInsets.all(10.r),
-                                                              // height: 50.h,
-                                                              child: SvgPicture
-                                                                  .asset(
-                                                                width: 15.h,
-                                                                "assets/images/contributionTransIcon1.svg",
-                                                                fit: BoxFit.cover,
-                                                                color: AppColors
-                                                                    .blackBlue,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5.w,
-                                                            ),
-                                                            Text(
-                                                              "Vos cotisations"
-                                                                  .tr(),
-                                                              style: TextStyle(
-                                                                color: AppColors
-                                                                    .blackBlue,
-                                                                fontSize: 12.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            if (currentDetailUser!["is_saver"])
-                                              BlocBuilder<PretEpargneCubit,
-                                                  PretEpargneState>(
-                                                builder: (PretEpargnecontext,
-                                                    PretEpargnestate) {
-                                                  if (PretEpargnestate
-                                                              .isLoadingEpargne ==
-                                                          true &&
-                                                      PretEpargnestate
-                                                              .epargne ==
-                                                          null)
-                                                    return Container(
-                                                      padding: EdgeInsets.only(
-                                                          top: 15.h),
-                                                      child: EasyLoader(
-                                                        backgroundColor:
-                                                            Color.fromARGB(0,
-                                                                255, 255, 255),
-                                                        iconSize: 50.r,
-                                                        iconColor: AppColors
-                                                            .blackBlueAccent1,
-                                                        image: AssetImage(
-                                                          'assets/images/AssoplusFinal.png',
-                                                        ),
-                                                      ),
-                                                    );
-                                                  final epargne =
-                                                      PretEpargnecontext.read<
-                                                              PretEpargneCubit>()
-                                                          .state
-                                                          .epargne;
-                                                  return Container(
-                                                    margin: EdgeInsets.only(
-                                                      left: 8.w,
-                                                      right: 8.w,
-                                                      top: 5.h,
-                                                      bottom: 5.h,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Color.fromARGB(
-                                                              25,
-                                                              117,
-                                                              117,
-                                                              117),
-                                                          spreadRadius: 1,
-                                                          blurRadius: 1,
-                                                        )
-                                                      ],
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                      left: 10.w,
-                                                      right: 10.w,
-                                                      top: 10.h,
-                                                      bottom: 10.h,
-                                                    ),
-                                                    child: Stack(
-                                                      children: [
-                                                        Column(
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
+                                                            Stack(
                                                               children: [
                                                                 GestureDetector(
                                                                   onTap: () {
                                                                     updateTrackingData(
-                                                                        "home.savingTransaction",
+                                                                        "home.btnSwitch",
                                                                         "${DateTime.now()}",
                                                                         {});
                                                                     Modal()
-                                                                        .showModalTransactionEpargne(
+                                                                        .showBottomSheetListAss(
                                                                       context,
+                                                                      context
+                                                                          .read<
+                                                                              UserGroupCubit>()
+                                                                          .state
+                                                                          .userGroup,
                                                                     );
-                                                                    context
-                                                                        .read<
-                                                                            PretEpargneCubit>()
-                                                                        .getDetailEpargne(
-                                                                            epargne['saving_code']);
                                                                   },
                                                                   child:
                                                                       Container(
                                                                     decoration:
                                                                         BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              15),
                                                                       border:
                                                                           Border
                                                                               .all(
-                                                                        width:
-                                                                            1.5,
-                                                                        color: AppColors
-                                                                            .blackBlueAccent2,
+                                                                        color: Color
+                                                                            .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          26,
+                                                                          9,
+                                                                        ),
+                                                                      ),
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        50.r,
                                                                       ),
                                                                     ),
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .symmetric(
-                                                                      // vertical: 10.h,
-                                                                      horizontal:
-                                                                          10.w,
-                                                                    ),
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width /
-                                                                        2.3,
-                                                                    height:
-                                                                        97.h,
+                                                                    padding: EdgeInsets
+                                                                        .all(1
+                                                                            .r),
                                                                     child:
-                                                                        Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceEvenly,
-                                                                      children: [
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
-                                                                          children: [
-                                                                            Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Container(
-                                                                                  child: Text(
-                                                                                    "TOTAL EPARGNES".tr(),
-                                                                                    style: TextStyle(
-                                                                                      fontSize: 12.sp,
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                      color: AppColors.blackBlue,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                Container(
-                                                                                  margin: EdgeInsets.only(
-                                                                                    top: 3.h,
-                                                                                    bottom: 3.h,
-                                                                                  ),
-                                                                                  child: Text(
-                                                                                    // "${formatMontantFrancais(double.parse("13000"))} FCFA",
-
-                                                                                    "${formatMontantFrancais(double.parse(epargne!['amount_saved']))} FCFA",
-                                                                                    style: TextStyle(
-                                                                                      fontSize: 18.sp,
-                                                                                      fontWeight: FontWeight.w700,
-                                                                                      color: AppColors.blackBlue,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ],
+                                                                        ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              50.r),
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(50.r),
                                                                         ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.end,
-                                                                          children: [
-                                                                            Icon(
-                                                                              Icons.list_rounded,
-                                                                              size: 18.sp,
-                                                                              color: AppColors.blackBlue,
-                                                                            ),
-                                                                            Container(
-                                                                              child: Text(
-                                                                                "Historiques".tr(),
-                                                                                style: TextStyle(
-                                                                                  fontSize: 12.sp,
-                                                                                  fontWeight: FontWeight.w500,
-                                                                                  color: AppColors.blackBlue,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
+                                                                        height:
+                                                                            20.w,
+                                                                        width:
+                                                                            20.w,
+                                                                        child: Image
+                                                                            .network(
+                                                                          // "zz",
+                                                                          "${Variables.LienAIP}${DetailAss.user_group!.profile_photo == null ? "" : DetailAss.user_group!.profile_photo}",
+                                                                          fit: BoxFit
+                                                                              .cover,
                                                                         ),
-                                                                      ],
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    // color: AppColors.bleuLight,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            15),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      width:
-                                                                          1.5,
-                                                                      color: AppColors
-                                                                          .blackBlueAccent2,
+                                                                Positioned(
+                                                                  right: 2.w,
+                                                                  top: 2.h,
+                                                                  child:
+                                                                      Container(
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          26,
+                                                                          9),
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(
+                                                                        50.r,
+                                                                      ),
                                                                     ),
+                                                                    width: 5.w,
+                                                                    height: 5.w,
                                                                   ),
-                                                                  padding: EdgeInsets.symmetric(
-                                                                      vertical:
-                                                                          10.h,
-                                                                      horizontal:
-                                                                          10.w),
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width /
-                                                                      2.3,
-                                                                  height: 97.h,
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    children: [
-                                                                      Container(
-                                                                        child:
-                                                                            Text(
-                                                                          "INTÉRÊTS EN COURS"
-                                                                              .tr(),
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                12.sp,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                            color:
-                                                                                AppColors.blackBlue,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      Container(
-                                                                        // margin: EdgeInsets.only(top: 5, bottom: 5,),
-                                                                        child:
-                                                                            Text(
-                                                                          "${formatMontantFrancais(double.parse(epargne!['total_interest']))} FCFA",
-                                                                          // "${formatMontantFrancais(double.parse("2000"))} FCFA",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                18.sp,
-                                                                            fontWeight:
-                                                                                FontWeight.w700,
-                                                                            color:
-                                                                                AppColors.blackBlue,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
+                                                                )
                                                               ],
                                                             ),
-                                                            GestureDetector(
-                                                              onTap: () async {
-                                                                updateTrackingData(
-                                                                    "home.btnSave",
-                                                                    "${DateTime.now()}",
-                                                                    {});
-                                                                String msg =
-                                                                    "Aide-moi à épargner.\nMerci de suivre le lien https://${epargne["saving_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
-                                                                String
-                                                                    raisonComplete =
-                                                                    "Effectuer une épargne"
-                                                                        .tr();
-                                                                String motif =
-                                                                    "Epargner vous même"
-                                                                        .tr();
-                                                                String
-                                                                    paiementProcheMsg =
-                                                                    "Un proche épargne pour vous"
-                                                                        .tr();
-                                                                String
-                                                                    msgAppBarPaiementPage =
-                                                                    "Effectuer une épargne"
-                                                                        .tr();
-                                                                String
-                                                                    elementUrl =
-                                                                    "https://groups.faroty.com/loan";
-                                                                Modal()
-                                                                    .showModalActionPayement(
-                                                                  context,
-                                                                  msg,
-                                                                  epargne[
-                                                                      "saving_pay_link"],
-                                                                  raisonComplete,
-                                                                  motif,
-                                                                  paiementProcheMsg,
-                                                                  msgAppBarPaiementPage,
-                                                                  elementUrl,
-                                                                );
-                                                              },
-
-                                                              // onTap: () {
-
-                                                              //   saving_pay_link
-                                                              //   context
-                                                              //       .read<PretEpargneCubit>()
-                                                              //       .getEpargne();
-                                                              // },
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: AppColors
-                                                                      .colorButton,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              15),
-                                                                ),
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        top: 10
-                                                                            .h,
-                                                                        bottom:
-                                                                            10.h),
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        top: 10
-                                                                            .h),
-                                                                width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width,
-                                                                child: Column(
-                                                                  children: [
-                                                                    Text(
-                                                                      "ÉPARGNEZ"
-                                                                          .tr(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            18.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w900,
-                                                                        color: AppColors
-                                                                            .white,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        if (PretEpargnestate
-                                                                    .isLoadingEpargne ==
-                                                                true &&
-                                                            PretEpargnestate
-                                                                    .epargne !=
-                                                                null)
-                                                          Center(
-                                                            child: Container(
-                                                              height: 160.h,
-                                                              // color:
-                                                              //     AppColors.blackBlueAccent2,
-                                                              // margin: EdgeInsets.only(top: 40.h),
-                                                              child: EasyLoader(
-                                                                backgroundColor:
-                                                                    Color.fromARGB(
-                                                                        0,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                iconSize: 50.r,
-                                                                iconColor: AppColors
-                                                                    .blackBlueAccent1,
-                                                                image:
-                                                                    AssetImage(
-                                                                  'assets/images/AssoplusFinal.png',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            if (currentDetailUser!["is_owe"])
-                                              BlocBuilder<PretEpargneCubit,
-                                                      PretEpargneState>(
-                                                  builder: (PretEpargnecontext,
-                                                      PretEpargnestate) {
-                                                if (PretEpargnestate
-                                                            .isLoadingPret ==
-                                                        true &&
-                                                    PretEpargnestate.pret ==
-                                                        null)
-                                                  return Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 10.h),
-                                                    child: EasyLoader(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              0, 255, 255, 255),
-                                                      iconSize: 50.r,
-                                                      iconColor: AppColors
-                                                          .blackBlueAccent1,
-                                                      image: AssetImage(
-                                                        'assets/images/Groupe_ou_Asso.png',
-                                                      ),
-                                                    ),
-                                                  );
-
-                                                final pret =
-                                                    PretEpargnecontext.read<
-                                                            PretEpargneCubit>()
-                                                        .state
-                                                        .pret;
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    updateTrackingData(
-                                                        "home.loanTransaction",
-                                                        "${DateTime.now()}",
-                                                        {});
-                                                    Modal()
-                                                        .showModalTransactionPret(
-                                                            context);
-                                                    context
-                                                        .read<
-                                                            PretEpargneCubit>()
-                                                        .getDetailPret(
-                                                            pret['loan_code']);
-                                                  },
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                      left: 8.w,
-                                                      right: 8.w,
-                                                      top: 5.h,
-                                                      bottom: 5.h,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Color.fromARGB(
-                                                              25,
-                                                              117,
-                                                              117,
-                                                              117),
-                                                          spreadRadius: 1,
-                                                          blurRadius: 1,
-                                                        )
-                                                      ],
-                                                      border: Border.all(
-                                                        color:
-                                                            pret!["is_passed"] ==
-                                                                    0
-                                                                ? AppColors
-                                                                    .white
-                                                                : AppColors.red,
-                                                        width: 0.5.r,
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                      left: 10.w,
-                                                      right: 10.w,
-                                                      top: 10.h,
-                                                      bottom: 10.h,
-                                                    ),
-                                                    child: Stack(
-                                                      children: [
-                                                        Column(
-                                                          children: [
-                                                            Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          10.h),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                            if (!context
+                                                                    .read<
+                                                                        AuthCubit>()
+                                                                    .state
+                                                                    .detailUser![
+                                                                "isMember"])
+                                                              Row(
                                                                 children: [
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    width: 72.w,
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .only(
-                                                                      left: 8.w,
-                                                                      right:
-                                                                          8.w,
-                                                                      top: 5.h,
-                                                                      bottom:
-                                                                          5.h,
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    "Prêts en cours"
-                                                                        .tr()
-                                                                        .toUpperCase(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .blackBlue,
-                                                                      fontSize:
-                                                                          15.sp,
-                                                                    ),
-                                                                  ),
                                                                   GestureDetector(
                                                                     onTap:
                                                                         () async {
                                                                       updateTrackingData(
-                                                                          "home.btnRefund",
+                                                                          "home.btnAdminister",
                                                                           "${DateTime.now()}",
                                                                           {});
-                                                                      String
-                                                                          msg =
-                                                                          "Aide-moi à payer ma dette.\nMerci de suivre le lien https://${pret["loan_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
-                                                                      String
-                                                                          raisonComplete =
-                                                                          "Remboursement"
-                                                                              .tr();
-                                                                      String
-                                                                          motif =
-                                                                          "Rembourser vous même"
-                                                                              .tr();
-                                                                      String
-                                                                          paiementProcheMsg =
-                                                                          "partager_le_lien_de_paiement"
-                                                                              .tr();
-                                                                      String
-                                                                          msgAppBarPaiementPage =
-                                                                          "Effectuer une remboursement"
-                                                                              .tr();
-                                                                      String
-                                                                          elementUrl =
-                                                                          "https://groups.faroty.com/loan";
-                                                                      Modal().showModalActionPayement(
-                                                                          context,
-                                                                          msg,
-                                                                          pret[
-                                                                              "loan_pay_link"],
-                                                                          raisonComplete,
-                                                                          motif,
-                                                                          paiementProcheMsg,
-                                                                          msgAppBarPaiementPage,
-                                                                          elementUrl);
+                                                                      launchWeb(
+                                                                        "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                                                                      );
                                                                     },
-                                                                    child:
+                                                                    child: Row(
+                                                                      children: [
                                                                         Container(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      width:
-                                                                          84.w,
-                                                                      padding:
-                                                                          EdgeInsets
-                                                                              .only(
-                                                                        left:
-                                                                            8.w,
-                                                                        right:
-                                                                            8.w,
-                                                                        top:
-                                                                            5.h,
-                                                                        bottom:
-                                                                            5.h,
-                                                                      ),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: AppColors
-                                                                            .colorButton,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(15),
-                                                                      ),
-                                                                      child:
-                                                                          Container(
-                                                                        child:
-                                                                            Text(
-                                                                          "Rembourser"
-                                                                              .tr(),
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                11.sp,
+                                                                          margin:
+                                                                              EdgeInsets.only(
+                                                                            top:
+                                                                                5.h,
+                                                                          ),
+                                                                          padding:
+                                                                              EdgeInsets.all(
+                                                                            3.r,
+                                                                          ),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            border:
+                                                                                Border.all(
+                                                                              width: 1.r,
+                                                                              color: AppColors.blackBlue,
+                                                                            ),
                                                                             color:
-                                                                                AppColors.white,
+                                                                                AppColors.whiteAccent1,
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(
+                                                                              50.r,
+                                                                            ),
+                                                                          ),
+                                                                          // height: 20.w,
+                                                                          // width: 20.w,
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Image.asset(
+                                                                                "assets/images/Groupe_ou_Asso.png",
+                                                                                width: 18.w,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 2.w,
+                                                                              ),
+                                                                              Text(
+                                                                                "Administrer".tr(),
+                                                                                style: TextStyle(
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                  color: AppColors.blackBlue,
+                                                                                  fontSize: 8.sp,
+                                                                                ),
+                                                                              ),
+                                                                            ],
                                                                           ),
                                                                         ),
-                                                                      ),
+                                                                      ],
                                                                     ),
                                                                   ),
                                                                 ],
                                                               ),
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      "montant"
-                                                                          .tr()
-                                                                          .toUpperCase(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            12.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        color: AppColors
-                                                                            .blackBlueAccent1,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      "${formatMontantFrancais(double.parse(pret!["loan_amount"]))} FCFA",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            16.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w900,
-                                                                        color: AppColors
-                                                                            .blackBlue,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    Text(
-                                                                      "a rembourser"
-                                                                          .tr()
-                                                                          .toUpperCase(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            12.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        color: AppColors
-                                                                            .blackBlueAccent1,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      "${formatMontantFrancais(double.parse(pret!["remaining_amount"]))} FCFA",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            18.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w900,
-                                                                        color: AppColors
-                                                                            .red,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 5.h),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                        "intérêts"
-                                                                            .tr()
-                                                                            .toUpperCase(),
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              12.sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                          color:
-                                                                              AppColors.blackBlueAccent1,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        "${formatMontantFrancais(double.parse(pret!["interest_generated"]))} FCFA",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              16.sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w900,
-                                                                          color:
-                                                                              AppColors.blackBlue,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Text(
-                                                                    "${formatCompareDateUnikReturnWellValue(pret!["end_date"])}"
-                                                                        .toUpperCase(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          12.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .blackBlue,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
                                                           ],
                                                         ),
-                                                        if (PretEpargnestate
-                                                                    .isLoadingPret ==
-                                                                true &&
-                                                            PretEpargnestate
-                                                                    .pret !=
-                                                                null)
-                                                          Center(
-                                                            child: Container(
-                                                              height: 120.h,
-                                                              // color:
-                                                              //     AppColors.blackBlueAccent2,
-                                                              // margin: EdgeInsets.only(top: 40.h),
-                                                              child: EasyLoader(
-                                                                backgroundColor:
-                                                                    Color.fromARGB(
-                                                                        0,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                iconSize: 50.r,
-                                                                iconColor: AppColors
-                                                                    .blackBlueAccent1,
-                                                                image:
-                                                                    AssetImage(
-                                                                  'assets/images/AssoplusFinal.png',
-                                                                ),
-                                                              ),
-                                                            ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            background: Stack(children: [
+                                              Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: MediaQuery.of(context)
+                                                      .size
+                                                      .height,
+                                                  child: Image.network(
+                                                    "${Variables.LienAIP}${DetailAss.user_group!.background_cover == null ? "" : DetailAss.user_group!.background_cover}",
+                                                    fit: BoxFit.cover,
+                                                  )),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      Colors.transparent,
+                                                      Colors.transparent,
+                                                      Colors.transparent,
+                                                      const Color.fromARGB(
+                                                          167, 150, 191, 53)
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ]),
+                                          ),
+                              ),
+                              SliverToBoxAdapter(
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Container(
+                                          // padding: EdgeInsets.all(7.r),
+                                          decoration: BoxDecoration(
+                                            // color: AppColors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(15.r),
+                                          ),
+                                          margin: EdgeInsets.only(
+                                            left: 8.w,
+                                            right: 8.w,
+                                            top: 10.h,
+                                            bottom: 5.h,
+                                          ),
+                                          child: Row(
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment
+                                            //         .spaceEvenly,
+                                            children: [
+                                              Material(
+                                                color: AppColors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.r),
+                                                ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                     updateTrackingData(
+                                                              "home.btnShowMeeting",
+                                                              "${DateTime.now()}",
+                                                              {});
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ListMeetingScreen(),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      vertical: 5.h,
+                                                      horizontal: 10.w,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                      border: Border.all(
+                                                          width: 0.5.w,
+                                                          color: AppColors
+                                                              .blackBlueAccent1),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          // padding: EdgeInsets.all(10.r),
+                                                          // height: 50.h,
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            width: 15.h,
+                                                            "assets/images/meetingTransIcon.svg",
+                                                            fit: BoxFit.cover,
+                                                            color: AppColors
+                                                                .blackBlue,
                                                           ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.w,
+                                                        ),
+                                                        Text(
+                                                          "Vos rencontres".tr(),
+                                                          style: TextStyle(
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                            fontSize: 12.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 5.w,
+                                              ),
+                                              Material(
+                                                color: AppColors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100.r),
+                                                ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                     updateTrackingData(
+                                                              "home.btnShowContribution",
+                                                              "${DateTime.now()}",
+                                                              {});
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ListCotisationScreen(),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      vertical: 5.h,
+                                                      horizontal: 10.w,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          width: 0.5.w,
+                                                          color: AppColors
+                                                              .blackBlueAccent1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100.r),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          // padding: EdgeInsets.all(10.r),
+                                                          // height: 50.h,
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            width: 15.h,
+                                                            "assets/images/contributionTransIcon1.svg",
+                                                            fit: BoxFit.cover,
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.w,
+                                                        ),
+                                                        Text(
+                                                          "Vos cotisations"
+                                                              .tr(),
+                                                          style: TextStyle(
+                                                            color: AppColors
+                                                                .blackBlue,
+                                                            fontSize: 12.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        if (currentDetailUser!["is_saver"])
+                                          BlocBuilder<PretEpargneCubit,
+                                              PretEpargneState>(
+                                            builder: (PretEpargnecontext,
+                                                PretEpargnestate) {
+                                              if (PretEpargnestate
+                                                          .isLoadingEpargne ==
+                                                      true &&
+                                                  PretEpargnestate.epargne ==
+                                                      null)
+                                                return Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 15.h),
+                                                  child: EasyLoader(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            0, 255, 255, 255),
+                                                    iconSize: 50.r,
+                                                    iconColor: AppColors
+                                                        .blackBlueAccent1,
+                                                    image: AssetImage(
+                                                      'assets/images/AssoplusFinal.png',
+                                                    ),
+                                                  ),
                                                 );
-                                              }),
-                                            if (currentDetailUser![
-                                                    "is_inscription_payed"] ==
-                                                0)
-                                              Container(
+                                              final epargne = PretEpargnecontext
+                                                      .read<PretEpargneCubit>()
+                                                  .state
+                                                  .epargne;
+                                              return Container(
                                                 margin: EdgeInsets.only(
                                                   left: 8.w,
                                                   right: 8.w,
@@ -1533,21 +746,419 @@ class _HomeScreenState extends State<HomeScreen>
                                                 decoration: BoxDecoration(
                                                   color: AppColors.white,
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.r),
+                                                      BorderRadius.circular(15),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                        color: Color.fromARGB(
-                                                            25, 117, 117, 117),
-                                                        spreadRadius: 1,
-                                                        blurRadius: 1)
+                                                      color: Color.fromARGB(
+                                                          25, 117, 117, 117),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 1,
+                                                    )
                                                   ],
                                                 ),
                                                 padding: EdgeInsets.only(
-                                                    left: 10.w,
-                                                    right: 10.w,
-                                                    top: 7.h,
-                                                    bottom: 7.h),
+                                                  left: 10.w,
+                                                  right: 10.w,
+                                                  top: 10.h,
+                                                  bottom: 10.h,
+                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                updateTrackingData(
+                                                                    "home.savingTransaction",
+                                                                    "${DateTime.now()}",
+                                                                    {});
+                                                                Modal()
+                                                                    .showModalTransactionEpargne(
+                                                                  context,
+                                                                );
+                                                                context
+                                                                    .read<
+                                                                        PretEpargneCubit>()
+                                                                    .getDetailEpargne(
+                                                                        epargne[
+                                                                            'saving_code']);
+                                                              },
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              15),
+                                                                  border: Border
+                                                                      .all(
+                                                                    width: 1.5,
+                                                                    color: AppColors
+                                                                        .blackBlueAccent2,
+                                                                  ),
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                  // vertical: 10.h,
+                                                                  horizontal:
+                                                                      10.w,
+                                                                ),
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    2.3,
+                                                                height: 97.h,
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Container(
+                                                                              child: Text(
+                                                                                "TOTAL EPARGNES".tr(),
+                                                                                style: TextStyle(
+                                                                                  fontSize: 12.sp,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: AppColors.blackBlue,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Container(
+                                                                              margin: EdgeInsets.only(
+                                                                                top: 3.h,
+                                                                                bottom: 3.h,
+                                                                              ),
+                                                                              child: Text(
+                                                                                // "${formatMontantFrancais(double.parse("13000"))} FCFA",
+
+                                                                                "${formatMontantFrancais(double.parse(epargne!['amount_saved']))} FCFA",
+                                                                                style: TextStyle(
+                                                                                  fontSize: 18.sp,
+                                                                                  fontWeight: FontWeight.w700,
+                                                                                  color: AppColors.blackBlue,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .end,
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .list_rounded,
+                                                                          size:
+                                                                              18.sp,
+                                                                          color:
+                                                                              AppColors.blackBlue,
+                                                                        ),
+                                                                        Container(
+                                                                          child:
+                                                                              Text(
+                                                                            "Historiques".tr(),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 12.sp,
+                                                                              fontWeight: FontWeight.w500,
+                                                                              color: AppColors.blackBlue,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                // color: AppColors.bleuLight,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15),
+                                                                border:
+                                                                    Border.all(
+                                                                  width: 1.5,
+                                                                  color: AppColors
+                                                                      .blackBlueAccent2,
+                                                                ),
+                                                              ),
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          10.h,
+                                                                      horizontal:
+                                                                          10.w),
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  2.3,
+                                                              height: 97.h,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: [
+                                                                  Container(
+                                                                    child: Text(
+                                                                      "INTÉRÊTS EN COURS"
+                                                                          .tr(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            12.sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        color: AppColors
+                                                                            .blackBlue,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    // margin: EdgeInsets.only(top: 5, bottom: 5,),
+                                                                    child: Text(
+                                                                      "${formatMontantFrancais(double.parse(epargne!['total_interest']))} FCFA",
+                                                                      // "${formatMontantFrancais(double.parse("2000"))} FCFA",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            18.sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        color: AppColors
+                                                                            .blackBlue,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () async {
+                                                            updateTrackingData(
+                                                                "home.btnSave",
+                                                                "${DateTime.now()}",
+                                                                {});
+                                                            String msg =
+                                                                "Aide-moi à épargner.\nMerci de suivre le lien https://${epargne["saving_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                                            String
+                                                                raisonComplete =
+                                                                "Effectuer une épargne"
+                                                                    .tr();
+                                                            String motif =
+                                                                "Epargner vous même"
+                                                                    .tr();
+                                                            String
+                                                                paiementProcheMsg =
+                                                                "Un proche épargne pour vous"
+                                                                    .tr();
+                                                            String
+                                                                msgAppBarPaiementPage =
+                                                                "Effectuer une épargne"
+                                                                    .tr();
+                                                            String elementUrl =
+                                                                "https://groups.faroty.com/loan";
+                                                            Modal()
+                                                                .showModalActionPayement(
+                                                              context,
+                                                              msg,
+                                                              epargne[
+                                                                  "saving_pay_link"],
+                                                              raisonComplete,
+                                                              motif,
+                                                              paiementProcheMsg,
+                                                              msgAppBarPaiementPage,
+                                                              elementUrl,
+                                                            );
+                                                          },
+
+                                                          // onTap: () {
+
+                                                          //   saving_pay_link
+                                                          //   context
+                                                          //       .read<PretEpargneCubit>()
+                                                          //       .getEpargne();
+                                                          // },
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: AppColors
+                                                                  .colorButton,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15),
+                                                            ),
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 10.h,
+                                                                    bottom:
+                                                                        10.h),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: 10.h),
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            child: Column(
+                                                              children: [
+                                                                Text(
+                                                                  "ÉPARGNEZ"
+                                                                      .tr(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        18.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900,
+                                                                    color: AppColors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    if (PretEpargnestate
+                                                                .isLoadingEpargne ==
+                                                            true &&
+                                                        PretEpargnestate
+                                                                .epargne !=
+                                                            null)
+                                                      Center(
+                                                        child: Container(
+                                                          height: 160.h,
+                                                          // color:
+                                                          //     AppColors.blackBlueAccent2,
+                                                          // margin: EdgeInsets.only(top: 40.h),
+                                                          child: EasyLoader(
+                                                            backgroundColor:
+                                                                Color.fromARGB(
+                                                                    0,
+                                                                    255,
+                                                                    255,
+                                                                    255),
+                                                            iconSize: 50.r,
+                                                            iconColor: AppColors
+                                                                .blackBlueAccent1,
+                                                            image: AssetImage(
+                                                              'assets/images/AssoplusFinal.png',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        if (currentDetailUser!["is_owe"])
+                                          BlocBuilder<PretEpargneCubit,
+                                                  PretEpargneState>(
+                                              builder: (PretEpargnecontext,
+                                                  PretEpargnestate) {
+                                            if (PretEpargnestate
+                                                        .isLoadingPret ==
+                                                    true &&
+                                                PretEpargnestate.pret == null)
+                                              return Container(
+                                                padding:
+                                                    EdgeInsets.only(top: 10.h),
+                                                child: EasyLoader(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          0, 255, 255, 255),
+                                                  iconSize: 50.r,
+                                                  iconColor: AppColors
+                                                      .blackBlueAccent1,
+                                                  image: AssetImage(
+                                                    'assets/images/Groupe_ou_Asso.png',
+                                                  ),
+                                                ),
+                                              );
+
+                                            final pret = PretEpargnecontext
+                                                    .read<PretEpargneCubit>()
+                                                .state
+                                                .pret;
+                                            return GestureDetector(
+                                              onTap: () {
+                                                updateTrackingData(
+                                                    "home.loanTransaction",
+                                                    "${DateTime.now()}", {});
+                                                Modal()
+                                                    .showModalTransactionPret(
+                                                        context);
+                                                context
+                                                    .read<PretEpargneCubit>()
+                                                    .getDetailPret(
+                                                        pret['loan_code']);
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                  left: 8.w,
+                                                  right: 8.w,
+                                                  top: 5.h,
+                                                  bottom: 5.h,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          25, 117, 117, 117),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 1,
+                                                    )
+                                                  ],
+                                                  border: Border.all(
+                                                    color:
+                                                        pret!["is_passed"] == 0
+                                                            ? AppColors.white
+                                                            : AppColors.red,
+                                                    width: 0.5.r,
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                  left: 10.w,
+                                                  right: 10.w,
+                                                  top: 10.h,
+                                                  bottom: 10.h,
+                                                ),
                                                 child: Stack(
                                                   children: [
                                                     Column(
@@ -1561,124 +1172,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
-                                                              Text(
-                                                                "Fonds de caisse"
-                                                                    .tr()
-                                                                    .toUpperCase(),
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    color: AppColors
-                                                                        .blackBlue,
-                                                                    fontSize:
-                                                                        15.sp),
-                                                              ),
-                                                              // if (Authstate.isLoading != true)
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text(
-                                                                    '${"reste à payer".tr().toUpperCase()}',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          12.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .blackBlueAccent1,
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    "${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA"
-                                                                        .tr(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          16.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .red,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "${formatMontantFrancais(double.parse(currentDetailUser["entry_amount"]))} FCFA"
-                                                                      .tr(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    color: AppColors
-                                                                        .blackBlue,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () async {
-                                                                updateTrackingData(
-                                                                    "home.btnRegistrationFund",
-                                                                    "${DateTime.now()}",
-                                                                    {});
-                                                                String msg =
-                                                                    "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
-                                                                String
-                                                                    raisonComplete =
-                                                                    "Paiement du fonds de caisse"
-                                                                        .tr();
-                                                                String motif =
-                                                                    "payer_vous_même"
-                                                                        .tr();
-                                                                String
-                                                                    paiementProcheMsg =
-                                                                    "partager_le_lien_de_paiement"
-                                                                        .tr();
-                                                                String
-                                                                    msgAppBarPaiementPage =
-                                                                    "Effectuer le paiement de votre fond de caisse"
-                                                                        .tr();
-                                                                String
-                                                                    elementUrl =
-                                                                    "https://groups.faroty.com/fond-caisse";
-                                                                if (currentDetailUser[
-                                                                        "is_inscription_payed"] !=
-                                                                    1)
-                                                                  Modal().showModalActionPayement(
-                                                                      context,
-                                                                      msg,
-                                                                      currentDetailUser[
-                                                                          "inscription_pay_link"],
-                                                                      raisonComplete,
-                                                                      motif,
-                                                                      paiementProcheMsg,
-                                                                      msgAppBarPaiementPage,
-                                                                      elementUrl);
-                                                              },
-                                                              child: Container(
+                                                              Container(
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
@@ -1691,45 +1185,252 @@ class _HomeScreenState extends State<HomeScreen>
                                                                   top: 5.h,
                                                                   bottom: 5.h,
                                                                 ),
-                                                                decoration:
-                                                                    BoxDecoration(
+                                                              ),
+                                                              Text(
+                                                                "Prêts en cours"
+                                                                    .tr()
+                                                                    .toUpperCase(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
                                                                   color: AppColors
-                                                                      .colorButton,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              15.r),
+                                                                      .blackBlue,
+                                                                  fontSize:
+                                                                      15.sp,
                                                                 ),
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap:
+                                                                    () async {
+                                                                  updateTrackingData(
+                                                                      "home.btnRefund",
+                                                                      "${DateTime.now()}",
+                                                                      {});
+                                                                  String msg =
+                                                                      "Aide-moi à payer ma dette.\nMerci de suivre le lien https://${pret["loan_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                                                  String
+                                                                      raisonComplete =
+                                                                      "Remboursement"
+                                                                          .tr();
+                                                                  String motif =
+                                                                      "Rembourser vous même"
+                                                                          .tr();
+                                                                  String
+                                                                      paiementProcheMsg =
+                                                                      "partager_le_lien_de_paiement"
+                                                                          .tr();
+                                                                  String
+                                                                      msgAppBarPaiementPage =
+                                                                      "Effectuer une remboursement"
+                                                                          .tr();
+                                                                  String
+                                                                      elementUrl =
+                                                                      "https://groups.faroty.com/loan";
+                                                                  Modal().showModalActionPayement(
+                                                                      context,
+                                                                      msg,
+                                                                      pret[
+                                                                          "loan_pay_link"],
+                                                                      raisonComplete,
+                                                                      motif,
+                                                                      paiementProcheMsg,
+                                                                      msgAppBarPaiementPage,
+                                                                      elementUrl);
+                                                                },
                                                                 child:
                                                                     Container(
-                                                                  child: Text(
-                                                                    "Payer"
-                                                                        .tr(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          12.sp,
-                                                                      color: AppColors
-                                                                          .white,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  width: 84.w,
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .only(
+                                                                    left: 8.w,
+                                                                    right: 8.w,
+                                                                    top: 5.h,
+                                                                    bottom: 5.h,
+                                                                  ),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: AppColors
+                                                                        .colorButton,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15),
+                                                                  ),
+                                                                  child:
+                                                                      Container(
+                                                                    child: Text(
+                                                                      "Rembourser"
+                                                                          .tr(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontSize:
+                                                                            11.sp,
+                                                                        color: AppColors
+                                                                            .white,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  "montant"
+                                                                      .tr()
+                                                                      .toUpperCase(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        12.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: AppColors
+                                                                        .blackBlueAccent1,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "${formatMontantFrancais(double.parse(pret!["loan_amount"]))} FCFA",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900,
+                                                                    color: AppColors
+                                                                        .blackBlue,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  "a rembourser"
+                                                                      .tr()
+                                                                      .toUpperCase(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        12.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: AppColors
+                                                                        .blackBlueAccent1,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "${formatMontantFrancais(double.parse(pret!["remaining_amount"]))} FCFA",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        18.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900,
+                                                                    color:
+                                                                        AppColors
+                                                                            .red,
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ],
                                                         ),
+                                                        Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 5.h),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "intérêts"
+                                                                        .tr()
+                                                                        .toUpperCase(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color: AppColors
+                                                                          .blackBlueAccent1,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    "${formatMontantFrancais(double.parse(pret!["interest_generated"]))} FCFA",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          16.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w900,
+                                                                      color: AppColors
+                                                                          .blackBlue,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Text(
+                                                                "${formatCompareDateUnikReturnWellValue(pret!["end_date"])}"
+                                                                    .toUpperCase(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppColors
+                                                                      .blackBlue,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
-                                                    if (Authstate.isLoading ==
+                                                    if (PretEpargnestate
+                                                                .isLoadingPret ==
                                                             true &&
-                                                        Authstate.detailUser !=
+                                                        PretEpargnestate.pret !=
                                                             null)
                                                       Center(
                                                         child: Container(
-                                                          height: 80.h,
+                                                          height: 120.h,
                                                           // color:
                                                           //     AppColors.blackBlueAccent2,
                                                           // margin: EdgeInsets.only(top: 40.h),
@@ -1752,230 +1453,304 @@ class _HomeScreenState extends State<HomeScreen>
                                                   ],
                                                 ),
                                               ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                left: 8.w,
-                                                right: 8.w,
-                                                top: 5.h,
-                                                bottom: 5.h,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: AppColors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(15.r),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Color.fromARGB(
-                                                          25, 117, 117, 117),
-                                                      spreadRadius: 1,
-                                                      blurRadius: 1)
-                                                ],
-                                              ),
-                                              padding: EdgeInsets.only(
+                                            );
+                                          }),
+                                        if (currentDetailUser![
+                                                "is_inscription_payed"] ==
+                                            0)
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              left: 8.w,
+                                              right: 8.w,
+                                              top: 5.h,
+                                              bottom: 5.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Color.fromARGB(
+                                                        25, 117, 117, 117),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 1)
+                                              ],
+                                            ),
+                                            padding: EdgeInsets.only(
                                                 left: 10.w,
                                                 right: 10.w,
                                                 top: 7.h,
-                                                bottom: 7.h,
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    padding: EdgeInsets.only(
-                                                      top: 7.h,
-                                                      left: 5.w,
-                                                      bottom: 7.h,
+                                                bottom: 7.h),
+                                            child: Stack(
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 10.h),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Fonds de caisse"
+                                                                .tr()
+                                                                .toUpperCase(),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontSize:
+                                                                    15.sp),
+                                                          ),
+                                                          // if (Authstate.isLoading != true)
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Text(
+                                                                '${"reste à payer".tr().toUpperCase()}',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppColors
+                                                                      .blackBlueAccent1,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA"
+                                                                    .tr(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      16.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color:
+                                                                      AppColors
+                                                                          .red,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    child: Row(
+                                                    Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Container(),
-                                                        Container(
-                                                          child: Text(
-                                                            "rencontre"
-                                                                .tr()
-                                                                .toUpperCase(),
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18.sp,
-                                                              color: AppColors
-                                                                  .blackBlue,
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "${formatMontantFrancais(double.parse(currentDetailUser["entry_amount"]))} FCFA"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                              ),
                                                             ),
-                                                            // ),
+                                                          ],
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () async {
+                                                            updateTrackingData(
+                                                                "home.btnRegistrationFund",
+                                                                "${DateTime.now()}",
+                                                                {});
+                                                            String msg =
+                                                                "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                                            String
+                                                                raisonComplete =
+                                                                "Paiement du fonds de caisse"
+                                                                    .tr();
+                                                            String motif =
+                                                                "payer_vous_même"
+                                                                    .tr();
+                                                            String
+                                                                paiementProcheMsg =
+                                                                "partager_le_lien_de_paiement"
+                                                                    .tr();
+                                                            String
+                                                                msgAppBarPaiementPage =
+                                                                "Effectuer le paiement de votre fond de caisse"
+                                                                    .tr();
+                                                            String elementUrl =
+                                                                "https://groups.faroty.com/fond-caisse";
+                                                            if (currentDetailUser[
+                                                                    "is_inscription_payed"] !=
+                                                                1)
+                                                              Modal().showModalActionPayement(
+                                                                  context,
+                                                                  msg,
+                                                                  currentDetailUser[
+                                                                      "inscription_pay_link"],
+                                                                  raisonComplete,
+                                                                  motif,
+                                                                  paiementProcheMsg,
+                                                                  msgAppBarPaiementPage,
+                                                                  elementUrl);
+                                                          },
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            width: 72.w,
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                              left: 8.w,
+                                                              right: 8.w,
+                                                              top: 5.h,
+                                                              bottom: 5.h,
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: AppColors
+                                                                  .colorButton,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15.r),
+                                                            ),
+                                                            child: Container(
+                                                              child: Text(
+                                                                "Payer".tr(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                        BlocBuilder<
-                                                                DetailTournoiCourantCubit,
-                                                                DetailTournoiCourantState>(
-                                                            builder:
-                                                                (tournoisContext,
-                                                                    tournoisState) {
-                                                          if (tournoisState
-                                                                      .isLoading ==
-                                                                  true &&
-                                                              tournoisState
-                                                                      .detailtournoiCourant ==
-                                                                  null)
-                                                            return Container();
-                                                          final currentDetailtournoiCourant = context
-                                                              .read<
-                                                                  DetailTournoiCourantCubit>()
-                                                              .state
-                                                              .detailtournoiCourant;
-
-                                                          return currentDetailtournoiCourant![
-                                                                          "tournois"] !=
-                                                                      null &&
-                                                                  currentDetailtournoiCourant["tournois"]
-                                                                              [
-                                                                              "seance"]
-                                                                          .length >
-                                                                      0 &&
-                                                                  currentDetailtournoiCourant["tournois"]
-                                                                              ["seance"][0]
-                                                                          [
-                                                                          "status"] ==
-                                                                      1 &&
-                                                                  !hasPassed48Hours(
-                                                                      currentDetailtournoiCourant["tournois"]
-                                                                              ["seance"][0]
-                                                                          [
-                                                                          "date_seance"])
-                                                              ? GestureDetector(
-                                                                  onTap: () {
-                                                                    String
-                                                                        message;
-                                                                    message =
-                                                                        "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
-
-                                                                    message +=
-                                                                        "👉🏽 ${"recepteur".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["last_name"]} ${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["first_name"]}*\n";
-                                                                    message +=
-                                                                        "👉🏽 ${"lieu".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["localisation"]}*\n";
-                                                                    message +=
-                                                                        "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}*\n\n";
-
-                                                                    message +=
-                                                                        "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
-
-                                                                    message +=
-                                                                        "*by ASSO+*";
-
-                                                                    if (tournoisState.isLoading ==
-                                                                            true &&
-                                                                        tournoisState.detailtournoiCourant !=
-                                                                            null) {
-                                                                      null;
-                                                                    } else {
-                                                                      Share.share(
-                                                                          message);
-                                                                    }
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    // margin:
-                                                                    //     EdgeInsets.only(
-                                                                    //   right: 10.w,
-                                                                    // ),
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .symmetric(
-                                                                      vertical:
-                                                                          4.h,
-                                                                      horizontal:
-                                                                          10.w,
-                                                                    ),
-                                                                    // width: 10.r,
-                                                                    // height: 10.r,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: AppColors
-                                                                          .colorButton,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              100.r),
-                                                                    ),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Text(
-                                                                          "Partager"
-                                                                              .tr(),
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                AppColors.white,
-                                                                            fontSize:
-                                                                                13.sp,
-                                                                            // fontWeight:
-                                                                            //     FontWeight
-                                                                            //         .bold,
-                                                                          ),
-                                                                        ),
-                                                                        Container(
-                                                                          height:
-                                                                              15.h,
-                                                                          child:
-                                                                              SvgPicture.asset(
-                                                                            "assets/images/shareSimpleIcon.svg",
-                                                                            fit:
-                                                                                BoxFit.scaleDown,
-                                                                            color:
-                                                                                AppColors.white,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : Container();
-                                                        }),
                                                       ],
                                                     ),
+                                                  ],
+                                                ),
+                                                if (Authstate.isLoading ==
+                                                        true &&
+                                                    Authstate.detailUser !=
+                                                        null)
+                                                  Center(
+                                                    child: Container(
+                                                      height: 80.h,
+                                                      // color:
+                                                      //     AppColors.blackBlueAccent2,
+                                                      // margin: EdgeInsets.only(top: 40.h),
+                                                      child: EasyLoader(
+                                                        backgroundColor:
+                                                            Color.fromARGB(0,
+                                                                255, 255, 255),
+                                                        iconSize: 50.r,
+                                                        iconColor: AppColors
+                                                            .blackBlueAccent1,
+                                                        image: AssetImage(
+                                                          'assets/images/AssoplusFinal.png',
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                  BlocBuilder<
-                                                      DetailTournoiCourantCubit,
-                                                      DetailTournoiCourantState>(
-                                                    builder: (tournoisContext,
-                                                        tournoisState) {
+                                              ],
+                                            ),
+                                          ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            left: 8.w,
+                                            right: 8.w,
+                                            top: 5.h,
+                                            bottom: 5.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(15.r),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Color.fromARGB(
+                                                      25, 117, 117, 117),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 1)
+                                            ],
+                                          ),
+                                          padding: EdgeInsets.only(
+                                            left: 10.w,
+                                            right: 10.w,
+                                            top: 7.h,
+                                            bottom: 7.h,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                padding: EdgeInsets.only(
+                                                  top: 7.h,
+                                                  left: 5.w,
+                                                  bottom: 7.h,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    // Container(),
+                                                    Container(
+                                                      child: Text(
+                                                        "rencontre"
+                                                            .tr()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18.sp,
+                                                          color: AppColors
+                                                              .blackBlue,
+                                                        ),
+                                                        // ),
+                                                      ),
+                                                    ),
+                                                    BlocBuilder<
+                                                            DetailTournoiCourantCubit,
+                                                            DetailTournoiCourantState>(
+                                                        builder:
+                                                            (tournoisContext,
+                                                                tournoisState) {
                                                       if (tournoisState
                                                                   .isLoading ==
                                                               true &&
                                                           tournoisState
                                                                   .detailtournoiCourant ==
                                                               null)
-                                                        return Container(
-                                                          margin: EdgeInsets.only(
-                                                              top: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height /
-                                                                  13),
-                                                          child: EasyLoader(
-                                                            backgroundColor:
-                                                                Color.fromARGB(
-                                                                    0,
-                                                                    255,
-                                                                    255,
-                                                                    255),
-                                                            iconSize: 50.r,
-                                                            iconColor: AppColors
-                                                                .blackBlueAccent1,
-                                                            image: AssetImage(
-                                                              "assets/images/AssoplusFinal.png",
-                                                            ),
-                                                          ),
-                                                        );
+                                                        return Container();
                                                       final currentDetailtournoiCourant = context
                                                           .read<
                                                               DetailTournoiCourantCubit>()
                                                           .state
                                                           .detailtournoiCourant;
-// print("object233333 ${currentDetailtournoiCourant!["tournois"]["seance"][0]["date_seance"]}");
+
                                                       return currentDetailtournoiCourant![
                                                                       "tournois"] !=
                                                                   null &&
@@ -1993,566 +1768,735 @@ class _HomeScreenState extends State<HomeScreen>
                                                                               "tournois"]
                                                                           ["seance"][0]
                                                                       ["date_seance"])
-                                                          ? Stack(
-                                                              children: [
-                                                                Container(
-                                                                  margin:
-                                                                      EdgeInsets
-                                                                          .only(
-                                                                    // left: 7.w,
-                                                                    // right: 7.w,
-                                                                    top: 5.h,
-                                                                    bottom: 7.h,
-                                                                  ),
-                                                                  child:
-                                                                      WidgetRencontreCard(
-                                                                    codeTournoi:
-                                                                        AppCubitStorage()
-                                                                            .state
-                                                                            .codeTournois!,
-                                                                    rapportUrl: currentDetailtournoiCourant["tournois"]
-                                                                            [
-                                                                            "seance"][0]
-                                                                        [
-                                                                        "rapport"],
-                                                                    // typeRencontre: currentDetailtournoiCourant["type_rencontre"],
-                                                                    screenSource:
-                                                                        "home.meeting",
-                                                                    typeRencontre:
-                                                                        currentDetailtournoiCourant["tournois"]["seance"][0]
-                                                                            [
-                                                                            "type_rencontre"],
-                                                                    maskElt:
-                                                                        true,
-                                                                    codeSeance: currentDetailtournoiCourant["tournois"]
-                                                                            [
-                                                                            "seance"][0]
-                                                                        [
-                                                                        "seance_code"],
-                                                                    dateRencontre: AppCubitStorage().state.Language ==
-                                                                            "fr"
-                                                                        ? formatDateToFrench(
-                                                                            currentDetailtournoiCourant!["tournois"]["seance"][0]["date_seance"],
-                                                                          )
-                                                                        : formatDateToEnglish(
-                                                                            currentDetailtournoiCourant!["tournois"]["seance"][0]["date_seance"],
-                                                                          ),
-                                                                    descriptionRencontre:
-                                                                        '${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"]).toUpperCase()} ${"à".tr()} ${currentDetailtournoiCourant["tournois"]["seance"][0]["heure_debut"]}',
-                                                                    heureRencontre:
-                                                                        currentDetailtournoiCourant["tournois"]["seance"][0]
-                                                                            [
-                                                                            "heure_debut"],
-                                                                    identifiantRencontre:
-                                                                        currentDetailtournoiCourant["tournois"]["seance"][0]
-                                                                            [
-                                                                            "matricule"],
-                                                                    isActiveRencontre:
-                                                                        currentDetailtournoiCourant["tournois"]["seance"][0]
-                                                                            [
-                                                                            "status"],
-                                                                    lieuRencontre:
-                                                                        currentDetailtournoiCourant["tournois"]["seance"][0]
-                                                                            [
-                                                                            "localisation"],
-                                                                    prenomRecepteurRencontre: currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["last_name"] ==
-                                                                            null
-                                                                        ? ""
-                                                                        : currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]
-                                                                            [
-                                                                            "last_name"],
-                                                                    nomRecepteurRencontre: currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["first_name"] ==
-                                                                            null
-                                                                        ? ""
-                                                                        : currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]
-                                                                            [
-                                                                            "first_name"],
-                                                                    photoProfilRecepteur: currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["photo_profil"] ==
-                                                                            null
-                                                                        ? ""
-                                                                        : currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]
-                                                                            [
-                                                                            "photo_profil"],
-                                                                    dateRencontreAPI:
-                                                                        currentDetailtournoiCourant["tournois"]["seance"][0]
-                                                                            [
-                                                                            "date_seance"],
-                                                                  ),
-                                                                ),
+                                                          ? GestureDetector(
+                                                              onTap: () {
+                                                                 updateTrackingData(
+                                                                "home.btnShareMeeting",
+                                                                "${DateTime.now()}",
+                                                                {});
+                                                                String message;
+                                                                message =
+                                                                    "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
+
+                                                                message +=
+                                                                    "👉🏽 ${"recepteur".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["last_name"]} ${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["first_name"]}*\n";
+                                                                message +=
+                                                                    "👉🏽 ${"lieu".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["localisation"]}*\n";
+                                                                message +=
+                                                                    "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}*\n\n";
+
+                                                                message +=
+                                                                    "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
+
+                                                                message +=
+                                                                    "*by ASSO+*";
+
                                                                 if (tournoisState
                                                                             .isLoading ==
                                                                         true &&
                                                                     tournoisState
                                                                             .detailtournoiCourant !=
-                                                                        null)
-                                                                  Container(
-                                                                    height:
-                                                                        160.h,
-                                                                    // color: AppColors.green,
-                                                                    child:
-                                                                        EasyLoader(
-                                                                      backgroundColor: Color.fromARGB(
+                                                                        null) {
+                                                                  null;
+                                                                } else {
+                                                                  Share.share(
+                                                                      message);
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                // margin:
+                                                                //     EdgeInsets.only(
+                                                                //   right: 10.w,
+                                                                // ),
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                  vertical: 4.h,
+                                                                  horizontal:
+                                                                      10.w,
+                                                                ),
+                                                                // width: 10.r,
+                                                                // height: 10.r,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: AppColors
+                                                                      .colorButton,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              100.r),
+                                                                ),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "Partager"
+                                                                          .tr(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: AppColors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            13.sp,
+                                                                        // fontWeight:
+                                                                        //     FontWeight
+                                                                        //         .bold,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      height:
+                                                                          15.h,
+                                                                      child: SvgPicture
+                                                                          .asset(
+                                                                        "assets/images/shareSimpleIcon.svg",
+                                                                        fit: BoxFit
+                                                                            .scaleDown,
+                                                                        color: AppColors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Container();
+                                                    }),
+                                                  ],
+                                                ),
+                                              ),
+                                              BlocBuilder<
+                                                  DetailTournoiCourantCubit,
+                                                  DetailTournoiCourantState>(
+                                                builder: (tournoisContext,
+                                                    tournoisState) {
+                                                  if (tournoisState.isLoading ==
+                                                          true &&
+                                                      tournoisState
+                                                              .detailtournoiCourant ==
+                                                          null)
+                                                    return Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              13),
+                                                      child: EasyLoader(
+                                                        backgroundColor:
+                                                            Color.fromARGB(0,
+                                                                255, 255, 255),
+                                                        iconSize: 50.r,
+                                                        iconColor: AppColors
+                                                            .blackBlueAccent1,
+                                                        image: AssetImage(
+                                                          "assets/images/AssoplusFinal.png",
+                                                        ),
+                                                      ),
+                                                    );
+                                                  final currentDetailtournoiCourant =
+                                                      context
+                                                          .read<
+                                                              DetailTournoiCourantCubit>()
+                                                          .state
+                                                          .detailtournoiCourant;
+// print("object233333 ${currentDetailtournoiCourant!["tournois"]["seance"][0]["date_seance"]}");
+                                                  return currentDetailtournoiCourant![
+                                                                  "tournois"] !=
+                                                              null &&
+                                                          currentDetailtournoiCourant["tournois"]
+                                                                      ["seance"]
+                                                                  .length >
+                                                              0 &&
+                                                          currentDetailtournoiCourant["tournois"]
+                                                                      ["seance"][0]
+                                                                  ["status"] ==
+                                                              1 &&
+                                                          !hasPassed48Hours(
+                                                              currentDetailtournoiCourant[
+                                                                          "tournois"]
+                                                                      ["seance"][0]
+                                                                  ["date_seance"])
+                                                      ? Stack(
+                                                          children: [
+                                                            Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                // left: 7.w,
+                                                                // right: 7.w,
+                                                                top: 5.h,
+                                                                bottom: 7.h,
+                                                              ),
+                                                              child:
+                                                                  WidgetRencontreCard(
+                                                                codeTournoi:
+                                                                    AppCubitStorage()
+                                                                        .state
+                                                                        .codeTournois!,
+                                                                rapportUrl: currentDetailtournoiCourant[
+                                                                            "tournois"]
+                                                                        [
+                                                                        "seance"]
+                                                                    [
+                                                                    0]["rapport"],
+                                                                // typeRencontre: currentDetailtournoiCourant["type_rencontre"],
+                                                                screenSource:
+                                                                    "home.meeting",
+                                                                typeRencontre: currentDetailtournoiCourant[
+                                                                            "tournois"]
+                                                                        [
+                                                                        "seance"][0]
+                                                                    [
+                                                                    "type_rencontre"],
+                                                                maskElt: true,
+                                                                codeSeance: currentDetailtournoiCourant[
+                                                                            "tournois"]
+                                                                        [
+                                                                        "seance"][0]
+                                                                    [
+                                                                    "seance_code"],
+                                                                dateRencontre: AppCubitStorage()
+                                                                            .state
+                                                                            .Language ==
+                                                                        "fr"
+                                                                    ? formatDateToFrench(
+                                                                        currentDetailtournoiCourant!["tournois"]["seance"][0]
+                                                                            [
+                                                                            "date_seance"],
+                                                                      )
+                                                                    : formatDateToEnglish(
+                                                                        currentDetailtournoiCourant!["tournois"]["seance"][0]
+                                                                            [
+                                                                            "date_seance"],
+                                                                      ),
+                                                                descriptionRencontre:
+                                                                    '${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"]).toUpperCase()} ${"à".tr()} ${currentDetailtournoiCourant["tournois"]["seance"][0]["heure_debut"]}',
+                                                                heureRencontre:
+                                                                    currentDetailtournoiCourant["tournois"]
+                                                                            [
+                                                                            "seance"][0]
+                                                                        [
+                                                                        "heure_debut"],
+                                                                identifiantRencontre:
+                                                                    currentDetailtournoiCourant["tournois"]
+                                                                            [
+                                                                            "seance"][0]
+                                                                        [
+                                                                        "matricule"],
+                                                                isActiveRencontre:
+                                                                    currentDetailtournoiCourant["tournois"]
+                                                                            [
+                                                                            "seance"][0]
+                                                                        [
+                                                                        "status"],
+                                                                lieuRencontre: currentDetailtournoiCourant[
+                                                                            "tournois"]
+                                                                        [
+                                                                        "seance"][0]
+                                                                    [
+                                                                    "localisation"],
+                                                                prenomRecepteurRencontre: currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]
+                                                                            [
+                                                                            "last_name"] ==
+                                                                        null
+                                                                    ? ""
+                                                                    : currentDetailtournoiCourant["tournois"]
+                                                                            [
+                                                                            "seance"][0]["membre"]
+                                                                        [
+                                                                        "last_name"],
+                                                                nomRecepteurRencontre: currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]
+                                                                            [
+                                                                            "first_name"] ==
+                                                                        null
+                                                                    ? ""
+                                                                    : currentDetailtournoiCourant["tournois"]
+                                                                            [
+                                                                            "seance"][0]["membre"]
+                                                                        [
+                                                                        "first_name"],
+                                                                photoProfilRecepteur: currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]
+                                                                            [
+                                                                            "photo_profil"] ==
+                                                                        null
+                                                                    ? ""
+                                                                    : currentDetailtournoiCourant["tournois"]
+                                                                            [
+                                                                            "seance"][0]["membre"]
+                                                                        [
+                                                                        "photo_profil"],
+                                                                dateRencontreAPI:
+                                                                    currentDetailtournoiCourant["tournois"]
+                                                                            [
+                                                                            "seance"][0]
+                                                                        [
+                                                                        "date_seance"],
+                                                              ),
+                                                            ),
+                                                            if (tournoisState
+                                                                        .isLoading ==
+                                                                    true &&
+                                                                tournoisState
+                                                                        .detailtournoiCourant !=
+                                                                    null)
+                                                              Container(
+                                                                height: 160.h,
+                                                                // color: AppColors.green,
+                                                                child:
+                                                                    EasyLoader(
+                                                                  backgroundColor:
+                                                                      Color.fromARGB(
                                                                           0,
                                                                           255,
                                                                           255,
                                                                           255),
-                                                                      iconSize:
-                                                                          50.r,
-                                                                      iconColor:
-                                                                          AppColors
-                                                                              .blackBlueAccent1,
-                                                                      image:
-                                                                          AssetImage(
-                                                                        "assets/images/AssoplusFinal.png",
-                                                                      ),
-                                                                    ),
+                                                                  iconSize:
+                                                                      50.r,
+                                                                  iconColor:
+                                                                      AppColors
+                                                                          .blackBlueAccent1,
+                                                                  image:
+                                                                      AssetImage(
+                                                                    "assets/images/AssoplusFinal.png",
                                                                   ),
-                                                              ],
-                                                            )
-                                                          : Container(
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          40.h),
-                                                              child: Center(
-                                                                child: Column(
-                                                                  children: [
-                                                                    Text(
-                                                                      "Pas de rencontre en cours"
-                                                                          .tr(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Color.fromRGBO(
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        )
+                                                      : Container(
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      40.h),
+                                                          child: Center(
+                                                            child: Column(
+                                                              children: [
+                                                                Text(
+                                                                  "Pas de rencontre en cours"
+                                                                      .tr(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Color
+                                                                        .fromRGBO(
                                                                             20,
                                                                             45,
                                                                             99,
                                                                             0.26),
-                                                                        fontWeight:
-                                                                            FontWeight.w100,
-                                                                        fontSize:
-                                                                            20.sp,
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          10.h,
-                                                                    ),
-                                                                    if (!context
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w100,
+                                                                    fontSize:
+                                                                        20.sp,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10.h,
+                                                                ),
+                                                                if (!context
                                                                         .read<
                                                                             AuthCubit>()
                                                                         .state
-                                                                        .detailUser!["isMember"])
-                                                                      Material(
-                                                                        child:
-                                                                            InkWell(
-                                                                          onTap:
-                                                                              () async {
-                                                                            updateTrackingData(
-                                                                                "transactions.btnAddMeeting",
-                                                                                "${DateTime.now()}",
-                                                                                {});
-                                                                            launchWeb(
-                                                                              "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
-                                                                            );
-                                                                          },
-                                                                          child:
-                                                                              Container(
-                                                                            height:
-                                                                                40.h,
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              // color:
-                                                                              //     AppColors.pageBackground,
-                                                                              border: Border.all(
-                                                                                width: 2.w,
-                                                                                color: AppColors.blackBlue.withOpacity(1),
-                                                                              ),
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                20.r,
-                                                                              ),
-                                                                            ),
-                                                                            // margin:
-                                                                            //     EdgeInsets.only(
-                                                                            //   top:
-                                                                            //       10.w,
-                                                                            // ),
-                                                                            padding:
-                                                                                EdgeInsets.symmetric(
-                                                                              horizontal: 10.w,
-                                                                              vertical: 7.h,
-                                                                            ),
+                                                                        .detailUser![
+                                                                    "isMember"])
+                                                                  Material(
+                                                                    child:
+                                                                        InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        updateTrackingData(
+                                                                            "home.btnAddMeeting",
+                                                                            "${DateTime.now()}",
+                                                                            {});
+                                                                        launchWeb(
+                                                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/seances?query=1&app_mode=mobile",
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            40.h,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          // color:
+                                                                          //     AppColors.pageBackground,
+                                                                          border:
+                                                                              Border.all(
                                                                             width:
-                                                                                MediaQuery.of(context).size.width / 1.5,
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                              children: [
-                                                                                Text(
-                                                                                  "Ajouter une rencontre".tr(),
-                                                                                  style: TextStyle(
-                                                                                    color: AppColors.blackBlue.withOpacity(1),
-                                                                                    fontWeight: FontWeight.w900,
-                                                                                    fontSize: 18.sp,
-                                                                                    letterSpacing: 0.2.w,
-                                                                                  ),
-                                                                                ),
-                                                                                Container(
-                                                                                  width: 20.w,
-                                                                                  height: 20.w,
-                                                                                  margin: EdgeInsets.only(left: 3.w),
-                                                                                  decoration: BoxDecoration(
-                                                                                    borderRadius: BorderRadius.circular(360),
-                                                                                    border: Border.all(
-                                                                                      width: 1.5.w,
-                                                                                      color: AppColors.blackBlue.withOpacity(1),
-                                                                                    ),
-                                                                                  ),
-                                                                                  child: SvgPicture.asset(
-                                                                                    "assets/images/addIcon.svg",
-                                                                                    fit: BoxFit.scaleDown,
-                                                                                    color: AppColors.blackBlue.withOpacity(1),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
+                                                                                2.w,
+                                                                            color:
+                                                                                AppColors.blackBlue.withOpacity(1),
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(
+                                                                            20.r,
                                                                           ),
                                                                         ),
+                                                                        // margin:
+                                                                        //     EdgeInsets.only(
+                                                                        //   top:
+                                                                        //       10.w,
+                                                                        // ),
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              10.w,
+                                                                          vertical:
+                                                                              7.h,
+                                                                        ),
+                                                                        width: MediaQuery.of(context).size.width /
+                                                                            1.5,
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Ajouter une rencontre".tr(),
+                                                                              style: TextStyle(
+                                                                                color: AppColors.blackBlue.withOpacity(1),
+                                                                                fontWeight: FontWeight.w900,
+                                                                                fontSize: 18.sp,
+                                                                                letterSpacing: 0.2.w,
+                                                                              ),
+                                                                            ),
+                                                                            Container(
+                                                                              width: 20.w,
+                                                                              height: 20.w,
+                                                                              margin: EdgeInsets.only(left: 3.w),
+                                                                              decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(360),
+                                                                                border: Border.all(
+                                                                                  width: 1.5.w,
+                                                                                  color: AppColors.blackBlue.withOpacity(1),
+                                                                                ),
+                                                                              ),
+                                                                              child: SvgPicture.asset(
+                                                                                "assets/images/addIcon.svg",
+                                                                                fit: BoxFit.scaleDown,
+                                                                                color: AppColors.blackBlue.withOpacity(1),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
                                                                       ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            );
-                                                    },
-                                                  ),
-                                                ],
+                                                                    ),
+                                                                  ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                },
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  SliverPersistentHeader(
-                                    pinned: true,
-                                    floating: false,
-                                    delegate: SliverTabBar(
-                                      maxExtent: 50.r,
-                                      minExtent: 50.r,
-                                    ),
-                                  ),
-                                  BlocBuilder<RecentEventCubit,
-                                      RecentEventState>(
-                                    builder: (context, state) {
-                                      if (state.isLoading == true ||
-                                          state.allRecentEvent == null)
-                                        return SliverToBoxAdapter(
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                top: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    7),
-                                            child: EasyLoader(
-                                              backgroundColor: Color.fromARGB(
-                                                  0, 255, 16, 16),
-                                              iconSize: 50.r,
-                                              iconColor:
-                                                  AppColors.blackBlueAccent1,
-                                              image: AssetImage(
-                                                "assets/images/AssoplusFinal.png",
-                                              ),
-                                            ),
-                                          ),
-                                        );
-
-                                      final currentRecentEvent = context
-                                          .read<RecentEventCubit>()
-                                          .state
-                                          .allRecentEvent;
-
-                                      final currentTontine =
-                                          currentRecentEvent!["tontines"];
-                                      final currentCotisation =
-                                          currentRecentEvent!["cotisations"];
-                                      final currentSanction =
-                                          currentRecentEvent!["sanctions"];
-
-                                      List listeTontine = currentTontine;
-                                      List listeCotisation = currentCotisation;
-                                      List listeSanction = currentSanction;
-
-                                      List<Widget> listWidgetTontine =
-                                          listeTontine.map((monObjet) {
-                                        // print(object)
-                                        return widgetRecentEventTontine(
-                                          nomBeneficiaire: monObjet["membre"]
-                                              ["first_name"],
-                                          prenomBeneficiaire: monObjet["membre"]
-                                                      ["last_name"] ==
-                                                  null
-                                              ? ''
-                                              : monObjet["membre"]["last_name"],
-                                          dateOpen: monObjet["start_date"],
-                                          dateClose: monObjet["end_date"],
-                                          montantTontine: monObjet["amount"],
-                                          montantCollecte:
-                                              monObjet["total_cotise"],
-                                          codeCotisation: monObjet["code"],
-                                          lienDePaiement:
-                                              monObjet["tontine_pay_link"],
-                                          nomTontine: monObjet["matricule"],
-                                          motif: monObjet["motif"],
-                                        );
-                                      }).toList();
-
-                                      List<Widget> listWidgetCotisation =
-                                          listeCotisation.map((monObjet) {
-                                        print("ddcc ${monObjet["seance"]}");
-                                        return widgetRecentEventCotisation(
-                                          rapportUrl: monObjet["rapport"],
-                                          rublique: monObjet["ass_rubrique"] ==
-                                                  null
-                                              ? ""
-                                              : '(${monObjet["ass_rubrique"]["name"]})',
-                                          dateOpen: monObjet["end_date"],
-                                          dateClose: monObjet["end_date"],
-                                          montantCotisation: monObjet["amount"],
-                                          montantCollecte:
-                                              monObjet["total_cotise"],
-                                          codeCotisation:
-                                              monObjet["cotisation_code"],
-                                          lienDePaiement:
-                                              monObjet["cotisation_pay_link"],
-                                          motif: monObjet["name"],
-                                          type: monObjet["type"],
-                                          isPassed: monObjet["is_passed"],
-                                          source: monObjet["seance"] == null
-                                              ? ''
-                                              : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"]} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"])}',
-                                          nomBeneficiaire: monObjet["membre"] ==
-                                                  null
-                                              ? ''
-                                              : monObjet["membre"]
-                                                          ["last_name"] ==
-                                                      null
-                                                  ? "${monObjet["membre"]["first_name"]}"
-                                                  : "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"]}",
-                                          is_tontine: monObjet["is_tontine"],
-                                        );
-                                      }).toList();
-
-                                      List<Widget> listWidgetSanction =
-                                          listeSanction.map((monObjet) {
-                                        final currentDetailUser = context
-                                            .read<AuthCubit>()
-                                            .state
-                                            .detailUser;
-                                        print("${monObjet}");
-                                        return widgetRecentEventSanction(
-                                          membreCode: AppCubitStorage()
-                                              .state
-                                              .membreCode,
-                                          // "${monObjet["membre"]["membre_code"]}",
-                                          nomProprietaire:
-                                              "${currentDetailUser!["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
-                                          // "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"] ?? ""}",
-                                          resteAPayer:
-                                              monObjet["amount_remaining"],
-                                          motif: monObjet["motif"],
-                                          dateOpen: monObjet["start_date"],
-                                          montantSanction:
-                                              monObjet["amount"] == null
-                                                  ? 0
-                                                  : monObjet["amount"],
-                                          libelleSanction:
-                                              monObjet["libelle"] == null
-                                                  ? ""
-                                                  : monObjet["libelle"],
-                                          montantCollecte:
-                                              monObjet["sanction_balance"],
-                                          codeCotisation:
-                                              monObjet["sanction_code"],
-                                          lienDePaiement: monObjet[
-                                                      "sanction_pay_link"] ==
-                                                  null
-                                              ? ""
-                                              : monObjet["sanction_pay_link"],
-                                          type: monObjet["type"],
-                                          versement: monObjet["versement"],
-                                        );
-                                      }).toList();
-
-                                      final listeWidgetFinale = [
-                                        ...listWidgetTontine,
-                                        ...listWidgetCotisation,
-                                        ...listWidgetSanction,
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            bottom:
-                                                Platform.isIOS ? 70.h : 10.h,
+                                  ],
+                                ),
+                              ),
+                              SliverPersistentHeader(
+                                pinned: true,
+                                floating: false,
+                                delegate: SliverTabBar(
+                                  maxExtent: 50.r,
+                                  minExtent: 50.r,
+                                ),
+                              ),
+                              BlocBuilder<RecentEventCubit, RecentEventState>(
+                                builder: (context, state) {
+                                  if (state.isLoading == true ||
+                                      state.allRecentEvent == null)
+                                    return SliverToBoxAdapter(
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                            top: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                7),
+                                        child: EasyLoader(
+                                          backgroundColor:
+                                              Color.fromARGB(0, 255, 16, 16),
+                                          iconSize: 50.r,
+                                          iconColor: AppColors.blackBlueAccent1,
+                                          image: AssetImage(
+                                            "assets/images/AssoplusFinal.png",
                                           ),
                                         ),
-                                      ];
+                                      ),
+                                    );
 
-                                      return listWidgetTontine.length > 0 ||
-                                              listWidgetCotisation.length > 0 ||
-                                              listWidgetSanction.length > 0
-                                          ? SliverList.builder(
-                                              itemCount:
-                                                  listeWidgetFinale.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                final itemEventRecent =
-                                                    listeWidgetFinale[index];
-                                                return Container(
-                                                  margin: EdgeInsets.only(
-                                                    top: 7.h,
-                                                    left: 7.w,
-                                                    right: 7.w,
-                                                    bottom: 3.h,
+                                  final currentRecentEvent = context
+                                      .read<RecentEventCubit>()
+                                      .state
+                                      .allRecentEvent;
+
+                                  final currentTontine =
+                                      currentRecentEvent!["tontines"];
+                                  final currentCotisation =
+                                      currentRecentEvent!["cotisations"];
+                                  final currentSanction =
+                                      currentRecentEvent!["sanctions"];
+
+                                  List listeTontine = currentTontine;
+                                  List listeCotisation = currentCotisation;
+                                  List listeSanction = currentSanction;
+
+                                  List<Widget> listWidgetTontine =
+                                      listeTontine.map((monObjet) {
+                                    // print(object)
+                                    return widgetRecentEventTontine(
+                                      isPassed: monObjet["is_passed"],
+                                      isPayed: monObjet["versement"]
+                                          ["is_payed"],
+                                      nomBeneficiaire: monObjet["membre"]
+                                          ["first_name"],
+                                      prenomBeneficiaire: monObjet["membre"]
+                                                  ["last_name"] ==
+                                              null
+                                          ? ''
+                                          : monObjet["membre"]["last_name"],
+                                      dateOpen: monObjet["start_date"],
+                                      dateClose: monObjet["end_date"],
+                                      montantTontine: monObjet["amount"],
+                                      montantCollecte: monObjet["total_cotise"],
+                                      codeCotisation: monObjet["code"],
+                                      lienDePaiement:
+                                          monObjet["tontine_pay_link"],
+                                      nomTontine: monObjet["matricule"],
+                                      motif: monObjet["motif"],
+                                    );
+                                  }).toList();
+
+                                  List<Widget> listWidgetCotisation =
+                                      listeCotisation.map((monObjet) {
+                                    return widgetRecentEventCotisation(
+                                      isPayed: monObjet["versement"]
+                                              ?["is_payed"] ??
+                                          false,
+                                      rapportUrl: monObjet["rapport"] ?? "",
+                                      rublique: monObjet["ass_rubrique"] == null
+                                          ? ""
+                                          : '(${monObjet["ass_rubrique"]["name"] ?? ""})',
+                                      dateOpen: monObjet["end_date"] ?? "",
+                                      dateClose: monObjet["end_date"] ?? "",
+                                      montantCotisation:
+                                          monObjet["amount"] ?? "",
+                                      montantCollecte:
+                                          monObjet["total_cotise"] ?? "",
+                                      codeCotisation:
+                                          monObjet["cotisation_code"] ?? "",
+                                      lienDePaiement:
+                                          monObjet["cotisation_pay_link"] ?? "",
+                                      motif: monObjet["name"] ?? "",
+                                      type: monObjet["type"] ?? "",
+                                      isPassed: monObjet["is_passed"] ?? false,
+                                      source: monObjet["seance"] == null
+                                          ? ''
+                                          : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"] ?? ""} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"] ?? "")}',
+                                      nomBeneficiaire: monObjet["membre"] ==
+                                              null
+                                          ? ''
+                                          : '${monObjet["membre"]["first_name"] ?? ""} ${monObjet["membre"]["last_name"] ?? ""}',
+                                      is_tontine:
+                                          monObjet["is_tontine"] ?? false,
+                                    );
+                                  }).toList();
+
+                                  List<Widget> listWidgetSanction =
+                                      listeSanction.map((monObjet) {
+                                    final currentDetailUser = context
+                                        .read<AuthCubit>()
+                                        .state
+                                        .detailUser;
+                                    print("${monObjet}");
+                                    return widgetRecentEventSanction(
+                                      membreCode:
+                                          AppCubitStorage().state.membreCode,
+                                      // "${monObjet["membre"]["membre_code"]}",
+                                      nomProprietaire:
+                                          "${currentDetailUser!["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
+                                      // "${monObjet["membre"]["first_name"]} ${monObjet["membre"]["last_name"] ?? ""}",
+                                      resteAPayer: monObjet["amount_remaining"],
+                                      motif: monObjet["motif"],
+                                      dateOpen: monObjet["start_date"],
+                                      montantSanction:
+                                          monObjet["amount"] == null
+                                              ? 0
+                                              : monObjet["amount"],
+                                      libelleSanction:
+                                          monObjet["libelle"] == null
+                                              ? ""
+                                              : monObjet["libelle"],
+                                      montantCollecte:
+                                          monObjet["sanction_balance"],
+                                      codeCotisation: monObjet["sanction_code"],
+                                      lienDePaiement:
+                                          monObjet["sanction_pay_link"] == null
+                                              ? ""
+                                              : monObjet["sanction_pay_link"],
+                                      type: monObjet["type"],
+                                      versement: monObjet["versement"],
+                                    );
+                                  }).toList();
+
+                                  final listeWidgetFinale = [
+                                    ...listWidgetTontine,
+                                    ...listWidgetCotisation,
+                                    ...listWidgetSanction,
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                        bottom: Platform.isIOS ? 70.h : 10.h,
+                                      ),
+                                    ),
+                                  ];
+
+                                  return listWidgetTontine.length > 0 ||
+                                          // listWidgetCotisation.length > 0 ||
+                                          listWidgetSanction.length > 0
+                                      ? SliverList.builder(
+                                          itemCount: listeWidgetFinale.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final itemEventRecent =
+                                                listeWidgetFinale[index];
+                                            return Container(
+                                              margin: EdgeInsets.only(
+                                                top: 7.h,
+                                                left: 7.w,
+                                                right: 7.w,
+                                                bottom: 3.h,
+                                              ),
+                                              child: itemEventRecent,
+                                            );
+                                          },
+                                        )
+                                      : SliverToBoxAdapter(
+                                          child: Container(
+                                            color: AppColors.pageBackground,
+                                            margin: EdgeInsets.only(top: 50.h),
+                                            child: Center(
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "Aucun_evenement_recent"
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          20, 45, 99, 0.26),
+                                                      fontWeight:
+                                                          FontWeight.w100,
+                                                      fontSize: 20.sp,
+                                                    ),
                                                   ),
-                                                  child: itemEventRecent,
-                                                );
-                                              },
-                                            )
-                                          : SliverToBoxAdapter(
-                                              child: Container(
-                                                color: AppColors.pageBackground,
-                                                margin:
-                                                    EdgeInsets.only(top: 50.h),
-                                                child: Center(
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        "Aucun_evenement_recent"
-                                                            .tr(),
-                                                        style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              20, 45, 99, 0.26),
-                                                          fontWeight:
-                                                              FontWeight.w100,
-                                                          fontSize: 20.sp,
+                                                  SizedBox(
+                                                    height: 10.h,
+                                                  ),
+                                                  if (!context
+                                                      .read<AuthCubit>()
+                                                      .state
+                                                      .detailUser!["isMember"])
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        updateTrackingData(
+                                                            "transactions.btnAddContribution",
+                                                            "${DateTime.now()}",
+                                                            {});
+                                                        launchWeb(
+                                                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        height: 40.h,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            width: 2.w,
+                                                            color: AppColors
+                                                                .blackBlue
+                                                                .withOpacity(1),
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            20.r,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10.h,
-                                                      ),
-                                                      if (!context
-                                                              .read<AuthCubit>()
-                                                              .state
-                                                              .detailUser![
-                                                          "isMember"])
-                                                        InkWell(
-                                                          onTap: () async {
-                                                            updateTrackingData(
-                                                                "transactions.btnAddContribution",
-                                                                "${DateTime.now()}",
-                                                                {});
-                                                            launchWeb(
-                                                              "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
-                                                            );
-                                                          },
-                                                          child: Container(
-                                                            height: 40.h,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              border:
-                                                                  Border.all(
-                                                                width: 2.w,
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                          horizontal: 10.w,
+                                                          vertical: 7.h,
+                                                        ),
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            1.5,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          children: [
+                                                            Text(
+                                                              "Ajouter une cotisation"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                color: AppColors
+                                                                    .blackBlue
+                                                                    .withOpacity(
+                                                                        1),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900,
+                                                                fontSize: 18.sp,
+                                                                letterSpacing:
+                                                                    0.2.w,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: 20.w,
+                                                              height: 20.w,
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left:
+                                                                          3.w),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            360),
+                                                                border:
+                                                                    Border.all(
+                                                                  width: 1.5.w,
+                                                                  color: AppColors
+                                                                      .blackBlue
+                                                                      .withOpacity(
+                                                                          1),
+                                                                ),
+                                                              ),
+                                                              child: SvgPicture
+                                                                  .asset(
+                                                                "assets/images/addIcon.svg",
+                                                                fit: BoxFit
+                                                                    .scaleDown,
                                                                 color: AppColors
                                                                     .blackBlue
                                                                     .withOpacity(
                                                                         1),
                                                               ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                20.r,
-                                                              ),
                                                             ),
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              horizontal: 10.w,
-                                                              vertical: 7.h,
-                                                            ),
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                1.5,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              children: [
-                                                                Text(
-                                                                  "Ajouter une cotisation"
-                                                                      .tr(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: AppColors
-                                                                        .blackBlue
-                                                                        .withOpacity(
-                                                                            1),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w900,
-                                                                    fontSize:
-                                                                        18.sp,
-                                                                    letterSpacing:
-                                                                        0.2.w,
-                                                                  ),
-                                                                ),
-                                                                Container(
-                                                                  width: 20.w,
-                                                                  height: 20.w,
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              3.w),
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            360),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      width:
-                                                                          1.5.w,
-                                                                      color: AppColors
-                                                                          .blackBlue
-                                                                          .withOpacity(
-                                                                              1),
-                                                                    ),
-                                                                  ),
-                                                                  child:
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                    "assets/images/addIcon.svg",
-                                                                    fit: BoxFit
-                                                                        .scaleDown,
-                                                                    color: AppColors
-                                                                        .blackBlue
-                                                                        .withOpacity(
-                                                                            1),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
+                                                          ],
                                                         ),
-                                                    ],
-                                                  ),
-                                                ),
+                                                      ),
+                                                    ),
+                                                ],
                                               ),
-                                            );
-                                    },
-                                  ),
-                                ],
+                                            ),
+                                          ),
+                                        );
+                                },
                               ),
-                            ),
+                            ],
+                          ),
+                        ),
             ),
           );
         },

@@ -91,15 +91,15 @@ class _WidgetSanctionState extends State<WidgetSanction> {
           borderRadius: BorderRadius.circular(10.r),
           child: Container(
             decoration: BoxDecoration(
-                // color: AppColors.white,
-                border: Border(
-                  left: BorderSide(
-                      width: 8.r,
-                      color: widget.isSanctionPayed == 0
-                          ? AppColors.red
-                          : AppColors.green),
-                ),
-                ),
+              // color: AppColors.white,
+              border: Border(
+                left: BorderSide(
+                    width: 8.r,
+                    color: widget.isSanctionPayed == 0
+                        ? AppColors.red
+                        : AppColors.green),
+              ),
+            ),
             padding: EdgeInsets.only(left: 10.w, right: 10.w),
             width: MediaQuery.of(context).size.width,
             child: Row(
@@ -153,8 +153,7 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                 widget.isSanctionPayed == 0)
                               Material(
                                 color: AppColors.colorButton,
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
+                                borderRadius: BorderRadius.circular(15.r),
                                 child: InkWell(
                                   splashColor: AppColors.blackBlue,
                                   onTap: () async {
@@ -555,14 +554,42 @@ class _WidgetSanctionState extends State<WidgetSanction> {
                                     color: Colors.transparent,
                                     child: InkWell(
                                       onTap: () {
-                                        print("object3");
-                                        Share.share(context
+                                        final currentDetailUser = context
+                                            .read<AuthCubit>()
+                                            .state
+                                            .detailUser!;
+                                        String nameUser = context
                                                 .read<AuthCubit>()
                                                 .state
                                                 .detailUser!["isMember"]
-                                            ? "Aide-moi à payer ma sanction *${widget.motifSanction}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienPaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-                                            : "Nouvelle sanction créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.motifSanction} sur le membre *${widget.nomProprietaire}*.\nPayer la sanction ici : https://${widget.lienPaiement}?code=${widget.membreCode}");
+                                            ? "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}"
+                                            : "*${widget.nomProprietaire}*";
+                                        String message;
+                                        message =
+                                            "🟢🟢 ${"Nouvelle sanction créée dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name!.trimRight()}*\n\n";
+
+                                        message +=
+                                            "👉🏽 ${"concernant".tr().toUpperCase()} : *${nameUser.trimRight()}*\n";
+                                        message +=
+                                            "👉🏽 ${"motif".tr().toUpperCase()} : *${widget.motifSanction}*\n";
+                                        message +=
+                                            "👉🏽 ${"sanction".tr().toUpperCase()} : *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA*\n\n";
+                                        message +=
+                                            "${"Merci de suivre le lien".tr()} ${context.read<AuthCubit>().state.detailUser!["isMember"] ? "https://${widget.lienPaiement}?code=${AppCubitStorage().state.membreCode}" : "https://${widget.lienPaiement}?code=${widget.membreCode}"} ${"pour payer".tr()}\n\n";
+
+                                        message += "*by ASSO+*";
+
+                                        Share.share(message);
                                       },
+                                      // onTap: () {
+                                      //   print("object3");
+                                      //   Share.share(context
+                                      //           .read<AuthCubit>()
+                                      //           .state
+                                      //           .detailUser!["isMember"]
+                                      //       ? "Aide-moi à payer ma sanction *${widget.motifSanction}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienPaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                                      //       : "Nouvelle sanction créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.motifSanction} sur le membre *${widget.nomProprietaire}*.\nPayer la sanction ici : https://${widget.lienPaiement}?code=${widget.membreCode}");
+                                      // },
                                       child: Column(
                                         children: [
                                           Container(

@@ -25,6 +25,7 @@ import 'package:pinput/pinput.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:telephony/telephony.dart';
+import 'package:toastification/toastification.dart';
 
 class VerificationPage extends StatefulWidget {
   VerificationPage({
@@ -176,6 +177,23 @@ class _VerificationPageState extends State<VerificationPage>
                 ),
               );
             });
+          } else {
+            print("toastification");
+            await toastification.show(
+              context: context,
+              title: Text(
+                "Vous n'avez pas de groupe ASSO+".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    color: AppColors.blackBlue,
+                    fontWeight: FontWeight.bold),
+              ),
+              autoCloseDuration: Duration(seconds: 2),
+              type: ToastificationType.success,
+              style: ToastificationStyle.minimal,
+            );
+            Navigator.pop(context);
           }
         }
       }
@@ -547,15 +565,6 @@ class _VerificationPageState extends State<VerificationPage>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "By",
-                                  style: TextStyle(
-                                      fontSize: 9.sp,
-                                      color: Colors.grey[600],
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w900),
-                                  textAlign: TextAlign.center,
-                                ),
                                 Container(
                                   width: 40.r,
                                   child: Image.asset(

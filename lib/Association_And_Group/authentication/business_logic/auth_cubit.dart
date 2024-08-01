@@ -34,6 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
     ));
     try {
       final data = await AuthRepository().UserDetail(userCode, codeTournoi);
+      print("ztu $data");
 
       emit(
         state.copyWith(
@@ -47,6 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
           // alreadyShow: 2
         ),
       );
+      print("ztu ${state.detailUser}");
     } catch (e) {
       emit(
         state.copyWith(
@@ -106,19 +108,14 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
     try {
-      // final dataUID =
-      //     await AuthRepository().ConfirmationForCreateRepository(confirmCode);
       final data =
           await AuthRepository().loginInfoConnectToWebViewFirstRepository(
         AppCubitStorage().state.userNameKey,
         AppCubitStorage().state.passwordKey,
       );
-      // final dataCookies = await dataForCookies(dataUID);
-
       emit(
         state.copyWith(
           loginInfo: data,
-          // dataCookies: dataCookies,
           errorLoading: false,
           successLoading: true,
         ),
@@ -170,9 +167,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     try {
       final dataUID = await AuthRepository().ConfirmationForCreateRepository(confirmCode);
-      print("dataUIDE $dataUID");
       final dataCookies = await dataForCookies2(dataUID);
-      print("dataUIDdataCookies $dataCookies");
 
 
       await AppCubitStorage().updateDataCookies(dataCookies);
@@ -181,13 +176,13 @@ class AuthCubit extends Cubit<AuthState> {
         state.copyWith(
           // loginInfo: data,
           isLoading: false,
-          dataCookies: dataCookies,
+          dataCookies: (dataCookies),
+          // dataCookies: (dataCookies),
           isLoadingDetailUser: false,
           errorLoading: false,
           successLoading: true,
         ),
       );
-      print("dataCookies ${state.dataCookies}");
     } catch (e) {
       emit(
         state.copyWith(
@@ -272,12 +267,10 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         state.copyWith(
           getUid: data,
-          dataCookies: dataCookies,
+          // dataCookies: (dataCookies),
+          dataCookies: (dataCookies),
         ),
       );
-      print("getUid getUid getUid getUid ${state.getUid}");
-      print(
-          "dataCookies dataCookies dataCookies dataCookies ${state.dataCookies}");
     } catch (e) {
       print("erreur cubit getUid");
     }

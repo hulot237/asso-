@@ -398,15 +398,6 @@ class _LoginCreateGroupeScreenState extends State<LoginCreateGroupeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              "By",
-                              style: TextStyle(
-                                  fontSize: 9.sp,
-                                  color: Colors.grey[600],
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w900),
-                              textAlign: TextAlign.center,
-                            ),
                             Container(
                               width: 40.r,
                               child:

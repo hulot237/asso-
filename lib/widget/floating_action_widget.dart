@@ -21,6 +21,7 @@ class FloatingAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(builder: (Authcontext, Authstate) {
       if (Authstate.detailUser == null) return Container();
+      if (context.read<AuthCubit>().state.detailUser!["isMember"] == null) return Container();
       return !context.read<AuthCubit>().state.detailUser!["isMember"]
           ? Container(
               width: 50.r,

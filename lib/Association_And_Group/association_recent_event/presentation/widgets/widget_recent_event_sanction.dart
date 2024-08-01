@@ -118,6 +118,11 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                         child: InkWell(
                           splashColor: AppColors.blackBlue,
                           onTap: () async {
+                            updateTrackingData(
+                                "home.btnSanctionPay", "${DateTime.now()}", {
+                              "type": 'sanction',
+                              "sanction_id": "${widget.codeCotisation}"
+                            });
                             launchWeb(
                               "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
                             );
@@ -295,6 +300,11 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
+                                 updateTrackingData(
+                                "home.btnSanctionPayAdmin", "${DateTime.now()}", {
+                              "type": 'sanction',
+                              "sanction_id": "${widget.codeCotisation}"
+                            });
                                 Modal().showModalPaySanction(
                                     context,
                                     widget.nomProprietaire,
@@ -368,14 +378,42 @@ class _widgetRecentEventSanctionState extends State<widgetRecentEventSanction> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                print("object3");
-                                Share.share(context
-                                        .read<AuthCubit>()
-                                        .state
-                                        .detailUser!["isMember"]
-                                    ? "Aide-moi à payer ma sanction *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
-                                    : "Nouvelle sanction créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.motif} sur le membre XXX..\nSoyez le premier à contribuer ici : https://${widget.lienDePaiement}");
+                                 updateTrackingData(
+                                "home.btnShareSanction", "${DateTime.now()}", {
+                              "type": 'sanction',
+                              "sanction_id": "${widget.codeCotisation}"
+                            });
+                                final currentDetailUser =
+                                    context.read<AuthCubit>().state.detailUser!;
+                                String nameUser =
+                                    "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}";
+                                String message;
+                                message =
+                                    "🟢🟢 ${"Nouvelle sanction créée dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name!.trimRight()}*\n\n";
+
+                                message +=
+                                    "👉🏽 ${"concernant".tr().toUpperCase()} : *${nameUser.trimRight()}*\n";
+                                message +=
+                                    "👉🏽 ${"motif".tr().toUpperCase()} : *${widget.motif}*\n";
+                                message +=
+                                    "👉🏽 ${"sanction".tr().toUpperCase()} : *${widget.montantSanction}*\n\n";
+                                message +=
+                                    "${"Merci de suivre le lien".tr()} https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} ${"pour payer".tr()}\n\n";
+
+                                message += "*by ASSO+*";
+
+                                Share.share(message);
                               },
+
+                              // onTap: () {
+                              //   print("object3");
+                              //   Share.share(context
+                              //           .read<AuthCubit>()
+                              //           .state
+                              //           .detailUser!["isMember"]
+                              //       ? "Aide-moi à payer ma sanction *${widget.motif}*.\nMontant: *${formatMontantFrancais(double.parse(widget.montantSanction.toString()))} FCFA* .\nMerci de suivre le lien https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode} pour valider"
+                              //       : "Nouvelle sanction créée dans le groupe *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}* concernant ${widget.motif} sur le membre XXX..\n Payer ici : https://${widget.lienDePaiement}");
+                              // },
                               child: Column(
                                 children: [
                                   Container(

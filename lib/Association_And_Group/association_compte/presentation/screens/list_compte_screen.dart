@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_compte/presentation/widgets/widgetCompteCard.dart';
+import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
@@ -41,145 +42,189 @@ class _ListCompteScreenState extends State<ListCompteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.pageBackground,
-      appBar: AppBar(
-        centerTitle: false,
-        // toolbarHeight: 130.h,
-        title: Text(
-          'comptes'.tr(),
-          // "historiques".tr(),
-          style: TextStyle(
-              fontSize: 16.sp,
-              color: AppColors.white,
-              fontWeight: FontWeight.bold),
-        ),
-        elevation: 0,
-        backgroundColor: AppColors.backgroundAppBAr,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: BackButtonWidget(
-            colorIcon: AppColors.white,
+    return Material(
+      color: Colors.transparent,
+      child: Scaffold(
+        backgroundColor: AppColors.pageBackground,
+        appBar: AppBar(
+          centerTitle: false,
+          // toolbarHeight: 130.h,
+          title: Text(
+            'comptes'.tr(),
+            // "historiques".tr(),
+            style: TextStyle(
+                fontSize: 16.sp,
+                color: AppColors.white,
+                fontWeight: FontWeight.bold),
           ),
-        ),
-      ),
-      body: BlocBuilder<CompteCubit, CompteState>(
-          builder: (CompteContext, compteState) {
-        if (compteState.isLoading == true && compteState.allCompteAss == null)
-          return Container(
-            child: EasyLoader(
-              backgroundColor: Color.fromARGB(0, 255, 255, 255),
-              iconSize: 50.r,
-              iconColor: AppColors.blackBlueAccent1,
-              image: AssetImage(
-                "assets/images/AssoplusFinal.png",
-              ),
+          elevation: 0,
+          backgroundColor: AppColors.backgroundAppBAr,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: BackButtonWidget(
+              colorIcon: AppColors.white,
             ),
-          );
-        final currentCompteAss = context.read<CompteCubit>().state.allCompteAss;
-
-        // List<String> listeDeCouleurs = [
-        //   "#F44336", // Rouge
-        //   "#F44336", // Rouge
-        //   "#2196F3", // Bleu
-        //   "#96BF35", // Vert
-        //   "#795548", // Jaune
-        //   "#9C27B0", // Violet
-        // ];
-        List<String> listeDeCouleurs = [
-          "tontineTransIcon", // Rouge
-          "meetingTransIcon", // Rouge
-          "savingTransIcon", // Jaune
-          "contributionTransIcon1", // Bleu
-          "compteTransIcon", // Violet
-          "sanctionTransIcon", // Vert
-        ];
-        int i = 0;
-
-        List<Widget> listWidgetCompte = currentCompteAss!.map((item) {
-          i++;
-          return Container(
-               margin: EdgeInsets.only(
-                    top: 15.h,
-                  ),
-            child: Material(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(15.r),
-              child: InkWell(
-                onTap: () async {
-                  updateTrackingData(
-                      "transactions.account", "${DateTime.now()}", {});
-                  context.read<CompteCubit>().getTransactionCompte(item.public_ref);
-              
-                  showModalBottomTransactionCompte(context);
+          ),
+          actions: [
+            if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+              InkWell(
+                onTap: () {
+                  launchWeb(
+                    "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/solde-du-compte&app_mode=mobile",
+                  );
                 },
-                child: WidgetCompteCard(
-                  montantCompte:
-                      "${int.parse(item.balance!) + int.parse(item.faroti_balance!)}",
-                  nomCompte: item.name!,
-                  numeroCompte: item.public_ref!,
-                  couleur: listeDeCouleurs[i],
+                child: Center(
+                  child: Row(
+                    children: [
+                      Text(
+                        'Gerer'.tr(),
+                        // "historiques".tr(),
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Icon(
+                        Icons.arrow_outward_rounded,
+                        size: 15.sp,
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }).toList();
-
-// Ajouter un conteneur vide à la liste
-        listWidgetCompte.add(
-           Container(
-              width: MediaQuery.of(context).size.width / 2.15,
-              padding: EdgeInsets.all(5.r),
-              margin: EdgeInsets.only(
-                top: 10.h,
-              ),
-            
-          ),
-        );
-
-        // Ajouter un nouveau WidgetCompteCard à la liste
-// listWidgetCompte.add(
-//   GestureDetector()
-// );
-
-        // width: MediaQuery.of(context).size.width,
-
-        //   child: Wrap(
-        //     alignment: WrapAlignment.center,
-        //           width: MediaQuery.of(context).size.width / 2.15,
-        //           margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-
-        return Stack(
-          children: [
-            SingleChildScrollView(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: Wrap(
-                  alignment: WrapAlignment.spaceEvenly,
-                  children: listWidgetCompte,
-                ),
-              ),
-            ),
-            if (compteState.isLoading == true &&
-                compteState.allCompteAss != null)
-              EasyLoader(
+          ],
+        ),
+        body: BlocBuilder<CompteCubit, CompteState>(
+            builder: (CompteContext, compteState) {
+          if (compteState.isLoading == true && compteState.allCompteAss == null)
+            return Container(
+              child: EasyLoader(
                 backgroundColor: Color.fromARGB(0, 255, 255, 255),
                 iconSize: 50.r,
                 iconColor: AppColors.blackBlueAccent1,
                 image: AssetImage(
                   "assets/images/AssoplusFinal.png",
                 ),
-              )
-          ],
-        );
-      }),
+              ),
+            );
+          final currentCompteAss = context.read<CompteCubit>().state.allCompteAss;
+          print("currentCompteAss ${currentCompteAss![0].public_ref}");
+      
+      // List of colors
+          List<String> listeDeCouleurs = [
+            "#F44336", // Rouge
+            "#2196F3", // Bleu
+            "#96BF35", // Vert
+            "#795548", // Jaune
+            "#9C27B0", // Violet
+          ];
+      
+      // List of icons
+          List<String> listeIcon = [
+            "meetingTransIcon", // Rouge
+            "tontineTransIcon", // Rouge
+            "savingTransIcon", // Jaune
+            "contributionTransIcon1", // Bleu
+            "compteTransIcon", // Violet
+          ];
+      
+      // Default color and icon for additional elements
+          const String defaultColor = "#B0BEC5"; // Greyish Blue
+          const String defaultIcon = "balance"; // Placeholder for default icon
+      
+          int i = 0;
+      
+          List<Widget> listWidgetCompte = currentCompteAss!.map((item) {
+            // Determine the color and icon based on index
+            String couleur;
+            String icon;
+      
+            if (i < listeDeCouleurs.length) {
+              couleur = listeDeCouleurs[i];
+              icon = listeIcon[i];
+            } else {
+              // Assign default color and icon for additional elements
+              couleur = defaultColor;
+              icon = defaultIcon;
+            }
+      
+            i++;
+      
+            return Container(
+              child: Material(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(15.r),
+                child: InkWell(
+                  onTap: () async {
+                    updateTrackingData(
+                        "transactions.account", "${DateTime.now()}", {});
+                    context
+                        .read<CompteCubit>()
+                        .getTransactionCompte(item.public_ref);
+      
+                    showModalBottomTransactionCompte(context, item.public_ref);
+                  },
+                  child: WidgetCompteCard(
+                    montantCaisse: "${int.parse(item.balance!)}",
+                    montantFaroty: "${int.parse(item.faroti_balance!)}",
+                    nomCompte: item.name!,
+                    numeroCompte: item.public_ref!,
+                    icon: icon,
+                    couleur: couleur,
+                  ),
+                ),
+              ),
+            );
+          }).toList();
+      
+          listWidgetCompte.add(
+            Container(
+              width: MediaQuery.of(context).size.width / 2.15,
+              padding: EdgeInsets.all(5.r),
+              margin: EdgeInsets.only(
+                top: 10.h,
+              ),
+            ),
+          );
+      
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.only(top: 20.h),
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceEvenly,
+                    runSpacing: 10.h,
+                    children: listWidgetCompte,
+                  ),
+                ),
+              ),
+              if (compteState.isLoading == true &&
+                  compteState.allCompteAss != null)
+                EasyLoader(
+                  backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                  iconSize: 50.r,
+                  iconColor: AppColors.blackBlueAccent1,
+                  image: AssetImage(
+                    "assets/images/AssoplusFinal.png",
+                  ),
+                )
+            ],
+          );
+        }),
+      ),
     );
   }
 }
 
-Future<dynamic> showModalBottomTransactionCompte(BuildContext context) {
+Future<dynamic> showModalBottomTransactionCompte(
+    BuildContext context, numeroCompte) {
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     barrierColor: AppColors.barrierColorModal,
@@ -196,14 +241,126 @@ Future<dynamic> showModalBottomTransactionCompte(BuildContext context) {
         ),
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.only(top: 10.h, bottom: 5.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Material(
+                  color: Color.fromARGB(0, 255, 255, 255),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(7.r),
+                    topRight: Radius.circular(15.r),
+                  ),
+                  child: InkWell(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Text(
+                              'Consulter'.tr(),
+                              // "historiques".tr(),
+                              style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: Color.fromARGB(0, 255, 255, 255),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Icon(
+                              Icons.arrow_outward_rounded,
+                              size: 12.sp,
+                              color: Color.fromARGB(0, 255, 255, 255),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10.h, bottom: 5.h),
+                  height: 5.h,
+                  width: 55.w,
+                  decoration: BoxDecoration(
+                      color: AppColors.blackBlue,
+                      borderRadius: BorderRadius.circular(5.r)),
+                ),
+                if (!context.read<AuthCubit>().state.detailUser!["isMember"])
+                  Material(
+                    color: AppColors.blackBlueAccent2,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(7.r),
+                      topRight: Radius.circular(15.r),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        launchWeb(
+                          "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/detail-compte/${numeroCompte}&app_mode=mobile",
+                        );
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        //  margin: EdgeInsets.only(top: 10.h, bottom: 5.h),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 7.h, horizontal: 10.w),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text(
+                                'Consulter'.tr(),
+                                // "historiques".tr(),
+                                style: TextStyle(
+                                    fontSize: 11.sp,
+                                    color: AppColors.blackBlue,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.arrow_outward_rounded,
+                                size: 12.sp,
+                                color: AppColors.blackBlue,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                if (context.read<AuthCubit>().state.detailUser!["isMember"])
+                  Material(
+                    color: Color.fromARGB(0, 255, 255, 255),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(7.r),
+                      topRight: Radius.circular(15.r),
+                    ),
+                    child: InkWell(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 2.h, horizontal: 5.w),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text(
+                                'Consulter'.tr(),
+                                // "historiques".tr(),
+                                style: TextStyle(
+                                    fontSize: 11.sp,
+                                    color: Color.fromARGB(0, 255, 255, 255),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.arrow_outward_rounded,
+                                size: 12.sp,
+                                color: Color.fromARGB(0, 255, 255, 255),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(
               height: 5.h,
-              width: 55.w,
-              decoration: BoxDecoration(
-                color: AppColors.blackBlue,
-                borderRadius: BorderRadius.circular(50.r),
-              ),
             ),
             BlocBuilder<CompteCubit, CompteState>(
                 builder: (CompteContext, compteState) {

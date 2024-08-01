@@ -360,7 +360,7 @@ updateTrackingData(String code, String date, Map<String, dynamic> data) async {
 Future<void> launchWeb(webUrl) async {
   final url = webUrl;
   var uri = Uri.parse(url);
-  if (!await launchUrl(uri)) {
+  if (!await launchUrl(uri, webOnlyWindowName: "Votre espace ASSO+".tr())) {
     throw 'Could not launch';
   }
 }
@@ -379,14 +379,17 @@ partagerCotisation({
 }) {
   String message = "";
 
-  message +=
-      "🟢🟢 ${"Nouvelle cotisation en cours dans le groupe".tr()} *${nomGroupe}* ${"concernant".tr()} ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n\n ";
+  print("Wsource $nomBeneficiaire");
 
   message +=
-      "👉🏽 ${(source == '' ? "${"MEMBRE CONCERNÉ".tr()}" : "${"SEANCE CONCERNÉE".tr()}")} : ${source == '' ? '${nomBeneficiaire}' : '${source}'}\n";
+      "🟢🟢 ${"Nouvelle cotisation en cours dans le groupe".tr()} *${nomGroupe}* ${"concernant".tr()} ${source == '**' ? '${nomBeneficiaire}' : '${source}'}\n\n ";
+
+  message +=
+      "👉🏽 ${(source == '**' ? "${"MEMBRE CONCERNÉ".tr()}" : "${"SEANCE CONCERNÉE".tr()}")} : ${source == '**' ? '${nomBeneficiaire}' : '${source}'}\n";
   message +=
       "👉🏽 ${"montant".tr().toUpperCase()} : ${type == "1" ? "*${"volontaire".tr()}*" : "*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
-  message += "👉🏽 ${"Date limite".tr().toUpperCase()}: *${(formatDateLiteral(dateCotisation))}*\n\n";
+  message +=
+      "👉🏽 ${"Date limite".tr().toUpperCase()}: *${(formatDateLiteral(dateCotisation))}*\n\n";
 
   // message += "Soyez le premier à contribuer ici :  https://$lienDePaiement\n\n";
   message += !context.read<AuthCubit>().state.detailUser!["isMember"]
@@ -402,12 +405,31 @@ partagerCotisation({
     double balance =
         double.parse(element["balance"]); // Conversion de la balance en nombre
 
-    // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
-    // String formattedBalance =
-    //     NumberFormat.decimalPattern().format(balance.toInt());
+    // Déterminer le message en fonction de la balance et du statut
+    String statusIcon;
+    String messagePart;
 
-    message +=
-        "- ${firstName} ${lastName} -> ${formatMontantFrancais(balance)} F ${element["statut"] == "2" ? "✅" : "❌"}\n";
+    if (balance == 0) {
+      statusIcon = "❌";
+      messagePart = "- ${firstName} ${lastName} ${statusIcon}";
+    } else {
+      // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
+      String formattedBalance = formatMontantFrancais(balance);
+
+      if (element["statut"] == "2") {
+        statusIcon = "✅";
+      } else {
+        statusIcon = "⏳";
+      }
+
+      messagePart =
+          "- ${firstName} ${lastName} -> ${formattedBalance} F ${statusIcon}";
+    }
+
+    // Ajouter la ligne au message
+    message += "$messagePart\n";
+
+    // Ajouter à la somme totale des cotisations
     totalCotisations += balance;
   }
 
@@ -450,21 +472,30 @@ partagerContributionTontine({
   message +=
       "🟢🟢 ${"Nouvelle session de la tontine".tr()} *${nomTontine}* ${"en cours dans le groupe".tr()} *${nomGroupe}* ${"concernant".tr()} *${nomBeneficiaire}*\n\n";
 
-
   message += "👉🏽 ${"MEMBRE CONCERNÉ".tr()} : *${nomBeneficiaire}*\n";
   message += "👉🏽 MOTIF : *${motif}*\n";
   message +=
       "👉🏽 ${"montant".tr().toUpperCase()} : ${"*${formatMontantFrancais(double.parse(montantCotisations))} FCFA*"}\n";
-  message += "👉🏽 ${"Date limite".tr().toUpperCase()}: *${(formatDateLiteral(dateCotisation))}*\n\n";
-
+  message +=
+      "👉🏽 ${"Date limite".tr().toUpperCase()}: *${(formatDateLiteral(dateCotisation))}*\n\n";
 
   message += !context.read<AuthCubit>().state.detailUser!["isMember"]
       ? "${"Soyez le premier à contribuer ici".tr()} :  https://$lienDePaiement\n\n"
       : "${"Aide-moi à payer ma tontine en suivant le lien".tr()} https://$lienDePaiement?code=${AppCubitStorage().state.membreCode}\n\n";
 
   message += "*${"Récapitulatif".tr()} :*\n";
-  // Calcul du total et ajout des détails par membre
   double totalCotisations = 0;
+
+  // for (var element in listeOkayCotisation) {
+  //   String firstName = element["membre"]["first_name"];
+  //   String lastName = element["membre"]["last_name"] ?? "";
+  //   double balance =
+  //       double.parse(element["balance"]);
+
+  //   message +=
+  //       "- ${firstName.trimRight()}  ${lastName.trimRight()} -> ${formatMontantFrancais(balance)} F ${element["statut"] == "2" ? "✅" : "❌"}\n";
+  //   totalCotisations += balance;
+  // }
 
   for (var element in listeOkayCotisation) {
     String firstName = element["membre"]["first_name"];
@@ -472,25 +503,38 @@ partagerContributionTontine({
     double balance =
         double.parse(element["balance"]); // Conversion de la balance en nombre
 
-    // // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
-    // String formattedBalance =
-    //     NumberFormat.decimalPatternDigits().format(balance.toInt());
+    // Déterminer le message en fonction de la balance et du statut
+    String statusIcon;
+    String messagePart;
 
-    message +=
-        "- ${firstName.trimRight()}  ${lastName.trimRight()} -> ${formatMontantFrancais(balance)} F ${element["statut"] == "2" ? "✅" : "❌"}\n";
+    if (balance == 0) {
+      statusIcon = "❌";
+      messagePart = "- ${firstName.trimRight()} ${lastName.trimRight()} ${statusIcon}";
+    } else {
+      // Formater la balance pour enlever les décimales et ajouter des séparateurs de milliers
+      String formattedBalance = formatMontantFrancais(balance);
+
+      if (element["statut"] == "2") {
+        statusIcon = "✅";
+      } else {
+        statusIcon = "⏳";
+      }
+
+      messagePart =
+          "- ${firstName} ${lastName} -> ${formattedBalance} F ${statusIcon}";
+    }
+
+    // Ajouter la ligne au message
+    message += "$messagePart\n";
+
+    // Ajouter à la somme totale des cotisations
     totalCotisations += balance;
-
   }
-
-  // Formater le total des cotisations pour enlever les décimales et ajouter des séparateurs de milliers
-  // String formattedTotal =
-  //     NumberFormat.decimalPattern().format(totalCotisations.toInt());
 
   message += "\n*TOTAL -> ${formatMontantFrancais(totalCotisations)} F*\n\n";
 
   message += "*by ASSO+*";
 
-  // Partager le message en utilisant Flutter Share
   Share.share(
     message,
   );
@@ -550,7 +594,8 @@ bool isPasseDateOneDay(String dateRencontreAPI) {
 
   // Comparaison pour vérifier si la différence est supérieure à 24 heures
   if (difference > seuil) {
-    print('La date de l\'API est passée de plus de 24 heures par rapport à la date actuelle.');
+    print(
+        'La date de l\'API est passée de plus de 24 heures par rapport à la date actuelle.');
     return true;
   } else {
     return false;

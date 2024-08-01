@@ -194,11 +194,12 @@ class AuthRepository {
           },
         ),
       );
+      print('Request successful: ${response.data}');
 
       await AppCubitStorage()
           .updateuserNameKey(response.data['user']['api_token']);
       await AppCubitStorage().updatepasswordKey(response.data['api_password']);
-      print('Request successful: ${response.data}');
+      
       return json.encode(response.data);
     } catch (e) {
       print('Exception encountered: $e');
