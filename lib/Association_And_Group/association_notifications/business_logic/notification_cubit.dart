@@ -14,12 +14,11 @@ class NotificationCubit extends Cubit<NotificationState> {
   NotificationCubit()
       : super(
           NotificationState(
-            tokenNotification: null,
-            notifications: null,
-            nomberNotif: null,
-            errorLoadNotif: false,
-            isAllElement: false
-          ),
+              tokenNotification: null,
+              notifications: null,
+              nomberNotif: null,
+              errorLoadNotif: false,
+              isAllElement: false),
         );
   int page = 1;
   int limit = 20;
@@ -130,8 +129,12 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> countNotification() async {
-    emit(state.copyWith(
-        isLoadingNomberNotif: true, notifications: state.notifications));
+    emit(
+      state.copyWith(
+        isLoadingNomberNotif: true,
+        notifications: state.notifications,
+      ),
+    );
     try {
       final data = await NotificationRepository().countNotification();
 

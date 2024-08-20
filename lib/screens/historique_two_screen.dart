@@ -60,6 +60,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 //@RoutePage()
@@ -586,7 +587,7 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                           child: InkWell(
                             onTap: () {
                               updateTrackingData("transactions.btnShowTontine",
-                                "${DateTime.now()}", {});
+                                  "${DateTime.now()}", {});
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -656,7 +657,8 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                         ),
                         child: InkWell(
                           onTap: () {
-                            updateTrackingData("transactions.btnShowContribution",
+                            updateTrackingData(
+                                "transactions.btnShowContribution",
                                 "${DateTime.now()}", {});
                             Navigator.push(
                               context,
@@ -810,7 +812,7 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                           child: InkWell(
                             onTap: () {
                               updateTrackingData("transactions.btnShowSaving",
-                                "${DateTime.now()}", {});
+                                  "${DateTime.now()}", {});
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -942,7 +944,7 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                           child: InkWell(
                             onTap: () {
                               updateTrackingData("transactions.btnShowAccount",
-                                "${DateTime.now()}", {});
+                                  "${DateTime.now()}", {});
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1001,7 +1003,9 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                       ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2.1,
-                    )
+                    ),
+
+                    
                   ],
                 ),
               ),

@@ -307,7 +307,13 @@
      "Consulter" : "Explore",
      "Nouvelle sanction créée dans le groupe":"New sanction created in the group",
      "Merci de suivre le lien":"Please follow the link",
-     "pour payer":"to pay"
+     "pour payer":"to pay",
+     "cotisation interne":"Internal contribution",
+     "cotisation externe":"External contribution",
+     "Ajouter une collecte":"Add a collection",
+     "aucune_collecte":"No collection",
+     "collecte externe":"External collection",
+     "détail de la collecte":"Collection details"
 
 
 

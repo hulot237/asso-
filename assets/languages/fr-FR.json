@@ -298,5 +298,11 @@
          "Consulter" : "Consulter",
          "Nouvelle sanction créée dans le groupe":"Nouvelle sanction créée dans le groupe",
          "Merci de suivre le lien":"Merci de suivre le lien",
-         "pour payer":"pour payer"
+         "pour payer":"pour payer",
+         "cotisation interne":"Cotisation interne",
+         "cotisation externe":"Cotisation Externe",
+         "Ajouter une collecte":"Ajouter une collecte",
+         "aucune_collecte":"Aucune collecte",
+         "collecte externe":"Collecte externe",
+         "détail de la collecte":"Détail de la collecte"
 }

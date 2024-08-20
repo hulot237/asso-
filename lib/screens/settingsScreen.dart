@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:faroty_association_1/Association_And_Group/association_help_centre/presentation/screens/help_center_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/business_logic/notification_state.dart';
 import 'package:faroty_association_1/Association_And_Group/association_notifications/presentation/screens/notification_page.dart';
@@ -307,7 +308,7 @@ class _SettingScreenState extends State<SettingScreen>
                               //       ),
                               //     ),
                               //   ),
-                              
+
                               GestureDetector(
                                 onTap: () {
                                   updateTrackingData("profile.btnNotification",
@@ -464,22 +465,24 @@ class _SettingScreenState extends State<SettingScreen>
                                         },
                                         child: Container(
                                           //height: 20,
-                                          
+
                                           width:
                                               MediaQuery.of(context).size.width,
-                                      
+
                                           child: Column(
                                             children: [
                                               Container(
                                                 padding: EdgeInsets.all(3.r),
                                                 decoration: BoxDecoration(
-                                                    color: AppColors.colorButton,
+                                                    color:
+                                                        AppColors.colorButton,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             100)),
                                                 child: ClipRRect(
                                                   borderRadius:
-                                                      BorderRadius.circular(100),
+                                                      BorderRadius.circular(
+                                                          100),
                                                   child: Container(
                                                     width: 80.w,
                                                     height: 80.w,
@@ -498,7 +501,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                     bottom: 10.h),
                                                 child: Text(
                                                   "${currentDetailUser["first_name"] == null ? "" : currentDetailUser["first_name"]} ${currentDetailUser["last_name"] == null ? "" : currentDetailUser["last_name"]}",
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     fontSize: 18.sp,
                                                     fontWeight: FontWeight.w600,
@@ -687,7 +691,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                   onTap: () {
                                                     updateTrackingData(
                                                         "profile.copyMemberCode",
-                                                        "${DateTime.now()}", {});
+                                                        "${DateTime.now()}",
+                                                        {});
                                                     Clipboard.setData(
                                                       ClipboardData(
                                                         text:
@@ -701,8 +706,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                           context: context,
                                                           title: Text(
                                                             "Copié".tr(),
-                                                            textAlign:
-                                                                TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: TextStyle(
                                                                 fontSize: 16.sp,
                                                                 color: AppColors
@@ -714,8 +719,9 @@ class _SettingScreenState extends State<SettingScreen>
                                                           autoCloseDuration:
                                                               Duration(
                                                                   seconds: 2),
-                                                          type: ToastificationType
-                                                              .success,
+                                                          type:
+                                                              ToastificationType
+                                                                  .success,
                                                           // borderSide: BorderSide(
                                                           //   width: 2.w,
                                                           //   color: AppColors.colorButton,
@@ -724,7 +730,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                               ToastificationStyle
                                                                   .minimal,
                                                         );
-                                                
+
                                                         // ScaffoldMessenger.of(
                                                         //         context)
                                                         //     .showSnackBar(
@@ -760,9 +766,10 @@ class _SettingScreenState extends State<SettingScreen>
                                                     );
                                                   },
                                                   child: Container(
-                                                    padding: EdgeInsets.symmetric(
-                                                        vertical: 10.h,
-                                                        horizontal: 15.w),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 10.h,
+                                                            horizontal: 15.w),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -779,12 +786,14 @@ class _SettingScreenState extends State<SettingScreen>
                                                           ),
                                                           child: Text(
                                                             "${"Code pour paiement".tr()}",
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             style: TextStyle(
                                                               fontSize: 16.sp,
                                                               fontWeight:
-                                                                  FontWeight.w600,
+                                                                  FontWeight
+                                                                      .w600,
                                                               color: AppColors
                                                                   .blackBlue,
                                                             ),
@@ -793,16 +802,19 @@ class _SettingScreenState extends State<SettingScreen>
                                                         Row(
                                                           children: [
                                                             Container(
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      right: 5.w),
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right:
+                                                                          5.w),
                                                               child: Text(
                                                                 "${currentDetailUser["membre_code"]}",
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                style: TextStyle(
-                                                                  fontSize: 14.sp,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -812,7 +824,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                               ),
                                                             ),
                                                             Icon(
-                                                              Icons.content_copy,
+                                                              Icons
+                                                                  .content_copy,
                                                               size: 14.sp,
                                                               color: AppColors
                                                                   .blackBlueAccent1,
@@ -894,7 +907,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Expanded(
                                                         child: Row(
@@ -907,13 +921,14 @@ class _SettingScreenState extends State<SettingScreen>
                                                                     .bleuLight,
                                                                 size: 18.sp,
                                                               ),
-                                                              margin:
-                                                                  EdgeInsets.only(
+                                                              margin: EdgeInsets
+                                                                  .only(
                                                                 right: 10.w,
                                                               ),
                                                             ),
                                                             Text(
-                                                              "votre_compte".tr(),
+                                                              "votre_compte"
+                                                                  .tr(),
                                                               style: TextStyle(
                                                                 fontSize: 18.sp,
                                                                 color: AppColors
@@ -946,7 +961,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                   onTap: () {
                                                     updateTrackingData(
                                                         "profile.withdrawal",
-                                                        "${DateTime.now()}", {});
+                                                        "${DateTime.now()}",
+                                                        {});
                                                     handleDetailUser(
                                                         AppCubitStorage()
                                                             .state
@@ -972,8 +988,12 @@ class _SettingScreenState extends State<SettingScreen>
                                                       border: Border(
                                                         bottom: BorderSide(
                                                             width: 1.r,
-                                                            color: Color.fromARGB(
-                                                                12, 0, 0, 0)),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    12,
+                                                                    0,
+                                                                    0,
+                                                                    0)),
                                                       ),
                                                     ),
                                                     child: Row(
@@ -994,14 +1014,16 @@ class _SettingScreenState extends State<SettingScreen>
                                                                 ),
                                                                 margin: EdgeInsets
                                                                     .only(
-                                                                        right:
-                                                                            10.w),
+                                                                        right: 10
+                                                                            .w),
                                                               ),
                                                               Text(
                                                                 "retrait_en_attente"
                                                                     .tr(),
-                                                                style: TextStyle(
-                                                                  fontSize: 18.sp,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      18.sp,
                                                                   color: AppColors
                                                                       .blackBlue,
                                                                   fontWeight:
@@ -1014,8 +1036,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                         ),
                                                         Icon(
                                                           Icons.arrow_right,
-                                                          color:
-                                                              AppColors.blackBlue,
+                                                          color: AppColors
+                                                              .blackBlue,
                                                           size: 18.sp,
                                                         ),
                                                       ],
@@ -1181,7 +1203,7 @@ class _SettingScreenState extends State<SettingScreen>
                                             // ),
 
                                             Material(
-                                                color: AppColors.white,
+                                              color: AppColors.white,
                                               child: InkWell(
                                                 onTap: () {
                                                   updateTrackingData(
@@ -1213,19 +1235,21 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Expanded(
                                                         child: Row(
                                                           children: [
                                                             Container(
                                                               width: 28.w,
-                                                              child: Image.asset(
+                                                              child:
+                                                                  Image.asset(
                                                                 "assets/images/AssoplusFinal.png",
                                                                 // scale: ,
                                                               ),
-                                                              margin:
-                                                                  EdgeInsets.only(
+                                                              margin: EdgeInsets
+                                                                  .only(
                                                                       right:
                                                                           10.w),
                                                             ),
@@ -1414,7 +1438,7 @@ class _SettingScreenState extends State<SettingScreen>
                                             // ),
 
                                             Material(
-                                                color: AppColors.white,
+                                              color: AppColors.white,
                                               child: InkWell(
                                                 onTap: () {
                                                   updateTrackingData(
@@ -1447,7 +1471,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Expanded(
                                                         child: Row(
@@ -1456,12 +1481,12 @@ class _SettingScreenState extends State<SettingScreen>
                                                               child: Icon(
                                                                 Icons
                                                                     .settings_outlined,
-                                                                color:
-                                                                    Colors.brown,
+                                                                color: Colors
+                                                                    .brown,
                                                                 size: 18.sp,
                                                               ),
-                                                              margin:
-                                                                  EdgeInsets.only(
+                                                              margin: EdgeInsets
+                                                                  .only(
                                                                       right:
                                                                           10.w),
                                                             ),
@@ -1490,8 +1515,89 @@ class _SettingScreenState extends State<SettingScreen>
                                                 ),
                                               ),
                                             ),
-                                           Material(
-                                                color: AppColors.white,
+
+                                            Material(
+                                              color: AppColors.white,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  updateTrackingData(
+                                                      "profile.helpCenter",
+                                                      "${DateTime.now()}", {});
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HelpCenterScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                    top: 20.h,
+                                                    left: 15.w,
+                                                    right: 15.w,
+                                                    bottom: 20.h,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    // color: Colors.black12,
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        width: 1.r,
+                                                        color: Color.fromARGB(
+                                                            12, 0, 0, 0),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              child: Icon(
+                                                                Icons
+                                                                    .help_outline_rounded,
+                                                                color:
+                                                                    Colors.red,
+                                                                size: 18.sp,
+                                                              ),
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                right: 10.w,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              "Centre d'aide"
+                                                                  .tr(),
+                                                              style: TextStyle(
+                                                                fontSize: 18.sp,
+                                                                color: AppColors
+                                                                    .blackBlue,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.arrow_right,
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                        size: 18.sp,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                            Material(
+                                              color: AppColors.white,
                                               child: InkWell(
                                                 onTap: () {
                                                   updateTrackingData(
@@ -1520,7 +1626,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                   ),
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Expanded(
                                                         child: Row(
@@ -1533,8 +1640,8 @@ class _SettingScreenState extends State<SettingScreen>
                                                                     .greenAssociation,
                                                                 size: 18.sp,
                                                               ),
-                                                              margin:
-                                                                  EdgeInsets.only(
+                                                              margin: EdgeInsets
+                                                                  .only(
                                                                 right: 10.w,
                                                               ),
                                                             ),
