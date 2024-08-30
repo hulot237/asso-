@@ -9,7 +9,8 @@ class CotisationCubit extends Cubit<CotisationState> {
       : super(
           CotisationState(
             allCotisationAss: null,
-            isLoading: false,
+            isLoadingCotis: false,
+            isLoadingCollect: false,
             collectes: null,
           ),
         );
@@ -17,7 +18,7 @@ class CotisationCubit extends Cubit<CotisationState> {
     print(
         'objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject');
     emit(state.copyWith(
-        isLoading: true, allCotisationAss: state.allCotisationAss));
+        isLoadingCotis: true, allCotisationAss: state.allCotisationAss));
     try {
       final data = await CotisationRepository()
           .AllCotisationOfAssTournoi(codeTournoi, codeMembre);
@@ -26,7 +27,7 @@ class CotisationCubit extends Cubit<CotisationState> {
         emit(
           state.copyWith(
             allCotisationAss: data,
-            isLoading: false,
+            isLoadingCotis: false,
           ),
         );
 
@@ -35,7 +36,7 @@ class CotisationCubit extends Cubit<CotisationState> {
         emit(
           state.copyWith(
             allCotisationAss: [],
-            isLoading: false,
+            isLoadingCotis: false,
           ),
         );
         return false;
@@ -44,7 +45,7 @@ class CotisationCubit extends Cubit<CotisationState> {
       emit(
         state.copyWith(
           allCotisationAss: [],
-          isLoading: false,
+          isLoadingCotis: false,
         ),
       );
       return true;
@@ -54,7 +55,7 @@ class CotisationCubit extends Cubit<CotisationState> {
   Future<void> getCollectes(codeTournoi) async {
     emit(
       state.copyWith(
-        isLoading: true,
+        isLoadingCollect: true,
         collectes: state.collectes,
       ),
     );
@@ -65,14 +66,14 @@ class CotisationCubit extends Cubit<CotisationState> {
       emit(
         state.copyWith(
           collectes: data,
-          isLoading: false,
+          isLoadingCollect: false,
         ),
       );
       print("wwwwwwwwwwwwww${state.collectes}");
     } catch (e) {
       emit(
         state.copyWith(
-          isLoading: false,
+          isLoadingCollect: false,
         ),
       );
     }

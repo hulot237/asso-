@@ -22,6 +22,7 @@ import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/pages/checkInternetConnectionPage.dart';
+import 'package:faroty_association_1/screens/home_screen.dart';
 import 'package:faroty_association_1/widget/back_button_widget.dart';
 import 'package:faroty_association_1/widget/button_rapport_widget.dart';
 import 'package:faroty_association_1/widget/widgetListTransactionByEventCard.dart';
@@ -51,6 +52,7 @@ class DetailContributionPage extends StatefulWidget {
       required this.lienDePaiement,
       required this.codeCotisation,
       required this.isPayed,
+      this.fromNotification = false,
       // required this.rapportUrl,
       required this.is_passed,
       required this.is_tontine,
@@ -59,6 +61,7 @@ class DetailContributionPage extends StatefulWidget {
       required this.rubrique});
   int montantCotisations;
   String motifCotisations;
+  bool fromNotification;
   String dateCotisation;
   String heureCotisation;
   String soldeCotisation;
@@ -77,6 +80,7 @@ class DetailContributionPage extends StatefulWidget {
 Widget PageScaffold({
   required BuildContext context,
   required Widget child,
+   fromNotification,
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
@@ -92,7 +96,14 @@ Widget PageScaffold({
         ),
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+              fromNotification
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
+                  )
+                : Navigator.pop(context);
           },
           child: BackButtonWidget(
             colorIcon: AppColors.white,
@@ -117,7 +128,14 @@ Widget PageScaffold({
       elevation: 0,
       leading: InkWell(
         onTap: () {
-          Navigator.pop(context);
+           fromNotification
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
+                  )
+                : Navigator.pop(context);
         },
         child: BackButtonWidget(
           colorIcon: AppColors.white,
@@ -161,6 +179,7 @@ class _DetailContributionPageState extends State<DetailContributionPage>
 
     return PageScaffold(
       context: context,
+      fromNotification: widget.fromNotification,
       child: Material(
         type: MaterialType.transparency,
         child: BlocBuilder<DetailContributionCubit, ContributionState>(

@@ -249,7 +249,7 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
       
           for (var tontine in listeTontines) {
             for (var item in tontine["membres"]) {
-              print("ztu${item["membre"]["membre_code"]}");
+              // print("ztu${item["membre"]["membre_code"]}");
               if (item["membre"]["membre_code"] ==
                   AppCubitStorage().state.membreCode) {
                 tontinesMembreConnect.add(tontine);

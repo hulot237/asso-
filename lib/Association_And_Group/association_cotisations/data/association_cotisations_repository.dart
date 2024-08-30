@@ -14,7 +14,7 @@ class CotisationRepository {
   Future<Map<String, dynamic>> DetailCotisation(codeCotisation) async {
     print(codeCotisation);
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/cotisation/$codeCotisation/show',
+      '${Variables.LienAIP}/api/v1/cotisation/$codeCotisation/show-new',
     );
     final Map<String, dynamic> dataJson = response.data["data"];
     log('Okay DetailCotisation rep   ${dataJson}');

@@ -41,6 +41,7 @@ class detailRencontrePage extends StatefulWidget {
     required this.photoProfilRecepteur,
     required this.codeSeance,
     required this.dateRencontreAPI,
+    required this.dateFinRencontreAPI,
     required this.rapportUrl,
     required this.codeTournoi,
   });
@@ -56,6 +57,7 @@ class detailRencontrePage extends StatefulWidget {
   String photoProfilRecepteur;
   String codeSeance;
   String dateRencontreAPI;
+  String dateFinRencontreAPI;
   String? rapportUrl;
   String codeTournoi;
   @override
@@ -182,6 +184,7 @@ class _detailRencontrePageState extends State<detailRencontrePage>
                 Container(
                   margin: EdgeInsets.only(top: 10.h),
                   child: widgetDetailRencontreCard(
+                    dateFinRencontreAPI: widget.dateFinRencontreAPI,
                     codeSeance: widget.codeSeance,
                     nbrPresence: ("000"),
                     dateRencontre: widget.dateRencontre,

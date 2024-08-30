@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_loader/easy_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
@@ -26,6 +28,7 @@ class FloatingAction extends StatelessWidget {
           ? Container(
               width: 50.r,
               height: 50.r,
+              margin: EdgeInsets.only(bottom:  Platform.isIOS ? 50.h : 0),
               child: FloatingActionButton(
                 elevation: 2,
                 backgroundColor: AppColors.colorButton,

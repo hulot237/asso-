@@ -1649,21 +1649,20 @@ class Modal {
                         );
                       }).toList();
 
-                       if (listWidgetOkayTontine.isEmpty) {
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text(
-                                "Tous les membres ont payé".tr(),
-                                style: TextStyle(
+                      if (listWidgetOkayTontine.isEmpty) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(
+                              "Tous les membres ont payé".tr(),
+                              style: TextStyle(
                                   fontSize: 16.sp,
                                   color: AppColors.blackBlueAccent1,
-                                  fontStyle: FontStyle.italic
-                                ),
-                              ),
+                                  fontStyle: FontStyle.italic),
                             ),
-                          );
-                        }
+                          ),
+                        );
+                      }
 
                       final listeFinale = [
                         ...listWidgetOkayTontine,
@@ -1789,10 +1788,9 @@ class Modal {
                               child: Text(
                                 "Tous les membres ont payé".tr(),
                                 style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppColors.blackBlueAccent1,
-                                  fontStyle: FontStyle.italic
-                                ),
+                                    fontSize: 16.sp,
+                                    color: AppColors.blackBlueAccent1,
+                                    fontStyle: FontStyle.italic),
                               ),
                             ),
                           );
@@ -2527,7 +2525,13 @@ class _UpdateInfoUserWidgetState extends State<UpdateInfoUserWidget> {
               ),
               child: TextField(
                 controller: widget.infoUserController,
-                keyboardType: TextInputType.number,
+                keyboardType: widget.keyForApi == "first_name"
+                    ? TextInputType.text
+                    : widget.keyForApi == "last_name"
+                        ? TextInputType.text
+                        : widget.keyForApi == "email"
+                            ? TextInputType.emailAddress
+                            : TextInputType.text,
                 autofocus: true,
                 style: TextStyle(fontSize: 15.sp),
                 decoration: InputDecoration(

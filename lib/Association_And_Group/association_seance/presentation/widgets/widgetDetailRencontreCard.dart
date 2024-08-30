@@ -39,6 +39,7 @@ class widgetDetailRencontreCard extends StatefulWidget {
     required this.nbrPresence,
     required this.codeSeance,
     required this.dateRencontreAPI,
+    required this.dateFinRencontreAPI,
     required this.rapportUrl,
   });
 
@@ -53,6 +54,7 @@ class widgetDetailRencontreCard extends StatefulWidget {
   String nbrPresence;
   String codeSeance;
   String dateRencontreAPI;
+  String dateFinRencontreAPI;
 
   @override
   State<widgetDetailRencontreCard> createState() =>
@@ -132,7 +134,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               ),
                             ),
                           ),
-                          if (widget.isActiveRencontre == 0 )
+                          if (widget.isActiveRencontre == 0)
                             Container(
                               decoration: BoxDecoration(
                                   color: AppColors.blackBlue,
@@ -150,11 +152,9 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 ),
                               ),
                             ),
-                          if (widget.isActiveRencontre == 1 &&
-                              isPasseDateOneDay(widget.dateRencontreAPI))
+                          if (widget.isActiveRencontre == 1 && isPasseDate(widget.dateFinRencontreAPI))
                             TermineWidget(),
-                          if (widget.isActiveRencontre == 1 && !isPasseDateOneDay(widget.dateRencontreAPI))
-                          
+                          if (widget.isActiveRencontre == 1 && !isPasseDate(widget.dateFinRencontreAPI))
                             EncoursWidget()
                         ],
                       ),
@@ -314,8 +314,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                           style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w800,
-                                            color: Color.fromARGB(
-                                                171, 20, 45, 99),
+                                            color:
+                                                Color.fromARGB(171, 20, 45, 99),
                                           ),
                                         ),
                                       ),
@@ -362,7 +362,6 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                           color: AppColors.white,
                                         ),
                                       ),
-                                      
                                     ),
                                     // // alignment: Alignment.center,
                                     padding: EdgeInsets.all(5.r),
@@ -570,10 +569,10 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 )
+                            if (widget.isActiveRencontre == 1)
                               // if (widget.nomBeneficiaire != "")
                               Material(
-                              color: Colors.transparent,
+                                color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
                                     _showSimpleModalDialog(
@@ -591,7 +590,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     //   );
                                   },
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
                                     margin: EdgeInsets.only(top: 10.h),
                                     child: Column(
                                       children: [
@@ -621,27 +621,26 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 ),
                               ),
                           Material(
-                              color: Colors.transparent,
+                            color: Colors.transparent,
                             child: InkWell(
                               splashColor: AppColors.blackBlue,
                               onTap: () {
                                 String message;
                                 message =
                                     "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(widget.dateRencontreAPI)}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
-                            
+
                                 message +=
                                     "👉🏽 ${"recepteur".tr().toUpperCase()} : *${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}*\n";
                                 message +=
                                     "👉🏽 ${"lieu".tr().toUpperCase()} : *${widget.lieuRencontre}*\n";
                                 message +=
                                     "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(widget.dateRencontreAPI)}*\n\n";
-                            
+
                                 message +=
                                     "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
-                            
+
                                 message += "*by ASSO+*";
-                            
-                            
+
                                 Share.share(message);
                               },
                               child: Container(
@@ -673,7 +672,6 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               ),
                             ),
                           ),
-                         
                           BlocBuilder<SeanceCubit, SeanceState>(
                             builder: (context, state) {
                               // Vérifiez d'abord si state.isLoading est true ou null
@@ -702,7 +700,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
 
                               // Sinon, retournez le InkWell avec son child
                               return Material(
-                              color: Colors.transparent,
+                                color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
                                     Navigator.push(
@@ -718,7 +716,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                   },
                                   child: Container(
                                     // color: AppColors.red,
-                                    width: MediaQuery.of(context).size.width / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
                                     margin: EdgeInsets.only(top: 10.h),
                                     child: Column(
                                       crossAxisAlignment:
@@ -754,9 +753,9 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 )
+                            if (widget.isActiveRencontre == 1)
                               Material(
-                              color: Colors.transparent,
+                                color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
                                     // updateTrackingData("home.btnAdminister",
@@ -766,7 +765,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     );
                                   },
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
                                     margin: EdgeInsets.only(top: 10.h),
                                     child: Column(
                                       children: [
@@ -788,7 +788,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                             Text(
                                               "Créer une".tr(),
                                               style: TextStyle(
-                                                color: AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11.sp,
                                               ),
@@ -796,7 +797,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                             Text(
                                               "sanction".tr(),
                                               style: TextStyle(
-                                                color: AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11.sp,
                                               ),
@@ -812,10 +814,9 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 )
-
+                            if (widget.isActiveRencontre == 1)
                               Material(
-                              color: Colors.transparent,
+                                color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
                                     // updateTrackingData("home.btnAdminister",
@@ -825,7 +826,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     );
                                   },
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
                                     margin: EdgeInsets.only(top: 10.h),
                                     child: Column(
                                       children: [
@@ -847,7 +849,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                             Text(
                                               "Créer une".tr(),
                                               style: TextStyle(
-                                                color: AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11.sp,
                                               ),
@@ -855,7 +858,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                             Text(
                                               "cotisation".tr(),
                                               style: TextStyle(
-                                                color: AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11.sp,
                                               ),
@@ -871,7 +875,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                           Material(
+                            Material(
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () async {
@@ -928,9 +932,9 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                               .read<AuthCubit>()
                               .state
                               .detailUser!["isMember"])
-                            if (widget.isActiveRencontre == 1 )
+                            if (widget.isActiveRencontre == 1)
                               Material(
-                              color: Colors.transparent,
+                                color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
                                     // updateTrackingData("home.btnAdminister",
@@ -940,7 +944,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                     );
                                   },
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
                                     margin: EdgeInsets.only(top: 10.h),
                                     child: Column(
                                       children: [
@@ -962,7 +967,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                             Text(
                                               "ParamétrerTontine".tr(),
                                               style: TextStyle(
-                                                color: AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11.sp,
                                               ),
@@ -970,7 +976,8 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                             Text(
                                               "la tontine".tr(),
                                               style: TextStyle(
-                                                color: AppColors.blackBlueAccent1,
+                                                color:
+                                                    AppColors.blackBlueAccent1,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11.sp,
                                               ),
@@ -996,7 +1003,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                   await SeanceRepository()
                                       .genereRapport(widget.codeSeance);
                                   await Future.delayed(Duration(seconds: 10));
-                              
+
                                   await context
                                       .read<SeanceCubit>()
                                       .detailSeanceCubit(widget.codeSeance);
@@ -1058,9 +1065,7 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                         ],
                       ),
                     ),
-                   
-                   
-                   
+
                     // Container(
                     //   margin: EdgeInsets.only(
                     //     top: 8.h,

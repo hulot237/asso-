@@ -81,7 +81,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
           onTap: () {
             updateTrackingData(
                 "${widget.screenSource}.contribution", "${DateTime.now()}", {});
-            handleDetailCotisation(widget.codeCotisation);
+            // handleDetailCotisation(widget.codeCotisation);
             print("${widget.codeCotisation}");
 
             Navigator.push(

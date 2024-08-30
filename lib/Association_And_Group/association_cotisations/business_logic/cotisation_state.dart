@@ -5,30 +5,35 @@ import 'package:faroty_association_1/Association_And_Group/association_cotisatio
 
 class CotisationState extends Equatable {
   final List<dynamic>? allCotisationAss;
-  final bool isLoading;
+  final bool isLoadingCotis;
+  final bool isLoadingCollect;
   final CollecteModel? collectes;
 
   CotisationState({
     this.allCotisationAss,
-    this.isLoading = false,
+    this.isLoadingCotis = false,
+    this.isLoadingCollect = false,
     this.collectes,
   });
 
   @override
   List<Object?> get props => [
         allCotisationAss,
-        isLoading,
+        isLoadingCotis,
+        isLoadingCollect,
         collectes
       ];
 
   CotisationState copyWith({
     List<dynamic>? allCotisationAss,
-    bool? isLoading,
+    bool? isLoadingCotis,
+    bool? isLoadingCollect,
     CollecteModel? collectes,
   }) {
     return CotisationState(
       allCotisationAss: allCotisationAss ?? this.allCotisationAss,
-      isLoading: isLoading ?? this.isLoading,
+      isLoadingCotis: isLoadingCotis ?? this.isLoadingCotis,
+      isLoadingCollect: isLoadingCollect ?? this.isLoadingCollect,
       collectes: collectes ?? this.collectes,
     );
   }

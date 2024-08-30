@@ -325,691 +325,733 @@ class _HistoriqueTwoScreenState extends State<HistoriqueTwoScreen>
                 //             .detailUser!["is_app_updated"]
                 //         ? UpdatePage()
                 //         :
-                Scaffold(
-              backgroundColor: AppColors.pageBackground,
-              floatingActionButton: FloatingAction(),
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(60.h),
-                child: AppBar(
-                    centerTitle: false,
-                    // toolbarHeight: 130.h,
-                    title: Text(
-                      'Historique'.tr(),
-                      // "historiques".tr(),
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    actions: [
-                      Center(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  // color: const Color.fromARGB(255, 20, 99, 70),
-                                  height: 30.h,
-                                  width: 30.h,
-                                  margin: EdgeInsets.only(right: 10.w),
-                                  // padding: EdgeInsets.all(1.r),
-                                  child: AddAssoWidget(
-                                    screenSource: "transactions.btnAddAsso",
+                !context.read<AuthCubit>().state.detailUser!["is_app_updated"]
+                    ? UpdatePage()
+                    : Scaffold(
+                        backgroundColor: AppColors.pageBackground,
+                        floatingActionButton: FloatingAction(),
+                        appBar: PreferredSize(
+                          preferredSize: Size.fromHeight(60.h),
+                          child: AppBar(
+                              centerTitle: false,
+                              // toolbarHeight: 130.h,
+                              title: Text(
+                                'Historique'.tr(),
+                                // "historiques".tr(),
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              actions: [
+                                Center(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 15.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            // color: const Color.fromARGB(255, 20, 99, 70),
+                                            height: 30.h,
+                                            width: 30.h,
+                                            margin:
+                                                EdgeInsets.only(right: 10.w),
+                                            // padding: EdgeInsets.all(1.r),
+                                            child: AddAssoWidget(
+                                              screenSource:
+                                                  "transactions.btnAddAsso",
+                                            ),
+                                          ),
+                                          // if (!context
+                                          //     .read<AuthCubit>()
+                                          //     .state
+                                          //     .detailUser!["isMember"])
+                                          //   GestureDetector(
+                                          //     onTap: () async {
+                                          //       updateTrackingData(
+                                          //           "transactions.btnAdminister",
+                                          //           "${DateTime.now()}",
+                                          //           {});
+                                          //        launchWeb(
+                                          //         "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+
+                                          //       );
+                                          //     },
+                                          //     child: Container(
+                                          //       margin: EdgeInsets.only(
+                                          //         right: 10.w,
+                                          //       ),
+                                          //       padding:
+                                          //           EdgeInsets.all(1.r),
+                                          //       decoration: BoxDecoration(
+                                          //         border: Border.all(
+                                          //             width: 1.r,
+                                          //             color: AppColors
+                                          //                 .blackBlue),
+                                          //         color: AppColors
+                                          //             .blackBlueAccent2,
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(
+                                          //                 50.r),
+                                          //       ),
+                                          //       height: 30.h,
+                                          //       width: 30.h,
+                                          //       child: Image.asset(
+                                          //         "assets/images/Groupe_ou_Asso.png",
+                                          //         scale: 4,
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              updateTrackingData(
+                                                  "transactions.btnSwitch",
+                                                  "${DateTime.now()}", {});
+                                              Modal().showBottomSheetListAss(
+                                                context,
+                                                context
+                                                    .read<UserGroupCubit>()
+                                                    .state
+                                                    .userGroup,
+                                              );
+                                            },
+                                            child: Container(
+                                              child: Stack(
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                      right: 15.w,
+                                                    ),
+                                                    height: 30.h,
+                                                    width: 30.h,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: AppColors.red,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              360.r),
+                                                    ),
+                                                    padding:
+                                                        EdgeInsets.all(1.r),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              360.r),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      360.r),
+                                                        ),
+                                                        child: Image.network(
+                                                          "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    right: 17.w,
+                                                    top: 2.h,
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            255, 255, 26, 9),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          50.r,
+                                                        ),
+                                                      ),
+                                                      width: 5.w,
+                                                      height: 5.w,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // SizedBox(
+                                      //   height: 10.h,
+                                      // ),
+                                    ],
                                   ),
                                 ),
-                                // if (!context
-                                //     .read<AuthCubit>()
-                                //     .state
-                                //     .detailUser!["isMember"])
-                                //   GestureDetector(
-                                //     onTap: () async {
-                                //       updateTrackingData(
-                                //           "transactions.btnAdminister",
-                                //           "${DateTime.now()}",
-                                //           {});
-                                //        launchWeb(
-                                //         "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com&app_mode=mobile",
+                              ],
+                              elevation: 0,
+                              backgroundColor: AppColors.backgroundAppBAr,
+                              leading: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          HomeCentraleScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                  print("object");
+                                },
+                                child: BackButtonWidget(
+                                  colorIcon: AppColors.white,
+                                ),
+                              )),
+                        ),
+                        body: Container(
+                          // color: AppColors.barrierColorModal,
+                          width: MediaQuery.of(context).size.width,
 
-                                //       );
-                                //     },
-                                //     child: Container(
-                                //       margin: EdgeInsets.only(
-                                //         right: 10.w,
-                                //       ),
-                                //       padding:
-                                //           EdgeInsets.all(1.r),
-                                //       decoration: BoxDecoration(
-                                //         border: Border.all(
-                                //             width: 1.r,
-                                //             color: AppColors
-                                //                 .blackBlue),
-                                //         color: AppColors
-                                //             .blackBlueAccent2,
-                                //         borderRadius:
-                                //             BorderRadius.circular(
-                                //                 50.r),
-                                //       ),
-                                //       height: 30.h,
-                                //       width: 30.h,
-                                //       child: Image.asset(
-                                //         "assets/images/Groupe_ou_Asso.png",
-                                //         scale: 4,
-                                //       ),
-                                //     ),
-                                //   ),
-                                GestureDetector(
-                                  onTap: () {
-                                    updateTrackingData("transactions.btnSwitch",
-                                        "${DateTime.now()}", {});
-                                    Modal().showBottomSheetListAss(
-                                      context,
-                                      context
-                                          .read<UserGroupCubit>()
-                                          .state
-                                          .userGroup,
-                                    );
-                                  },
-                                  child: Container(
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            right: 15.w,
-                                          ),
-                                          height: 30.h,
-                                          width: 30.h,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: AppColors.red,
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            // runAlignment: WrapAlignment.spaceAround,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                  top: 10.h,
+                                  right: 5.w,
+                                  left: 5.w,
+                                ),
+                                child: Material(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    10.r,
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      updateTrackingData(
+                                          "transactions.btnShowMeeting",
+                                          "${DateTime.now()}", {});
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ListMeetingScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          2.15,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          10.r,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(10.r),
+                                            height: 60.h,
+                                            width: 60.h,
+                                            child: SvgPicture.asset(
+                                              "assets/images/meetingTransIcon.svg",
+                                              fit: BoxFit.cover,
+                                              color: AppColors.blackBlue,
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(360.r),
                                           ),
-                                          padding: EdgeInsets.all(1.r),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(360.r),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        360.r),
-                                              ),
-                                              child: Image.network(
-                                                "${Variables.LienAIP}${context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo == null ? "" : context.read<UserGroupCubit>().state.changeAssData!.user_group!.profile_photo}",
-                                                fit: BoxFit.cover,
+                                          SizedBox(
+                                            height: 3.h,
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            padding: EdgeInsets.only(
+                                              bottom: 10.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                                // color: AppColors.blackBlue,
+                                                borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10.r),
+                                              bottomRight:
+                                                  Radius.circular(10.r),
+                                            )),
+                                            child: Text(
+                                              "rencontres".tr(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.sp,
                                               ),
                                             ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              if (UserGroupState
+                                      .changeAssData!.user_group!.is_tontine ==
+                                  true)
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 10.h,
+                                    right: 5.w,
+                                    left: 5.w,
+                                  ),
+                                  child: Material(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(
+                                      10.r,
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        updateTrackingData(
+                                            "transactions.btnShowTontine",
+                                            "${DateTime.now()}", {});
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ListTontineScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.15,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
                                           ),
                                         ),
-                                        Positioned(
-                                          right: 17.w,
-                                          top: 2.h,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Color.fromARGB(
-                                                  255, 255, 26, 9),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                50.r,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(10.r),
+                                              height: 60.h,
+                                              width: 60.h,
+                                              child: SvgPicture.asset(
+                                                "assets/images/tontineTransIcon.svg",
+                                                fit: BoxFit.cover,
+                                                color: AppColors.blackBlue,
                                               ),
                                             ),
-                                            width: 5.w,
-                                            height: 5.w,
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.only(
+                                                bottom: 10.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  // color: AppColors.blackBlue,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                bottomLeft:
+                                                    Radius.circular(10.r),
+                                                bottomRight:
+                                                    Radius.circular(10.r),
+                                              )),
+                                              child: Text(
+                                                "Tontines".tr(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                  top: 10.h,
+                                  right: 5.w,
+                                  left: 5.w,
+                                ),
+                                child: Material(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    10.r,
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      updateTrackingData(
+                                          "transactions.btnShowContribution",
+                                          "${DateTime.now()}", {});
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ListCotisationScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          2.15,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          10.r,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(10.r),
+                                            // height: 50.h,
+                                            height: 60.h,
+                                            width: 60.h,
+                                            child: SvgPicture.asset(
+                                              "assets/images/contributionTransIcon1.svg",
+                                              fit: BoxFit.cover,
+                                              color: AppColors.blackBlue,
+                                            ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // SizedBox(
-                            //   height: 10.h,
-                            // ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    elevation: 0,
-                    backgroundColor: AppColors.backgroundAppBAr,
-                    leading: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                HomeCentraleScreen(),
-                          ),
-                          (route) => false,
-                        );
-                        print("object");
-                      },
-                      child: BackButtonWidget(
-                        colorIcon: AppColors.white,
-                      ),
-                    )),
-              ),
-              body: Container(
-                // color: AppColors.barrierColorModal,
-                width: MediaQuery.of(context).size.width,
-
-                child: Wrap(
-                  alignment: WrapAlignment.center,
-                  // runAlignment: WrapAlignment.spaceAround,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: 10.h,
-                        right: 5.w,
-                        left: 5.w,
-                      ),
-                      child: Material(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(
-                          10.r,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            updateTrackingData("transactions.btnShowMeeting",
-                                "${DateTime.now()}", {});
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ListMeetingScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.15,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                10.r,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10.r),
-                                  height: 60.h,
-                                  width: 60.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/meetingTransIcon.svg",
-                                    fit: BoxFit.cover,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.only(
-                                    bottom: 10.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                      // color: AppColors.blackBlue,
-                                      borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10.r),
-                                    bottomRight: Radius.circular(10.r),
-                                  )),
-                                  child: Text(
-                                    "rencontres".tr(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (UserGroupState.changeAssData!.user_group!.is_tontine ==
-                        true)
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 10.h,
-                          right: 5.w,
-                          left: 5.w,
-                        ),
-                        child: Material(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(
-                            10.r,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              updateTrackingData("transactions.btnShowTontine",
-                                  "${DateTime.now()}", {});
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ListTontineScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  10.r,
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(10.r),
-                                    height: 60.h,
-                                    width: 60.h,
-                                    child: SvgPicture.asset(
-                                      "assets/images/tontineTransIcon.svg",
-                                      fit: BoxFit.cover,
-                                      color: AppColors.blackBlue,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.only(
-                                      bottom: 10.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        // color: AppColors.blackBlue,
-                                        borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10.r),
-                                      bottomRight: Radius.circular(10.r),
-                                    )),
-                                    child: Text(
-                                      "Tontines".tr(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
+                                          SizedBox(
+                                            height: 3.h,
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            padding: EdgeInsets.only(
+                                              bottom: 10.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                                // color: AppColors.blackBlue,
+                                                borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10.r),
+                                              bottomRight:
+                                                  Radius.circular(10.r),
+                                            )),
+                                            child: Text(
+                                              "cotisations".tr(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.sp,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: 10.h,
-                        right: 5.w,
-                        left: 5.w,
-                      ),
-                      child: Material(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(
-                          10.r,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            updateTrackingData(
-                                "transactions.btnShowContribution",
-                                "${DateTime.now()}", {});
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ListCotisationScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.15,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                10.r,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10.r),
-                                  // height: 50.h,
-                                  height: 60.h,
-                                  width: 60.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/contributionTransIcon1.svg",
-                                    fit: BoxFit.cover,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.only(
-                                    bottom: 10.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                      // color: AppColors.blackBlue,
-                                      borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10.r),
-                                    bottomRight: Radius.circular(10.r),
-                                  )),
-                                  child: Text(
-                                    "cotisations".tr(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: 10.h,
-                        right: 5.w,
-                        left: 5.w,
-                      ),
-                      child: Material(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(
-                          10.r,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            updateTrackingData("transactions.btnShowSancton",
-                                "${DateTime.now()}", {});
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ListSanctionScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.15,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                10.r,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10.r),
-                                  height: 60.h,
-                                  width: 60.h,
-                                  child: SvgPicture.asset(
-                                    "assets/images/sanctionTransIcon.svg",
-                                    fit: BoxFit.cover,
-                                    color: AppColors.blackBlue,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.only(
-                                    bottom: 10.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                      // color: AppColors.blackBlue,
-                                      borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10.r),
-                                    bottomRight: Radius.circular(10.r),
-                                  )),
-                                  child: Text(
-                                    "Vos sanctions".tr(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: AppColors.blackBlue,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (checkTransparenceLoans(
-                        context
-                            .read<UserGroupCubit>()
-                            .state
-                            .changeAssData!
-                            .user_group!
-                            .configs,
-                        AuthContext.read<AuthCubit>()
-                            .state
-                            .detailUser!["isMember"]))
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 10.h,
-                          right: 5.w,
-                          left: 5.w,
-                        ),
-                        child: Material(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(
-                            10.r,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              updateTrackingData("transactions.btnShowSaving",
-                                  "${DateTime.now()}", {});
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ListEpargneScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  10.r,
                                 ),
                               ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(10.r),
-                                    height: 60.h,
-                                    width: 60.h,
-                                    child: SvgPicture.asset(
-                                      "assets/images/savingTransIcon.svg",
-                                      fit: BoxFit.cover,
-                                      color: AppColors.blackBlue,
-                                    ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                  top: 10.h,
+                                  right: 5.w,
+                                  left: 5.w,
+                                ),
+                                child: Material(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    10.r,
                                   ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.only(
-                                      bottom: 10.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        // color: AppColors.blackBlue,
-                                        borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10.r),
-                                      bottomRight: Radius.circular(10.r),
-                                    )),
-                                    child: Text(
-                                      "Epargne".tr(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
+                                  child: InkWell(
+                                    onTap: () {
+                                      updateTrackingData(
+                                          "transactions.btnShowSancton",
+                                          "${DateTime.now()}", {});
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ListSanctionScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          2.15,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          10.r,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(10.r),
+                                            height: 60.h,
+                                            width: 60.h,
+                                            child: SvgPicture.asset(
+                                              "assets/images/sanctionTransIcon.svg",
+                                              fit: BoxFit.cover,
+                                              color: AppColors.blackBlue,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 3.h,
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            padding: EdgeInsets.only(
+                                              bottom: 10.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                                // color: AppColors.blackBlue,
+                                                borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10.r),
+                                              bottomRight:
+                                                  Radius.circular(10.r),
+                                            )),
+                                            child: Text(
+                                              "Vos sanctions".tr(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: AppColors.blackBlue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.sp,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    // InkWell(
-                    //   child: Container(
-                    //     width: MediaQuery.of(context).size.width / 2.15,
-                    //     margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
-                    //     decoration: BoxDecoration(
-                    //       color: AppColors.white,
-                    //       borderRadius: BorderRadius.circular(
-                    //         10.r,
-                    //       ),
-                    //     ),
-                    //     child: Column(
-                    //       children: [
-                    //         Container(
-                    //           padding: EdgeInsets.all(10.r),
-                    //           // height: 50.h,
-                    //           child: SvgPicture.asset(
-                    //             width: 40.h,
-                    //             "assets/images/loanTransIcon.svg",
-                    //             fit: BoxFit.cover,
-                    //             color: AppColors.blackBlue,
-                    //           ),
-                    //         ),
-                    //         SizedBox(
-                    //           height: 3.h,
-                    //         ),
-                    //         Container(
-                    //           width: double.infinity,
-                    //           padding: EdgeInsets.only(
-                    //             bottom: 10.h,
-                    //           ),
-                    //           decoration: BoxDecoration(
-                    //               // color: AppColors.blackBlue,
-                    //               borderRadius: BorderRadius.only(
-                    //             bottomLeft: Radius.circular(10.r),
-                    //             bottomRight: Radius.circular(10.r),
-                    //           )),
-                    //           child: Text(
-                    //             "Prêts".tr(),
-                    //             textAlign: TextAlign.center,
-                    //             style: TextStyle(
-                    //               color: AppColors.blackBlue,
-                    //               fontWeight: FontWeight.bold,
-                    //               fontSize: 16.sp,
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    if (checkTransparenceStatus(
-                        context
-                            .read<UserGroupCubit>()
-                            .state
-                            .changeAssData!
-                            .user_group!
-                            .configs,
-                        context
-                            .read<AuthCubit>()
-                            .state
-                            .detailUser!["isMember"]))
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 10.h,
-                          right: 5.w,
-                          left: 5.w,
-                        ),
-                        child: Material(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(
-                            10.r,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              updateTrackingData("transactions.btnShowAccount",
-                                  "${DateTime.now()}", {});
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ListCompteScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2.15,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  10.r,
                                 ),
                               ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(10.r),
-                                    height: 60.h,
-                                    width: 60.h,
-                                    child: SvgPicture.asset(
-                                      "assets/images/compteTransIcon.svg",
-                                      fit: BoxFit.cover,
-                                      color: AppColors.blackBlue,
-                                    ),
+                              if (checkTransparenceLoans(
+                                  context
+                                      .read<UserGroupCubit>()
+                                      .state
+                                      .changeAssData!
+                                      .user_group!
+                                      .configs,
+                                  AuthContext.read<AuthCubit>()
+                                      .state
+                                      .detailUser!["isMember"]))
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 10.h,
+                                    right: 5.w,
+                                    left: 5.w,
                                   ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.only(
-                                      bottom: 10.h,
+                                  child: Material(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(
+                                      10.r,
                                     ),
-                                    decoration: BoxDecoration(
-                                        // color: AppColors.blackBlue,
-                                        borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10.r),
-                                      bottomRight: Radius.circular(10.r),
-                                    )),
-                                    child: Text(
-                                      "comptes".tr(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: AppColors.blackBlue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
+                                    child: InkWell(
+                                      onTap: () {
+                                        updateTrackingData(
+                                            "transactions.btnShowSaving",
+                                            "${DateTime.now()}", {});
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ListEpargneScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.15,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(10.r),
+                                              height: 60.h,
+                                              width: 60.h,
+                                              child: SvgPicture.asset(
+                                                "assets/images/savingTransIcon.svg",
+                                                fit: BoxFit.cover,
+                                                color: AppColors.blackBlue,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.only(
+                                                bottom: 10.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  // color: AppColors.blackBlue,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                bottomLeft:
+                                                    Radius.circular(10.r),
+                                                bottomRight:
+                                                    Radius.circular(10.r),
+                                              )),
+                                              child: Text(
+                                                "Epargne".tr(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ],
+                                ),
+                              // InkWell(
+                              //   child: Container(
+                              //     width: MediaQuery.of(context).size.width / 2.15,
+                              //     margin: EdgeInsets.only(top: 10.h, right: 5.w, left: 5.w),
+                              //     decoration: BoxDecoration(
+                              //       color: AppColors.white,
+                              //       borderRadius: BorderRadius.circular(
+                              //         10.r,
+                              //       ),
+                              //     ),
+                              //     child: Column(
+                              //       children: [
+                              //         Container(
+                              //           padding: EdgeInsets.all(10.r),
+                              //           // height: 50.h,
+                              //           child: SvgPicture.asset(
+                              //             width: 40.h,
+                              //             "assets/images/loanTransIcon.svg",
+                              //             fit: BoxFit.cover,
+                              //             color: AppColors.blackBlue,
+                              //           ),
+                              //         ),
+                              //         SizedBox(
+                              //           height: 3.h,
+                              //         ),
+                              //         Container(
+                              //           width: double.infinity,
+                              //           padding: EdgeInsets.only(
+                              //             bottom: 10.h,
+                              //           ),
+                              //           decoration: BoxDecoration(
+                              //               // color: AppColors.blackBlue,
+                              //               borderRadius: BorderRadius.only(
+                              //             bottomLeft: Radius.circular(10.r),
+                              //             bottomRight: Radius.circular(10.r),
+                              //           )),
+                              //           child: Text(
+                              //             "Prêts".tr(),
+                              //             textAlign: TextAlign.center,
+                              //             style: TextStyle(
+                              //               color: AppColors.blackBlue,
+                              //               fontWeight: FontWeight.bold,
+                              //               fontSize: 16.sp,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              if (checkTransparenceStatus(
+                                  context
+                                      .read<UserGroupCubit>()
+                                      .state
+                                      .changeAssData!
+                                      .user_group!
+                                      .configs,
+                                  context
+                                      .read<AuthCubit>()
+                                      .state
+                                      .detailUser!["isMember"]))
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    top: 10.h,
+                                    right: 5.w,
+                                    left: 5.w,
+                                  ),
+                                  child: Material(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(
+                                      10.r,
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        updateTrackingData(
+                                            "transactions.btnShowAccount",
+                                            "${DateTime.now()}", {});
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ListCompteScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.15,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(10.r),
+                                              height: 60.h,
+                                              width: 60.h,
+                                              child: SvgPicture.asset(
+                                                "assets/images/compteTransIcon.svg",
+                                                fit: BoxFit.cover,
+                                                color: AppColors.blackBlue,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 3.h,
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.only(
+                                                bottom: 10.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  // color: AppColors.blackBlue,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                bottomLeft:
+                                                    Radius.circular(10.r),
+                                                bottomRight:
+                                                    Radius.circular(10.r),
+                                              )),
+                                              child: Text(
+                                                "comptes".tr(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: AppColors.blackBlue,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2.1,
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2.1,
-                    ),
-
-                    
-                  ],
-                ),
-              ),
-            ),
           ),
         );
       });

@@ -472,10 +472,10 @@ class _SettingScreenState extends State<SettingScreen>
                                           child: Column(
                                             children: [
                                               Container(
-                                                padding: EdgeInsets.all(3.r),
+                                                // padding: EdgeInsets.all(3.r),
                                                 decoration: BoxDecoration(
-                                                    color:
-                                                        AppColors.colorButton,
+                                                    // color:
+                                                    //     AppColors.colorButton,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             100)),
