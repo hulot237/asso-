@@ -2,9 +2,13 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/network/token_interceptor.dart';
 
 class TontineRepository {
-  final dio = Dio();
+   final dio = Dio()
+    ..interceptors.addAll([
+      TokenInterceptor(),
+    ]);
 
   Future<List<dynamic>> DetailTontine(codeTournoi, codeTontine) async {
 
@@ -24,7 +28,7 @@ class TontineRepository {
     try {
       log("response DetailContributionTontine");
       final response = await dio.get(
-        '${Variables.LienAIP}/api/v1/contribution/$codeContribution/show',
+        '${Variables.LienAIP}/api/v1/contribution/$codeContribution/show-new',
       );
       final Map<dynamic, dynamic> dataJson = response.data["data"];
       // print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee      ${dataJson}");

@@ -26,6 +26,7 @@ class WidgetRencontreCard extends StatefulWidget {
       required this.photoProfilRecepteur,
       required this.codeSeance,
       required this.dateRencontreAPI,
+      required this.dateFinRencontreAPI,
       required this.maskElt,
       required this.typeRencontre,
       required this.screenSource,
@@ -43,6 +44,7 @@ class WidgetRencontreCard extends StatefulWidget {
   String photoProfilRecepteur;
   String codeSeance;
   String dateRencontreAPI;
+  String dateFinRencontreAPI;
   bool maskElt;
   String typeRencontre;
   String screenSource;
@@ -93,6 +95,7 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                   prenomRecepteurRencontre: widget.prenomRecepteurRencontre,
                   photoProfilRecepteur: widget.photoProfilRecepteur,
                   dateRencontreAPI: widget.dateRencontreAPI,
+                  dateFinRencontreAPI: widget.dateFinRencontreAPI,
                   rapportUrl: widget.rapportUrl,
                 ),
               ),
@@ -266,9 +269,9 @@ class _WidgetRencontreCardState extends State<WidgetRencontreCard> {
                             //   ),
                             // ),
                             if (widget.isActiveRencontre == 1 &&
-                                isPasseDateOneDay(widget.dateRencontreAPI))
+                                isPasseDate(widget.dateFinRencontreAPI))
                               TermineWidget(),
-                            if (!isPasseDateOneDay(widget.dateRencontreAPI) &&
+                            if (!isPasseDate(widget.dateFinRencontreAPI) &&
                                 widget.isActiveRencontre == 1)
                               EncoursWidget()
                           ],

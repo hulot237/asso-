@@ -81,7 +81,7 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
           onTap: () {
             updateTrackingData(
                 "${widget.screenSource}.contribution", "${DateTime.now()}", {});
-            handleDetailCotisation(widget.codeCotisation);
+            // handleDetailCotisation(widget.codeCotisation);
             print("${widget.codeCotisation}");
 
             Navigator.push(
@@ -146,9 +146,9 @@ class _WidgetCotisationState extends State<WidgetCotisation> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (widget.rubrique != "")
                                       Row(
                                         children: [
+                                    if (widget.rubrique != "")
                                           Container(
                                             margin:
                                                 EdgeInsets.only(bottom: 5.h),

@@ -1,21 +1,29 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/collecte_model.dart';
+import 'package:faroty_association_1/Association_And_Group/association_cotisations/data/participant_model.dart';
 import 'package:faroty_association_1/Modals/variable.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
+import 'package:faroty_association_1/network/token_interceptor.dart';
 
 class CotisationRepository {
-  final dio = Dio();
+  final dio = Dio()
+    ..interceptors.addAll([
+      TokenInterceptor(),
+    ]);
   Future<Map<String, dynamic>> DetailCotisation(codeCotisation) async {
     print(codeCotisation);
     final response = await dio.get(
-      '${Variables.LienAIP}/api/v1/cotisation/$codeCotisation/show',
+      '${Variables.LienAIP}/api/v1/cotisation/$codeCotisation/show-new',
     );
     final Map<String, dynamic> dataJson = response.data["data"];
     log('Okay DetailCotisation rep   ${dataJson}');
     return dataJson;
   }
 
-  Future<void> PayOneCotisation(codeCotisation, amount, membre_code, code_ass, hashid, type_id, {String? contribution_code}) async {
+  Future<void> PayOneCotisation(
+      codeCotisation, amount, membre_code, code_ass, hashid, type_id,
+      {String? contribution_code}) async {
     print("codeCotisation $codeCotisation");
     print("amount $amount");
     print("membre_code $membre_code");
@@ -38,12 +46,10 @@ class CotisationRepository {
         "partner_urlcode": code_ass,
         "source_code": codeCotisation,
         "type_id": type_id,
-        "contribustion_code":contribution_code,
+        "contribustion_code": contribution_code,
       },
     );
   }
-
-  // https://api.groups.faroty.com/api/v1/payment
 
   Future<List<dynamic>> AllCotisationOfAssTournoi(
       codeTournoi, codeMembre) async {
@@ -60,5 +66,28 @@ class CotisationRepository {
 
       return [];
     }
+  }
+
+  Future<CollecteModel> getCollectes(codeTournoi) async {
+    final response = await dio.get(
+      '${Variables.LienAIP}/api/v1/tournois/$codeTournoi/get-all-collecte',
+    );
+    final Map<String, dynamic> dataJson = response.data["data"];
+    log('Okay DetailCotisation rep   ${dataJson}');
+    return CollecteModel.fromJson(dataJson);
+  }
+
+  Future<List<Participants>> getParticipantCollecte(codeCollecte) async {
+    final response = await dio.get(
+      '${Variables.LienAIP}/api/v1/collecte/$codeCollecte/get-all-participants',
+    );
+
+    final List<dynamic> dataJson = response.data["participants"];
+    final List<Participants> dataParticipants = dataJson
+        .map<Participants>(
+            (json) => Participants.fromJson(json))
+        .toList();
+    log('Okay dataParticipants rep   ${dataParticipants}');
+    return dataParticipants;
   }
 }

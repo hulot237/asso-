@@ -70,7 +70,6 @@ class AuthRepository {
     isForCreate,
     isFisrt,
   ) async {
-    print("LoginWebViewRepositoryhhh");
     late String apiToken;
     late String apiPassword;
 
@@ -96,11 +95,6 @@ class AuthRepository {
         await AppCubitStorage().updateuserNameKey(apiToken);
         await AppCubitStorage().updatepasswordKey(apiPassword);
 
-        print("userNameKey ${AppCubitStorage().state.userNameKey}");
-        print("passwordKey ${AppCubitStorage().state.passwordKey}");
-        print("apiTokene $nameUser");
-        print("apiPassword $numeroPhone");
-        print("apiPassword $countrycode");
 
         Map<String, dynamic> requestBody2 = {
           "name": "$nameUser",
@@ -169,17 +163,6 @@ class AuthRepository {
 
     var url = 'https://auth.core.faroty.com/api/v1/confirmuser';
 
-    print("userNameKey ${AppCubitStorage().state.userNameKey}");
-    print("passwordKey ${AppCubitStorage().state.passwordKey}");
-
-    // var data = {
-    //   "confirmCode": confirmCode,
-    // };
-
-    // var headers = {
-    //   'username': AppCubitStorage().state.userNameKey,
-    //   'password': AppCubitStorage().state.passwordKey,
-    // };
 
     try {
       var response = await dio.post(

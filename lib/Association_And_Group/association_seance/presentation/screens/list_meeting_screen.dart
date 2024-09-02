@@ -313,15 +313,16 @@ class _ListMeetingScreenState extends State<ListMeetingScreen> {
                                   if (selectedCategory == "Toutes".tr() ||
                                       (selectedCategory == "en_cours".tr() &&
                                           itemSeance["status"] == 1 &&
-                                          !isPasseDateOneDay(
-                                              itemSeance["date_seance"])) ||
+                                          !isPasseDate(
+                                              itemSeance["end_date"]??itemSeance["date_seance"])) ||
                                       (selectedCategory == "terminé".tr() &&
                                           (itemSeance["status"] == 0 ||
-                                              isPasseDateOneDay(
-                                                  itemSeance["date_seance"])))) {
+                                              isPasseDate(
+                                                  itemSeance["end_date"]??itemSeance["date_seance"])))) {
                                     return Container(
                                       margin: EdgeInsets.symmetric(vertical: 10),
                                       child: WidgetRencontreCard(
+                                        dateFinRencontreAPI: itemSeance["end_date"]??itemSeance["date_seance"],
                                         codeTournoi: AppCubitStorage()
                                             .state
                                             .codeTournoisHist!,

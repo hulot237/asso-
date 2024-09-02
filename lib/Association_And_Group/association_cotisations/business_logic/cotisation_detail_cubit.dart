@@ -9,6 +9,7 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
             detailCotisation: null,
             isLoading: false,
             errorLoadDetailCotis: false,
+            participants: null,
           ),
         );
 
@@ -36,6 +37,33 @@ class CotisationDetailCubit extends Cubit<CotisationDetailState> {
       emit(
         state.copyWith(
           errorLoadDetailCotis: true,
+          isLoading: false,
+        ),
+      );
+    }
+  }
+
+  Future<void> getParticipantCollecte(codeCollecte) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        participants: state.participants,
+      ),
+    );
+
+    try {
+      final data =
+          await CotisationRepository().getParticipantCollecte(codeCollecte);
+
+      emit(
+        state.copyWith(
+          participants: data,
+          isLoading: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
           isLoading: false,
         ),
       );

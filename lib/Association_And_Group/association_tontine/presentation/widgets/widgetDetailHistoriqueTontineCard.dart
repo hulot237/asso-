@@ -143,7 +143,6 @@ class _widgetDetailHistoriqueTontineCardState
                           ),
                         ),
                       ),
-
                       if (widget.isPassed == 1)
                         Container(
                           decoration: BoxDecoration(
@@ -163,7 +162,6 @@ class _widgetDetailHistoriqueTontineCardState
                             ),
                           ),
                         ),
-
                       if (widget.isPassed == 0)
                         Row(
                           children: [
@@ -314,17 +312,8 @@ class _widgetDetailHistoriqueTontineCardState
                               )
                           ],
                         ),
-
-                      // :
-
-                      // Text(
-                      //     "payé".tr(),
-                      //     style: TextStyle(
-                      //         fontSize: 14.sp,
-                      //         color: AppColors.green,
-                      //         fontWeight: FontWeight.w600,
-                      //         fontStyle: FontStyle.italic),
-                      //   ),
+                   
+                   
                     ],
                   ),
                 ),

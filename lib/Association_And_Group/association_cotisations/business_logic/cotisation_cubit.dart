@@ -9,21 +9,25 @@ class CotisationCubit extends Cubit<CotisationState> {
       : super(
           CotisationState(
             allCotisationAss: null,
-            isLoading: false,
+            isLoadingCotis: false,
+            isLoadingCollect: false,
+            collectes: null,
           ),
         );
   Future<bool> AllCotisationAssTournoiCubit(codeTournoi, codeMembre) async {
-    print('objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject');
-    emit(state.copyWith(isloading: true, allcotisationAss: state.allCotisationAss));
+    print(
+        'objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject');
+    emit(state.copyWith(
+        isLoadingCotis: true, allCotisationAss: state.allCotisationAss));
     try {
-      final data =
-          await CotisationRepository().AllCotisationOfAssTournoi(codeTournoi, codeMembre);
+      final data = await CotisationRepository()
+          .AllCotisationOfAssTournoi(codeTournoi, codeMembre);
 
       if (data != null) {
         emit(
           state.copyWith(
-            allcotisationAss: data,
-            isloading: false,
+            allCotisationAss: data,
+            isLoadingCotis: false,
           ),
         );
 
@@ -31,8 +35,8 @@ class CotisationCubit extends Cubit<CotisationState> {
       } else {
         emit(
           state.copyWith(
-            allcotisationAss: [],
-            isloading: false,
+            allCotisationAss: [],
+            isLoadingCotis: false,
           ),
         );
         return false;
@@ -40,11 +44,38 @@ class CotisationCubit extends Cubit<CotisationState> {
     } catch (e) {
       emit(
         state.copyWith(
-          allcotisationAss: [],
-          isloading: false,
+          allCotisationAss: [],
+          isLoadingCotis: false,
         ),
       );
       return true;
+    }
+  }
+
+  Future<void> getCollectes(codeTournoi) async {
+    emit(
+      state.copyWith(
+        isLoadingCollect: true,
+        collectes: state.collectes,
+      ),
+    );
+
+    try {
+      final data = await CotisationRepository().getCollectes(codeTournoi);
+
+      emit(
+        state.copyWith(
+          collectes: data,
+          isLoadingCollect: false,
+        ),
+      );
+      print("wwwwwwwwwwwwww${state.collectes}");
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoadingCollect: false,
+        ),
+      );
     }
   }
 }

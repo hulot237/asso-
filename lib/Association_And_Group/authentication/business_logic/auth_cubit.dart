@@ -34,7 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
     ));
     try {
       final data = await AuthRepository().UserDetail(userCode, codeTournoi);
-      print("ztu $data");
+      // print("ztu $data");
 
       emit(
         state.copyWith(
@@ -48,7 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
           // alreadyShow: 2
         ),
       );
-      print("ztu ${state.detailUser}");
+      // print("ztu ${state.detailUser}");
     } catch (e) {
       emit(
         state.copyWith(
