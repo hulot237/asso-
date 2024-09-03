@@ -2,7 +2,7 @@ name: faroty_association_1
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -16,12 +16,12 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.17.04+14
+# version: 1.17.04+14
+version: 1.19.01+15
 # version: 1.10.9+11
 
-
 environment:
-  sdk: '>=3.0.2 <4.0.0'
+  sdk: ">=3.0.2 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,7 +32,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -81,12 +80,6 @@ dependencies:
   # auto_route
   skeletonizer: ^1.4.2
   uni_links: ^0.5.1
-  
-
-
-  
-
-
 
 dev_dependencies:
   flutter_test:
@@ -107,7 +100,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -155,4 +147,3 @@ flutter_icons:
   image_path_ios: "assets/images/AssoplusFinalSquareWhite.png"
   min_sdk_android: 23 # android min sdk min:16, default 21
   remove_alpha_ios: true # remove alpha channel from ios icons, default false
-  
