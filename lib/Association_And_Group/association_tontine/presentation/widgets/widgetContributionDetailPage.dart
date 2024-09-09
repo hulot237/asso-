@@ -163,14 +163,14 @@ class _WidgetContributionDetailPageState
                                         ),
                                       ),
                                     ),
-                                    if (widget.source != '' &&
-                                        widget.nomBeneficiaire != '')
+                                    // if (widget.source != '' &&
+                                    //     widget.nomBeneficiaire != '')
                                       Container(
                                         // margin: EdgeInsets.only(bottom: 7),
                                         child: Text(
-                                          widget.source == ''
-                                              ? "${(widget.nomBeneficiaire)}"
-                                              : "${(widget.source)}",
+                                          // widget.source == ''
+                                              "${(widget.nomBeneficiaire)}",
+                                              // : "${(widget.source)}",
                                           style: TextStyle(
                                             fontSize: 11.sp,
                                             fontWeight: FontWeight.bold,

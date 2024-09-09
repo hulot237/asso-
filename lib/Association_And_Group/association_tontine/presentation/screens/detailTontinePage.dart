@@ -82,7 +82,11 @@ Widget PageScaffold({
     appBar: AppBar(
       title: Text(
         "Detail de la tontine".tr(),
-        style: TextStyle(fontSize: 16.sp, color: AppColors.white,fontWeight: FontWeight.bold,),
+        style: TextStyle(
+          fontSize: 16.sp,
+          color: AppColors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       backgroundColor: AppColors.backgroundAppBAr,
       elevation: 0,
@@ -264,8 +268,8 @@ class _DetailTontinePageState extends State<DetailTontinePage>
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(
-                    top: 0, left: 5.w, right: 5.w, bottom: 5.h),
+                margin:
+                    EdgeInsets.only(top: 0, left: 5.w, right: 5.w, bottom: 5.h),
                 padding: EdgeInsets.only(top: 15.h),
                 child: Text(
                   "Historique de la tontine".tr(),
@@ -307,7 +311,50 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                           itemCount: currentDetailTontineCard!.length,
                           itemBuilder: (context, index) {
                             final itemTontine = currentDetailTontineCard[index];
-                            print("itemTontineitemTontineitemTontine $itemTontine");
+                            
+                            
+                              String nomBeneficiaire = '';
+
+        if (itemTontine['receivers'] != null && itemTontine['receivers'].isNotEmpty) {
+          final receivers = itemTontine['receivers'] as List<dynamic>;
+
+          // Déboguer les données
+          print('Receivers: $receivers');
+
+          final namesList = receivers.map((receiver) {
+            final membre = receiver['membre'];
+            // Déboguer le membre
+            print('Membre: $membre');
+
+            if (membre != null) {
+              final firstName = membre['first_name'] ?? '';
+              final lastName = membre['last_name'] ?? '';
+              return '$firstName $lastName'.trim();
+            }
+            return '';
+          }).toList();
+
+          // Déboguer la liste des noms
+          print('Names List: $namesList');
+
+          nomBeneficiaire = namesList
+              .where((name) => name.isNotEmpty)
+              .join(', ');
+
+          // Déboguer le résultat final
+          print('Nom Beneficiaire: $nomBeneficiaire');
+        } else {
+          // Déboguer le cas où receivers est nul ou vide
+          print('Receivers is null or empty');
+          
+          final membre = itemTontine['membre'];
+          nomBeneficiaire = (membre != null)
+            ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
+            : '';
+          
+          // Déboguer le nom du bénéficiaire
+          print('Nom Beneficiaire (from main member): $nomBeneficiaire');
+        }
 
                             return GestureDetector(
                               onTap: () {
@@ -327,34 +374,27 @@ class _DetailTontinePageState extends State<DetailTontinePage>
                                   );
 
                                   Modal().showBottomSheetHistTontine(
-                                    tontineContext,
-                                    itemTontine["code"],
-                                    widget.montantTontine,
-                                   codeTontine:  widget.codeTontine
-
-                                  );
+                                      tontineContext,
+                                      itemTontine["code"],
+                                      widget.montantTontine,
+                                      codeTontine: widget.codeTontine);
                                   // widget.codeTontine;
                                 }
                               },
                               child: Container(
                                 margin: EdgeInsets.all(10.r),
                                 child: widgetDetailHistoriqueTontineCard(
-                                  isPassed : itemTontine['is_passed'],
+                                  isPassed: itemTontine['is_passed'],
                                   isPayed: itemTontine['is_payed'],
                                   nomTontine: widget.nomTontine,
                                   lienDePaiement:
                                       itemTontine['tontine_pay_link'],
                                   dateClose: itemTontine['end_date'],
                                   dateOpen: itemTontine['start_date'],
-                                  montantCollecte:
-                                      itemTontine['total_cotise'],
+                                  montantCollecte: itemTontine['total_cotise'],
                                   montantTontine: itemTontine['amount'],
-                                  nomBeneficiaire: itemTontine["membre"]
-                                      ["first_name"],
-                                  prenomBeneficiaire:
-                                      itemTontine["membre"]["last_name"] == null
-                                          ? ""
-                                          : itemTontine["membre"]["last_name"],
+                                  nomBeneficiaire: nomBeneficiaire,
+                                  prenomBeneficiaire: "",
                                   codeCotisation: itemTontine["code"],
                                   motif: itemTontine["motif"],
                                 ),

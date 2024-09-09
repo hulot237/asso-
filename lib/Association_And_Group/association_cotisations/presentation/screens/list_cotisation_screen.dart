@@ -172,7 +172,7 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
                                     fontSize: 10.sp,
                                   ),
                                 ),
-                                if (item.is_default == 0)
+                                if (item.is_active == 0)
                                   Icon(
                                     Icons.dangerous,
                                     size: 12.sp,
@@ -242,7 +242,7 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: item.is_default == 1
+                                  color: item.is_active == 1
                                       ? AppColors.backgroundAppBAr
                                           .withOpacity(.1)
                                       : AppColors.red.withOpacity(.1),
@@ -255,12 +255,12 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
                                   bottom: 3.h,
                                 ),
                                 child: Text(
-                                  item.is_default == 1
+                                  item.is_active == 1
                                       ? 'Actif'.tr()
                                       : "Inactif",
                                   style: TextStyle(
                                     fontSize: 12.sp,
-                                    color: item.is_default == 1
+                                    color: item.is_active == 1
                                         ? AppColors.backgroundAppBAr
                                         : AppColors.red,
                                     // fontWeight:
@@ -359,6 +359,53 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
                                           (BuildContext context, int index) {
                                         final ItemDetailCotisation =
                                             objetCotisationUniquement[index];
+
+
+                                                                          String nomBeneficiaire = '';
+
+        if (ItemDetailCotisation['receivers'] != null && ItemDetailCotisation['receivers'].isNotEmpty) {
+          final receivers = ItemDetailCotisation['receivers'] as List<dynamic>;
+
+          // Déboguer les données
+          print('Receivers: $receivers');
+
+          final namesList = receivers.map((receiver) {
+            final membre = receiver['membre'];
+            // Déboguer le membre
+            print('Membre: $membre');
+
+            if (membre != null) {
+              final firstName = membre['first_name'] ?? '';
+              final lastName = membre['last_name'] ?? '';
+              return '$firstName $lastName'.trim();
+            }
+            return '';
+          }).toList();
+
+          // Déboguer la liste des noms
+          print('Names List: $namesList');
+
+          nomBeneficiaire = namesList
+              .where((name) => name.isNotEmpty)
+              .join(', ');
+
+          // Déboguer le résultat final
+          print('Nom Beneficiaire: $nomBeneficiaire');
+        } else {
+          // Déboguer le cas où receivers est nul ou vide
+          print('Receivers is null or empty');
+          
+          final membre = ItemDetailCotisation['membre'];
+          nomBeneficiaire = (membre != null)
+            ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
+            : '';
+          
+          // Déboguer le nom du bénéficiaire
+          print('Nom Beneficiaire (from main member): $nomBeneficiaire');
+        }
+
+
+
                                         if (selectedCategory == "Toutes".tr() ||
                                             (selectedCategory ==
                                                     "non_payé".tr() &&
@@ -434,11 +481,7 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
                                                       null
                                                   ? ''
                                                   : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", ItemDetailCotisation["seance"]["date_seance"])}',
-                                              nomBeneficiaire: ItemDetailCotisation[
-                                                          "membre"] ==
-                                                      null
-                                                  ? ''
-                                                  : '${ItemDetailCotisation["membre"]["last_name"] == null ? "${ItemDetailCotisation["membre"]["first_name"]}" : "${ItemDetailCotisation["membre"]["first_name"]} ${ItemDetailCotisation["membre"]["last_name"]}"}',
+                                              nomBeneficiaire: nomBeneficiaire,
                                             ),
                                           );
                                         } else {

@@ -119,8 +119,8 @@ class _DetailHelpCenterScreenState extends State<DetailHelpCenterScreen> {
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.blackBlue,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                  // maxLines: 1,
+                                  // overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(

@@ -113,21 +113,16 @@
 //   }
 // }
 
-import 'package:faroty_association_1/Association_And_Group/association_cotisations/presentation/screens/detailCotisationPage.dart';
 import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:faroty_association_1/main.dart';
-import 'package:faroty_association_1/pages/contact_us_page.dart';
 import 'package:faroty_association_1/pages/home_centrale_screen.dart';
 import 'package:faroty_association_1/pages/splash_redirect_notif_screen.dart';
-import 'package:faroty_association_1/pages/updatePage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class PushNotifications {
   static final _firebaseMessaging = FirebaseMessaging.instance;
-  static final FlutterLocalNotificationsPlugin
-      _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
     await _firebaseMessaging.requestPermission(
@@ -162,7 +157,7 @@ class PushNotifications {
           final String? urlcode = payload.payload;
           print(
               ".............................onDidReceiveNotificationResponse.............................");
-          handleNotificationNavigation(null, null);
+          // handleNotificationNavigation(null, null);
         } catch (e) {
           print("Error: ${e.toString()}");
         }
@@ -189,7 +184,12 @@ class PushNotifications {
           ".............................onMessageOpenedApp.............................");
       print(
           "onMessageOpenedApp: ${message.notification?.title}/${message.notification?.body}/${message.data['source_name']}");
-      handleNotificationNavigation(message.data['source_name'], message.data['source_code']);
+      handleNotificationNavigation(
+        message.data['source_name'],
+        message.data['source_code'],
+        message.data['tournois_code'],
+        message.data['urlcode'],
+      );
     });
   }
 
@@ -222,18 +222,32 @@ class PushNotifications {
     );
   }
 
-  static void handleNotificationNavigation(String? dataSource, String? codeElt) {
+  static Future<void> handleNotificationNavigation(
+    String? dataSource,
+    String? codeElt,
+    String? codeTournoi,
+    String? codeAss,
+  ) async {
     print("_handleNotificationNavigation");
 
     if (dataSource != null) {
       print("_handleNotificationNavigation1");
+      await AppCubitStorage().updateCodeAssDefaul(codeAss!);
+      await AppCubitStorage().updateCodeTournoisDefault(codeTournoi!);
+      await AppCubitStorage().updateCodeTournoisHist(codeTournoi!);
       Widget page;
       switch (dataSource) {
         case 'ass_cotisations':
-          page = SplashRedirectNotifScreen(dataSource: dataSource, codeElt: codeElt!,);
+          page = SplashRedirectNotifScreen(
+            dataSource: dataSource,
+            codeElt: codeElt!,
+          );
           break;
         case 'ass_tontine_contributions':
-          page = SplashRedirectNotifScreen(dataSource: dataSource, codeElt: codeElt!,);
+          page = SplashRedirectNotifScreen(
+            dataSource: dataSource,
+            codeElt: codeElt!,
+          );
           break;
         default:
           page =

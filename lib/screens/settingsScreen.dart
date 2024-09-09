@@ -1570,7 +1570,7 @@ class _SettingScreenState extends State<SettingScreen>
                                                               ),
                                                             ),
                                                             Text(
-                                                              "Centre d'aide"
+                                                              "centre_d'aide"
                                                                   .tr(),
                                                               style: TextStyle(
                                                                 fontSize: 18.sp,

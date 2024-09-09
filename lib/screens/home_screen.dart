@@ -106,6 +106,9 @@ class _HomeScreenState extends State<HomeScreen>
   Future handleChangeAss(codeAss) async {
     final allCotisationAss =
         await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+            await AppCubitStorage().updatemembreCode(
+      context.read<UserGroupCubit>().state.changeAssData!.membre!.membre_code!,
+    );
   }
 
   Future handleRecentEvent(codeMembre) async {
@@ -560,45 +563,44 @@ class _HomeScreenState extends State<HomeScreen>
                                       children: [
                                         Column(
                                           children: [
-                                            SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Container(
-                                                // padding: EdgeInsets.all(7.r),
-                                                decoration: BoxDecoration(
-                                                  // color: AppColors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15.r),
-                                                ),
-                                                margin: EdgeInsets.only(
-                                                  left: 8.w,
-                                                  right: 8.w,
-                                                  top: 10.h,
-                                                  bottom: 5.h,
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    buildCategoryButton(
-                                                        "Tout".tr()),
-                                                    SizedBox(
-                                                      width: 5.w,
-                                                    ),
-                                                    buildCategoryButton(
-                                                      "À venir".tr(),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5.w,
-                                                    ),
-                                                    buildCategoryButton(
-                                                      "cotisations".tr(),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5.w,
-                                                    ),
-                                                    buildCategoryButton(
-                                                      "sanctions".tr(),
-                                                    ),
-                                                  ],
-                                                ),
+                                            Container(
+                                              // padding: EdgeInsets.all(7.r),
+                                              decoration: BoxDecoration(
+                                                // color: AppColors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(15.r),
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                left: 8.w,
+                                                right: 8.w,
+                                                top: 10.h,
+                                                bottom: 5.h,
+                                              ),
+                                              child: Row(
+                                                // mainAxisAlignment: MainAxisAlignment.start,
+                                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  buildCategoryButton(
+                                                      "Tout".tr()),
+                                                  SizedBox(
+                                                    width: 5.w,
+                                                  ),
+                                                  buildCategoryButton(
+                                                    "À venir".tr(),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5.w,
+                                                  ),
+                                                  buildCategoryButton(
+                                                    "cotisations".tr(),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5.w,
+                                                  ),
+                                                  buildCategoryButton(
+                                                    "sanctions".tr(),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                                 if (currentDetailUser![
@@ -2080,51 +2082,66 @@ class _HomeScreenState extends State<HomeScreen>
                                       List listeCotisation = currentCotisation;
                                       List listeSanction = currentSanction;
 
-                                      // List<Widget> listWidgetTontine =
-                                      //     listeTontine.map((monObjet) {
-                                      //   // print(object)
-                                      //   return widgetRecentEventTontine(
-                                      //     isPassed: monObjet["is_passed"],
-                                      //     isPayed: monObjet["versement"]
-                                      //         ["is_payed"],
-                                      //     nomBeneficiaire: monObjet["membre"]
-                                      //         ["first_name"],
-                                      //     prenomBeneficiaire: monObjet["membre"]
-                                      //                 ["last_name"] ==
-                                      //             null
-                                      //         ? ''
-                                      //         : monObjet["membre"]["last_name"],
-                                      //     dateOpen: monObjet["start_date"],
-                                      //     dateClose: monObjet["end_date"],
-                                      //     montantTontine: monObjet["amount"],
-                                      //     montantCollecte:
-                                      //         monObjet["total_cotise"],
-                                      //     codeCotisation: monObjet["code"],
-                                      //     lienDePaiement:
-                                      //         monObjet["tontine_pay_link"],
-                                      //     nomTontine: monObjet["matricule"],
-                                      //     motif: monObjet["motif"],
-                                      //   );
-                                      // }).toList();
-
                                       if (selectedCategory == "À venir") {
+
+
                                         listWidgetTontine = listeTontine
                                             .where((monObjet) =>
                                                 isDateTodayOrFuture(
                                                     monObjet["end_date"] ?? ""))
                                             .map((monObjet) {
+
+                                              String nomBeneficiaire = '';
+
+          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
+            final receivers = monObjet['receivers'] as List<dynamic>;
+
+            // Déboguer les données
+            print('Receivers: $receivers');
+
+            final namesList = receivers.map((receiver) {
+              final membre = receiver['membre'];
+              // Déboguer le membre
+              print('Membre: $membre');
+
+              if (membre != null) {
+                final firstName = membre['first_name'] ?? '';
+                final lastName = membre['last_name'] ?? '';
+                return '$firstName $lastName'.trim();
+              }
+              return '';
+            }).toList();
+
+            // Déboguer la liste des noms
+            print('Names List: $namesList');
+
+            nomBeneficiaire = namesList
+                .where((name) => name.isNotEmpty)
+                .join(', ');
+
+            // Déboguer le résultat final
+            print('Nom Beneficiaire: $nomBeneficiaire');
+          } else {
+            // Déboguer le cas où receivers est nul ou vide
+            print('Receivers is null or empty');
+            
+            final membre = monObjet['membre'];
+            nomBeneficiaire = (membre != null)
+              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
+              : '';
+            
+            // Déboguer le nom du bénéficiaire
+            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
+          }
+                                              
                                           return widgetRecentEventTontine(
                                             isPassed: monObjet["is_passed"],
                                             isPayed: monObjet["versement"]
                                                     ?["is_payed"] ??
                                                 false,
-                                            nomBeneficiaire: monObjet["membre"]
-                                                    ?["first_name"] ??
-                                                "",
-                                            prenomBeneficiaire:
-                                                monObjet["membre"]
-                                                        ?["last_name"] ??
-                                                    "",
+                                            nomBeneficiaire: nomBeneficiaire 
+                                                ,
+                                            prenomBeneficiaire:"",
                                             dateOpen:
                                                 monObjet["start_date"] ?? "",
                                             dateClose:
@@ -2146,18 +2163,57 @@ class _HomeScreenState extends State<HomeScreen>
                                       } else {
                                         listWidgetTontine =
                                             listeTontine.map((monObjet) {
+
+                                                        String nomBeneficiaire = '';
+
+          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
+            final receivers = monObjet['receivers'] as List<dynamic>;
+
+            // Déboguer les données
+            print('Receivers: $receivers');
+
+            final namesList = receivers.map((receiver) {
+              final membre = receiver['membre'];
+              // Déboguer le membre
+              print('Membre: $membre');
+
+              if (membre != null) {
+                final firstName = membre['first_name'] ?? '';
+                final lastName = membre['last_name'] ?? '';
+                return '$firstName $lastName'.trim();
+              }
+              return '';
+            }).toList();
+
+            // Déboguer la liste des noms
+            print('Names List: $namesList');
+
+            nomBeneficiaire = namesList
+                .where((name) => name.isNotEmpty)
+                .join(', ');
+
+            // Déboguer le résultat final
+            print('Nom Beneficiaire: $nomBeneficiaire');
+          } else {
+            // Déboguer le cas où receivers est nul ou vide
+            print('Receivers is null or empty');
+            
+            final membre = monObjet['membre'];
+            nomBeneficiaire = (membre != null)
+              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
+              : '';
+            
+            // Déboguer le nom du bénéficiaire
+            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
+          }
+
                                           return widgetRecentEventTontine(
                                             isPassed: monObjet["is_passed"],
                                             isPayed: monObjet["versement"]
                                                     ?["is_payed"] ??
                                                 false,
-                                            nomBeneficiaire: monObjet["membre"]
-                                                    ?["first_name"] ??
-                                                "",
-                                            prenomBeneficiaire:
-                                                monObjet["membre"]
-                                                        ?["last_name"] ??
-                                                    "",
+                                            nomBeneficiaire: nomBeneficiaire,
+                                            prenomBeneficiaire:"",
                                             dateOpen:
                                                 monObjet["start_date"] ?? "",
                                             dateClose:
@@ -2221,6 +2277,51 @@ class _HomeScreenState extends State<HomeScreen>
                                                 isDateTodayOrFuture(
                                                     monObjet["end_date"] ?? ""))
                                             .map((monObjet) {
+
+                                                                                                      String nomBeneficiaire = '';
+
+          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
+            final receivers = monObjet['receivers'] as List<dynamic>;
+
+            // Déboguer les données
+            print('Receivers: $receivers');
+
+            final namesList = receivers.map((receiver) {
+              final membre = receiver['membre'];
+              // Déboguer le membre
+              print('Membre: $membre');
+
+              if (membre != null) {
+                final firstName = membre['first_name'] ?? '';
+                final lastName = membre['last_name'] ?? '';
+                return '$firstName $lastName'.trim();
+              }
+              return '';
+            }).toList();
+
+            // Déboguer la liste des noms
+            print('Names List: $namesList');
+
+            nomBeneficiaire = namesList
+                .where((name) => name.isNotEmpty)
+                .join(', ');
+
+            // Déboguer le résultat final
+            print('Nom Beneficiaire: $nomBeneficiaire');
+          } else {
+            // Déboguer le cas où receivers est nul ou vide
+            print('Receivers is null or empty');
+            
+            final membre = monObjet['membre'];
+            nomBeneficiaire = (membre != null)
+              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
+              : '';
+            
+            // Déboguer le nom du bénéficiaire
+            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
+          }
+
+
                                           return widgetRecentEventCotisation(
                                             isPayed: monObjet["versement"]
                                                     ?["is_payed"] ??
@@ -2253,11 +2354,7 @@ class _HomeScreenState extends State<HomeScreen>
                                             source: monObjet["seance"] == null
                                                 ? ''
                                                 : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"] ?? ""} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"] ?? "")}',
-                                            nomBeneficiaire: monObjet[
-                                                        "membre"] ==
-                                                    null
-                                                ? ''
-                                                : '${monObjet["membre"]["first_name"] ?? ""} ${monObjet["membre"]["last_name"] ?? ""}',
+                                            nomBeneficiaire: nomBeneficiaire,
                                             is_tontine:
                                                 monObjet["is_tontine"] ?? false,
                                           );
@@ -2265,6 +2362,51 @@ class _HomeScreenState extends State<HomeScreen>
                                       } else {
                                         listWidgetCotisation =
                                             listeCotisation.map((monObjet) {
+
+                                                                                                                                                    String nomBeneficiaire = '';
+
+          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
+            final receivers = monObjet['receivers'] as List<dynamic>;
+
+            // Déboguer les données
+            print('Receivers: $receivers');
+
+            final namesList = receivers.map((receiver) {
+              final membre = receiver['membre'];
+              // Déboguer le membre
+              print('Membre: $membre');
+
+              if (membre != null) {
+                final firstName = membre['first_name'] ?? '';
+                final lastName = membre['last_name'] ?? '';
+                return '$firstName $lastName'.trim();
+              }
+              return '';
+            }).toList();
+
+            // Déboguer la liste des noms
+            print('Names List: $namesList');
+
+            nomBeneficiaire = namesList
+                .where((name) => name.isNotEmpty)
+                .join(', ');
+
+            // Déboguer le résultat final
+            print('Nom Beneficiaire: $nomBeneficiaire');
+          } else {
+            // Déboguer le cas où receivers est nul ou vide
+            print('Receivers is null or empty');
+            
+            final membre = monObjet['membre'];
+            nomBeneficiaire = (membre != null)
+              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
+              : '';
+            
+            // Déboguer le nom du bénéficiaire
+            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
+          }
+
+
                                           return widgetRecentEventCotisation(
                                             isPayed: monObjet["versement"]
                                                     ?["is_payed"] ??
@@ -2297,11 +2439,7 @@ class _HomeScreenState extends State<HomeScreen>
                                             source: monObjet["seance"] == null
                                                 ? ''
                                                 : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"] ?? ""} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"] ?? "")}',
-                                            nomBeneficiaire: monObjet[
-                                                        "membre"] ==
-                                                    null
-                                                ? ''
-                                                : '${monObjet["membre"]["first_name"] ?? ""} ${monObjet["membre"]["last_name"] ?? ""}',
+                                            nomBeneficiaire: nomBeneficiaire,
                                             is_tontine:
                                                 monObjet["is_tontine"] ?? false,
                                           );

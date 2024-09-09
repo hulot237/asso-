@@ -48,7 +48,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           centerTitle: false,
           // toolbarHeight: 130.h,
           title: Text(
-            "Centre d'aide".tr(),
+            "centre_d'aide".tr(),
             // "historiques".tr(),
             style: TextStyle(
                 fontSize: 16.sp,
@@ -152,7 +152,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                                 trailing: Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 18.sp,
-                                  color: AppColors.blackBlue,
+                                  color: AppColors.red,
                                 ),
                                 onTap: () {
                                   Navigator.push(

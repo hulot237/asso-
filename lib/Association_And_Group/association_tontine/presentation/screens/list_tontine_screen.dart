@@ -107,7 +107,7 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
                                   fontSize: 10.sp,
                                 ),
                               ),
-                              if (item.is_default == 0)
+                              if (item.is_active == 0)
                                 Icon(
                                   Icons.dangerous,
                                   size: 12.sp,
@@ -191,7 +191,7 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: item.is_default == 1
+                                color: item.is_active == 1
                                     ? AppColors.backgroundAppBAr.withOpacity(.1)
                                     : AppColors.red.withOpacity(.1),
                                 borderRadius: BorderRadius.circular(20.r),
@@ -203,10 +203,10 @@ class _ListTontineScreenState extends State<ListTontineScreen> {
                                 bottom: 3.h,
                               ),
                               child: Text(
-                                item.is_default == 1 ? 'Actif'.tr() : "Inactif",
+                                item.is_active == 1 ? 'Actif'.tr() : "Inactif",
                                 style: TextStyle(
                                   fontSize: 12.sp,
-                                  color: item.is_default == 1
+                                  color: item.is_active == 1
                                       ? AppColors.backgroundAppBAr
                                       : AppColors.red,
                                   // fontWeight:

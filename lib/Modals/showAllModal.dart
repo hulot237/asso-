@@ -382,8 +382,6 @@ class Modal {
                         itemBuilder: (context, index) {
                           final currentItemAssociationList =
                               currentInfoAssociationCourant[index];
-                          print(
-                              "aaaaaaaaaaaaaaaaaaaaaaaa ${currentItemAssociationList.is_default}");
 
                           return GestureDetector(
                             onTap: () async {
@@ -423,7 +421,7 @@ class Modal {
                                         fontWeight: FontWeight.w800,
                                         fontSize: 14.sp),
                                   ),
-                                  if (currentItemAssociationList.is_default ==
+                                  if (currentItemAssociationList.is_active ==
                                       1)
                                     Container(
                                       padding: EdgeInsets.only(
@@ -451,7 +449,7 @@ class Modal {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                  if (currentItemAssociationList.is_default ==
+                                  if (currentItemAssociationList.is_active ==
                                       0)
                                     Container(
                                       padding: EdgeInsets.only(

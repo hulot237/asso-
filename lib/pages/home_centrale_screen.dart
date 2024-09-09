@@ -142,6 +142,9 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
     Future handleChangeAss(codeAss) async {
       final allCotisationAss =
           await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+              await AppCubitStorage().updatemembreCode(
+      context.read<UserGroupCubit>().state.changeAssData!.membre!.membre_code!,
+    );
     }
 
     Future<void> handleDetailUser(userCode, codeTournoi) async {
@@ -292,9 +295,9 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
                 print("object");
                 if (_pageIndex == 0) {
                   handleAllUserGroup();
+                  handleChangeAss(AppCubitStorage().state.codeAssDefaul);
                   handleTournoiDefault();
                   handleRecentEvent(AppCubitStorage().state.membreCode);
-                  handleChangeAss(AppCubitStorage().state.codeAssDefaul);
                   handleDetailUser(AppCubitStorage().state.membreCode,
                       AppCubitStorage().state.codeTournois);
                   context.read<AuthCubit>().getUid();

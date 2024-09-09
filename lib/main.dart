@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'package:faroty_association_1/Association_And_Group/association_compte/business_logic/compte_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_cotisations/business_logic/cotisation_cubit.dart';
@@ -48,7 +46,12 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print("Handling background message: ${message.messageId}");
-  PushNotifications.handleNotificationNavigation(message.data['source_name'], message.data['source_code']);
+  PushNotifications.handleNotificationNavigation(
+    message.data['source_name'],
+    message.data['source_code'],
+    message.data['tournois_code'],
+    message.data['urlcode'],
+  );
 }
 
 Future<void> _initUniLinks() async {
@@ -174,7 +177,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-

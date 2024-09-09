@@ -89,9 +89,9 @@ class _SplashScreenState extends State<SplashScreen> {
       clearSessionIdStorage();
       handleAllUserGroup();
 
+      handleChangeAss(AppCubitStorage().state.codeAssDefaul);
       handleTournoiDefault();
       handleRecentEvent(AppCubitStorage().state.membreCode);
-      handleChangeAss(AppCubitStorage().state.codeAssDefaul);
       handleDetailUser(AppCubitStorage().state.membreCode,
           AppCubitStorage().state.codeTournois);
       context.read<AuthCubit>().getUid();

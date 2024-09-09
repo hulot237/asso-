@@ -122,8 +122,6 @@ class _TopicHelpCenterScreenState extends State<TopicHelpCenterScreen> {
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.blackBlue,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(

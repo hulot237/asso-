@@ -37,55 +37,59 @@ String formatDate(String dateString) {
   final date = inputFormat.parse(dateString);
   return outputFormat.format(date);
 }
-
+// Formatage de l'heure en français
 String formatTimeToFrench(String isoDate) {
-  final dateTime = DateTime.parse(isoDate);
+  final dateTime = DateTime.parse(isoDate).toLocal(); // Conversion en heure locale
   final formattedTime = DateFormat.Hm('fr_FR').format(dateTime);
   return formattedTime;
 }
 
+// Formatage de l'heure en anglais
 String formatTimeToEnglish(String isoDate) {
-  final dateTime = DateTime.parse(isoDate);
+  final dateTime = DateTime.parse(isoDate).toLocal(); // Conversion en heure locale
   final formattedTime = DateFormat.Hm().format(dateTime);
   return formattedTime;
 }
 
+// Formatage de la date en anglais
 String formatDateToEnglish(String isoDate) {
-  final dateTime = DateTime.parse(isoDate);
+  final dateTime = DateTime.parse(isoDate).toLocal(); // Conversion en heure locale
   final formattedDate = DateFormat('yyyy/MM/dd').format(dateTime);
   return formattedDate;
 }
 
+// Formatage de la date en français
 String formatDateToFrench(String isoDate) {
-  final dateTime = DateTime.parse(isoDate);
+  final dateTime = DateTime.parse(isoDate).toLocal(); // Conversion en heure locale
   final formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
   return formattedDate;
 }
 
+// Formatage de la date avec une chaîne littérale
 String formatDateLiteral(String isoDate) {
-  final dateTime = DateTime.parse(isoDate);
-  final formattedDate =
-      DateFormat("dd MMM yyy '${'à'.tr()}' HH:mm").format(dateTime);
+  final dateTime = DateTime.parse(isoDate).toLocal(); // Conversion en heure locale
+  final formattedDate = DateFormat("dd MMM yyyy 'à' HH:mm").format(dateTime);
   return formattedDate;
 }
 
+// Formatage de la date avec une chaîne littérale unique
 String formatDateUnikLiteral(String isoDate) {
-  final dateTime = DateTime.parse(isoDate);
-  final formattedDate = DateFormat("dd MMM yyy").format(dateTime);
+  final dateTime = DateTime.parse(isoDate).toLocal(); // Conversion en heure locale
+  final formattedDate = DateFormat("dd MMM yyyy").format(dateTime);
   return formattedDate;
 }
 
+// Formatage de l'heure avec une chaîne littérale unique
 String formatHeurUnikLiteral(String isoDate) {
-  final dateTime = DateTime.parse(isoDate);
+  final dateTime = DateTime.parse(isoDate).toLocal(); // Conversion en heure locale
   final formattedDate = DateFormat("HH:mm").format(dateTime);
   return formattedDate;
 }
 
-String formatCompareDateReturnWellValue(
-  String endDate,
-) {
-  final dateTime = DateTime.parse(endDate);
-  final formattedDate = DateFormat("yyy-MM-dd HH:mm:ss").format(dateTime);
+// Comparaison de dates avec des valeurs bien définies
+String formatCompareDateReturnWellValue(String endDate) {
+  final dateTime = DateTime.parse(endDate).toLocal(); // Conversion en heure locale
+  final formattedDate = DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime);
 
   DateTime endDateApi = DateTime.parse(formattedDate);
   DateTime dt2 = DateTime.now();
@@ -93,51 +97,48 @@ String formatCompareDateReturnWellValue(
   Duration diff = endDateApi.difference(dt2);
 
   if (endDateApi.compareTo(dt2) == 0) {
-    return ("À l'instant".tr());
+    return "À l'instant";
   }
 
   if (endDateApi.compareTo(dt2) < 0) {
-    print("DT1 est avant DT2 ${endDateApi.compareTo(dt2)}");
-
     if (diff.inMinutes * -1 < 1) {
-      return ("À l'instant".tr());
-    } else if (diff.inMinutes * -1 > 1 && (diff.inHours * -1) < 1) {
-      return ("${"Retard de".tr()} ${diff.inMinutes * -1} ${"minutes".tr()}");
-    } else if (diff.inHours * -1 > 1 && (diff.inDays * -1) < 1) {
-      return ("${"Retard de".tr()} ${diff.inHours * -1} ${"heures".tr()}");
-    } else if ((diff.inDays * -1) >= 1 && (diff.inDays * -1) <= 6) {
-      return ("${"Retard de".tr()} ${diff.inDays * -1} ${"jours".tr()}");
-    } else if ((diff.inDays * -1) == 7) {
-      return ("Retard de 1 semaine".tr());
-    } else if ((diff.inDays * -1) > 7) {
-      return ("${"Retard depuis".tr()} ${formatDateLiteral(endDate)}");
+      return "À l'instant";
+    } else if (diff.inMinutes * -1 > 1 && diff.inHours * -1 < 1) {
+      return "Retard de ${diff.inMinutes * -1} minutes";
+    } else if (diff.inHours * -1 > 1 && diff.inDays * -1 < 1) {
+      return "Retard de ${diff.inHours * -1} heures";
+    } else if (diff.inDays * -1 >= 1 && diff.inDays * -1 <= 6) {
+      return "Retard de ${diff.inDays * -1} jours";
+    } else if (diff.inDays * -1 == 7) {
+      return "Retard de 1 semaine";
+    } else if (diff.inDays * -1 > 7) {
+      return "Retard depuis ${formatDateLiteral(endDate)}";
     }
   }
 
   if (endDateApi.compareTo(dt2) > 0) {
     if (diff.inMinutes < 1) {
-      return ("Il vous reste moins d'une minute".tr());
+      return "Il vous reste moins d'une minute";
     } else if (diff.inMinutes > 1 && diff.inHours < 1) {
-      return ("${"Il vous reste".tr()} ${diff.inMinutes} ${"minutes".tr()}");
+      return "Il vous reste ${diff.inMinutes} minutes";
     } else if (diff.inHours > 1 && diff.inDays < 1) {
-      return ("${"Il vous reste".tr()} ${diff.inHours} ${"heures".tr()}");
+      return "Il vous reste ${diff.inHours} heures";
     } else if (diff.inDays >= 1 && diff.inDays <= 6) {
-      return ("${"Il vous reste".tr()} ${diff.inDays} ${"jours".tr()}");
+      return "Il vous reste ${diff.inDays} jours";
     } else if (diff.inDays == 7) {
-      return ("Il vous reste 1 semaine".tr());
+      return "Il vous reste 1 semaine";
     } else if (diff.inDays > 7) {
-      return ("${"Vous avez jusqu'au".tr()} ${formatDateLiteral(endDate)}");
+      return "Vous avez jusqu'au ${formatDateLiteral(endDate)}";
     }
   }
 
   return formattedDate;
 }
 
-String formatCompareDateUnikReturnWellValue(
-  String endDate,
-) {
-  final dateTime = DateTime.parse(endDate);
-  final formattedDate = DateFormat("yyy-MM-dd").format(dateTime);
+// Comparaison de dates avec des valeurs bien définies (format unique)
+String formatCompareDateUnikReturnWellValue(String endDate) {
+  final dateTime = DateTime.parse(endDate).toLocal(); // Conversion en heure locale
+  final formattedDate = DateFormat("yyyy-MM-dd").format(dateTime);
 
   DateTime endDateApi = DateTime.parse(formattedDate);
   DateTime dt2 = DateTime.now();
@@ -145,49 +146,48 @@ String formatCompareDateUnikReturnWellValue(
   Duration diff = endDateApi.difference(dt2);
 
   if (endDateApi.compareTo(dt2) == 0) {
-    return ("À l'instant".tr());
+    return "À l'instant";
   }
 
   if (endDateApi.compareTo(dt2) < 0) {
-    print("DT1 est avant DT2 ${endDateApi.compareTo(dt2)}");
-
     if (diff.inMinutes * -1 < 1) {
-      return ("À l'instant".tr());
-    } else if (diff.inMinutes * -1 > 1 && (diff.inHours * -1) < 1) {
-      return ("${"Retard de".tr()} ${diff.inMinutes * -1} ${"minutes".tr()}");
-    } else if (diff.inHours * -1 > 1 && (diff.inDays * -1) < 1) {
-      return ("${"Retard de".tr()} ${diff.inHours * -1} ${"heures".tr()}");
-    } else if ((diff.inDays * -1) >= 1 && (diff.inDays * -1) <= 6) {
-      return ("${"Retard de".tr()} ${diff.inDays * -1} ${"jours".tr()}");
-    } else if ((diff.inDays * -1) == 7) {
-      return ("Retard de 1 semaine".tr());
-    } else if ((diff.inDays * -1) > 7) {
-      return ("${"Retard depuis".tr()} ${formatDateUnikLiteral(endDate)}");
+      return "À l'instant";
+    } else if (diff.inMinutes * -1 > 1 && diff.inHours * -1 < 1) {
+      return "Retard de ${diff.inMinutes * -1} minutes";
+    } else if (diff.inHours * -1 > 1 && diff.inDays * -1 < 1) {
+      return "Retard de ${diff.inHours * -1} heures";
+    } else if (diff.inDays * -1 >= 1 && diff.inDays * -1 <= 6) {
+      return "Retard de ${diff.inDays * -1} jours";
+    } else if (diff.inDays * -1 == 7) {
+      return "Retard de 1 semaine";
+    } else if (diff.inDays * -1 > 7) {
+      return "Retard depuis ${formatDateUnikLiteral(endDate)}";
     }
   }
 
   if (endDateApi.compareTo(dt2) > 0) {
     if (diff.inMinutes < 1) {
-      return ("Il vous reste moins d'une minute".tr());
+      return "Il vous reste moins d'une minute";
     } else if (diff.inMinutes > 1 && diff.inHours < 1) {
-      return ("${"Il vous reste".tr()} ${diff.inMinutes} ${"minutes".tr()}");
+      return "Il vous reste ${diff.inMinutes} minutes";
     } else if (diff.inHours > 1 && diff.inDays < 1) {
-      return ("${"Il vous reste".tr()} ${diff.inHours} ${"heures".tr()}");
+      return "Il vous reste ${diff.inHours} heures";
     } else if (diff.inDays >= 1 && diff.inDays <= 6) {
-      return ("${"Il vous reste".tr()} ${diff.inDays} ${"jours".tr()}");
+      return "Il vous reste ${diff.inDays} jours";
     } else if (diff.inDays == 7) {
-      return ("Il vous reste 1 semaine".tr());
+      return "Il vous reste 1 semaine";
     } else if (diff.inDays > 7) {
-      return ("${"Vous avez jusqu'au".tr()} ${formatDateUnikLiteral(endDate)}");
+      return "Vous avez jusqu'au ${formatDateUnikLiteral(endDate)}";
     }
   }
 
   return formattedDate;
 }
 
+// Comparaison de dates avec des valeurs bien définies (pour sanctions récentes)
 String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
-  final dateTime = DateTime.parse(endDate);
-  final formattedDate = DateFormat("yyy-MM-dd HH:mm:ss").format(dateTime);
+  final dateTime = DateTime.parse(endDate).toLocal(); // Conversion en heure locale
+  final formattedDate = DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime);
 
   DateTime endDateApi = DateTime.parse(formattedDate);
   DateTime dt2 = DateTime.now();
@@ -195,24 +195,22 @@ String formatCompareDateReturnWellValueSanctionRecent(String endDate) {
   Duration diff = endDateApi.difference(dt2);
 
   if (endDateApi.compareTo(dt2) == 0) {
-    return ("À l'instant".tr());
+    return "À l'instant";
   }
 
   if (endDateApi.compareTo(dt2) < 0) {
-    print("DT1 est  DT2");
-
     if (diff.inMinutes * -1 < 1) {
-      return ("À l'instant".tr());
-    } else if (diff.inMinutes * -1 > 1 && (diff.inHours * -1) < 1) {
-      return ("${"Depuis".tr()} ${diff.inMinutes * -1} ${"minutes".tr()}");
-    } else if (diff.inHours * -1 > 1 && (diff.inDays * -1) < 1) {
-      return ("${"Depuis".tr()} ${diff.inHours * -1} ${"heures".tr()}");
-    } else if ((diff.inDays * -1) >= 1 && (diff.inDays * -1) <= 6) {
-      return ("${"Depuis".tr()} ${diff.inDays * -1} ${"jours".tr()}");
-    } else if ((diff.inDays * -1) == 7) {
-      return ("Depuis 1 semaine".tr());
-    } else if ((diff.inDays * -1) > 7) {
-      return ("${"Depuis".tr()} ${formatDateLiteral(endDate)}");
+      return "À l'instant";
+    } else if (diff.inMinutes * -1 > 1 && diff.inHours * -1 < 1) {
+      return "Depuis ${diff.inMinutes * -1} minutes";
+    } else if (diff.inHours * -1 > 1 && diff.inDays * -1 < 1) {
+      return "Depuis ${diff.inHours * -1} heures";
+    } else if (diff.inDays * -1 >= 1 && diff.inDays * -1 <= 6) {
+      return "Depuis ${diff.inDays * -1} jours";
+    } else if (diff.inDays * -1 == 7) {
+      return "Depuis 1 semaine";
+    } else if (diff.inDays * -1 > 7) {
+      return "Depuis ${formatDateLiteral(endDate)}";
     }
   }
 
@@ -297,12 +295,13 @@ checkAdminStatus(bool isAdmin) {
 // }
 
 String formatDateTimeintegral(String lang, String dateTimeStr) {
-  // Conversion de la chaîne de date en objet DateTime
-  DateTime dateTime = DateTime.parse(dateTimeStr);
+  // Conversion de la chaîne de date en objet DateTime et conversion en heure locale
+  DateTime dateTime = DateTime.parse(dateTimeStr).toLocal();
 
   // Récupération du nom du jour de la semaine et du mois en fonction de la langue
   String dayOfWeek;
   String month;
+
   if (lang.toLowerCase() == 'en') {
     dayOfWeek = DateFormat.E().format(dateTime);
     month = DateFormat.MMM().format(dateTime);
@@ -310,7 +309,7 @@ String formatDateTimeintegral(String lang, String dateTimeStr) {
     dayOfWeek = DateFormat.E('fr_FR').format(dateTime);
     month = DateFormat.MMM('fr_FR').format(dateTime);
   } else {
-    return "Langue non prise en charge";
+    return "Language not supported"; // Message en anglais pour les langues non supportées
   }
 
   // Formattage de la date dans le format demandé
@@ -541,63 +540,64 @@ partagerContributionTontine({
 }
 
 bool hasPassed48Hours(String dateString) {
-  // Convertir la chaîne en objet DateTime
-  DateTime givenDate = DateTime.parse(dateString);
+  try {
+    // Convertir la chaîne en objet DateTime et la convertir en heure locale
+    DateTime givenDate = DateTime.parse(dateString).toLocal();
 
-  // Date actuelle
-  DateTime now = DateTime.now();
+    // Date actuelle en heure locale
+    DateTime now = DateTime.now();
 
-  // Calculer la différence en heures entre maintenant et la date donnée
-  Duration difference = now.difference(givenDate);
+    // Calculer la différence en heures entre maintenant et la date donnée
+    Duration difference = now.difference(givenDate);
 
-  // Nombre d'heures dans 48 heures
-  Duration fortyEightHours = Duration(hours: 48);
+    // Nombre d'heures dans 48 heures
+    Duration fortyEightHours = Duration(hours: 48);
 
-  // Vérifier si la différence est d'au moins 48 heures
-  return difference >= fortyEightHours;
+    // Vérifier si la différence est d'au moins 48 heures
+    return difference >= fortyEightHours;
+  } catch (e) {
+    // Gérer les erreurs de parsing de date
+    print('Erreur lors de la conversion de la date : $e');
+    return false;
+  }
 }
 
-bool isPasseDate(dateRencontreAPI) {
-  // Date récupérée de l'API (sous forme de String)
-  String apiDateString = dateRencontreAPI;
+bool isPasseDate(String dateRencontreAPI) {
+  try {
+    // Conversion de la chaîne en un objet DateTime et la convertir en heure locale
+    DateTime apiDate = DateTime.parse(dateRencontreAPI).toLocal();
 
-  // Conversion de la chaîne en un objet DateTime
-  DateTime apiDate = DateTime.parse(apiDateString);
+    // Date actuelle en heure locale
+    DateTime now = DateTime.now();
 
-  // Date actuelle
-  DateTime now = DateTime.now();
-
-  // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
-  if (apiDate.isBefore(now)) {
-    print('La date de l\'API est passée par rapport à la date actuelle..');
-    return true;
-  } else {
+    // Comparaison pour savoir si la date de l'API est passée par rapport à la date actuelle
+    return apiDate.isBefore(now);
+  } catch (e) {
+    // Gérer les erreurs de parsing de date
+    print('Erreur lors de la conversion de la date : $e');
     return false;
   }
 }
 
 bool isPasseDateOneDay(String dateRencontreAPI) {
-  // Date récupérée de l'API (sous forme de String)
-  String apiDateString = dateRencontreAPI;
+  try {
+    // Conversion de la chaîne en un objet DateTime et la convertir en heure locale
+    DateTime apiDate = DateTime.parse(dateRencontreAPI).toLocal();
 
-  // Conversion de la chaîne en un objet DateTime
-  DateTime apiDate = DateTime.parse(apiDateString);
+    // Date actuelle en heure locale
+    DateTime now = DateTime.now();
 
-  // Date actuelle
-  DateTime now = DateTime.now();
+    // Durée maximale de 24 heures
+    Duration seuil = Duration(hours: 24);
 
-  // Durée maximale de 24 heures
-  Duration seuil = Duration(hours: 24);
+    // Calcul de la différence entre maintenant et la date de l'API
+    Duration difference = now.difference(apiDate);
 
-  // Calcul de la différence entre maintenant et la date de l'API
-  Duration difference = now.difference(apiDate);
-
-  // Comparaison pour vérifier si la différence est supérieure à 24 heures
-  if (difference > seuil) {
-    print(
-        'La date de l\'API est passée de plus de 24 heures par rapport à la date actuelle.');
-    return true;
-  } else {
+    // Comparaison pour vérifier si la différence est supérieure à 24 heures
+    return difference > seuil;
+  } catch (e) {
+    // Gérer les erreurs de parsing de date
+    print('Erreur lors de la conversion de la date : $e');
     return false;
   }
 }

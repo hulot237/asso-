@@ -80,7 +80,7 @@ class DetailContributionPage extends StatefulWidget {
 Widget PageScaffold({
   required BuildContext context,
   required Widget child,
-   fromNotification,
+  fromNotification,
 }) {
   if (Platform.isIOS) {
     return CupertinoPageScaffold(
@@ -96,7 +96,7 @@ Widget PageScaffold({
         ),
         leading: InkWell(
           onTap: () {
-              fromNotification
+            fromNotification
                 ? Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -128,14 +128,14 @@ Widget PageScaffold({
       elevation: 0,
       leading: InkWell(
         onTap: () {
-           fromNotification
-                ? Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  )
-                : Navigator.pop(context);
+          fromNotification
+              ? Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ),
+                )
+              : Navigator.pop(context);
         },
         child: BackButtonWidget(
           colorIcon: AppColors.white,
@@ -167,6 +167,39 @@ class _DetailContributionPageState extends State<DetailContributionPage>
 
   //   if (allCotisationAss != null) {
   //   } else {}
+  // }
+
+  // Future handleChangeAss(codeAss) async {
+  //   final ChangeAss =
+  //       await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
+
+  //   await AppCubitStorage().updateCodeAssDefaul(codeAss);
+
+  //   await AppCubitStorage().updatemembreCode(
+  //     context.read<UserGroupCubit>().state.changeAssData!.membre!.membre_code!,
+  //   );
+
+  //   await AppCubitStorage().updateCodeTournoisDefault(context
+  //       .read<UserGroupCubit>()
+  //       .state
+  //       .changeAssData!
+  //       .user_group!
+  //       .tournois![0]
+  //       .tournois_code!);
+  //   await AppCubitStorage().updateCodeTournoisHist(context
+  //       .read<UserGroupCubit>()
+  //       .state
+  //       .changeAssData!
+  //       .user_group!
+  //       .tournois![0]
+  //       .tournois_code!);
+
+  //   Navigator.of(context).pushAndRemoveUntil(
+  //     MaterialPageRoute(
+  //       builder: (BuildContext context) => HomeCentraleScreen(),
+  //     ),
+  //     (route) => false,
+  //   );
   // }
 
   Future refresh() async {

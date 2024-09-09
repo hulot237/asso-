@@ -59,8 +59,55 @@ class _SplashRedirectNotifScreenState extends State<SplashRedirectNotifScreen> {
         final currentDetailCotisation =
             await handleDetailCotisation(widget.codeElt);
 
+
+                                                                          String nomBeneficiaire = '';
+
         // Navigate to DetailCotisationPage after the data is loaded
         if (currentDetailCotisation != null) {
+
+
+        if (currentDetailCotisation['receivers'] != null && currentDetailCotisation['receivers'].isNotEmpty) {
+          final receivers = currentDetailCotisation['receivers'] as List<dynamic>;
+
+          // Déboguer les données
+          print('Receivers: $receivers');
+
+          final namesList = receivers.map((receiver) {
+            final membre = receiver['membre'];
+            // Déboguer le membre
+            print('Membre: $membre');
+
+            if (membre != null) {
+              final firstName = membre['first_name'] ?? '';
+              final lastName = membre['last_name'] ?? '';
+              return '$firstName $lastName'.trim();
+            }
+            return '';
+          }).toList();
+
+          // Déboguer la liste des noms
+          print('Names List: $namesList');
+
+          nomBeneficiaire = namesList
+              .where((name) => name.isNotEmpty)
+              .join(', ');
+
+          // Déboguer le résultat final
+          print('Nom Beneficiaire: $nomBeneficiaire');
+        } else {
+          // Déboguer le cas où receivers est nul ou vide
+          print('Receivers is null or empty');
+          
+          final membre = currentDetailCotisation['membre'];
+          nomBeneficiaire = (membre != null)
+            ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
+            : '';
+          
+          // Déboguer le nom du bénéficiaire
+          print('Nom Beneficiaire (from main member): $nomBeneficiaire');
+        }
+
+
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => DetailCotisationPage(
@@ -88,9 +135,7 @@ class _SplashRedirectNotifScreenState extends State<SplashRedirectNotifScreen> {
                 source: currentDetailCotisation["seance"] == null
                     ? ''
                     : '${'rencontre'.tr()} ${currentDetailCotisation["seance"]["matricule"]} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", currentDetailCotisation["seance"]["date_seance"])}',
-                nomBeneficiaire: currentDetailCotisation["membre"] == null
-                    ? ''
-                    : '${currentDetailCotisation["membre"]["last_name"] == null ? "${currentDetailCotisation["membre"]["first_name"]}" : "${currentDetailCotisation["membre"]["first_name"]} ${currentDetailCotisation["membre"]["last_name"]}"}',
+                nomBeneficiaire: nomBeneficiaire,
                 isPassed: currentDetailCotisation["is_passed"],
               ),
             ),

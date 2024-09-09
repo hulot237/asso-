@@ -2,6 +2,7 @@ import 'package:faroty_association_1/Association_And_Group/association/business_
 import 'package:faroty_association_1/Association_And_Group/association/data/association_repository.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
+import 'package:faroty_association_1/localStorage/localCubit.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 // import 'package:integration_part_one/proposition/business_logic/proposition_state.dart';
 // import 'package:integration_part_one/proposition/data/proposition_repository.dart';
@@ -68,11 +69,24 @@ class UserGroupCubit extends Cubit<UserGroupState> {
         changeAssData: state.changeAssData,
         isLoadingChangeAss: true,
         userGroup: state.userGroup,
-        errorLoadDetailChangeAss: state.errorLoadDetailChangeAss
+        errorLoadDetailChangeAss: state.errorLoadDetailChangeAss,
       ),
     );
     try {
       final data = await UserGroupRepository().ChangerAss(codeAss);
+      await AppCubitStorage().updateCodeTournoisDefault(
+        data.user_group!.tournois![0].tournois_code!,
+      );
+      await AppCubitStorage().updateCodeTournoisHist(
+        data.user_group!.tournois![0].tournois_code!,
+      );
+      //     context
+      // .read<UserGroupCubit>()
+      // .state
+      // .changeAssData!
+      // .user_group!
+      // .tournois![0]
+      // .tournois_code!
 
       emit(
         state.copyWith(
@@ -85,9 +99,7 @@ class UserGroupCubit extends Cubit<UserGroupState> {
     } catch (e) {
       emit(
         state.copyWith(
-          isLoadingChangeAss: false,
-          errorLoadDetailChangeAss: true
-        ),
+            isLoadingChangeAss: false, errorLoadDetailChangeAss: true),
       );
     }
   }
