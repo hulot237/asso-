@@ -336,6 +336,7 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                                       },
                                       child: Container(
                                         alignment: Alignment.center,
+                                        margin: EdgeInsets.only(left: 5.w),
                                         // width: 72.w,
                                         padding: EdgeInsets.symmetric(
                                           horizontal: 10.w,
