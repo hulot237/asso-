@@ -15,6 +15,8 @@ import 'package:faroty_association_1/Association_And_Group/association_tontine/b
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_update_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/business_logic/tontine_perso_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/business_logic/transaction_tontine_perso_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/network/localisation_phone/business_logic/localisation_phone_cubit.dart';
 import 'package:faroty_association_1/network/session_activity/session_cubit.dart';
@@ -150,6 +152,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SanctionCubit()),
         BlocProvider(create: (context) => LocalisationPhoneCubit()),
         BlocProvider(create: (context) => HelpCenterCubit()),
+        BlocProvider(create: (context) => TontinePersoCubit()),
+        BlocProvider(create: (context) => TransactionTontinePersoCubit()),
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),

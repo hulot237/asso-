@@ -18,6 +18,9 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
             isLoading: false,
             trakingData: null,
             dataCookies: null,
+            maskSold: false,
+            passWordTontinePerso:null,
+            isNoSubmit: true,
           ),
         );
 
@@ -37,6 +40,9 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       isLoading: json["isLoading"],
       trakingData: json["trakingData"],
       dataCookies: json["dataCookies"],
+      maskSold: json["maskSold"],
+      isNoSubmit: json["isNoSubmit"],
+      passWordTontinePerso: json["passWordTontinePerso"]
     );
   }
 
@@ -56,6 +62,9 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
       "trakingData": state.trakingData,
       'codeTournoisHist': state.codeTournoisHist,
       'dataCookies': state.dataCookies,
+      'maskSold': state.maskSold,
+      'isNoSubmit':state.isNoSubmit,
+      'passWordTontinePerso': state.passWordTontinePerso,
     };
   }
 
@@ -76,6 +85,71 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     emit(
       state.copyWith(
         tokenNotification: newNotification,
+        isLoading: false,
+      ),
+    );
+  }
+
+  Future<void> updateMaskSold(bool newValue) async {
+    bool donneesChargees = false;
+    emit(state.copyWith(isLoading: true));
+    do {
+      await Future.delayed(
+        Duration(
+          seconds: 1,
+        ),
+      );
+      if (newValue != null) {
+        donneesChargees = true;
+      }
+    } while (!donneesChargees);
+    emit(
+      state.copyWith(
+        maskSold: newValue,
+        isLoading: false,
+      ),
+    );
+  } 
+  
+
+    Future<void> updatepassWordTontinePerso(String newValue) async {
+    bool donneesChargees = false;
+    emit(state.copyWith(isLoading: true));
+    do {
+      await Future.delayed(
+        Duration(
+          seconds: 1,
+        ),
+      );
+      if (newValue != null) {
+        donneesChargees = true;
+      }
+    } while (!donneesChargees);
+    emit(
+      state.copyWith(
+        passWordTontinePerso: newValue,
+        isLoading: false,
+      ),
+    );
+  } 
+  
+   Future<void> updateIsNoSubmit(bool newValue) async {
+    bool donneesChargees = false;
+    emit(state.copyWith(isLoading: true));
+    do {
+      await Future.delayed(
+        Duration(
+          seconds: 1,
+        ),
+      );
+      if (newValue != null) {
+        donneesChargees = true;
+      }
+    } while (!donneesChargees);
+    
+    emit(
+      state.copyWith(
+        isNoSubmit: newValue,
         isLoading: false,
       ),
     );
@@ -249,8 +323,7 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
     );
   }
 
-
-    Future<void> updateDataCookies(String newValue) async {
+  Future<void> updateDataCookies(String newValue) async {
     bool donneesChargees = false;
     emit(state.copyWith(isLoading: true));
 
@@ -356,5 +429,4 @@ class AppCubitStorage extends HydratedCubit<AppStorageModel> {
   //         'Erreur lors de l\'envoi des données à l\'API: ${response.statusCode}');
   //   }
   // }
-  
 }

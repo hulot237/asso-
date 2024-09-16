@@ -10,6 +10,7 @@ import 'package:faroty_association_1/Association_And_Group/association_recent_ev
 import 'package:faroty_association_1/Association_And_Group/association_sanction/business_logic/sanction_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/business_logic/tontine_perso_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Theming/color.dart';
@@ -300,6 +301,7 @@ class _HomeCentraleScreenState extends State<HomeCentraleScreen> {
                   handleRecentEvent(AppCubitStorage().state.membreCode);
                   handleDetailUser(AppCubitStorage().state.membreCode,
                       AppCubitStorage().state.codeTournois);
+                      context.read<TontinePersoCubit>().fetchTontinePerso();
                   context.read<AuthCubit>().getUid();
                   context.read<PretEpargneCubit>().getEpargne();
                   context.read<PretEpargneCubit>().getPret();

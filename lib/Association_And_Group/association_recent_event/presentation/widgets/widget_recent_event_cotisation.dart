@@ -436,7 +436,7 @@ class _widgetRecentEventCotisationState
                                             widget.type == "1" ? true : false,
                                             widget.nomBeneficiaire,
                                             widget.source,
-                                            widget.dateClose);
+                                            widget.dateClose,);
                                   }
                                 },
                                 child: Row(
@@ -527,6 +527,9 @@ class _widgetRecentEventCotisationState
                                   ),
                                 ],
                               ),
+                         
+                         
+                         
                           ],
                         ),
                       ],
@@ -559,7 +562,7 @@ class _widgetRecentEventCotisationState
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.blackBlueAccent1,
+                              color: const Color.fromARGB(121, 12, 88, 252),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

@@ -629,12 +629,14 @@ class _widgetDetailRencontreCardState extends State<widgetDetailRencontreCard>
                                 message =
                                     "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(widget.dateRencontreAPI)}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
 
+
+
                                 message +=
-                                    "👉🏽 ${"recepteur".tr().toUpperCase()} : *${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}*\n";
+                                    "🙋🏼‍♂️ ${"recepteur".tr().toUpperCase()} : *${widget.nomRecepteurRencontre} ${widget.prenomRecepteurRencontre}*\n";
                                 message +=
-                                    "👉🏽 ${"lieu".tr().toUpperCase()} : *${widget.lieuRencontre}*\n";
+                                    "📍 ${"lieu".tr().toUpperCase()} : *${widget.lieuRencontre}*\n";
                                 message +=
-                                    "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(widget.dateRencontreAPI)}*\n\n";
+                                    "🕐 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(widget.dateRencontreAPI)}*\n\n";
 
                                 message +=
                                     "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";

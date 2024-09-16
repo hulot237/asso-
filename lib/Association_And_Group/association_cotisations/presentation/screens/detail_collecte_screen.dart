@@ -271,7 +271,7 @@ class _DetailCollectePageState extends State<DetailCollectePage>
                                         ),
                                         Container(
                                           child: Text(
-                                            "${formatMontantFrancais(double.parse("${participant.amount}"))} FCFA / ${widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse("${500}"))} FCFA"}",
+                                            "${formatMontantFrancais(double.parse("${participant.amount}"))} FCFA ${widget.type == "1" ?"" : "/ ${formatMontantFrancais(double.parse("${widget.montantCotisations}"))} FCFA"}",
                                             style: TextStyle(
                                               fontSize: 12.sp,
                                               fontWeight: FontWeight.w800,

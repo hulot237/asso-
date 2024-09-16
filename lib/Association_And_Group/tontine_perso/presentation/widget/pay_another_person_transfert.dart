@@ -9,6 +9,7 @@ import 'package:faroty_association_1/Association_And_Group/association_recent_ev
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/presentation/widget/pay_form_transfert.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
 import 'package:faroty_association_1/Modals/showAllModal.dart';
@@ -21,8 +22,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
 
-class widgetPayAnotherPerson extends StatefulWidget {
-  widgetPayAnotherPerson({
+class PayAnotherPersonTransfert extends StatefulWidget {
+  PayAnotherPersonTransfert({
     super.key,
     required this.imageProfil,
     required this.nom,
@@ -42,6 +43,10 @@ class widgetPayAnotherPerson extends StatefulWidget {
     this.nomBeneficiaire,
     this.source,
     required this.isTontine,
+    required this.sourceCode,
+    required this.typeId,
+    required this.publicRef,
+
   });
 
   String imageProfil;
@@ -62,12 +67,16 @@ class widgetPayAnotherPerson extends StatefulWidget {
   var nomTontine;
   var montantTontine;
   var isVolontaire;
+  String sourceCode;
+  String typeId;
+  String publicRef;
 
   @override
-  State<widgetPayAnotherPerson> createState() => _widgetPayAnotherPersonState();
+  State<PayAnotherPersonTransfert> createState() =>
+      _PayAnotherPersonTransfertState();
 }
 
-class _widgetPayAnotherPersonState extends State<widgetPayAnotherPerson> {
+class _PayAnotherPersonTransfertState extends State<PayAnotherPersonTransfert> {
   @override
   Widget build(BuildContext context) {
     String? jsonString = context.read<AuthCubit>().state.dataCookies;
@@ -79,10 +88,12 @@ class _widgetPayAnotherPersonState extends State<widgetPayAnotherPerson> {
     String hashId = data['user']['hash_id'];
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
-        launchWeb(
-          "https://${widget.lienDePaiement}?code=${widget.memberCode}",
-        );
+        // launchWeb(
+        //   "https://${widget.lienDePaiement}?code=${widget.memberCode}",
+        // );
+
+        showTransferPopup(context, typeId: widget.typeId , publicRef: widget.publicRef , sourceCode: widget.sourceCode, membreCode: widget.memberCode);
+        // Navigator.pop(context);
       },
       child: Container(
         // margin: EdgeInsets.all(8),
@@ -199,7 +210,8 @@ class _widgetPayAnotherPersonState extends State<widgetPayAnotherPerson> {
                     message +=
                         "👉🏽 ${"Date limite".tr().toUpperCase()} : *${widget.date}*\n\n";
 
-                    message += "${"Aide-moi à payer ma tontine en suivant le lien".tr()} https://${widget.lienDePaiement}?code=${widget.memberCode}\n\n";
+                    message +=
+                        "${"Aide-moi à payer ma tontine en suivant le lien".tr()} https://${widget.lienDePaiement}?code=${widget.memberCode}\n\n";
 
                     message += "*by ASSO+*";
 
@@ -224,213 +236,24 @@ class _widgetPayAnotherPersonState extends State<widgetPayAnotherPerson> {
       ),
     );
   }
+
+  void showTransferPopup(
+    BuildContext context, {
+    required String typeId,
+    required String publicRef,
+    required String sourceCode,
+    required String membreCode,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PayFormTransfert(
+          publicRef: publicRef,
+          typeId: typeId,
+          sourceCode: sourceCode,
+          membreCode: membreCode,
+        );
+      },
+    );
+  }
 }
-
-// _showSimpleModalDialog(
-//   context,
-//   nom,
-//   resteAPayer,
-//   codeCotisation,
-//   codeMembre,
-//   hashId,
-//   codeUserContribution,
-//   codeTontine,
-// ) {
-//   showDialog(
-//       context: context,
-//       barrierColor: AppColors.barrierColorModal,
-//       builder: (BuildContext context) {
-//         Future<void> handleDetailCotisation(codeCotisation) async {
-//           // final detailTournoiCourant = await context
-//           //     .read<DetailTournoiCourantCubit>()
-//           //     .detailTournoiCourantCubit();
-//           final detailCotisation = await context
-//               .read<CotisationDetailCubit>()
-//               .detailCotisationCubit(codeCotisation);
-//         }
-
-//         return Dialog(
-//           shape:
-//               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
-//           child: Container(
-//             constraints: BoxConstraints(maxHeight: 250.h),
-//             child: paiementWidgetTontine(
-//               nom: nom,
-//               codeCotisation: codeCotisation,
-//               codeMembre: codeMembre,
-//               hashId: hashId,
-//               resteAPayer: resteAPayer,
-//               codeUserContribution: codeUserContribution,
-//               codeTontine: codeTontine,
-//             ),
-//           ),
-//         );
-//       });
-// }
-
-// class paiementWidgetTontine extends StatefulWidget {
-//   var nom;
-
-//   var codeCotisation;
-
-//   var codeMembre;
-
-//   var hashId;
-//   var resteAPayer;
-//   var codeUserContribution;
-//   var codeTontine;
-
-//   paiementWidgetTontine({
-//     super.key,
-//     // required this.infoUserController,
-//     required this.nom,
-//     required this.codeCotisation,
-//     required this.codeMembre,
-//     required this.hashId,
-//     required this.resteAPayer,
-//     required this.codeUserContribution,
-//     required this.codeTontine,
-//   });
-
-//   @override
-//   State<paiementWidgetTontine> createState() => _paiementWidgetTontineState();
-// }
-
-// class _paiementWidgetTontineState extends State<paiementWidgetTontine> {
-//   bool load = false;
-
-//   late TextEditingController infoUserController;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     infoUserController = TextEditingController(text: "${widget.resteAPayer}");
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: EdgeInsets.all(12.r),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           SizedBox(
-//             height: 10.h,
-//           ),
-//           Text.rich(
-//             textAlign: TextAlign.center,
-//             TextSpan(
-//               style: TextStyle(
-//                 fontSize: 14.sp,
-//                 color: AppColors.blackBlue,
-//               ),
-//               text: 'Vous avez reçu un paiement de '.tr(),
-//               children: <InlineSpan>[
-//                 TextSpan(
-//                   text: '${widget.nom}',
-//                   style: TextStyle(
-//                       fontSize: 14.sp,
-//                       fontWeight: FontWeight.bold,
-//                       color: AppColors.blackBlue),
-//                 )
-//               ],
-//             ),
-//           ),
-//           SizedBox(
-//             height: 20.h,
-//           ),
-//           SizedBox(
-//             height: 60.h,
-//             child: TextField(
-//               controller: infoUserController,
-//               keyboardType: TextInputType.number,
-//               autofocus: true,
-//               style: TextStyle(fontSize: 20.sp),
-//               decoration: InputDecoration(
-//                   enabledBorder: OutlineInputBorder(
-//                     borderSide: BorderSide(
-//                       width: 1.w,
-//                       color: AppColors.blackBlue,
-//                     ),
-//                   ),
-//                   focusedBorder: OutlineInputBorder(
-//                     borderSide: BorderSide(
-//                       width: 1.w,
-//                       color: AppColors.blackBlue,
-//                     ),
-//                   )),
-//             ),
-//           ),
-//           SizedBox(
-//             height: 30.h,
-//           ),
-//           InkWell(
-//             onTap: () async {
-//               setState(() {
-//                 load = true;
-//               });
-//               print(load);
-//               await CotisationRepository().PayOneCotisation(
-//                 widget.codeCotisation,
-//                 infoUserController.text,
-//                 widget.codeMembre,
-//                 AppCubitStorage().state.codeAssDefaul,
-//                 widget.hashId,
-//                 widget.codeUserContribution == "" ? 3 : 8,
-//                 // 8,
-//                 contribution_code: widget.codeUserContribution,
-//               );
-//               // await context
-//               //     .read<DetailContributionCubit>()
-//               //     .detailContributionTontineCubit(widget.codeCotisation);
-//               await context
-//                   .read<DetailContributionCubit>()
-//                   .detailContributionTontineCubit(
-//                     widget.codeCotisation,
-//                   );
-//               if (widget.codeTontine != null) {
-//                 await context.read<TontineCubit>().detailTontineCubit(
-//                     AppCubitStorage().state.codeTournois, widget.codeTontine);
-//               }
-//               await context
-//                   .read<RecentEventCubit>()
-//                   .AllRecentEventCubit(AppCubitStorage().state.membreCode);
-
-//               // context.read<CotisationCubit>().AllCotisationAssTournoiCubit(
-//               //     AppCubitStorage().state.codeTournois,
-//               //     AppCubitStorage().state.membreCode);
-//               context
-//                   .read<CotisationDetailCubit>()
-//                   .detailCotisationCubit(widget.codeCotisation);
-//               setState(() {
-//                 load = false;
-//               });
-//               print(load);
-//               Navigator.pop(context);
-//             },
-//             child: load == true
-//                 ? CircularProgressIndicator(
-//                     color: AppColors.green,
-//                   )
-//                 : Container(
-//                     height: 50.h,
-//                     decoration: BoxDecoration(
-//                         color: AppColors.colorButton,
-//                         borderRadius: BorderRadius.circular(10.r)),
-//                     alignment: Alignment.center,
-//                     child: Text(
-//                       "Confirmer",
-//                       style: TextStyle(
-//                         fontSize: 20.sp,
-//                         fontWeight: FontWeight.bold,
-//                         color: AppColors.white,
-//                       ),
-//                     ),
-//                   ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }

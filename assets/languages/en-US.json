@@ -311,11 +311,13 @@
     "cotisation interne": "Internal contribution",
     "cotisation externe": "External contribution",
     "Ajouter une collecte": "Add a collection",
-    "aucune_collecte": "No collection",
+    "aucune_collecte": "No Fundraising",
     "collecte externe": "External collection",
-    "détail de la collecte": "Collection details",
+    "détail de la collecte": "Fundraising details",
     "Membres uniquement": "Members only",
     "Membres & autres": "Members & others",
     "À venir":"Soon",
-    "Tout":"All"
+    "Tout":"All",
+    "Ouvrir":"Open",
+    "Participer":"Participate"
 }

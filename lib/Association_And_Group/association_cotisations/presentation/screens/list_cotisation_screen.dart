@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:easy_loader/easy_loader.dart';
@@ -283,7 +281,7 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
           children: [
             BlocBuilder<CotisationCubit, CotisationState>(
               builder: (CotisationContext, CotisationState) {
-                      // selectedCategory = 'Toutes'.tr();
+                // selectedCategory = 'Toutes'.tr();
                 if (CotisationState.isLoadingCotis == true &&
                     CotisationState.allCotisationAss == null)
                   return Container(
@@ -296,336 +294,345 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
                       ),
                     ),
                   );
-                  
-                final currentAllCotisationAssTournoi = CotisationContext.read<CotisationCubit>().state.allCotisationAss;
 
-                List<dynamic> objetCotisationUniquement = currentAllCotisationAssTournoi!.where((objet) => objet["is_tontine"] == 0).toList();
-                
+                final currentAllCotisationAssTournoi =
+                    CotisationContext.read<CotisationCubit>()
+                        .state
+                        .allCotisationAss;
+
+                List<dynamic> objetCotisationUniquement =
+                    currentAllCotisationAssTournoi!
+                        .where((objet) => objet["is_tontine"] == 0)
+                        .toList();
+
                 // selectedCategory = 'Toutes'.tr();
 
                 return objetCotisationUniquement.length > 0
-                      ? Stack(
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    top: 10.h,
-                                  ),
-                                  child: AnimatedContainer(
-                                    duration: Duration(milliseconds: 300),
-                                    height: showCategories ? 30.h : 0,
-                                    child: SingleChildScrollView(
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          buildCategoryButton("Toutes".tr()),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                          buildCategoryButton("non_payé".tr()),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                          buildCategoryButton("en_cours".tr()),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                          buildCategoryButton("expiré".tr()),
-                                          SizedBox(
-                                            width: 15.w,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                    ? Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                  top: 10.h,
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: ListView.builder(
-                                      itemCount:
-                                          objetCotisationUniquement.length,
-                                      controller: _scrollController,
-                                      padding: EdgeInsets.only(
-                                        left: 5.w,
-                                        right: 5.w,
-                                        bottom: 70.h,
-                                        top: 5.h,
-                                      ),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        final ItemDetailCotisation =
-                                            objetCotisationUniquement[index];
-
-
-                                                                          String nomBeneficiaire = '';
-
-        if (ItemDetailCotisation['receivers'] != null && ItemDetailCotisation['receivers'].isNotEmpty) {
-          final receivers = ItemDetailCotisation['receivers'] as List<dynamic>;
-
-          // Déboguer les données
-          print('Receivers: $receivers');
-
-          final namesList = receivers.map((receiver) {
-            final membre = receiver['membre'];
-            // Déboguer le membre
-            print('Membre: $membre');
-
-            if (membre != null) {
-              final firstName = membre['first_name'] ?? '';
-              final lastName = membre['last_name'] ?? '';
-              return '$firstName $lastName'.trim();
-            }
-            return '';
-          }).toList();
-
-          // Déboguer la liste des noms
-          print('Names List: $namesList');
-
-          nomBeneficiaire = namesList
-              .where((name) => name.isNotEmpty)
-              .join(', ');
-
-          // Déboguer le résultat final
-          print('Nom Beneficiaire: $nomBeneficiaire');
-        } else {
-          // Déboguer le cas où receivers est nul ou vide
-          print('Receivers is null or empty');
-          
-          final membre = ItemDetailCotisation['membre'];
-          nomBeneficiaire = (membre != null)
-            ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
-            : '';
-          
-          // Déboguer le nom du bénéficiaire
-          print('Nom Beneficiaire (from main member): $nomBeneficiaire');
-        }
-
-
-
-                                        if (selectedCategory == "Toutes".tr() ||
-                                            (selectedCategory ==
-                                                    "non_payé".tr() &&
-                                                ItemDetailCotisation[
-                                                        "is_payed"] ==
-                                                    0) ||
-                                            (selectedCategory ==
-                                                    "en_cours".tr() &&
-                                                ItemDetailCotisation[
-                                                        "is_passed"] ==
-                                                    0) ||
-                                            (selectedCategory ==
-                                                    "expiré".tr() &&
-                                                ItemDetailCotisation[
-                                                        "is_passed"] ==
-                                                    1)) {
-                                          return Container(
-                                            margin: EdgeInsets.only(
-                                                left: 7.w,
-                                                right: 7.w,
-                                                top: 5.h,
-                                                bottom: 9.h),
-                                            child: WidgetCotisation(
-                                              rapportUrl: ItemDetailCotisation[
-                                                  "rapport"],
-                                              screenSource: "transactions",
-                                              isPayed: ItemDetailCotisation[
-                                                  "is_payed"],
-                                              rubrique: ItemDetailCotisation[
-                                                          "ass_rubrique"] ==
-                                                      null
-                                                  ? ""
-                                                  : ItemDetailCotisation[
-                                                      "ass_rubrique"]["name"],
-                                              montantCotisations:
-                                                  ItemDetailCotisation[
-                                                      "amount"],
-                                              motifCotisations:
-                                                  ItemDetailCotisation["name"],
-                                              dateCotisation:
-                                                  ItemDetailCotisation[
-                                                      "end_date"],
-                                              heureCotisation: AppCubitStorage()
-                                                          .state
-                                                          .Language ==
-                                                      "fr"
-                                                  ? formatTimeToFrench(
-                                                      ItemDetailCotisation[
-                                                          "end_date"])
-                                                  : formatTimeToEnglish(
-                                                      ItemDetailCotisation[
-                                                          "end_date"]),
-                                              soldeCotisation:
-                                                  ItemDetailCotisation[
-                                                      "total_cotise"],
-                                              codeCotisation:
-                                                  ItemDetailCotisation[
-                                                      "cotisation_code"],
-                                              type:
-                                                  ItemDetailCotisation["type"],
-                                              lienDePaiement: ItemDetailCotisation[
-                                                          "cotisation_pay_link"] ==
-                                                      null
-                                                  ? "le lien n'a pas été généré"
-                                                  : ItemDetailCotisation[
-                                                      "cotisation_pay_link"],
-                                              is_passed: ItemDetailCotisation[
-                                                  "is_passed"],
-                                              is_tontine: ItemDetailCotisation[
-                                                  "is_tontine"],
-                                              source: ItemDetailCotisation[
-                                                          "seance"] ==
-                                                      null
-                                                  ? ''
-                                                  : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", ItemDetailCotisation["seance"]["date_seance"])}',
-                                              nomBeneficiaire: nomBeneficiaire,
-                                            ),
-                                          );
-                                        } else {
-                                          return Container();
-                                        }
-                                      },
+                                child: AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
+                                  height: showCategories ? 30.h : 0,
+                                  child: SingleChildScrollView(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        buildCategoryButton("Toutes".tr()),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        buildCategoryButton("non_payé".tr()),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        buildCategoryButton("en_cours".tr()),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        buildCategoryButton("expiré".tr()),
+                                        SizedBox(
+                                          width: 15.w,
+                                        )
+                                      ],
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            AddAssoElement(
-                              screenSource: "transactions.btnAddContribution",
-                              text: "Ajouter une cotisation".tr(),
-                              routeElement: "cotisations?query=1",
-                            ),
-                            if (isLoading)
-                              Positioned(
-                                top: MediaQuery.of(context).size.height / 15,
-                                left: MediaQuery.of(context).size.width / 2,
-                                child: Container(
-                                  width: 20.r,
-                                  height: 20.r,
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.blackBlue,
                                   ),
                                 ),
                               ),
-                            if (CotisationState.isLoadingCotis == true &&
-                                CotisationState.allCotisationAss != null)
-                              EasyLoader(
-                                backgroundColor:
-                                    Color.fromARGB(0, 255, 255, 255),
-                                iconSize: 50.r,
-                                iconColor: AppColors.blackBlueAccent1,
-                                image: AssetImage(
-                                  "assets/images/AssoplusFinal.png",
+                              Expanded(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ListView.builder(
+                                    itemCount: objetCotisationUniquement.length,
+                                    controller: _scrollController,
+                                    padding: EdgeInsets.only(
+                                      left: 5.w,
+                                      right: 5.w,
+                                      bottom: 70.h,
+                                      top: 5.h,
+                                    ),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final ItemDetailCotisation =
+                                          objetCotisationUniquement[index];
+
+                                      String nomBeneficiaire = '';
+
+                                      if (ItemDetailCotisation['receivers'] !=
+                                              null &&
+                                          ItemDetailCotisation['receivers']
+                                              .isNotEmpty) {
+                                        final receivers =
+                                            ItemDetailCotisation['receivers']
+                                                as List<dynamic>;
+
+                                        // Déboguer les données
+                                        print('Receivers: $receivers');
+
+                                        final namesList =
+                                            receivers.map((receiver) {
+                                          final membre = receiver['membre'];
+                                          // Déboguer le membre
+                                          print('Membre: $membre');
+
+                                          if (membre != null) {
+                                            final firstName =
+                                                membre['first_name'] ?? '';
+                                            final lastName =
+                                                membre['last_name'] ?? '';
+                                            return '$firstName $lastName'
+                                                .trim();
+                                          }
+                                          return '';
+                                        }).toList();
+
+                                        // Déboguer la liste des noms
+                                        print('Names List: $namesList');
+
+                                        nomBeneficiaire = namesList
+                                            .where((name) => name.isNotEmpty)
+                                            .join(', ');
+
+                                        // Déboguer le résultat final
+                                        print(
+                                            'Nom Beneficiaire: $nomBeneficiaire');
+                                      } else {
+                                        // Déboguer le cas où receivers est nul ou vide
+                                        print('Receivers is null or empty');
+
+                                        final membre =
+                                            ItemDetailCotisation['membre'];
+                                        nomBeneficiaire = (membre != null)
+                                            ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'
+                                                .trim()
+                                            : '';
+
+                                        // Déboguer le nom du bénéficiaire
+                                        print(
+                                            'Nom Beneficiaire (from main member): $nomBeneficiaire');
+                                      }
+
+                                      if (selectedCategory == "Toutes".tr() ||
+                                          (selectedCategory ==
+                                                  "non_payé".tr() &&
+                                              ItemDetailCotisation[
+                                                      "is_payed"] ==
+                                                  0) ||
+                                          (selectedCategory ==
+                                                  "en_cours".tr() &&
+                                              ItemDetailCotisation[
+                                                      "is_passed"] ==
+                                                  0) ||
+                                          (selectedCategory == "expiré".tr() &&
+                                              ItemDetailCotisation[
+                                                      "is_passed"] ==
+                                                  1)) {
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              left: 7.w,
+                                              right: 7.w,
+                                              top: 5.h,
+                                              bottom: 9.h),
+                                          child: WidgetCotisation(
+                                            rapportUrl:
+                                                ItemDetailCotisation["rapport"],
+                                            screenSource: "transactions",
+                                            isPayed: ItemDetailCotisation[
+                                                "is_payed"],
+                                            rubrique: ItemDetailCotisation[
+                                                        "ass_rubrique"] ==
+                                                    null
+                                                ? ""
+                                                : ItemDetailCotisation[
+                                                    "ass_rubrique"]["name"],
+                                            montantCotisations:
+                                                ItemDetailCotisation["amount"],
+                                            motifCotisations:
+                                                ItemDetailCotisation["name"],
+                                            dateCotisation:
+                                                ItemDetailCotisation[
+                                                    "end_date"],
+                                            heureCotisation: AppCubitStorage()
+                                                        .state
+                                                        .Language ==
+                                                    "fr"
+                                                ? formatTimeToFrench(
+                                                    ItemDetailCotisation[
+                                                        "end_date"])
+                                                : formatTimeToEnglish(
+                                                    ItemDetailCotisation[
+                                                        "end_date"]),
+                                            soldeCotisation:
+                                                ItemDetailCotisation[
+                                                    "total_cotise"],
+                                            codeCotisation:
+                                                ItemDetailCotisation[
+                                                    "cotisation_code"],
+                                            type: ItemDetailCotisation["type"],
+                                            lienDePaiement: ItemDetailCotisation[
+                                                        "cotisation_pay_link"] ==
+                                                    null
+                                                ? "le lien n'a pas été généré"
+                                                : ItemDetailCotisation[
+                                                    "cotisation_pay_link"],
+                                            is_passed: ItemDetailCotisation[
+                                                "is_passed"],
+                                            is_tontine: ItemDetailCotisation[
+                                                "is_tontine"],
+                                            source: ItemDetailCotisation[
+                                                        "seance"] ==
+                                                    null
+                                                ? ''
+                                                : '${'rencontre'.tr()} ${ItemDetailCotisation["seance"]["matricule"]} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", ItemDetailCotisation["seance"]["date_seance"])}',
+                                            nomBeneficiaire: nomBeneficiaire,
+                                          ),
+                                        );
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
                                 ),
-                              )
-                          ],
-                        )
-                      : Stack(
-                          children: [
-                            ListView.builder(
-                              itemCount: 1,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  height: MediaQuery.of(context).size.height,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "aucune_cotisation".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlueAccent1,
-                                          fontWeight: FontWeight.w100,
-                                          fontSize: 20.sp,
-                                        ),
+                              ),
+                            ],
+                          ),
+                          AddAssoElement(
+                            screenSource: "transactions.btnAddContribution",
+                            text: "Ajouter une cotisation".tr(),
+                            routeElement: "cotisations?query=1",
+                          ),
+                          if (isLoading)
+                            Positioned(
+                              top: MediaQuery.of(context).size.height / 15,
+                              left: MediaQuery.of(context).size.width / 2,
+                              child: Container(
+                                width: 20.r,
+                                height: 20.r,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.blackBlue,
+                                ),
+                              ),
+                            ),
+                          if (CotisationState.isLoadingCotis == true &&
+                              CotisationState.allCotisationAss != null)
+                            EasyLoader(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              iconSize: 50.r,
+                              iconColor: AppColors.blackBlueAccent1,
+                              image: AssetImage(
+                                "assets/images/AssoplusFinal.png",
+                              ),
+                            )
+                        ],
+                      )
+                    : Stack(
+                        children: [
+                          ListView.builder(
+                            itemCount: 1,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                height: MediaQuery.of(context).size.height,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "aucune_cotisation".tr(),
+                                      style: TextStyle(
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20.sp,
                                       ),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      if (!context
-                                          .read<AuthCubit>()
-                                          .state
-                                          .detailUser!["isMember"])
-                                        InkWell(
-                                          onTap: () async {
-                                            updateTrackingData(
-                                                "transactions.btnAddContribution",
-                                                "${DateTime.now()}", {});
-                                            launchWeb(
-                                              "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                width: 2.w,
-                                                color: AppColors.blackBlue
-                                                    .withOpacity(1),
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                20.r,
-                                              ),
+                                    ),
+                                    SizedBox(
+                                      height: 8.h,
+                                    ),
+                                    if (!context
+                                        .read<AuthCubit>()
+                                        .state
+                                        .detailUser!["isMember"])
+                                      InkWell(
+                                        onTap: () async {
+                                          updateTrackingData(
+                                              "transactions.btnAddContribution",
+                                              "${DateTime.now()}", {});
+                                          launchWeb(
+                                            "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/cotisations?query=1&app_mode=mobile",
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 2.w,
+                                              color: AppColors.blackBlue
+                                                  .withOpacity(1),
                                             ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 10.w,
-                                              vertical: 7.h,
-                                            ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.5,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Text(
-                                                  "Ajouter une cotisation".tr(),
-                                                  style: TextStyle(
-                                                    color: AppColors.blackBlue
-                                                        .withOpacity(1),
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 18.sp,
-                                                    letterSpacing: 0.2.w,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 25.w,
-                                                  height: 25.w,
-                                                  margin: EdgeInsets.only(
-                                                      left: 3.w),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            360),
-                                                    border: Border.all(
-                                                      width: 2.w,
-                                                      color: AppColors.blackBlue
-                                                          .withOpacity(1),
-                                                    ),
-                                                  ),
-                                                  child: SvgPicture.asset(
-                                                    "assets/images/addIcon.svg",
-                                                    fit: BoxFit.scaleDown,
-                                                    color: AppColors.blackBlue
-                                                        .withOpacity(1),
-                                                  ),
-                                                ),
-                                              ],
+                                            borderRadius: BorderRadius.circular(
+                                              20.r,
                                             ),
                                           ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w,
+                                            vertical: 7.h,
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              1.5,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                "Ajouter une cotisation".tr(),
+                                                style: TextStyle(
+                                                  color: AppColors.blackBlue
+                                                      .withOpacity(1),
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 18.sp,
+                                                  letterSpacing: 0.2.w,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 25.w,
+                                                height: 25.w,
+                                                margin:
+                                                    EdgeInsets.only(left: 3.w),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360),
+                                                  border: Border.all(
+                                                    width: 2.w,
+                                                    color: AppColors.blackBlue
+                                                        .withOpacity(1),
+                                                  ),
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  "assets/images/addIcon.svg",
+                                                  fit: BoxFit.scaleDown,
+                                                  color: AppColors.blackBlue
+                                                      .withOpacity(1),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        
-                );
+                                      ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
               },
             ),
             BlocBuilder<CotisationCubit, CotisationState>(
@@ -642,251 +649,247 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
                       ),
                     ),
                   );
-                  // selectedCategory = 'en_cours'.tr();
+                // selectedCategory = 'en_cours'.tr();
                 final currentCollectes = context
                     .read<CotisationCubit>()
                     .state
                     .collectes!
                     .collections;
                 return currentCollectes!.length > 0
-                      ? Stack(
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    top: 10.h,
-                                  ),
-                                  child: AnimatedContainer(
-                                    duration: Duration(milliseconds: 300),
-                                    height: showCategories ? 30.h : 0,
-                                    child: SingleChildScrollView(
-                                      // scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          buildCategoryButton("Toutes".tr()),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                          buildCategoryButton("en_cours".tr()),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                          buildCategoryButton("expiré".tr()),
-                                          SizedBox(
-                                            width: 15.w,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                    ? Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                  top: 10.h,
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: ListView.builder(
-                                      itemCount: currentCollectes.length,
-                                      controller: _scrollController,
-                                      padding: EdgeInsets.only(
-                                        left: 5.w,
-                                        right: 5.w,
-                                        bottom: 70.h,
-                                        top: 5.h,
-                                      ),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        final itemCollecte =
-                                            currentCollectes[index];
-                                        if (selectedCategory == "Toutes".tr() ||(selectedCategory ==
-                                                    "en_cours".tr() &&
-                                                itemCollecte.isPassed == 0) ||
-                                            (selectedCategory ==
-                                                    "expiré".tr() &&
-                                                itemCollecte.isPassed == 1)) {
-                                          return Container(
-                                            margin: EdgeInsets.only(
-                                                left: 7.w,
-                                                right: 7.w,
-                                                top: 5.h,
-                                                bottom: 9.h),
-                                            child: WidgetCollecteExterne(
-                                              photoCol: itemCollecte.colImage!,
-                                              screenSource: "transactions",
-                                              isPayed: 1,
-                                              rubrique: itemCollecte
-                                                  .assRubrique!.name!,
-                                              montantCotisations: int.parse(
-                                                  itemCollecte.amount!),
-                                              motifCotisations:
-                                                  itemCollecte.motif!,
-                                              dateCotisation:
-                                                  itemCollecte.endDate!,
-                                              heureCotisation: AppCubitStorage()
-                                                          .state
-                                                          .Language ==
-                                                      "fr"
-                                                  ? formatTimeToFrench(
-                                                      itemCollecte.endDate!)
-                                                  : formatTimeToEnglish(
-                                                      itemCollecte.endDate!),
-                                              soldeCotisation:
-                                                  itemCollecte.collectBalance!,
-                                              codeCotisation:
-                                                  itemCollecte.code!,
-                                              type: itemCollecte.type!,
-                                              lienDePaiement:
-                                                  itemCollecte.collectPayLink!,
-                                              is_passed: itemCollecte.isPassed!,
-                                              is_tontine: 0,
-                                              description:
-                                                  itemCollecte.description!,
-                                            ),
-                                          );
-                                        } else {
-                                          return Container();
-                                        }
-                                      },
+                                child: AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
+                                  height: showCategories ? 30.h : 0,
+                                  child: SingleChildScrollView(
+                                    // scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        buildCategoryButton("Toutes".tr()),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        buildCategoryButton("en_cours".tr()),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        buildCategoryButton("expiré".tr()),
+                                        SizedBox(
+                                          width: 15.w,
+                                        )
+                                      ],
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            AddAssoElement(
-                              screenSource: "transactions.btnAddContribution",
-                              text: "Ajouter une collecte".tr(),
-                              routeElement: "collecte-externe?query=1",
-                            ),
-                            if (isLoading)
-                              Positioned(
-                                top: MediaQuery.of(context).size.height / 15,
-                                left: MediaQuery.of(context).size.width / 2,
-                                child: Container(
-                                  width: 20.r,
-                                  height: 20.r,
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.blackBlue,
                                   ),
                                 ),
                               ),
-                            if (CotisationState.isLoadingCollect == true &&
-                                CotisationState.allCotisationAss != null)
-                              EasyLoader(
-                                backgroundColor:
-                                    Color.fromARGB(0, 255, 255, 255),
-                                iconSize: 50.r,
-                                iconColor: AppColors.blackBlueAccent1,
-                                image: AssetImage(
-                                  "assets/images/AssoplusFinal.png",
+                              Expanded(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ListView.builder(
+                                    itemCount: currentCollectes.length,
+                                    controller: _scrollController,
+                                    padding: EdgeInsets.only(
+                                      left: 5.w,
+                                      right: 5.w,
+                                      bottom: 70.h,
+                                      top: 5.h,
+                                    ),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final itemCollecte =
+                                          currentCollectes[index];
+                                      if (selectedCategory == "Toutes".tr() ||
+                                          (selectedCategory ==
+                                                  "en_cours".tr() &&
+                                              itemCollecte.isPassed == 0) ||
+                                          (selectedCategory == "expiré".tr() &&
+                                              itemCollecte.isPassed == 1)) {
+                                        return Container(
+                                          margin: EdgeInsets.only(
+                                              left: 7.w,
+                                              right: 7.w,
+                                              top: 5.h,
+                                              bottom: 9.h),
+                                          child: WidgetCollecteExterne(
+                                            photoCol: itemCollecte.colImage!,
+                                            screenSource: "transactions",
+                                            isPayed: 1,
+                                            rubrique:
+                                                itemCollecte.assRubrique!.name!,
+                                            montantCotisations:
+                                                int.parse(itemCollecte.amount!),
+                                            motifCotisations:
+                                                itemCollecte.motif!,
+                                            dateCotisation:
+                                                itemCollecte.endDate!,
+                                            heureCotisation: AppCubitStorage()
+                                                        .state
+                                                        .Language ==
+                                                    "fr"
+                                                ? formatTimeToFrench(
+                                                    itemCollecte.endDate!)
+                                                : formatTimeToEnglish(
+                                                    itemCollecte.endDate!),
+                                            soldeCotisation:
+                                                itemCollecte.collectBalance!,
+                                            codeCotisation: itemCollecte.code!,
+                                            type: itemCollecte.type!,
+                                            lienDePaiement:
+                                                itemCollecte.collectPayLink!,
+                                            is_passed: itemCollecte.isPassed!,
+                                            is_tontine: 0,
+                                            description:
+                                                itemCollecte.description!,
+                                          ),
+                                        );
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
                                 ),
-                              )
-                          ],
-                        )
-                      : Stack(
-                          children: [
-                            ListView.builder(
-                              itemCount: 1,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  height: MediaQuery.of(context).size.height,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "aucune_collecte".tr(),
-                                        style: TextStyle(
-                                          color: AppColors.blackBlueAccent1,
-                                          fontWeight: FontWeight.w100,
-                                          fontSize: 20.sp,
-                                        ),
+                              ),
+                            ],
+                          ),
+                          AddAssoElement(
+                            screenSource: "transactions.btnAddContribution",
+                            text: "Ajouter une collecte".tr(),
+                            routeElement: "collecte-externe?query=1",
+                          ),
+                          if (isLoading)
+                            Positioned(
+                              top: MediaQuery.of(context).size.height / 15,
+                              left: MediaQuery.of(context).size.width / 2,
+                              child: Container(
+                                width: 20.r,
+                                height: 20.r,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.blackBlue,
+                                ),
+                              ),
+                            ),
+                          if (CotisationState.isLoadingCollect == true &&
+                              CotisationState.allCotisationAss != null)
+                            EasyLoader(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              iconSize: 50.r,
+                              iconColor: AppColors.blackBlueAccent1,
+                              image: AssetImage(
+                                "assets/images/AssoplusFinal.png",
+                              ),
+                            )
+                        ],
+                      )
+                    : Stack(
+                        children: [
+                          ListView.builder(
+                            itemCount: 1,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                height: MediaQuery.of(context).size.height,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "aucune_collecte".tr(),
+                                      style: TextStyle(
+                                        color: AppColors.blackBlueAccent1,
+                                        fontWeight: FontWeight.w100,
+                                        fontSize: 20.sp,
                                       ),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      if (!context
-                                          .read<AuthCubit>()
-                                          .state
-                                          .detailUser!["isMember"])
-                                        InkWell(
-                                          onTap: () async {
-                                            updateTrackingData(
-                                                "transactions.btnAddCollecte",
-                                                "${DateTime.now()}", {});
-                                            launchWeb(
-                                              "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/collecte-externe?query=1&app_mode=mobile",
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                width: 2.w,
-                                                color: AppColors.blackBlue
-                                                    .withOpacity(1),
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                20.r,
-                                              ),
+                                    ),
+                                    SizedBox(
+                                      height: 8.h,
+                                    ),
+                                    if (!context
+                                        .read<AuthCubit>()
+                                        .state
+                                        .detailUser!["isMember"])
+                                      InkWell(
+                                        onTap: () async {
+                                          updateTrackingData(
+                                              "transactions.btnAddCollecte",
+                                              "${DateTime.now()}", {});
+                                          launchWeb(
+                                            "https://auth.faroty.com/hello.html?user_data=${context.read<AuthCubit>().state.dataCookies}&group_current_page=${AppCubitStorage().state.codeAssDefaul}&callback=https://groups.faroty.com/collecte-externe?query=1&app_mode=mobile",
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 2.w,
+                                              color: AppColors.blackBlue
+                                                  .withOpacity(1),
                                             ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 10.w,
-                                              vertical: 7.h,
-                                            ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.5,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Text(
-                                                  "Ajouter une collecte".tr(),
-                                                  style: TextStyle(
-                                                    color: AppColors.blackBlue
-                                                        .withOpacity(1),
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 18.sp,
-                                                    letterSpacing: 0.2.w,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 25.w,
-                                                  height: 25.w,
-                                                  margin: EdgeInsets.only(
-                                                      left: 3.w),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            360),
-                                                    border: Border.all(
-                                                      width: 2.w,
-                                                      color: AppColors.blackBlue
-                                                          .withOpacity(1),
-                                                    ),
-                                                  ),
-                                                  child: SvgPicture.asset(
-                                                    "assets/images/addIcon.svg",
-                                                    fit: BoxFit.scaleDown,
-                                                    color: AppColors.blackBlue
-                                                        .withOpacity(1),
-                                                  ),
-                                                ),
-                                              ],
+                                            borderRadius: BorderRadius.circular(
+                                              20.r,
                                             ),
                                           ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w,
+                                            vertical: 7.h,
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              1.5,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                "Ajouter une collecte".tr(),
+                                                style: TextStyle(
+                                                  color: AppColors.blackBlue
+                                                      .withOpacity(1),
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 18.sp,
+                                                  letterSpacing: 0.2.w,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 25.w,
+                                                height: 25.w,
+                                                margin:
+                                                    EdgeInsets.only(left: 3.w),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360),
+                                                  border: Border.all(
+                                                    width: 2.w,
+                                                    color: AppColors.blackBlue
+                                                        .withOpacity(1),
+                                                  ),
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  "assets/images/addIcon.svg",
+                                                  fit: BoxFit.scaleDown,
+                                                  color: AppColors.blackBlue
+                                                      .withOpacity(1),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        
-                );
+                                      ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
               },
             )
           ],
@@ -932,9 +935,6 @@ class _ListCotisationScreenState extends State<ListCotisationScreen>
       ),
     );
   }
-
-
-
 
   Widget buildCotisationType(String cotisationType) {
     return GestureDetector(

@@ -16,10 +16,16 @@ import 'package:faroty_association_1/Association_And_Group/association_recent_ev
 import 'package:faroty_association_1/Association_And_Group/association_seance/business_logic/association_seance_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/screens/list_meeting_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/association_seance/presentation/widgets/widgetRencontreCard.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/tontine_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/association_tournoi/business_logic/tournoi_state.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_state.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/business_logic/tontine_perso_cubit.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/business_logic/tontine_perso_state.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/presentation/screen/active_tontine_screen.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/presentation/screen/deposit_screen.dart';
+import 'package:faroty_association_1/Association_And_Group/tontine_perso/presentation/screen/transaction_tontine_perso_screen.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/business_logic/userGroup_state.dart';
 import 'package:faroty_association_1/Association_And_Group/user_group/data/user_group_repository.dart';
@@ -39,6 +45,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:popover/popover.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 //@RoutePage()
@@ -75,6 +82,12 @@ class _HomeScreenState extends State<HomeScreen>
       print("handleTournoiDefault null");
     }
   }
+  // Future<void> handleTontinePerso() async {
+  //   final detailTournoiCourant = await context
+  //       .read<TontinePersoCubit>()
+  //       .fetchTontinePerso();
+
+  // }
 
   Future<void> handleAllCotisationAssTournoi(codeTournoi, codeMembre) async {
     final allCotisationAss = await context
@@ -106,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
   Future handleChangeAss(codeAss) async {
     final allCotisationAss =
         await context.read<UserGroupCubit>().ChangeAssCubit(codeAss);
-            await AppCubitStorage().updatemembreCode(
+    await AppCubitStorage().updatemembreCode(
       context.read<UserGroupCubit>().state.changeAssData!.membre!.membre_code!,
     );
   }
@@ -141,12 +154,14 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     clearSessionIdStorage();
+
     handleAllUserGroup();
     handleTournoiDefault();
     handleRecentEvent(AppCubitStorage().state.membreCode);
     handleChangeAss(AppCubitStorage().state.codeAssDefaul);
     handleDetailUser(AppCubitStorage().state.membreCode,
         AppCubitStorage().state.codeTournois);
+    context.read<TontinePersoCubit>().fetchTontinePerso();
     context.read<AuthCubit>().getUid();
     context.read<PretEpargneCubit>().getEpargne();
     context.read<PretEpargneCubit>().getPret();
@@ -603,24 +618,630 @@ class _HomeScreenState extends State<HomeScreen>
                                                 ],
                                               ),
                                             ),
-                                                if (currentDetailUser![
-                                                    "is_saver"])
-                                                     selectedCategory == "Tout".tr() || selectedCategory == "À venir".tr()?
-                                                  BlocBuilder<PretEpargneCubit,
+                                            BlocBuilder<TontinePersoCubit,
+                                                TontinePersoState>(
+                                              builder: (context, state) {
+                                                final cubit = context
+                                                    .read<TontinePersoCubit>();
+                                                final isNoSubmit =
+                                                    cubit.isNoSubmit;
+                                                return Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.r),
+                                                  ),
+                                                  padding: EdgeInsets.only(
+                                                    top: 10.h,
+                                                    left: 15.w,
+                                                    right: 15.w,
+                                                    bottom: 10.h,
+                                                  ),
+                                                  margin: EdgeInsets.only(
+                                                    left: 8.w,
+                                                    right: 8.w,
+                                                    top: 5.h,
+                                                    bottom: 5.h,
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "mon wallet"
+                                                                .toUpperCase(),
+                                                            style: TextStyle(
+                                                              fontSize: 15.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: AppColors
+                                                                  .blackBlue,
+                                                            ),
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              state
+                                                                      is TontinePersoLoading
+                                                                  ? null
+                                                                  : AppCubitStorage().state.isNoSubmit
+                                                                      ? Navigator
+                                                                          .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ActiveTontineScreen(),
+                                                                          ),
+                                                                        )
+                                                                      : state.dataTontinePerso["data"]["is_valide"] !=
+                                                                              0
+                                                                          ? toastification
+                                                                              .show(
+                                                                              context: context,
+                                                                              title: Text(
+                                                                                "Votre demande est en cours de vérification.\nVeuillez patienter et réessayer plus tard.",
+                                                                                textAlign: TextAlign.center,
+                                                                                style: TextStyle(fontSize: 12.sp, color: AppColors.blackBlue, fontWeight: FontWeight.bold),
+                                                                              ),
+                                                                              autoCloseDuration: Duration(seconds: 7),
+                                                                              type: ToastificationType.error,
+                                                                              style: ToastificationStyle.minimal,
+                                                                            )
+                                                                          : Navigator
+                                                                              .push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                builder: (context) => TransactionTontinePersoScreen(accountRef:state.dataTontinePerso["data"]["ass_savings"][0]["public_ref"] ,),
+                                                                              ),
+                                                                            );
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.list,
+                                                                  color: AppColors
+                                                                      .blackBlue,
+                                                                ),
+                                                                Text(
+                                                                  "Transactions",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        15.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppColors
+                                                                        .blackBlue,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20.h,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          state is TontinePersoLoading
+                                                              ? Container(
+                                                                  width: 10.r,
+                                                                  height: 10.r,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    strokeWidth:
+                                                                        1.w,
+                                                                    color: AppColors
+                                                                        .blackBlue,
+                                                                  ),
+                                                                )
+                                                              : Text(
+                                                                  AppCubitStorage()
+                                                                          .state
+                                                                          .maskSold
+                                                                      ? "* * * *"
+                                                                      : AppCubitStorage().state.isNoSubmit
+                                                                          ? "0 FCFA"
+                                                                          : "${formatMontantFrancais(double.parse(state.dataTontinePerso["data"]["ass_savings"][0]["faroti_balance"]))} FCFA",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        18.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: AppColors
+                                                                        .blackBlue,
+                                                                  ),
+                                                                ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              state
+                                                                      is TontinePersoLoading
+                                                                  ? null
+                                                                  : AppCubitStorage().state.isNoSubmit
+                                                                      ? Navigator
+                                                                          .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ActiveTontineScreen(),
+                                                                          ),
+                                                                        )
+                                                                      : state.dataTontinePerso["data"]["is_valide"] ==
+                                                                              0
+                                                                          ? toastification
+                                                                              .show(
+                                                                              context: context,
+                                                                              title: Text(
+                                                                                "Votre demande est en cours de vérification.\nVeuillez patienter et réessayer plus tard.",
+                                                                                textAlign: TextAlign.center,
+                                                                                style: TextStyle(fontSize: 12.sp, color: AppColors.blackBlue, fontWeight: FontWeight.bold),
+                                                                              ),
+                                                                              autoCloseDuration: Duration(seconds: 7),
+                                                                              type: ToastificationType.error,
+                                                                              style: ToastificationStyle.minimal,
+                                                                            )
+                                                                          : Navigator
+                                                                              .push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                builder: (context) => TransactionTontinePersoScreen(accountRef:state.dataTontinePerso["data"]["ass_savings"][0]["public_ref"],),
+                                                                              ),
+                                                                            );
+
+                                                            },
+                                                            child: Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left:
+                                                                          5.w),
+                                                              // width: 72.w,
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal:
+                                                                    10.w,
+                                                                vertical: 4.h,
+                                                              ),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: AppColors
+                                                                    .colorButton,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15.r),
+                                                              ),
+                                                              child: Text(
+                                                                "TONTINE PERSO",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      13.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            if (currentDetailUser!["is_saver"])
+                                              selectedCategory == "Tout".tr() ||
+                                                      selectedCategory ==
+                                                          "À venir".tr()
+                                                  ? BlocBuilder<
+                                                      PretEpargneCubit,
                                                       PretEpargneState>(
-                                                    builder:
-                                                        (PretEpargnecontext,
-                                                            PretEpargnestate) {
+                                                      builder:
+                                                          (PretEpargnecontext,
+                                                              PretEpargnestate) {
+                                                        if (PretEpargnestate
+                                                                    .isLoadingEpargne ==
+                                                                true &&
+                                                            PretEpargnestate
+                                                                    .epargne ==
+                                                                null)
+                                                          return Container(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 15.h),
+                                                            child: EasyLoader(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                              iconSize: 50.r,
+                                                              iconColor: AppColors
+                                                                  .blackBlueAccent1,
+                                                              image: AssetImage(
+                                                                'assets/images/AssoplusFinal.png',
+                                                              ),
+                                                            ),
+                                                          );
+                                                        final epargne =
+                                                            PretEpargnecontext.read<
+                                                                    PretEpargneCubit>()
+                                                                .state
+                                                                .epargne;
+                                                        return Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            left: 8.w,
+                                                            right: 8.w,
+                                                            top: 5.h,
+                                                            bottom: 5.h,
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                AppColors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15.r),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        25,
+                                                                        117,
+                                                                        117,
+                                                                        117),
+                                                                spreadRadius: 1,
+                                                                blurRadius: 1,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            left: 10.w,
+                                                            right: 10.w,
+                                                            top: 10.h,
+                                                            bottom: 10.h,
+                                                          ),
+                                                          child: Stack(
+                                                            children: [
+                                                              Column(
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          updateTrackingData(
+                                                                              "home.savingTransaction",
+                                                                              "${DateTime.now()}",
+                                                                              {});
+                                                                          Modal()
+                                                                              .showModalTransactionEpargne(
+                                                                            context,
+                                                                          );
+                                                                          context
+                                                                              .read<PretEpargneCubit>()
+                                                                              .getDetailEpargne(epargne['saving_code']);
+                                                                        },
+                                                                        child:
+                                                                            Container(
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(15.r),
+                                                                            border:
+                                                                                Border.all(
+                                                                              width: 1.5,
+                                                                              color: AppColors.blackBlueAccent2,
+                                                                            ),
+                                                                          ),
+                                                                          padding:
+                                                                              EdgeInsets.symmetric(
+                                                                            // vertical: 10.h,
+                                                                            horizontal:
+                                                                                10.w,
+                                                                          ),
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width / 2.3,
+                                                                          height:
+                                                                              97.h,
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceEvenly,
+                                                                            children: [
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                children: [
+                                                                                  Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        child: Text(
+                                                                                          "TOTAL EPARGNES".tr(),
+                                                                                          style: TextStyle(
+                                                                                            fontSize: 12.sp,
+                                                                                            fontWeight: FontWeight.w500,
+                                                                                            color: AppColors.blackBlue,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Container(
+                                                                                        margin: EdgeInsets.only(
+                                                                                          top: 3.h,
+                                                                                          bottom: 3.h,
+                                                                                        ),
+                                                                                        child: Text(
+                                                                                          // "${formatMontantFrancais(double.parse("13000"))} FCFA",
+
+                                                                                          "${formatMontantFrancais(double.parse(epargne!['amount_saved']))} FCFA",
+                                                                                          style: TextStyle(
+                                                                                            fontSize: 18.sp,
+                                                                                            fontWeight: FontWeight.w700,
+                                                                                            color: AppColors.blackBlue,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                                children: [
+                                                                                  Icon(
+                                                                                    Icons.list_rounded,
+                                                                                    size: 18.sp,
+                                                                                    color: AppColors.blackBlue,
+                                                                                  ),
+                                                                                  Container(
+                                                                                    child: Text(
+                                                                                      "Historiques".tr(),
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 12.sp,
+                                                                                        fontWeight: FontWeight.w500,
+                                                                                        color: AppColors.blackBlue,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          // color: AppColors.bleuLight,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(15.r),
+                                                                          border:
+                                                                              Border.all(
+                                                                            width:
+                                                                                1.5,
+                                                                            color:
+                                                                                AppColors.blackBlueAccent2,
+                                                                          ),
+                                                                        ),
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                10.h,
+                                                                            horizontal: 10.w),
+                                                                        width: MediaQuery.of(context).size.width /
+                                                                            2.3,
+                                                                        height:
+                                                                            97.h,
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            Container(
+                                                                              child: Text(
+                                                                                "INTÉRÊTS EN COURS".tr(),
+                                                                                style: TextStyle(
+                                                                                  fontSize: 12.sp,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: AppColors.blackBlue,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Container(
+                                                                              // margin: EdgeInsets.only(top: 5, bottom: 5,),
+                                                                              child: Text(
+                                                                                "${formatMontantFrancais(double.parse(epargne!['total_interest']))} FCFA",
+                                                                                // "${formatMontantFrancais(double.parse("2000"))} FCFA",
+                                                                                style: TextStyle(
+                                                                                  fontSize: 18.sp,
+                                                                                  fontWeight: FontWeight.w700,
+                                                                                  color: AppColors.blackBlue,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  GestureDetector(
+                                                                    onTap:
+                                                                        () async {
+                                                                      updateTrackingData(
+                                                                          "home.btnSave",
+                                                                          "${DateTime.now()}",
+                                                                          {});
+                                                                      String
+                                                                          msg =
+                                                                          "Aide-moi à épargner.\nMerci de suivre le lien https://${epargne["saving_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                                                      String
+                                                                          raisonComplete =
+                                                                          "Effectuer une épargne"
+                                                                              .tr();
+                                                                      String
+                                                                          motif =
+                                                                          "Epargner vous même"
+                                                                              .tr();
+                                                                      String
+                                                                          paiementProcheMsg =
+                                                                          "Un proche épargne pour vous"
+                                                                              .tr();
+                                                                      String
+                                                                          msgAppBarPaiementPage =
+                                                                          "Effectuer une épargne"
+                                                                              .tr();
+                                                                      String
+                                                                          elementUrl =
+                                                                          "https://groups.faroty.com/loan";
+                                                                      Modal()
+                                                                          .showModalActionPayement(
+                                                                        context,
+                                                                        msg,
+                                                                        epargne[
+                                                                            "saving_pay_link"],
+                                                                        raisonComplete,
+                                                                        motif,
+                                                                        paiementProcheMsg,
+                                                                        msgAppBarPaiementPage,
+                                                                        elementUrl,
+                                                                      );
+                                                                    },
+
+                                                                    // onTap: () {
+
+                                                                    //   saving_pay_link
+                                                                    //   context
+                                                                    //       .read<PretEpargneCubit>()
+                                                                    //       .getEpargne();
+                                                                    // },
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: AppColors
+                                                                            .colorButton,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(15.r),
+                                                                      ),
+                                                                      padding: EdgeInsets.only(
+                                                                          top: 10
+                                                                              .h,
+                                                                          bottom:
+                                                                              10.h),
+                                                                      margin: EdgeInsets.only(
+                                                                          top: 10
+                                                                              .h),
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          Text(
+                                                                            "ÉPARGNEZ".tr(),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 18.sp,
+                                                                              fontWeight: FontWeight.w900,
+                                                                              color: AppColors.white,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              if (PretEpargnestate
+                                                                          .isLoadingEpargne ==
+                                                                      true &&
+                                                                  PretEpargnestate
+                                                                          .epargne !=
+                                                                      null)
+                                                                Center(
+                                                                  child:
+                                                                      Container(
+                                                                    height:
+                                                                        160.h,
+                                                                    // color:
+                                                                    //     AppColors.blackBlueAccent2,
+                                                                    // margin: EdgeInsets.only(top: 40.h),
+                                                                    child:
+                                                                        EasyLoader(
+                                                                      backgroundColor: Color.fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                      iconSize:
+                                                                          50.r,
+                                                                      iconColor:
+                                                                          AppColors
+                                                                              .blackBlueAccent1,
+                                                                      image:
+                                                                          AssetImage(
+                                                                        'assets/images/AssoplusFinal.png',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : Container(),
+                                            if (currentDetailUser!["is_owe"])
+                                              selectedCategory == "Tout".tr() ||
+                                                      selectedCategory ==
+                                                          "À venir".tr()
+                                                  ? BlocBuilder<
+                                                          PretEpargneCubit,
+                                                          PretEpargneState>(
+                                                      builder:
+                                                          (PretEpargnecontext,
+                                                              PretEpargnestate) {
                                                       if (PretEpargnestate
-                                                                  .isLoadingEpargne ==
+                                                                  .isLoadingPret ==
                                                               true &&
                                                           PretEpargnestate
-                                                                  .epargne ==
+                                                                  .pret ==
                                                               null)
                                                         return Container(
                                                           padding:
                                                               EdgeInsets.only(
-                                                                  top: 15.h),
+                                                                  top: 10.h),
                                                           child: EasyLoader(
                                                             backgroundColor:
                                                                 Color.fromARGB(
@@ -632,31 +1253,354 @@ class _HomeScreenState extends State<HomeScreen>
                                                             iconColor: AppColors
                                                                 .blackBlueAccent1,
                                                             image: AssetImage(
-                                                              'assets/images/AssoplusFinal.png',
+                                                              'assets/images/Groupe_ou_Asso.png',
                                                             ),
                                                           ),
                                                         );
-                                                      final epargne =
+
+                                                      final pret =
                                                           PretEpargnecontext.read<
                                                                   PretEpargneCubit>()
                                                               .state
-                                                              .epargne;
-                                                      return Container(
-                                                        margin: EdgeInsets.only(
-                                                          left: 8.w,
-                                                          right: 8.w,
-                                                          top: 5.h,
-                                                          bottom: 5.h,
+                                                              .pret;
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          updateTrackingData(
+                                                              "home.loanTransaction",
+                                                              "${DateTime.now()}",
+                                                              {});
+                                                          Modal()
+                                                              .showModalTransactionPret(
+                                                                  context);
+                                                          context
+                                                              .read<
+                                                                  PretEpargneCubit>()
+                                                              .getDetailPret(pret[
+                                                                  'loan_code']);
+                                                        },
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                            left: 8.w,
+                                                            right: 8.w,
+                                                            top: 5.h,
+                                                            bottom: 5.h,
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                AppColors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15.r),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        25,
+                                                                        117,
+                                                                        117,
+                                                                        117),
+                                                                spreadRadius: 1,
+                                                                blurRadius: 1,
+                                                              )
+                                                            ],
+                                                            border: Border.all(
+                                                              color:
+                                                                  pret!["is_passed"] ==
+                                                                          0
+                                                                      ? AppColors
+                                                                          .white
+                                                                      : AppColors
+                                                                          .red,
+                                                              width: 0.5.r,
+                                                            ),
+                                                          ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            left: 10.w,
+                                                            right: 10.w,
+                                                            top: 10.h,
+                                                            bottom: 10.h,
+                                                          ),
+                                                          child: Stack(
+                                                            children: [
+                                                              Column(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        bottom:
+                                                                            10.h),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Container(
+                                                                          alignment:
+                                                                              Alignment.center,
+                                                                          width:
+                                                                              72.w,
+                                                                          padding:
+                                                                              EdgeInsets.only(
+                                                                            left:
+                                                                                8.w,
+                                                                            right:
+                                                                                8.w,
+                                                                            top:
+                                                                                5.h,
+                                                                            bottom:
+                                                                                5.h,
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          "Prêts en cours"
+                                                                              .tr()
+                                                                              .toUpperCase(),
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            color:
+                                                                                AppColors.blackBlue,
+                                                                            fontSize:
+                                                                                15.sp,
+                                                                          ),
+                                                                        ),
+                                                                        GestureDetector(
+                                                                          onTap:
+                                                                              () async {
+                                                                            updateTrackingData(
+                                                                                "home.btnRefund",
+                                                                                "${DateTime.now()}",
+                                                                                {});
+                                                                            String
+                                                                                msg =
+                                                                                "Aide-moi à payer ma dette.\nMerci de suivre le lien https://${pret["loan_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                                                            String
+                                                                                raisonComplete =
+                                                                                "Remboursement".tr();
+                                                                            String
+                                                                                motif =
+                                                                                "Rembourser vous même".tr();
+                                                                            String
+                                                                                paiementProcheMsg =
+                                                                                "partager_le_lien_de_paiement".tr();
+                                                                            String
+                                                                                msgAppBarPaiementPage =
+                                                                                "Effectuer une remboursement".tr();
+                                                                            String
+                                                                                elementUrl =
+                                                                                "https://groups.faroty.com/loan";
+                                                                            Modal().showModalActionPayement(
+                                                                                context,
+                                                                                msg,
+                                                                                pret["loan_pay_link"],
+                                                                                raisonComplete,
+                                                                                motif,
+                                                                                paiementProcheMsg,
+                                                                                msgAppBarPaiementPage,
+                                                                                elementUrl);
+                                                                          },
+                                                                          child:
+                                                                              Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            width:
+                                                                                84.w,
+                                                                            padding:
+                                                                                EdgeInsets.only(
+                                                                              left: 8.w,
+                                                                              right: 8.w,
+                                                                              top: 5.h,
+                                                                              bottom: 5.h,
+                                                                            ),
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: AppColors.colorButton,
+                                                                              borderRadius: BorderRadius.circular(15.r),
+                                                                            ),
+                                                                            child:
+                                                                                Container(
+                                                                              child: Text(
+                                                                                "Rembourser".tr(),
+                                                                                style: TextStyle(
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                  fontSize: 11.sp,
+                                                                                  color: AppColors.white,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "montant".tr().toUpperCase(),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 12.sp,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: AppColors.blackBlueAccent1,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "${formatMontantFrancais(double.parse(pret!["loan_amount"]))} FCFA",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 16.sp,
+                                                                              fontWeight: FontWeight.w900,
+                                                                              color: AppColors.blackBlue,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.end,
+                                                                        children: [
+                                                                          Text(
+                                                                            "a rembourser".tr().toUpperCase(),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 12.sp,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: AppColors.blackBlueAccent1,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "${formatMontantFrancais(double.parse(pret!["remaining_amount"]))} FCFA",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 18.sp,
+                                                                              fontWeight: FontWeight.w900,
+                                                                              color: AppColors.red,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Container(
+                                                                    margin: EdgeInsets
+                                                                        .only(
+                                                                            top:
+                                                                                5.h),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              "intérêts".tr().toUpperCase(),
+                                                                              style: TextStyle(
+                                                                                fontSize: 12.sp,
+                                                                                fontWeight: FontWeight.w600,
+                                                                                color: AppColors.blackBlueAccent1,
+                                                                              ),
+                                                                            ),
+                                                                            Text(
+                                                                              "${formatMontantFrancais(double.parse(pret!["interest_generated"]))} FCFA",
+                                                                              style: TextStyle(
+                                                                                fontSize: 16.sp,
+                                                                                fontWeight: FontWeight.w900,
+                                                                                color: AppColors.blackBlue,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        Text(
+                                                                          "${formatCompareDateUnikReturnWellValue(pret!["end_date"])}"
+                                                                              .toUpperCase(),
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                12.sp,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            color:
+                                                                                AppColors.blackBlue,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              if (PretEpargnestate
+                                                                          .isLoadingPret ==
+                                                                      true &&
+                                                                  PretEpargnestate
+                                                                          .pret !=
+                                                                      null)
+                                                                Center(
+                                                                  child:
+                                                                      Container(
+                                                                    height:
+                                                                        120.h,
+                                                                    // color:
+                                                                    //     AppColors.blackBlueAccent2,
+                                                                    // margin: EdgeInsets.only(top: 40.h),
+                                                                    child:
+                                                                        EasyLoader(
+                                                                      backgroundColor: Color.fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                      iconSize:
+                                                                          50.r,
+                                                                      iconColor:
+                                                                          AppColors
+                                                                              .blackBlueAccent1,
+                                                                      image:
+                                                                          AssetImage(
+                                                                        'assets/images/AssoplusFinal.png',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              AppColors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          boxShadow: [
-                                                            BoxShadow(
+                                                      );
+                                                    })
+                                                  : Container(),
+                                            if (currentDetailUser![
+                                                    "is_inscription_payed"] ==
+                                                0)
+                                              selectedCategory == "Tout".tr() ||
+                                                      selectedCategory ==
+                                                          "À venir".tr()
+                                                  ? Container(
+                                                      margin: EdgeInsets.only(
+                                                        left: 8.w,
+                                                        right: 8.w,
+                                                        top: 5.h,
+                                                        bottom: 5.h,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15.r),
+                                                        boxShadow: [
+                                                          BoxShadow(
                                                               color: Color
                                                                   .fromARGB(
                                                                       25,
@@ -664,471 +1608,118 @@ class _HomeScreenState extends State<HomeScreen>
                                                                       117,
                                                                       117),
                                                               spreadRadius: 1,
-                                                              blurRadius: 1,
-                                                            )
-                                                          ],
-                                                        ),
-                                                        padding:
-                                                            EdgeInsets.only(
+                                                              blurRadius: 1)
+                                                        ],
+                                                      ),
+                                                      padding: EdgeInsets.only(
                                                           left: 10.w,
                                                           right: 10.w,
-                                                          top: 10.h,
-                                                          bottom: 10.h,
-                                                        ),
-                                                        child: Stack(
-                                                          children: [
-                                                            Column(
-                                                              children: [
-                                                                Row(
+                                                          top: 7.h,
+                                                          bottom: 7.h),
+                                                      child: Stack(
+                                                        children: [
+                                                          Column(
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            10.h),
+                                                                child: Row(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
                                                                           .spaceBetween,
                                                                   children: [
-                                                                    GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        updateTrackingData(
-                                                                            "home.savingTransaction",
-                                                                            "${DateTime.now()}",
-                                                                            {});
-                                                                        Modal()
-                                                                            .showModalTransactionEpargne(
-                                                                          context,
-                                                                        );
-                                                                        context
-                                                                            .read<PretEpargneCubit>()
-                                                                            .getDetailEpargne(epargne['saving_code']);
-                                                                      },
-                                                                      child:
-                                                                          Container(
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(15),
-                                                                          border:
-                                                                              Border.all(
-                                                                            width:
-                                                                                1.5,
-                                                                            color:
-                                                                                AppColors.blackBlueAccent2,
-                                                                          ),
-                                                                        ),
-                                                                        padding:
-                                                                            EdgeInsets.symmetric(
-                                                                          // vertical: 10.h,
-                                                                          horizontal:
-                                                                              10.w,
-                                                                        ),
-                                                                        width: MediaQuery.of(context).size.width /
-                                                                            2.3,
-                                                                        height:
-                                                                            97.h,
-                                                                        child:
-                                                                            Column(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          children: [
-                                                                            Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                                              children: [
-                                                                                Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Container(
-                                                                                      child: Text(
-                                                                                        "TOTAL EPARGNES".tr(),
-                                                                                        style: TextStyle(
-                                                                                          fontSize: 12.sp,
-                                                                                          fontWeight: FontWeight.w500,
-                                                                                          color: AppColors.blackBlue,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    Container(
-                                                                                      margin: EdgeInsets.only(
-                                                                                        top: 3.h,
-                                                                                        bottom: 3.h,
-                                                                                      ),
-                                                                                      child: Text(
-                                                                                        // "${formatMontantFrancais(double.parse("13000"))} FCFA",
-
-                                                                                        "${formatMontantFrancais(double.parse(epargne!['amount_saved']))} FCFA",
-                                                                                        style: TextStyle(
-                                                                                          fontSize: 18.sp,
-                                                                                          fontWeight: FontWeight.w700,
-                                                                                          color: AppColors.blackBlue,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.end,
-                                                                              children: [
-                                                                                Icon(
-                                                                                  Icons.list_rounded,
-                                                                                  size: 18.sp,
-                                                                                  color: AppColors.blackBlue,
-                                                                                ),
-                                                                                Container(
-                                                                                  child: Text(
-                                                                                    "Historiques".tr(),
-                                                                                    style: TextStyle(
-                                                                                      fontSize: 12.sp,
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                      color: AppColors.blackBlue,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
+                                                                    Text(
+                                                                      "Fonds de caisse"
+                                                                          .tr()
+                                                                          .toUpperCase(),
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          color: AppColors
+                                                                              .blackBlue,
+                                                                          fontSize:
+                                                                              15.sp),
                                                                     ),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        // color: AppColors.bleuLight,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(15),
-                                                                        border:
-                                                                            Border.all(
-                                                                          width:
-                                                                              1.5,
-                                                                          color:
-                                                                              AppColors.blackBlueAccent2,
-                                                                        ),
-                                                                      ),
-                                                                      padding: EdgeInsets.symmetric(
-                                                                          vertical: 10
-                                                                              .h,
-                                                                          horizontal:
-                                                                              10.w),
-                                                                      width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width /
-                                                                          2.3,
-                                                                      height:
-                                                                          97.h,
-                                                                      child:
-                                                                          Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceAround,
-                                                                        children: [
-                                                                          Container(
-                                                                            child:
-                                                                                Text(
-                                                                              "INTÉRÊTS EN COURS".tr(),
-                                                                              style: TextStyle(
-                                                                                fontSize: 12.sp,
-                                                                                fontWeight: FontWeight.w500,
-                                                                                color: AppColors.blackBlue,
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          Container(
-                                                                            // margin: EdgeInsets.only(top: 5, bottom: 5,),
-                                                                            child:
-                                                                                Text(
-                                                                              "${formatMontantFrancais(double.parse(epargne!['total_interest']))} FCFA",
-                                                                              // "${formatMontantFrancais(double.parse("2000"))} FCFA",
-                                                                              style: TextStyle(
-                                                                                fontSize: 18.sp,
-                                                                                fontWeight: FontWeight.w700,
-                                                                                color: AppColors.blackBlue,
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                GestureDetector(
-                                                                  onTap:
-                                                                      () async {
-                                                                    updateTrackingData(
-                                                                        "home.btnSave",
-                                                                        "${DateTime.now()}",
-                                                                        {});
-                                                                    String msg =
-                                                                        "Aide-moi à épargner.\nMerci de suivre le lien https://${epargne["saving_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
-                                                                    String
-                                                                        raisonComplete =
-                                                                        "Effectuer une épargne"
-                                                                            .tr();
-                                                                    String
-                                                                        motif =
-                                                                        "Epargner vous même"
-                                                                            .tr();
-                                                                    String
-                                                                        paiementProcheMsg =
-                                                                        "Un proche épargne pour vous"
-                                                                            .tr();
-                                                                    String
-                                                                        msgAppBarPaiementPage =
-                                                                        "Effectuer une épargne"
-                                                                            .tr();
-                                                                    String
-                                                                        elementUrl =
-                                                                        "https://groups.faroty.com/loan";
-                                                                    Modal()
-                                                                        .showModalActionPayement(
-                                                                      context,
-                                                                      msg,
-                                                                      epargne[
-                                                                          "saving_pay_link"],
-                                                                      raisonComplete,
-                                                                      motif,
-                                                                      paiementProcheMsg,
-                                                                      msgAppBarPaiementPage,
-                                                                      elementUrl,
-                                                                    );
-                                                                  },
-
-                                                                  // onTap: () {
-
-                                                                  //   saving_pay_link
-                                                                  //   context
-                                                                  //       .read<PretEpargneCubit>()
-                                                                  //       .getEpargne();
-                                                                  // },
-                                                                  child:
-                                                                      Container(
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: AppColors
-                                                                          .colorButton,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              15),
-                                                                    ),
-                                                                    padding: EdgeInsets.only(
-                                                                        top: 10
-                                                                            .h,
-                                                                        bottom:
-                                                                            10.h),
-                                                                    margin: EdgeInsets.only(
-                                                                        top: 10
-                                                                            .h),
-                                                                    width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width,
-                                                                    child:
-                                                                        Column(
+                                                                    // if (Authstate.isLoading != true)
+                                                                    Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .end,
                                                                       children: [
                                                                         Text(
-                                                                          "ÉPARGNEZ"
+                                                                          '${"reste à payer".tr().toUpperCase()}',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                12.sp,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            color:
+                                                                                AppColors.blackBlueAccent1,
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          "${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA"
                                                                               .tr(),
                                                                           style:
                                                                               TextStyle(
                                                                             fontSize:
-                                                                                18.sp,
+                                                                                16.sp,
                                                                             fontWeight:
-                                                                                FontWeight.w900,
+                                                                                FontWeight.w600,
                                                                             color:
-                                                                                AppColors.white,
+                                                                                AppColors.red,
                                                                           ),
                                                                         ),
                                                                       ],
                                                                     ),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                            if (PretEpargnestate
-                                                                        .isLoadingEpargne ==
-                                                                    true &&
-                                                                PretEpargnestate
-                                                                        .epargne !=
-                                                                    null)
-                                                              Center(
-                                                                child:
-                                                                    Container(
-                                                                  height: 160.h,
-                                                                  // color:
-                                                                  //     AppColors.blackBlueAccent2,
-                                                                  // margin: EdgeInsets.only(top: 40.h),
-                                                                  child:
-                                                                      EasyLoader(
-                                                                    backgroundColor:
-                                                                        Color.fromARGB(
-                                                                            0,
-                                                                            255,
-                                                                            255,
-                                                                            255),
-                                                                    iconSize:
-                                                                        50.r,
-                                                                    iconColor:
-                                                                        AppColors
-                                                                            .blackBlueAccent1,
-                                                                    image:
-                                                                        AssetImage(
-                                                                      'assets/images/AssoplusFinal.png',
-                                                                    ),
-                                                                  ),
+                                                                  ],
                                                                 ),
                                                               ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                  ):Container(),
-                                           
-                                            if (currentDetailUser!["is_owe"])
-                                             selectedCategory == "Tout".tr() || selectedCategory == "À venir".tr()?
-                                              BlocBuilder<PretEpargneCubit,
-                                                      PretEpargneState>(
-                                                  builder: (PretEpargnecontext,
-                                                      PretEpargnestate) {
-                                                if (PretEpargnestate
-                                                            .isLoadingPret ==
-                                                        true &&
-                                                    PretEpargnestate.pret ==
-                                                        null)
-                                                  return Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 10.h),
-                                                    child: EasyLoader(
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              0, 255, 255, 255),
-                                                      iconSize: 50.r,
-                                                      iconColor: AppColors
-                                                          .blackBlueAccent1,
-                                                      image: AssetImage(
-                                                        'assets/images/Groupe_ou_Asso.png',
-                                                      ),
-                                                    ),
-                                                  );
-
-                                                final pret =
-                                                    PretEpargnecontext.read<
-                                                            PretEpargneCubit>()
-                                                        .state
-                                                        .pret;
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    updateTrackingData(
-                                                        "home.loanTransaction",
-                                                        "${DateTime.now()}",
-                                                        {});
-                                                    Modal()
-                                                        .showModalTransactionPret(
-                                                            context);
-                                                    context
-                                                        .read<
-                                                            PretEpargneCubit>()
-                                                        .getDetailPret(
-                                                            pret['loan_code']);
-                                                  },
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                      left: 8.w,
-                                                      right: 8.w,
-                                                      top: 5.h,
-                                                      bottom: 5.h,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Color.fromARGB(
-                                                              25,
-                                                              117,
-                                                              117,
-                                                              117),
-                                                          spreadRadius: 1,
-                                                          blurRadius: 1,
-                                                        )
-                                                      ],
-                                                      border: Border.all(
-                                                        color:
-                                                            pret!["is_passed"] ==
-                                                                    0
-                                                                ? AppColors
-                                                                    .white
-                                                                : AppColors.red,
-                                                        width: 0.5.r,
-                                                      ),
-                                                    ),
-                                                    padding: EdgeInsets.only(
-                                                      left: 10.w,
-                                                      right: 10.w,
-                                                      top: 10.h,
-                                                      bottom: 10.h,
-                                                    ),
-                                                    child: Stack(
-                                                      children: [
-                                                        Column(
-                                                          children: [
-                                                            Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          10.h),
-                                                              child: Row(
+                                                              Row(
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
                                                                         .spaceBetween,
                                                                 children: [
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    width: 72.w,
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .only(
-                                                                      left: 8.w,
-                                                                      right:
-                                                                          8.w,
-                                                                      top: 5.h,
-                                                                      bottom:
-                                                                          5.h,
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    "Prêts en cours"
-                                                                        .tr()
-                                                                        .toUpperCase(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .blackBlue,
-                                                                      fontSize:
-                                                                          15.sp,
-                                                                    ),
+                                                                  Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        "${formatMontantFrancais(double.parse(currentDetailUser["entry_amount"]))} FCFA"
+                                                                            .tr(),
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              16.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          color:
+                                                                              AppColors.blackBlue,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                   GestureDetector(
                                                                     onTap:
                                                                         () async {
                                                                       updateTrackingData(
-                                                                          "home.btnRefund",
+                                                                          "home.btnRegistrationFund",
                                                                           "${DateTime.now()}",
                                                                           {});
                                                                       String
                                                                           msg =
-                                                                          "Aide-moi à payer ma dette.\nMerci de suivre le lien https://${pret["loan_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
+                                                                          "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
                                                                       String
                                                                           raisonComplete =
-                                                                          "Remboursement"
+                                                                          "Paiement du fonds de caisse"
                                                                               .tr();
                                                                       String
                                                                           motif =
-                                                                          "Rembourser vous même"
+                                                                          "payer_vous_même"
                                                                               .tr();
                                                                       String
                                                                           paiementProcheMsg =
@@ -1136,21 +1727,23 @@ class _HomeScreenState extends State<HomeScreen>
                                                                               .tr();
                                                                       String
                                                                           msgAppBarPaiementPage =
-                                                                          "Effectuer une remboursement"
+                                                                          "Effectuer le paiement de votre fond de caisse"
                                                                               .tr();
                                                                       String
                                                                           elementUrl =
-                                                                          "https://groups.faroty.com/loan";
-                                                                      Modal().showModalActionPayement(
-                                                                          context,
-                                                                          msg,
-                                                                          pret[
-                                                                              "loan_pay_link"],
-                                                                          raisonComplete,
-                                                                          motif,
-                                                                          paiementProcheMsg,
-                                                                          msgAppBarPaiementPage,
-                                                                          elementUrl);
+                                                                          "https://groups.faroty.com/fond-caisse";
+                                                                      if (currentDetailUser[
+                                                                              "is_inscription_payed"] !=
+                                                                          1)
+                                                                        Modal().showModalActionPayement(
+                                                                            context,
+                                                                            msg,
+                                                                            currentDetailUser["inscription_pay_link"],
+                                                                            raisonComplete,
+                                                                            motif,
+                                                                            paiementProcheMsg,
+                                                                            msgAppBarPaiementPage,
+                                                                            elementUrl);
                                                                     },
                                                                     child:
                                                                         Container(
@@ -1158,7 +1751,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                                           Alignment
                                                                               .center,
                                                                       width:
-                                                                          84.w,
+                                                                          72.w,
                                                                       padding:
                                                                           EdgeInsets
                                                                               .only(
@@ -1176,20 +1769,20 @@ class _HomeScreenState extends State<HomeScreen>
                                                                         color: AppColors
                                                                             .colorButton,
                                                                         borderRadius:
-                                                                            BorderRadius.circular(15),
+                                                                            BorderRadius.circular(15.r),
                                                                       ),
                                                                       child:
                                                                           Container(
                                                                         child:
                                                                             Text(
-                                                                          "Rembourser"
+                                                                          "Payer"
                                                                               .tr(),
                                                                           style:
                                                                               TextStyle(
                                                                             fontWeight:
                                                                                 FontWeight.bold,
                                                                             fontSize:
-                                                                                11.sp,
+                                                                                12.sp,
                                                                             color:
                                                                                 AppColors.white,
                                                                           ),
@@ -1199,408 +1792,44 @@ class _HomeScreenState extends State<HomeScreen>
                                                                   ),
                                                                 ],
                                                               ),
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      "montant"
-                                                                          .tr()
-                                                                          .toUpperCase(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            12.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        color: AppColors
-                                                                            .blackBlueAccent1,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      "${formatMontantFrancais(double.parse(pret!["loan_amount"]))} FCFA",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            16.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w900,
-                                                                        color: AppColors
-                                                                            .blackBlue,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    Text(
-                                                                      "a rembourser"
-                                                                          .tr()
-                                                                          .toUpperCase(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            12.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        color: AppColors
-                                                                            .blackBlueAccent1,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      "${formatMontantFrancais(double.parse(pret!["remaining_amount"]))} FCFA",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            18.sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w900,
-                                                                        color: AppColors
-                                                                            .red,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      top: 5.h),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                        "intérêts"
-                                                                            .tr()
-                                                                            .toUpperCase(),
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              12.sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                          color:
-                                                                              AppColors.blackBlueAccent1,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        "${formatMontantFrancais(double.parse(pret!["interest_generated"]))} FCFA",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              16.sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w900,
-                                                                          color:
-                                                                              AppColors.blackBlue,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Text(
-                                                                    "${formatCompareDateUnikReturnWellValue(pret!["end_date"])}"
-                                                                        .toUpperCase(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          12.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .blackBlue,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        if (PretEpargnestate
-                                                                    .isLoadingPret ==
-                                                                true &&
-                                                            PretEpargnestate
-                                                                    .pret !=
-                                                                null)
-                                                          Center(
-                                                            child: Container(
-                                                              height: 120.h,
-                                                              // color:
-                                                              //     AppColors.blackBlueAccent2,
-                                                              // margin: EdgeInsets.only(top: 40.h),
-                                                              child: EasyLoader(
-                                                                backgroundColor:
-                                                                    Color.fromARGB(
-                                                                        0,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                iconSize: 50.r,
-                                                                iconColor: AppColors
-                                                                    .blackBlueAccent1,
-                                                                image:
-                                                                    AssetImage(
-                                                                  'assets/images/AssoplusFinal.png',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              }):Container(),
-                                            if (currentDetailUser![
-                                                    "is_inscription_payed"] ==
-                                                0)
-                                                 selectedCategory == "Tout".tr() || selectedCategory == "À venir".tr()?
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                  left: 8.w,
-                                                  right: 8.w,
-                                                  top: 5.h,
-                                                  bottom: 5.h,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.r),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        color: Color.fromARGB(
-                                                            25, 117, 117, 117),
-                                                        spreadRadius: 1,
-                                                        blurRadius: 1)
-                                                  ],
-                                                ),
-                                                padding: EdgeInsets.only(
-                                                    left: 10.w,
-                                                    right: 10.w,
-                                                    top: 7.h,
-                                                    bottom: 7.h),
-                                                child: Stack(
-                                                  children: [
-                                                    Column(
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  bottom: 10.h),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                "Fonds de caisse"
-                                                                    .tr()
-                                                                    .toUpperCase(),
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    color: AppColors
-                                                                        .blackBlue,
-                                                                    fontSize:
-                                                                        15.sp),
-                                                              ),
-                                                              // if (Authstate.isLoading != true)
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text(
-                                                                    '${"reste à payer".tr().toUpperCase()}',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          12.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .blackBlueAccent1,
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    "${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA"
-                                                                        .tr(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          16.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: AppColors
-                                                                          .red,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
                                                             ],
                                                           ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "${formatMontantFrancais(double.parse(currentDetailUser["entry_amount"]))} FCFA"
-                                                                      .tr(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    color: AppColors
-                                                                        .blackBlue,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () async {
-                                                                updateTrackingData(
-                                                                    "home.btnRegistrationFund",
-                                                                    "${DateTime.now()}",
-                                                                    {});
-                                                                String msg =
-                                                                    "Aide-moi à payer mon inscription.\nMontant: ${formatMontantFrancais(double.parse((int.parse(currentDetailUser["entry_amount"]) - int.parse(currentDetailUser["inscription_balance"])).toString()))} FCFA.\nMerci de suivre le lien https://${currentDetailUser["inscription_pay_link"]}?code=${AppCubitStorage().state.membreCode} pour valider";
-                                                                String
-                                                                    raisonComplete =
-                                                                    "Paiement du fonds de caisse"
-                                                                        .tr();
-                                                                String motif =
-                                                                    "payer_vous_même"
-                                                                        .tr();
-                                                                String
-                                                                    paiementProcheMsg =
-                                                                    "partager_le_lien_de_paiement"
-                                                                        .tr();
-                                                                String
-                                                                    msgAppBarPaiementPage =
-                                                                    "Effectuer le paiement de votre fond de caisse"
-                                                                        .tr();
-                                                                String
-                                                                    elementUrl =
-                                                                    "https://groups.faroty.com/fond-caisse";
-                                                                if (currentDetailUser[
-                                                                        "is_inscription_payed"] !=
-                                                                    1)
-                                                                  Modal().showModalActionPayement(
-                                                                      context,
-                                                                      msg,
-                                                                      currentDetailUser[
-                                                                          "inscription_pay_link"],
-                                                                      raisonComplete,
-                                                                      motif,
-                                                                      paiementProcheMsg,
-                                                                      msgAppBarPaiementPage,
-                                                                      elementUrl);
-                                                              },
+                                                          if (Authstate
+                                                                      .isLoading ==
+                                                                  true &&
+                                                              Authstate
+                                                                      .detailUser !=
+                                                                  null)
+                                                            Center(
                                                               child: Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                width: 72.w,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  left: 8.w,
-                                                                  right: 8.w,
-                                                                  top: 5.h,
-                                                                  bottom: 5.h,
-                                                                ),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: AppColors
-                                                                      .colorButton,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              15.r),
-                                                                ),
+                                                                height: 80.h,
+                                                                // color:
+                                                                //     AppColors.blackBlueAccent2,
+                                                                // margin: EdgeInsets.only(top: 40.h),
                                                                 child:
-                                                                    Container(
-                                                                  child: Text(
-                                                                    "Payer"
-                                                                        .tr(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          12.sp,
-                                                                      color: AppColors
-                                                                          .white,
-                                                                    ),
+                                                                    EasyLoader(
+                                                                  backgroundColor:
+                                                                      Color.fromARGB(
+                                                                          0,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                  iconSize:
+                                                                      50.r,
+                                                                  iconColor:
+                                                                      AppColors
+                                                                          .blackBlueAccent1,
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/images/AssoplusFinal.png',
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    if (Authstate.isLoading ==
-                                                            true &&
-                                                        Authstate.detailUser !=
-                                                            null)
-                                                      Center(
-                                                        child: Container(
-                                                          height: 80.h,
-                                                          // color:
-                                                          //     AppColors.blackBlueAccent2,
-                                                          // margin: EdgeInsets.only(top: 40.h),
-                                                          child: EasyLoader(
-                                                            backgroundColor:
-                                                                Color.fromARGB(
-                                                                    0,
-                                                                    255,
-                                                                    255,
-                                                                    255),
-                                                            iconSize: 50.r,
-                                                            iconColor: AppColors
-                                                                .blackBlueAccent1,
-                                                            image: AssetImage(
-                                                              'assets/images/AssoplusFinal.png',
-                                                            ),
-                                                          ),
-                                                        ),
+                                                        ],
                                                       ),
-                                                  ],
-                                                ),
-                                              ):Container(),
+                                                    )
+                                                  : Container(),
                                             selectedCategory == "Tout".tr() ||
                                                     selectedCategory ==
                                                         "À venir".tr()
@@ -1709,11 +1938,11 @@ class _HomeScreenState extends State<HomeScreen>
                                                                               "🟢🟢 ${"Nouvelle séance convoquée le".tr()} *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}* ${"dans le groupe".tr()} *${context.read<UserGroupCubit>().state.changeAssData!.user_group!.name}*\n\n";
 
                                                                           message +=
-                                                                              "👉🏽 ${"recepteur".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["last_name"]} ${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["first_name"]}*\n";
+                                                                              "🙋🏼‍♂️ ${"recepteur".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["last_name"]} ${currentDetailtournoiCourant["tournois"]["seance"][0]["membre"]["first_name"]}*\n";
                                                                           message +=
-                                                                              "👉🏽 ${"lieu".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["localisation"]}*\n";
+                                                                              "📍 ${"lieu".tr().toUpperCase()} : *${currentDetailtournoiCourant["tournois"]["seance"][0]["localisation"]}*\n";
                                                                           message +=
-                                                                              "👉🏽 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}*\n\n";
+                                                                              "🕐 ${"dateheure".tr().toUpperCase()}  : *${formatDateLiteral(currentDetailtournoiCourant["tournois"]["seance"][0]["date_seance"])}*\n\n";
 
                                                                           message +=
                                                                               "${"Merci de consulter ici".tr()}  : faroty.com/dl/groups\n\n";
@@ -2038,6 +2267,10 @@ class _HomeScreenState extends State<HomeScreen>
                                       minExtent: 50.r,
                                     ),
                                   ),
+
+
+
+
                                   BlocBuilder<RecentEventCubit,
                                       RecentEventState>(
                                     builder: (context, state) {
@@ -2083,71 +2316,79 @@ class _HomeScreenState extends State<HomeScreen>
                                       List listeSanction = currentSanction;
 
                                       if (selectedCategory == "À venir") {
-
-
                                         listWidgetTontine = listeTontine
                                             .where((monObjet) =>
                                                 isDateTodayOrFuture(
                                                     monObjet["end_date"] ?? ""))
                                             .map((monObjet) {
+                                          String nomBeneficiaire = '';
 
-                                              String nomBeneficiaire = '';
+                                          if (monObjet['receivers'] != null &&
+                                              monObjet['receivers']
+                                                  .isNotEmpty) {
+                                            final receivers =
+                                                monObjet['receivers']
+                                                    as List<dynamic>;
 
-          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
-            final receivers = monObjet['receivers'] as List<dynamic>;
+                                            // Déboguer les données
+                                            print('Receivers: $receivers');
 
-            // Déboguer les données
-            print('Receivers: $receivers');
+                                            final namesList =
+                                                receivers.map((receiver) {
+                                              final membre = receiver['membre'];
+                                              // Déboguer le membre
+                                              print('Membre: $membre');
 
-            final namesList = receivers.map((receiver) {
-              final membre = receiver['membre'];
-              // Déboguer le membre
-              print('Membre: $membre');
+                                              if (membre != null) {
+                                                final firstName =
+                                                    membre['first_name'] ?? '';
+                                                final lastName =
+                                                    membre['last_name'] ?? '';
+                                                return '$firstName $lastName'
+                                                    .trim();
+                                              }
+                                              return '';
+                                            }).toList();
 
-              if (membre != null) {
-                final firstName = membre['first_name'] ?? '';
-                final lastName = membre['last_name'] ?? '';
-                return '$firstName $lastName'.trim();
-              }
-              return '';
-            }).toList();
+                                            // Déboguer la liste des noms
+                                            print('Names List: $namesList');
 
-            // Déboguer la liste des noms
-            print('Names List: $namesList');
+                                            nomBeneficiaire = namesList
+                                                .where(
+                                                    (name) => name.isNotEmpty)
+                                                .join(', ');
 
-            nomBeneficiaire = namesList
-                .where((name) => name.isNotEmpty)
-                .join(', ');
+                                            // Déboguer le résultat final
+                                            print(
+                                                'Nom Beneficiaire: $nomBeneficiaire');
+                                          } else {
+                                            // Déboguer le cas où receivers est nul ou vide
+                                            print('Receivers is null or empty');
 
-            // Déboguer le résultat final
-            print('Nom Beneficiaire: $nomBeneficiaire');
-          } else {
-            // Déboguer le cas où receivers est nul ou vide
-            print('Receivers is null or empty');
-            
-            final membre = monObjet['membre'];
-            nomBeneficiaire = (membre != null)
-              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
-              : '';
-            
-            // Déboguer le nom du bénéficiaire
-            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
-          }
-                                              
+                                            final membre = monObjet['membre'];
+                                            nomBeneficiaire = (membre != null)
+                                                ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'
+                                                    .trim()
+                                                : '';
+
+                                            // Déboguer le nom du bénéficiaire
+                                            print(
+                                                'Nom Beneficiaire (from main member): $nomBeneficiaire');
+                                          }
+
                                           return widgetRecentEventTontine(
                                             isPassed: monObjet["is_passed"],
                                             isPayed: monObjet["versement"]
                                                     ?["is_payed"] ??
                                                 false,
-                                            nomBeneficiaire: nomBeneficiaire 
-                                                ,
-                                            prenomBeneficiaire:"",
+                                            nomBeneficiaire: nomBeneficiaire,
+                                            prenomBeneficiaire: "",
                                             dateOpen:
                                                 monObjet["start_date"] ?? "",
                                             dateClose:
                                                 monObjet["end_date"] ?? "",
-                                            montantTontine:
-                                                monObjet["amount"] ?? "",
+                                            montantTontine:monObjet["current_user_amount"]??
+                                                monObjet["amount"]??"",
                                             montantCollecte:
                                                 monObjet["total_cotise"] ?? "",
                                             codeCotisation:
@@ -2163,49 +2404,60 @@ class _HomeScreenState extends State<HomeScreen>
                                       } else {
                                         listWidgetTontine =
                                             listeTontine.map((monObjet) {
+                                          String nomBeneficiaire = '';
 
-                                                        String nomBeneficiaire = '';
+                                          if (monObjet['receivers'] != null &&
+                                              monObjet['receivers']
+                                                  .isNotEmpty) {
+                                            final receivers =
+                                                monObjet['receivers']
+                                                    as List<dynamic>;
 
-          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
-            final receivers = monObjet['receivers'] as List<dynamic>;
+                                            // Déboguer les données
+                                            print('Receivers: $receivers');
 
-            // Déboguer les données
-            print('Receivers: $receivers');
+                                            final namesList =
+                                                receivers.map((receiver) {
+                                              final membre = receiver['membre'];
+                                              // Déboguer le membre
+                                              print('Membre: $membre');
 
-            final namesList = receivers.map((receiver) {
-              final membre = receiver['membre'];
-              // Déboguer le membre
-              print('Membre: $membre');
+                                              if (membre != null) {
+                                                final firstName =
+                                                    membre['first_name'] ?? '';
+                                                final lastName =
+                                                    membre['last_name'] ?? '';
+                                                return '$firstName $lastName'
+                                                    .trim();
+                                              }
+                                              return '';
+                                            }).toList();
 
-              if (membre != null) {
-                final firstName = membre['first_name'] ?? '';
-                final lastName = membre['last_name'] ?? '';
-                return '$firstName $lastName'.trim();
-              }
-              return '';
-            }).toList();
+                                            // Déboguer la liste des noms
+                                            print('Names List: $namesList');
 
-            // Déboguer la liste des noms
-            print('Names List: $namesList');
+                                            nomBeneficiaire = namesList
+                                                .where(
+                                                    (name) => name.isNotEmpty)
+                                                .join(', ');
 
-            nomBeneficiaire = namesList
-                .where((name) => name.isNotEmpty)
-                .join(', ');
+                                            // Déboguer le résultat final
+                                            print(
+                                                'Nom Beneficiaire: $nomBeneficiaire');
+                                          } else {
+                                            // Déboguer le cas où receivers est nul ou vide
+                                            print('Receivers is null or empty');
 
-            // Déboguer le résultat final
-            print('Nom Beneficiaire: $nomBeneficiaire');
-          } else {
-            // Déboguer le cas où receivers est nul ou vide
-            print('Receivers is null or empty');
-            
-            final membre = monObjet['membre'];
-            nomBeneficiaire = (membre != null)
-              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
-              : '';
-            
-            // Déboguer le nom du bénéficiaire
-            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
-          }
+                                            final membre = monObjet['membre'];
+                                            nomBeneficiaire = (membre != null)
+                                                ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'
+                                                    .trim()
+                                                : '';
+
+                                            // Déboguer le nom du bénéficiaire
+                                            print(
+                                                'Nom Beneficiaire (from main member): $nomBeneficiaire');
+                                          }
 
                                           return widgetRecentEventTontine(
                                             isPassed: monObjet["is_passed"],
@@ -2213,7 +2465,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                     ?["is_payed"] ??
                                                 false,
                                             nomBeneficiaire: nomBeneficiaire,
-                                            prenomBeneficiaire:"",
+                                            prenomBeneficiaire: "",
                                             dateOpen:
                                                 monObjet["start_date"] ?? "",
                                             dateClose:
@@ -2277,50 +2529,60 @@ class _HomeScreenState extends State<HomeScreen>
                                                 isDateTodayOrFuture(
                                                     monObjet["end_date"] ?? ""))
                                             .map((monObjet) {
+                                          String nomBeneficiaire = '';
 
-                                                                                                      String nomBeneficiaire = '';
+                                          if (monObjet['receivers'] != null &&
+                                              monObjet['receivers']
+                                                  .isNotEmpty) {
+                                            final receivers =
+                                                monObjet['receivers']
+                                                    as List<dynamic>;
 
-          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
-            final receivers = monObjet['receivers'] as List<dynamic>;
+                                            // Déboguer les données
+                                            print('Receivers: $receivers');
 
-            // Déboguer les données
-            print('Receivers: $receivers');
+                                            final namesList =
+                                                receivers.map((receiver) {
+                                              final membre = receiver['membre'];
+                                              // Déboguer le membre
+                                              print('Membre: $membre');
 
-            final namesList = receivers.map((receiver) {
-              final membre = receiver['membre'];
-              // Déboguer le membre
-              print('Membre: $membre');
+                                              if (membre != null) {
+                                                final firstName =
+                                                    membre['first_name'] ?? '';
+                                                final lastName =
+                                                    membre['last_name'] ?? '';
+                                                return '$firstName $lastName'
+                                                    .trim();
+                                              }
+                                              return '';
+                                            }).toList();
 
-              if (membre != null) {
-                final firstName = membre['first_name'] ?? '';
-                final lastName = membre['last_name'] ?? '';
-                return '$firstName $lastName'.trim();
-              }
-              return '';
-            }).toList();
+                                            // Déboguer la liste des noms
+                                            print('Names List: $namesList');
 
-            // Déboguer la liste des noms
-            print('Names List: $namesList');
+                                            nomBeneficiaire = namesList
+                                                .where(
+                                                    (name) => name.isNotEmpty)
+                                                .join(', ');
 
-            nomBeneficiaire = namesList
-                .where((name) => name.isNotEmpty)
-                .join(', ');
+                                            // Déboguer le résultat final
+                                            print(
+                                                'Nom Beneficiaire: $nomBeneficiaire');
+                                          } else {
+                                            // Déboguer le cas où receivers est nul ou vide
+                                            print('Receivers is null or empty');
 
-            // Déboguer le résultat final
-            print('Nom Beneficiaire: $nomBeneficiaire');
-          } else {
-            // Déboguer le cas où receivers est nul ou vide
-            print('Receivers is null or empty');
-            
-            final membre = monObjet['membre'];
-            nomBeneficiaire = (membre != null)
-              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
-              : '';
-            
-            // Déboguer le nom du bénéficiaire
-            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
-          }
+                                            final membre = monObjet['membre'];
+                                            nomBeneficiaire = (membre != null)
+                                                ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'
+                                                    .trim()
+                                                : '';
 
+                                            // Déboguer le nom du bénéficiaire
+                                            print(
+                                                'Nom Beneficiaire (from main member): $nomBeneficiaire');
+                                          }
 
                                           return widgetRecentEventCotisation(
                                             isPayed: monObjet["versement"]
@@ -2337,8 +2599,8 @@ class _HomeScreenState extends State<HomeScreen>
                                                 monObjet["end_date"] ?? "",
                                             dateClose:
                                                 monObjet["end_date"] ?? "",
-                                            montantCotisation:
-                                                monObjet["amount"] ?? "",
+                                            montantCotisation: monObjet["current_user_amount"]??
+                                                monObjet["amount"]??"",
                                             montantCollecte:
                                                 monObjet["total_cotise"] ?? "",
                                             codeCotisation:
@@ -2362,50 +2624,60 @@ class _HomeScreenState extends State<HomeScreen>
                                       } else {
                                         listWidgetCotisation =
                                             listeCotisation.map((monObjet) {
+                                          String nomBeneficiaire = '';
 
-                                                                                                                                                    String nomBeneficiaire = '';
+                                          if (monObjet['receivers'] != null &&
+                                              monObjet['receivers']
+                                                  .isNotEmpty) {
+                                            final receivers =
+                                                monObjet['receivers']
+                                                    as List<dynamic>;
 
-          if (monObjet['receivers'] != null && monObjet['receivers'].isNotEmpty) {
-            final receivers = monObjet['receivers'] as List<dynamic>;
+                                            // Déboguer les données
+                                            print('Receivers: $receivers');
 
-            // Déboguer les données
-            print('Receivers: $receivers');
+                                            final namesList =
+                                                receivers.map((receiver) {
+                                              final membre = receiver['membre'];
+                                              // Déboguer le membre
+                                              print('Membre: $membre');
 
-            final namesList = receivers.map((receiver) {
-              final membre = receiver['membre'];
-              // Déboguer le membre
-              print('Membre: $membre');
+                                              if (membre != null) {
+                                                final firstName =
+                                                    membre['first_name'] ?? '';
+                                                final lastName =
+                                                    membre['last_name'] ?? '';
+                                                return '$firstName $lastName'
+                                                    .trim();
+                                              }
+                                              return '';
+                                            }).toList();
 
-              if (membre != null) {
-                final firstName = membre['first_name'] ?? '';
-                final lastName = membre['last_name'] ?? '';
-                return '$firstName $lastName'.trim();
-              }
-              return '';
-            }).toList();
+                                            // Déboguer la liste des noms
+                                            print('Names List: $namesList');
 
-            // Déboguer la liste des noms
-            print('Names List: $namesList');
+                                            nomBeneficiaire = namesList
+                                                .where(
+                                                    (name) => name.isNotEmpty)
+                                                .join(', ');
 
-            nomBeneficiaire = namesList
-                .where((name) => name.isNotEmpty)
-                .join(', ');
+                                            // Déboguer le résultat final
+                                            print(
+                                                'Nom Beneficiaire: $nomBeneficiaire');
+                                          } else {
+                                            // Déboguer le cas où receivers est nul ou vide
+                                            print('Receivers is null or empty');
 
-            // Déboguer le résultat final
-            print('Nom Beneficiaire: $nomBeneficiaire');
-          } else {
-            // Déboguer le cas où receivers est nul ou vide
-            print('Receivers is null or empty');
-            
-            final membre = monObjet['membre'];
-            nomBeneficiaire = (membre != null)
-              ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'.trim()
-              : '';
-            
-            // Déboguer le nom du bénéficiaire
-            print('Nom Beneficiaire (from main member): $nomBeneficiaire');
-          }
+                                            final membre = monObjet['membre'];
+                                            nomBeneficiaire = (membre != null)
+                                                ? '${membre['first_name'] ?? ''} ${membre['last_name'] ?? ''}'
+                                                    .trim()
+                                                : '';
 
+                                            // Déboguer le nom du bénéficiaire
+                                            print(
+                                                'Nom Beneficiaire (from main member): $nomBeneficiaire');
+                                          }
 
                                           return widgetRecentEventCotisation(
                                             isPayed: monObjet["versement"]
@@ -2660,6 +2932,10 @@ class _HomeScreenState extends State<HomeScreen>
                                             );
                                     },
                                   ),
+                                
+                                
+                                
+                                
                                 ],
                               ),
                             ),

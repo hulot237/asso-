@@ -11,7 +11,10 @@ class AppStorageModel {
   String? tokenUser;
   String? userNameKey;
   String? dataCookies;
+  String? passWordTontinePerso;
   final bool isLoading;
+  bool maskSold;
+  bool isNoSubmit;
   List<UserAction>? trakingData;
 
 
@@ -29,6 +32,9 @@ class AppStorageModel {
     this.userNameKey,
     this.dataCookies,
     this.trakingData,
+    this.passWordTontinePerso,
+    this.maskSold = false,
+    this.isNoSubmit = true,
   });
 
   AppStorageModel copyWith({
@@ -43,7 +49,10 @@ class AppStorageModel {
     String? tokenUser,
     String? userNameKey,
     String? dataCookies,
+    String? passWordTontinePerso,
     bool? isLoading,
+    bool? maskSold,
+    bool? isNoSubmit,
     List<UserAction>? trakingData,
   }) {
     return AppStorageModel(
@@ -60,6 +69,9 @@ class AppStorageModel {
       dataCookies: dataCookies ?? this.dataCookies,
       isLoading: isLoading ?? this.isLoading,
       trakingData: trakingData ?? this.trakingData,
+      passWordTontinePerso: passWordTontinePerso ?? this.passWordTontinePerso,
+      maskSold:  maskSold ?? this.maskSold,
+      isNoSubmit: isNoSubmit ?? this.isNoSubmit,
     );
   }
 }

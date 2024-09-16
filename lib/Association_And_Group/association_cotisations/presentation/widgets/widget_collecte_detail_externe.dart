@@ -172,44 +172,6 @@ class _WidgetCollecteDetailExterneState
                                 ],
                               ),
                             ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (widget.is_passed == 0)
-                                  InkWell(
-                                    onTap: () {
-                                      launchWeb(
-                                        "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
-                                      );
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10.w,
-                                        vertical: 4.h,
-                                      ),
-                                      margin: EdgeInsets.only(bottom: 2.h),
-                                      decoration: BoxDecoration(
-                                          color: AppColors.colorButton,
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                          border: Border.all(
-                                              color: AppColors.white,
-                                              width: .5.r)),
-                                      child: Container(
-                                        child: Text(
-                                          "cotiser".tr(),
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12.sp,
-                                            color: AppColors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
@@ -238,25 +200,88 @@ class _WidgetCollecteDetailExterneState
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                  bottom: 4.h,
-                                                ),
-                                                child: Text(
-                                                  "${widget.motifCotisations}",
-                                                  // maxLines: 1,
-                                                  // overflow:
-                                                  //     TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColors.blackBlue,
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                      bottom: 4.h,
+                                                    ),
+                                                    child: Text(
+                                                      "${widget.motifCotisations}",
+                                                      // maxLines: 1,
+                                                      // overflow:
+                                                      //     TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            AppColors.blackBlue,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
+                                                  Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      if (widget.is_passed == 0)
+                                                        InkWell(
+                                                          onTap: () {
+                                                            launchWeb(
+                                                              "https://${widget.lienDePaiement}?code=${AppCubitStorage().state.membreCode}",
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                              horizontal: 10.w,
+                                                              vertical: 4.h,
+                                                            ),
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom:
+                                                                        2.h),
+                                                            decoration: BoxDecoration(
+                                                                color: AppColors
+                                                                    .colorButton,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(15
+                                                                            .r),
+                                                                border: Border.all(
+                                                                    color: AppColors
+                                                                        .white,
+                                                                    width:
+                                                                        .5.r)),
+                                                            child: Container(
+                                                              child: Text(
+                                                                "Participer"
+                                                                    .tr(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                               Container(
                                                 margin:
-                                                    EdgeInsets.only(top: 2.h),
+                                                    EdgeInsets.only(top: 7.h),
                                                 child: Text(
                                                   "${(widget.description)}",
                                                   // maxLines: 2,
@@ -477,6 +502,7 @@ class _WidgetCollecteDetailExterneState
                                                 ),
                                                 Text(
                                                   "Retrait des fonds".tr(),
+                                                  textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     color: AppColors
                                                         .blackBlueAccent1,
@@ -547,15 +573,21 @@ class _WidgetCollecteDetailExterneState
                                           updateTrackingData(
                                               "${widget.screenSource}.btnShareCollection",
                                               "${DateTime.now()}", {});
+
                                           String message = "";
                                           message +=
                                               "🟢🟢 Une collecte a été créer pour : *${widget.motifCotisations}*\n\n";
                                           message +=
-                                              "👉🏽 Montant de la participation: *${widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA"}*\n";
-                                          message +=
-                                              "👉🏽 Montant total collecté: *${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA*\n\n";
+                                              "${widget.description}\n\n";
+                                          // message +=
+                                          //     "👉🏽 Montant de la participation: *${widget.type == "1" ? "volontaire".tr() : "${formatMontantFrancais(double.parse(widget.montantCotisations.toString()))} FCFA"}*\n";
                                           message +=
                                               "👉🏽 Cliquez ici pour participer: https://${widget.lienDePaiement}\n\n";
+                                          message +=
+                                              "📈 Montant total collecté: *${formatMontantFrancais(double.parse(widget.soldeCotisation))} FCFA*\n";
+                                          message +=
+                                              "🕐 Date de fin: *${formatDate(widget.dateCotisation)}*\n\n";
+
                                           message += "*by ASSO+*";
 
                                           Share.share(
