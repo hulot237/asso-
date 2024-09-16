@@ -276,13 +276,14 @@ class _widgetRecentEventTontineState extends State<widgetRecentEventTontine>
                                         );
                                         Modal()
                                             .showModalPayForAnotherPersonTontine(
-                                                context,
-                                                widget.codeCotisation,
-                                                widget.lienDePaiement,
-                                                widget.nomTontine,
-                                                widget.montantTontine,
-                                                widget.dateClose,
-                                                widget.nomBeneficiaire);
+                                          context,
+                                          widget.codeCotisation,
+                                          widget.lienDePaiement,
+                                          widget.nomTontine,
+                                          widget.montantTontine,
+                                          widget.dateClose,
+                                          widget.nomBeneficiaire,
+                                        );
                                       },
                                       child: Container(
                                         alignment: Alignment.center,

@@ -8,6 +8,7 @@ import 'package:faroty_association_1/Association_And_Group/association_recent_ev
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/presentation/widgets/widget_recent_event_cotisation.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/presentation/widgets/widget_recent_event_sanction.dart';
 import 'package:faroty_association_1/Association_And_Group/association_recent_event/presentation/widgets/widget_recent_event_tontine.dart';
+import 'package:faroty_association_1/Association_And_Group/association_tontine/business_logic/detail_contribution_tontine.dart';
 import 'package:faroty_association_1/Association_And_Group/authentication/business_logic/auth_cubit.dart';
 import 'package:faroty_association_1/Association_And_Group/tontine_perso/presentation/widget/pay_form_transfert.dart';
 import 'package:faroty_association_1/Modals/fonction.dart';
@@ -141,9 +142,9 @@ class _TransfertScreenState extends State<TransfertScreen> {
                 if (value == "mySelf") {
                   showTransferPopup(
                     context,
-                    typeId: "3",
+                    typeId: "8",
                     publicRef: widget.publicRef,
-                    sourceCode: monObjet["cotisation_code"],
+                    sourceCode: monObjet["code"],
                     membreCode: AppCubitStorage().state.membreCode!,
                   );
                   // updateTrackingData(
@@ -155,24 +156,31 @@ class _TransfertScreenState extends State<TransfertScreen> {
                 } else if (value == "anotherPerson") {
                   // updateTrackingData("home.btnCotributionPayAnotherPerson",
                   //     "${DateTime.now()}", {});
-                  context
-                      .read<CotisationDetailCubit>()
-                      .detailCotisationCubit(monObjet["cotisation_code"]);
-                  Modal().showModalPayForAnotherWithTransfert(
+                   context
+                      .read<DetailContributionCubit>()
+                      .detailContributionTontineCubit(
+                          monObjet["code"]);
+                  // context
+                  //     .read<CotisationDetailCubit>()
+                  //     .detailCotisationCubit(monObjet["cotisation_code"]);
+                  Modal().showModalPayForAnotherWithTransfertTontine(
                     context,
-                    monObjet["cotisation_code"],
-                    monObjet["cotisation_pay_link"],
+                    monObjet["code"],
+                    monObjet["tontine_pay_link"],
                     monObjet["name"],
-                    monObjet["amount"],
-                    monObjet["type"] == "1" ? true : false,
+                    monObjet["current_user_amount"]?? monObjet["amount"]??"",
+                    // monObjet["type"] == "1" ? true : false,
+                    
+                    // monObjet["seance"] == null
+                    //     ? ''
+                    //     : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"] ?? ""} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"] ?? "")}',
+                   monObjet["end_date"],
                     nomBeneficiaire,
-                    monObjet["seance"] == null
-                        ? ''
-                        : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"] ?? ""} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"] ?? "")}',
-                    monObjet["end_date"],
                     "8",
                     widget.publicRef,
                   );
+
+
                 }
               },
               child: Container(
@@ -268,7 +276,7 @@ class _TransfertScreenState extends State<TransfertScreen> {
                                   ? "volontaire".tr()
                                   :
                                   // : "type_fixe".tr(),
-                                  "${formatMontantFrancais(double.parse("${monObjet["amount"]}"))} FCFA",
+                                  "${formatMontantFrancais(double.parse("${monObjet["current_user_amount"]?? monObjet["amount"]??""}"))} FCFA",
                               style: TextStyle(
                                 color: AppColors.blackBlue,
                                 fontWeight: FontWeight.bold,
@@ -394,6 +402,53 @@ class _TransfertScreenState extends State<TransfertScreen> {
             //   nomTontine: monObjet["matricule"] ?? "",
             //   motif: monObjet["motif"] ?? "",
             // );
+
+                    //                                     isPassed: monObjet["is_passed"],
+                    //                         isPayed: monObjet["versement"]
+                    //                                 ?["is_payed"] ??
+                    //                             false,
+                    //                         nomBeneficiaire: nomBeneficiaire,
+                    //                         prenomBeneficiaire: "",
+                    //                         dateOpen:
+                    //                             monObjet["start_date"] ?? "",
+                    //                         dateClose:
+                    //                             monObjet["end_date"] ?? "",
+                    //                         montantTontine:monObjet["current_user_amount"]??
+                    //                             monObjet["amount"]??"",
+                    //                         montantCollecte:
+                    //                             monObjet["total_cotise"] ?? "",
+                    //                         codeCotisation:
+                    //                             monObjet["code"] ?? "",
+                    //                         lienDePaiement:
+                    //                             monObjet["tontine_pay_link"] ??
+                    //                                 "",
+                    //                         nomTontine:
+                    //                             monObjet["matricule"] ?? "",
+                    //                         motif: monObjet["motif"] ?? "",
+
+
+                    //      widget.codeCotisation,
+                    //                       widget.lienDePaiement,
+                    //                       widget.nomTontine,
+                    //                       widget.montantTontine,
+                    //                       widget.dateClose,
+                    //                       widget.nomBeneficiaire,
+
+
+
+                    //             monObjet["code"],
+                    // monObjet["tontine_pay_link"],
+                    // monObjet["matricule"],
+                    // monObjet["current_user_amount"]??
+                    //                             monObjet["amount"]??"",
+                    // monObjet["type"] == "1" ? true : false,
+                    // nomBeneficiaire,
+                    // monObjet["seance"] == null
+                    //     ? ''
+                    //     : '${'rencontre'.tr()} ${monObjet["seance"]["matricule"] ?? ""} ${"du".tr()} ${formatDateTimeintegral(context.locale.toString() == "en_US" ? "en" : "fr", monObjet["seance"]["date_seance"] ?? "")}',
+                    // monObjet["end_date"],
+
+
           }).toList();
 
           listWidgetCotisation = listeCotisation
@@ -469,12 +524,12 @@ class _TransfertScreenState extends State<TransfertScreen> {
                   context
                       .read<CotisationDetailCubit>()
                       .detailCotisationCubit(monObjet["cotisation_code"]);
-                  Modal().showModalPayForAnotherWithTransfert(
+                  Modal().showModalPayForAnotherWithTransfertCotisation(
                     context,
                     monObjet["cotisation_code"],
                     monObjet["cotisation_pay_link"],
                     monObjet["name"],
-                    monObjet["amount"],
+                    monObjet["current_user_amount"]?? monObjet["amount"]??"",
                     monObjet["type"] == "1" ? true : false,
                     nomBeneficiaire,
                     monObjet["seance"] == null
@@ -721,12 +776,12 @@ class _TransfertScreenState extends State<TransfertScreen> {
             return InkWell(
               onTap: () {
                 showTransferPopup(
-                    context,
-                    typeId: "2",
-                    publicRef: widget.publicRef,
-                    sourceCode: monObjet["sanction_code"],
-                    membreCode: AppCubitStorage().state.membreCode!,
-                  );
+                  context,
+                  typeId: "2",
+                  publicRef: widget.publicRef,
+                  sourceCode: monObjet["sanction_code"],
+                  membreCode: AppCubitStorage().state.membreCode!,
+                );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,

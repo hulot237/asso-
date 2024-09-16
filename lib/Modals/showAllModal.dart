@@ -1812,7 +1812,7 @@ class Modal {
     );
   }
 
-  void showModalPayForAnotherWithTransfert(
+  void showModalPayForAnotherWithTransfertCotisation(
       BuildContext context,
       codeContribution,
       lienDePaiement,
@@ -1938,6 +1938,139 @@ class Modal {
                       },
                     ),
                   )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  showModalPayForAnotherWithTransfertTontine(
+      BuildContext context,
+      codeContribution,
+      lienDePaiement,
+      nomTontine,
+      montantTontine,
+      date,
+      nomBeneficiaire,
+      typeId,
+      publicRef,
+      {codeTontine}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: EdgeInsets.all(10),
+          child: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15.h),
+                    child: Text(
+                      "Choisir un membre".tr(),
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        color: AppColors.blackBlue,
+                      ),
+                    ),
+                    padding: EdgeInsets.only(top: 15.h),
+                  ),
+                  BlocBuilder<DetailContributionCubit, ContributionState>(
+                    builder: (context, state) {
+                      if (state.isLoadingContibutionTontine == null ||
+                          state.isLoadingContibutionTontine == true)
+                        return Center(
+                          child: Container(
+                            child: EasyLoader(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              iconSize: 50,
+                              iconColor: AppColors.blackBlueAccent1,
+                              image: AssetImage(
+                                "assets/images/AssoplusFinal.png",
+                              ),
+                            ),
+                          ),
+                        );
+
+                      final okayTontine = context
+                          .read<DetailContributionCubit>()
+                          .state
+                          .detailContributionTontine!["membres"];
+                      print("$okayTontine");
+
+                      List listeOkayTontine = okayTontine;
+
+                      List<Widget> listWidgetOkayTontine = listeOkayTontine
+                          .where((monObjet) => monObjet["is_payed"] == 0)
+                          .map((monObjet) {
+                        return Card(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          child: PayAnotherPersonTransfert(
+                            isTontine: false,
+                            date: formatDateLiteral(date),
+                            imageProfil:
+                                monObjet["membre"]["photo_profil"] == null
+                                    ? ""
+                                    : monObjet["membre"]["photo_profil"],
+                            is_versement_finished: monObjet["is_payed"],
+                            montantVersee: monObjet["balance"],
+                            nom: monObjet["membre"]["first_name"] == null
+                                ? ""
+                                : monObjet["membre"]["first_name"],
+                            prenom: monObjet["membre"]["last_name"] == null
+                                ? ""
+                                : monObjet["membre"]["last_name"],
+                            amount_remaining: monObjet["amount_remaining"],
+                            memberCode: monObjet["membre"]["membre_code"],
+                            codeContribution: codeContribution,
+                            codeUserContribution: monObjet["code"],
+                            codeTontine: codeTontine,
+                            lienDePaiement: lienDePaiement,
+                            nomTontine: nomTontine,
+                            montantTontine: montantTontine,
+                            // source: source,
+                            nomBeneficiaire: nomBeneficiaire,
+                            // isVolontaire: isVolontaire,
+                            sourceCode: codeContribution,
+                            typeId: typeId,
+                            publicRef: publicRef,
+                            isVolontaire: false,
+                          ),
+                        );
+                      }).toList();
+
+                      if (listWidgetOkayTontine.isEmpty) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(
+                              "Tous les membres ont payé".tr(),
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: AppColors.blackBlueAccent1,
+                                  fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        );
+                      }
+
+                      final listeFinale = [
+                        ...listWidgetOkayTontine,
+                        SizedBox(height: 10), // Espacement en bas
+                      ];
+
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: listeFinale,
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

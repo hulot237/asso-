@@ -70,7 +70,10 @@ class _ActiveTontineScreenState extends State<ActiveTontineScreen> {
     );
 
     if (source != null) {
-      final XFile? image = await _picker.pickImage(source: source);
+      final XFile? image = await _picker.pickImage(
+        source: source,
+        imageQuality: 25,
+      );
       if (image != null) {
         setState(() {
           _recto = image;
@@ -122,7 +125,10 @@ class _ActiveTontineScreenState extends State<ActiveTontineScreen> {
     );
 
     if (source != null) {
-      final XFile? image = await _picker.pickImage(source: source);
+      final XFile? image = await _picker.pickImage(
+        source: source,
+        imageQuality: 25,
+      );
       if (image != null) {
         setState(() {
           _verso = image;
@@ -133,12 +139,23 @@ class _ActiveTontineScreenState extends State<ActiveTontineScreen> {
   }
 
   Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 25,
+    );
+
     setState(() {
       _image = image;
     });
+
     if (image != null) {
+      final File file = File(image.path);
+      final int fileSizeInBytes = await file.length();
+      final double fileSizeInMB =
+          fileSizeInBytes / (1024 * 1024); // Convertir les octets en Mo
+
       print('Image sélectionnée: ${image.path}');
+      print('Taille de l\'image: ${fileSizeInMB.toStringAsFixed(2)} Mo');
     }
   }
 
